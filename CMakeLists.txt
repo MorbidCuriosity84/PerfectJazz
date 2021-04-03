@@ -35,7 +35,7 @@ target_link_libraries(lib_engine lib_tile_level_loader lib_maths lib_ecm Box2D s
 ## Maths lib
 add_library(lib_maths INTERFACE)
 target_sources(lib_maths INTERFACE "${CMAKE_SOURCE_DIR}/lib_maths/maths.h")
-target_include_directories(lib_maths INTERFACE "${CMAKE_SOURCE_DIR}lib_maths" INTERFACE ${SFML_INCS})
+target_include_directories(lib_maths INTERFACE "${CMAKE_SOURCE_DIR}/lib_maths/" INTERFACE ${SFML_INCS})
 
 ## Tile loader lib
 file(GLOB_RECURSE SOURCE_FILES lib_tile_level_loader/*.cpp lib_tile_level_loader/*.h)
@@ -50,10 +50,7 @@ target_include_directories(lib_ecm INTERFACE "${CMAKE_SOURCE_DIR}/lib_ecm" )
 target_link_libraries(lib_ecm PRIVATE lib_maths)
 
 #### Adding Res folder ####
-add_custom_target(copy_resources ALL COMMAND ${CMAKE_COMMAND} 
-  -E copy_directory
-    "${PROJECT_SOURCE_DIR}/res"
-    ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/$<CONFIGURATION>/res)
+file(COPY res DESTINATION ${CMAKE_BINARY_DIR})
 	
 	
 #### Perfect Jazz Files ####
