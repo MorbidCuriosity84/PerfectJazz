@@ -1,6 +1,7 @@
 #include "engine.h"
 #include "game.h"
 #include "scenes/scene_menu.h"
+#include <LevelSystem.h>
 
 using namespace std;
 
