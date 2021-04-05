@@ -9,6 +9,8 @@ protected:
 
 public:
 	void update(double dt) override;
+	void ChangeVelocity(sf::Vector2f velocity);
+	sf::Vector2f GetVelocity();
 	explicit BackgroundPhysicsComponent(Entity* p, const sf::Vector2f& size);
 
 	BackgroundPhysicsComponent() = delete;

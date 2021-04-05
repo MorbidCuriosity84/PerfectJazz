@@ -18,5 +18,8 @@ void MenuScene::Update(const double& dt) {
         Engine::ChangeScene(&level1);
     }
 
+    if (sf::Keyboard::isKeyPressed(Keyboard::Num2)) {
+        Engine::ChangeScene(&level2);
+    }
     Scene::Update(dt);
 }
