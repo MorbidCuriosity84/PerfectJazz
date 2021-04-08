@@ -99,9 +99,7 @@ void Level3Scene::Load() {
 		{
 			auto en = makeEntity();
 			en->setPosition(ls::getTilePosition(ls::findTiles(ls::ENEMY)[i]));
-
-			//Not sure why this is scrambling the positions, if you comment it out you can see that the formation loads perfectly 
-			//just in the wrong position. 
+			
 			en->setPosition({ en->getPosition().x + ((gameWidth /2.f) - (0.5f * ls::getWidth() * ls::getTileSize())) , en->getPosition().y - gameHeight });
 			
 			cout << "Position " + to_string(ls::getTilePosition(ls::findTiles(ls::ENEMY)[i]).x);
