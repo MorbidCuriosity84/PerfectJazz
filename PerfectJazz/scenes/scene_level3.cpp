@@ -2,6 +2,8 @@
 #include "../components/cmp_player_physics.h"
 #include "../components/cmp_background_physics.h"
 #include "../components/cmp_enemy_physics.h"
+#include "../components/cmp_enemy_turret.h"
+#include "../components//cmp_hurt_player.h"
 #include "../components/cmp_sprite.h"
 #include "../game.h"
 #include <LevelSystem.h>
@@ -88,9 +90,9 @@ void Level3Scene::Load() {
 		auto s = player->addComponent<ShapeComponent>();
 		s->setShape<sf::RectangleShape>(Vector2f(20.f, 30.f));
 		s->getShape().setFillColor(Color::Magenta);
-		s->getShape().setOrigin(10.f, 15.f);
-
+		s->getShape().setOrigin(10.f, 15.f);		
 		player->addComponent<PlayerPhysicsComponent>(Vector2f(20.f, 30.f));
+		player->addTag("player");
 	}
 
 	//Create Enemies
@@ -108,7 +110,9 @@ void Level3Scene::Load() {
 			s->getShape().setFillColor(Color::Red);
 			s->getShape().setOrigin(7.5f, 7.5f);			
 
-			en->addComponent<EnemyPhysicsComponent>(Vector2f(15.f, 15.f));
+			en->addComponent<EnemyPhysicsComponent>(Vector2f(15.f, 15.f));			
+			en->addComponent<EnemyTurretComponent>();			
+			en->addComponent<HurtComponent>();
 		}
 	}
 
