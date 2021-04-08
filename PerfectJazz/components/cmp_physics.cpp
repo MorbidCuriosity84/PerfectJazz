@@ -84,6 +84,11 @@ void PhysicsComponent::setVelocity(const sf::Vector2f& v) {
 
 b2Fixture* const PhysicsComponent::getFixture() const { return _fixture; }
 
+b2Body* PhysicsComponent::getBody()
+{
+    return _body;
+}
+
 PhysicsComponent::~PhysicsComponent() {
   auto a = Physics::GetWorld();
   _body->SetActive(false);

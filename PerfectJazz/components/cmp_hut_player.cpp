@@ -10,7 +10,7 @@ void HurtComponent::update(double dt) {
       pl->setForDelete();
       _parent->setForDelete();
     }
-  }
+  }  
 }
 
 HurtComponent::HurtComponent(Entity* p)

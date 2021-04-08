@@ -24,6 +24,10 @@ void Level3Scene::Load() {
 	cout << " Scene 3 Load" << endl;	
 	ls::loadLevelFile("res/levels/wave1.txt", 40.0f);
 
+	sf::View mainView = Engine::GetWindow().getView();
+	mainView.setViewport(sf::FloatRect(0.2f, 0.f, 0.6f, 1.f));
+	Engine::GetWindow().setView(mainView);
+
 	auto ho = Engine::getWindowSize().y - (ls::getHeight() * 40.f);
 	ls::setOffset(Vector2f(0, ho));	
 
