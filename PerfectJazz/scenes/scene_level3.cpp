@@ -39,12 +39,15 @@ void Level3Scene::Load() {
 	if (texture.loadFromFile("res/img/backgrounds/desert_900.png")) {
 		texture2.loadFromFile("res/img/backgrounds/desert_900.png");
 				
+		//Creates target size for texture, used to create scale factor
 		sf::Vector2f targetSize = { Engine::getWindowSize().x * 0.6f, Engine::getWindowSize().y * 1.0f };
 
 		auto dessert_b = background->addComponent<SpriteComponent>();
 		auto dessert_b2 = background2->addComponent<SpriteComponent>();
 		dessert_b->getSprite().setTexture(texture);
 		dessert_b2->getSprite().setTexture(texture2);
+		//Scale factor applied to all textures
+		//TODO create scaling component rather than hardcode it here
 		scale = { targetSize.x / dessert_b->getSprite().getGlobalBounds().width, targetSize.y / dessert_b->getSprite().getGlobalBounds().height },
 		dessert_b->getSprite().setScale(scale);
 		dessert_b2->getSprite().setScale(scale);		
