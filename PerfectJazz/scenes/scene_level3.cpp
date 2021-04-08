@@ -1,6 +1,7 @@
 #include "scene_level3.h"
 #include "../components/cmp_player_physics.h"
 #include "../components/cmp_background_physics.h"
+#include "../components/cmp_enemy_physics.h"
 #include "../components/cmp_sprite.h"
 #include "../game.h"
 #include <LevelSystem.h>
@@ -15,10 +16,11 @@ static shared_ptr<Entity> background;
 static shared_ptr<Entity> background2;
 static shared_ptr<Entity> overbackground;
 static shared_ptr<Entity> overbackground2;
+static vector<shared_ptr<Entity>> enemies;
 
 void Level3Scene::Load() {
 	cout << " Scene 3 Load" << endl;	
-	//ls::loadLevelFile("res/levels/level_3.txt", 40.0f);
+	ls::loadLevelFile("res/levels/wave1.txt", 40.0f);
 
 	auto ho = Engine::getWindowSize().y - (ls::getHeight() * 40.f);
 	ls::setOffset(Vector2f(0, ho));	
@@ -89,6 +91,27 @@ void Level3Scene::Load() {
 		s->getShape().setOrigin(10.f, 15.f);
 
 		player->addComponent<PlayerPhysicsComponent>(Vector2f(20.f, 30.f));
+	}
+
+	//Create Enemies
+	{
+		for (int i = 0; i < ls::findTiles(ls::ENEMY).size(); i++)
+		{
+			auto en = makeEntity();
+			en->setPosition(ls::getTilePosition(ls::findTiles(ls::ENEMY)[i]));
+
+			//Not sure why this is scrambling the positions, if you comment it out you can see that the formation loads perfectly 
+			//just in the wrong position 
+			//en->setPosition({ en->getPosition().x + (gameWidth /2.f - ls::getWidth() * ls::getTileSize()) , en->getPosition().y - gameHeight });
+			
+			cout << "Position " + to_string(ls::getTilePosition(ls::findTiles(ls::ENEMY)[i]).x);
+			auto s = en->addComponent<ShapeComponent>();
+			s->setShape<sf::CircleShape>(15.f);
+			s->getShape().setFillColor(Color::Red);
+			s->getShape().setOrigin(7.5f, 7.5f);			
+
+			en->addComponent<EnemyPhysicsComponent>(Vector2f(15.f, 15.f));
+		}
 	}
 
 	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
