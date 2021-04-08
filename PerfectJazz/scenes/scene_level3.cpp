@@ -1,4 +1,4 @@
-#include "scene_level1.h"
+#include "scene_level3.h"
 #include "../components/cmp_player_physics.h"
 #include "../components/cmp_background_physics.h"
 #include "../components/cmp_sprite.h"
@@ -16,12 +16,12 @@ static shared_ptr<Entity> background2;
 static shared_ptr<Entity> overbackground;
 static shared_ptr<Entity> overbackground2;
 
-void Level1Scene::Load() {
-	cout << " Scene 1 Load" << endl;
-	ls::loadLevelFile("res/levels/level_1.txt", 40.0f);
+void Level3Scene::Load() {
+	cout << " Scene 3 Load" << endl;	
+	//ls::loadLevelFile("res/levels/level_3.txt", 40.0f);
 
 	auto ho = Engine::getWindowSize().y - (ls::getHeight() * 40.f);
-	ls::setOffset(Vector2f(0, ho));
+	ls::setOffset(Vector2f(0, ho));	
 
 	//Create background	
 	background = makeEntity();
@@ -34,27 +34,34 @@ void Level1Scene::Load() {
 	sf::Texture texture_clouds1;
 	sf::Texture texture_clouds2;
 	sf::Time lastTime;
+	sf::Vector2f scale;
 
 	if (texture.loadFromFile("res/img/backgrounds/desert_900.png")) {
 		texture2.loadFromFile("res/img/backgrounds/desert_900.png");
+				
+		sf::Vector2f targetSize = { Engine::getWindowSize().x * 0.6f, Engine::getWindowSize().y * 1.0f };
+
 		auto dessert_b = background->addComponent<SpriteComponent>();
 		auto dessert_b2 = background2->addComponent<SpriteComponent>();
 		dessert_b->getSprite().setTexture(texture);
 		dessert_b2->getSprite().setTexture(texture2);
-		
+		scale = { targetSize.x / dessert_b->getSprite().getGlobalBounds().width, targetSize.y / dessert_b->getSprite().getGlobalBounds().height },
+		dessert_b->getSprite().setScale(scale);
+		dessert_b2->getSprite().setScale(scale);		
 
-		background->addComponent<BackgroundPhysicsComponent>(Vector2f((float)texture.getSize().x, (float)texture.getSize().y));
-		background->setPosition(Vector2f((Engine::getWindowSize().x - (float)texture.getSize().x) / 2, 0.f));
-		background2->addComponent<BackgroundPhysicsComponent>(Vector2f((float)texture2.getSize().x, (float)texture2.getSize().y));
-		background2->setPosition(Vector2f((Engine::getWindowSize().x - (float)texture2.getSize().x) / 2, -(float)texture2.getSize().y + 1.f));
+		background->addComponent<BackgroundPhysicsComponent>(Vector2f((float)texture.getSize().x * scale.x, (float)texture.getSize().y * scale.y));
+		background->setPosition(Vector2f((Engine::getWindowSize().x - (float)texture.getSize().x * scale.x) / 2, 0.f));
+		background2->addComponent<BackgroundPhysicsComponent>(Vector2f((float)texture2.getSize().x * scale.x, (float)texture2.getSize().y * scale.y));
+		background2->setPosition(Vector2f((Engine::getWindowSize().x - (float)texture.getSize().x * scale.x) / 2, -(float)texture2.getSize().y * scale.y + 1.f));
 
 
 		//Loading over background sprite1
 		texture_clouds1.loadFromFile("res/img/backgrounds/desert_clouds.png");
 		auto cloud_b = overbackground->addComponent <SpriteComponent>();
 		cloud_b->getSprite().setTexture(texture_clouds1);
-		overbackground->addComponent<BackgroundPhysicsComponent>(Vector2f((float)texture_clouds1.getSize().x, (float)texture_clouds1.getSize().y));
-		overbackground->setPosition(Vector2f((Engine::getWindowSize().x - (float)texture.getSize().x) / 2, 0.f));
+		cloud_b->getSprite().setScale(scale);
+		overbackground->addComponent<BackgroundPhysicsComponent>(Vector2f((float)texture_clouds1.getSize().x * scale.x, (float)texture_clouds1.getSize().y * scale.y));
+		overbackground->setPosition(Vector2f((Engine::getWindowSize().x - (float)texture.getSize().x * scale.x) / 2, 0.f));
 		auto b = overbackground->GetCompatibleComponent<BackgroundPhysicsComponent>()[0];
 		b->ChangeVelocity(Vector2f(0.f, 30.f));
 
@@ -62,8 +69,9 @@ void Level1Scene::Load() {
 		texture_clouds2.loadFromFile("res/img/backgrounds/desert_clouds_rotated.png");
 		auto cloud_b2 = overbackground2->addComponent <SpriteComponent>();
 		cloud_b2->getSprite().setTexture(texture_clouds2);
-		overbackground2->addComponent<BackgroundPhysicsComponent>(Vector2f((float)texture_clouds2.getSize().x, (float)texture_clouds2.getSize().y));
-		overbackground2->setPosition(Vector2f((Engine::getWindowSize().x - (float)texture.getSize().x) / 2, - (float)texture_clouds2.getSize().y));
+		cloud_b2->getSprite().setScale(scale);
+		overbackground2->addComponent<BackgroundPhysicsComponent>(Vector2f((float)texture_clouds2.getSize().x * scale.x, (float)texture_clouds2.getSize().y * scale.y));
+		overbackground2->setPosition(Vector2f((Engine::getWindowSize().x - (float)texture.getSize().x * scale.x) / 2, -(float)texture_clouds2.getSize().y * scale.y));
 		auto b2 = overbackground2->GetCompatibleComponent<BackgroundPhysicsComponent>()[0];
 		b2->ChangeVelocity(Vector2f(0.f, 65.f));
 	}
@@ -71,7 +79,7 @@ void Level1Scene::Load() {
 	//Create player
 	{
 		player = makeEntity();
-		player->setPosition(ls::getTilePosition(ls::findTiles(ls::START)[0]));
+		player->setPosition({ gameWidth / 2.f, gameHeight / 2.f });
 		auto s = player->addComponent<ShapeComponent>();
 		s->setShape<sf::RectangleShape>(Vector2f(20.f, 30.f));
 		s->getShape().setFillColor(Color::Magenta);
@@ -86,41 +94,42 @@ void Level1Scene::Load() {
 
 	while (Engine::GetWindow().isOpen()) {
 		if (background->getPosition().y > Engine::getWindowSize().y) {
-			background->setPosition(Vector2f((Engine::getWindowSize().x - (float)texture.getSize().x) / 2,
-				background2->getPosition().y - texture.getSize().y + 1.f));
+			background->setPosition(Vector2f((Engine::getWindowSize().x - (float)texture.getSize().x * scale.x) / 2,
+				background2->getPosition().y - texture.getSize().y * scale.y + 1.f));
 			cout << "out" << endl;
 		}
 
 		if (background2->getPosition().y > Engine::getWindowSize().y) {
-			background2->setPosition(Vector2f((Engine::getWindowSize().x - (float)texture.getSize().x) / 2,
-				background->getPosition().y - texture.getSize().y + 1.f));
+			background2->setPosition(Vector2f((Engine::getWindowSize().x - (float)texture.getSize().x * scale.x) / 2,
+				background->getPosition().y - texture.getSize().y * scale.y + 1.f));
 			cout << "out2" << endl;
 		}
 
-
 		//TODO set the y value from SetPosition to a range of random
 		if (overbackground->getPosition().y > Engine::getWindowSize().y) {
-			overbackground->setPosition(Vector2f((Engine::getWindowSize().x - (float)texture.getSize().x) / 2, - (float)texture_clouds1.getSize().y));
+			overbackground->setPosition(Vector2f((Engine::getWindowSize().x - (float)texture.getSize().x * scale.x) / 2, -(float)texture_clouds1.getSize().y * scale.y));
 		}
 
 		if (overbackground2->getPosition().y > Engine::getWindowSize().y) {
-			overbackground2->setPosition(Vector2f((Engine::getWindowSize().x - (float)texture.getSize().x) / 2, - (float)texture_clouds1.getSize().y * 3));
+			overbackground2->setPosition(Vector2f((Engine::getWindowSize().x - (float)texture.getSize().x * scale.x) / 2, -(float)texture_clouds1.getSize().y * scale.y * 3));
 		}
 	}
 }
 
-void Level1Scene::UnLoad() {
-	cout << "Scene 1 Unload" << endl;
+void Level3Scene::UnLoad() {
+	cout << "Scene 3 Unload" << endl;
 	ls::unload();
 	Scene::UnLoad();
 }
 
-void Level1Scene::Update(const double& dt) 
-{
+
+void Level3Scene::Update(const double& dt) {
+
 	Scene::Update(dt);
 }
 
-void Level1Scene::Render() {
-	ls::render(Engine::GetWindow());
+void Level3Scene::Render() {
+	ls::render(Engine::GetWindow());	
 	Scene::Render();
 }
+

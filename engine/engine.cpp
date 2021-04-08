@@ -81,37 +81,38 @@ void Engine::Render(RenderWindow& window) {
 }
 
 void Engine::Start(unsigned int width, unsigned int height,
-                   const std::string& gameName, Scene* scn) {
-  RenderWindow window(VideoMode(width, height), gameName);
-  _gameName = gameName;
-  _window = &window;
-  Renderer::initialise(window);
-  Physics::initialise();
-  ChangeScene(scn);
+                   const std::string& gameName, Scene* scn) 
+{    
+    RenderWindow window(VideoMode(width, height), gameName);
+    _gameName = gameName;
+    _window = &window;
+    Renderer::initialise(window);
+    Physics::initialise();
+    ChangeScene(scn);
 
-  while (window.isOpen()) {
+    while (window.isOpen()) {
     Event event;
     while (window.pollEvent(event)) {
-      if (event.type == Event::Closed) {
+        if (event.type == Event::Closed) {
         window.close();
-      }
+        }
     }
     if (Keyboard::isKeyPressed(Keyboard::Escape)) {
-      window.close();
+        window.close();
     }
 
     window.clear();
     Update();
     Render(window);
     window.display();
-  }
-  if (_activeScene != nullptr) {
+    }
+    if (_activeScene != nullptr) {
     _activeScene->UnLoad();
     _activeScene = nullptr;
-  }
-  window.close();
-  Physics::shutdown();
-  // Render::shutdown();
+    }
+    window.close();
+    Physics::shutdown();
+    // Render::shutdown();
 }
 
 std::shared_ptr<Entity> Scene::makeEntity() {

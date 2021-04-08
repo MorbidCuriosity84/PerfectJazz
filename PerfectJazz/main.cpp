@@ -8,7 +8,10 @@ using namespace std;
 MenuScene menu;
 Level1Scene level1;
 Level2Scene level2;
+Level3Scene level3;
+unsigned int gameWidth = 800;
+unsigned int gameHeight = 600;
 
 int main() {
-	Engine::Start(1280, 720, "Perfect Jazz", &menu);
+	Engine::Start(gameWidth, gameHeight, "Perfect Jazz", &menu);
 }
