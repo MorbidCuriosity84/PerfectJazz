@@ -1,6 +1,6 @@
 #pragma once
 #include <SFML/Graphics/RenderWindow.hpp>
-#include <ecm.h>
+#include "ecm.h"
 #include <future>
 #include <maths.h>
 #include <mutex>
@@ -17,7 +17,7 @@ public:
   virtual void Render();
   bool isLoaded() const;
   std::shared_ptr<Entity> makeEntity();
-    
+  std::vector<std::shared_ptr<sf::View>> views;
   EntityManager ents;
 
 protected:
