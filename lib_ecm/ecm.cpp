@@ -33,7 +33,7 @@ void Entity::render() {
   //Switches view to the viewport then renders entity
   //I'm not sure why this isn't working properly, it might be the way I',m handling the pointers for view
   //The only other thing I can think of is it comes from the bullet which gets its view from its parent
-  cout << _view.getSize() << endl;
+  //cout << _view.getSize() << endl;
 
   for (auto& c : _components) {
       Engine::GetWindow().setView(c->_parent->getView());

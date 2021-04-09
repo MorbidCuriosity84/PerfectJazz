@@ -31,16 +31,16 @@ void Level3Scene::Load() {
 	ls::loadLevelFile("res/levels/wave1.txt", 40.0f);
 
 	//Create left view
-	sf::View leftView(sf::FloatRect(0, 0, Engine::getWindowSize().x / 2, Engine::getWindowSize().y));
-	leftView.setViewport(sf::FloatRect(0, 0, 0.5, 1));
+	sf::View leftView(sf::FloatRect(0, 0, Engine::getWindowSize().x /5, Engine::getWindowSize().y));
+	leftView.setViewport(sf::FloatRect(0, 0, 0.2f, 1.f));
 	//views.push_back(leftView);
 	//Create main view
-	//sf::View mainView(sf::FloatRect(0, 0, Engine::getWindowSize().x / 1.5, Engine::getWindowSize().y));
-	//mainView.setViewport(sf::FloatRect(0.2, 0, 0.6, 1.));
+	sf::View mainView(sf::FloatRect(0, 0, Engine::getWindowSize().x * 0.6, Engine::getWindowSize().y));
+	mainView.setViewport(sf::FloatRect(0.2f, 0, 0.6f, 1.f));
 	//views.push_back(mainView);	
 	//Create right view
-	sf::View rightView(sf::FloatRect(0, 0, Engine::getWindowSize().x / 2, Engine::getWindowSize().y));
-	rightView.setViewport(sf::FloatRect(0.5, 0., 0.5, 1.));
+	sf::View rightView(sf::FloatRect(0, 0, Engine::getWindowSize().x /5, Engine::getWindowSize().y));
+	rightView.setViewport(sf::FloatRect(0.8f, 0, 0.2f, 1.f));
 	//views.push_back(rightView);
 
 	auto ho = Engine::getWindowSize().y - (ls::getHeight() * 40.f);
@@ -68,15 +68,15 @@ void Level3Scene::Load() {
 			//Scale factor applied to all textures
 			//TODO create scaling component rather than hardcode it here
 			scale = { targetSize.x / dessert_b->getSprite().getGlobalBounds().width, targetSize.y / dessert_b->getSprite().getGlobalBounds().height },
-				dessert_b->getSprite().setScale(scale);
+			dessert_b->getSprite().setScale(scale);
 			dessert_b2->getSprite().setScale(scale);
 
 			background->addComponent<BackgroundPhysicsComponent>(Vector2f((float)sc3_backgroundtexture_1.getSize().x * scale.x, (float)sc3_backgroundtexture_1.getSize().y * scale.y));
 			background->setPosition(Vector2f((Engine::getWindowSize().x - (float)sc3_backgroundtexture_1.getSize().x * scale.x) / 2, 0.f));
 			background2->addComponent<BackgroundPhysicsComponent>(Vector2f((float)sc3_backgroundtexture_2.getSize().x * scale.x, (float)sc3_backgroundtexture_2.getSize().y * scale.y));
 			background2->setPosition(Vector2f((Engine::getWindowSize().x - (float)sc3_backgroundtexture_1.getSize().x * scale.x) / 2, -(float)sc3_backgroundtexture_2.getSize().y * scale.y + 1.f));
-			//background->setView(mainView);
-			//background2->setView(mainView);
+			background->setView(mainView);
+			background2->setView(mainView);
 
 			//Loading over background sprite1
 			sc3_overbackgroundtexture_1.loadFromFile("res/img/backgrounds/desert_clouds.png");
@@ -87,7 +87,7 @@ void Level3Scene::Load() {
 			overbackground->setPosition(Vector2f((Engine::getWindowSize().x - (float)sc3_backgroundtexture_1.getSize().x * scale.x) / 2, 0.f));
 			auto b = overbackground->GetCompatibleComponent<BackgroundPhysicsComponent>()[0];
 			b->ChangeVelocity(Vector2f(0.f, 30.f));
-			//overbackground->setView(mainView);
+			overbackground->setView(mainView);
 
 			//Loading over background sprite2
 			sc3_overbackgroundtexture_2.loadFromFile("res/img/backgrounds/desert_clouds_rotated.png");
@@ -98,7 +98,7 @@ void Level3Scene::Load() {
 			overbackground2->setPosition(Vector2f((Engine::getWindowSize().x - (float)sc3_backgroundtexture_1.getSize().x * scale.x) / 2, -(float)sc3_overbackgroundtexture_2.getSize().y * scale.y));
 			auto b2 = overbackground2->GetCompatibleComponent<BackgroundPhysicsComponent>()[0];
 			b2->ChangeVelocity(Vector2f(0.f, 65.f));
-			//overbackground2->setView(mainView);
+			overbackground2->setView(mainView);
 		}
 	}
 
@@ -106,7 +106,7 @@ void Level3Scene::Load() {
 	{
 		player = makeEntity();
 		player->setPosition({ gameWidth / 2.f, gameHeight / 2.f });
-		//player->setView(mainView);
+		player->setView(mainView);
 		auto s = player->addComponent<ShapeComponent>();
 		s->setShape<sf::RectangleShape>(Vector2f(20.f, 30.f));
 		s->getShape().setFillColor(Color::Magenta);
@@ -141,11 +141,11 @@ void Level3Scene::Load() {
 	{
 		auto txt = makeEntity();		
 		txt->setView(leftView);
-		auto t = txt->addComponent<TextComponent>("This is the left view");		
+		txt->addComponent<TextComponent>("This is the left view");
 
-		auto txt2 = makeEntity();		
+		auto txt2 = makeEntity();	
 		txt2->setView(rightView);
-		auto t2 = txt2->addComponent<TextComponent>("This is the right view");		
+		txt2->addComponent<TextComponent>("This is the right view");
 	}
 
 	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
