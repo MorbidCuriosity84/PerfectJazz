@@ -55,8 +55,8 @@ protected:
 public:
   void addTag(const std::string& t);
   const std::set<std::string>& getTags() const;
-  Scene* const scene;  
-  std::shared_ptr<sf::View> _view;
+  Scene* const scene;    
+  std::shared_ptr<sf::View> _view;  //This *should* tell the renderer which view to render it in
   Entity(Scene* const s);
 
   virtual ~Entity();
