@@ -1,5 +1,6 @@
 #include "system_renderer.h"
 #include <queue>
+#include <iostream>
 
 using namespace std;
 using namespace sf;
@@ -21,7 +22,7 @@ void Renderer::render() {
     throw("No render window set! ");
   }
   while (!sprites.empty()) {
-    rw->draw(*sprites.front());
+    rw->draw(*sprites.front());    
     sprites.pop();
   }
 }
