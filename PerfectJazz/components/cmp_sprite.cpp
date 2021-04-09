@@ -20,14 +20,20 @@ void SpriteComponent::update(double dt) {
   _sprite->setRotation(_parent->getRotation());
 }
 
-void SpriteComponent::render() { Renderer::queue(_sprite.get()); }
+void SpriteComponent::render() { 
+    Renderer::map(_sprite.get(), _parent->_view); 
+    Renderer::queue(_sprite.get());
+}
 
 void ShapeComponent::update(double dt) {
   _shape->setPosition(_parent->getPosition());
   _shape->setRotation(_parent->getRotation());
 }
 
-void ShapeComponent::render() { Renderer::queue(_shape.get()); }
+void ShapeComponent::render() { 
+    Renderer::map(_shape.get(), _parent->_view); 
+    Renderer::queue(_shape.get());
+}
 
 sf::Shape& ShapeComponent::getShape() const { return *_shape; }
 

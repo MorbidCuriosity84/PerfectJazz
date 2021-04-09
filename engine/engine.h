@@ -16,8 +16,7 @@ public:
   virtual void Update(const double& dt);
   virtual void Render();
   bool isLoaded() const;
-  std::shared_ptr<Entity> makeEntity();
-  //std::vector<std::shared_ptr<sf::View>> views;
+  std::shared_ptr<Entity> makeEntity();  
   EntityManager ents;
 
 protected:

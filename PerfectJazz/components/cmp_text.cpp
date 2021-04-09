@@ -4,7 +4,10 @@
 
 void TextComponent::update(double dt) {}
 
-void TextComponent::render() { Renderer::queue(&_text); }
+void TextComponent::render() { 
+    Renderer::map(&_text, _parent->_view);
+    Renderer::queue(&_text);
+}
 
 TextComponent::TextComponent(Entity* const p, const std::string& str)
     : Component(p), _string(str) {

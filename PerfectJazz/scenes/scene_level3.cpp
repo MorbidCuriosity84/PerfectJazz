@@ -32,15 +32,17 @@ void Level3Scene::Load() {
 	//Create main view
 	std::shared_ptr<sf::View> mainView = make_shared<sf::View>();
 	mainView->setViewport(sf::FloatRect(0.2f, 0.f, 0.6f, 1.f));
-	//views.push_back(mainView);	
+	
 	//Create left view
 	std::shared_ptr<sf::View> leftView = make_shared<sf::View>();
 	leftView->setViewport(sf::FloatRect(0.f, 0.f, 0.2f, 1.f));
-	//views.push_back(leftView);
+	
 	//Create right view
 	std::shared_ptr<sf::View> rightView = make_shared<sf::View>();
 	rightView->setViewport(sf::FloatRect(0.8f, 0.f, 0.2f, 1.f));	
-	//views.push_back(rightView);
+	
+
+	
 
 	auto ho = Engine::getWindowSize().y - (ls::getHeight() * 40.f);
 	ls::setOffset(Vector2f(0, ho));	
@@ -50,6 +52,10 @@ void Level3Scene::Load() {
 	background2 = makeEntity();
 	overbackground = makeEntity();
 	overbackground2 = makeEntity();
+	background->_view = mainView;
+	background2->_view = mainView;
+	overbackground->_view = mainView;
+	overbackground2->_view = mainView;
 	sf::Clock clock;	
 	sf::Time lastTime;	
 
@@ -72,9 +78,7 @@ void Level3Scene::Load() {
 		background->addComponent<BackgroundPhysicsComponent>(Vector2f((float)texture.getSize().x * scale.x, (float)texture.getSize().y * scale.y));
 		background->setPosition(Vector2f((Engine::getWindowSize().x - (float)texture.getSize().x * scale.x) / 2, 0.f));
 		background2->addComponent<BackgroundPhysicsComponent>(Vector2f((float)texture2.getSize().x * scale.x, (float)texture2.getSize().y * scale.y));
-		background2->setPosition(Vector2f((Engine::getWindowSize().x - (float)texture.getSize().x * scale.x) / 2, -(float)texture2.getSize().y * scale.y + 1.f));
-		background->_view = mainView;
-		background2->_view = mainView;
+		background2->setPosition(Vector2f((Engine::getWindowSize().x - (float)texture.getSize().x * scale.x) / 2, -(float)texture2.getSize().y * scale.y + 1.f));		
 
 		//Loading over background sprite1
 		texture_clouds1.loadFromFile("res/img/backgrounds/desert_clouds.png");
@@ -84,19 +88,19 @@ void Level3Scene::Load() {
 		overbackground->addComponent<BackgroundPhysicsComponent>(Vector2f((float)texture_clouds1.getSize().x * scale.x, (float)texture_clouds1.getSize().y * scale.y));
 		overbackground->setPosition(Vector2f((Engine::getWindowSize().x - (float)texture.getSize().x * scale.x) / 2, 0.f));
 		auto b = overbackground->GetCompatibleComponent<BackgroundPhysicsComponent>()[0];
-		b->ChangeVelocity(Vector2f(0.f, 30.f));
-		overbackground->_view = mainView;
+		b->ChangeVelocity(Vector2f(0.f, 30.f));		
 
 		//Loading over background sprite2
 		texture_clouds2.loadFromFile("res/img/backgrounds/desert_clouds_rotated.png");
-		auto cloud_b2 = overbackground2->addComponent <SpriteComponent>();
+		auto cloud_b2 = overbackground2->addComponent <SpriteComponent>();		
 		cloud_b2->getSprite().setTexture(texture_clouds2);
 		cloud_b2->getSprite().setScale(scale);
 		overbackground2->addComponent<BackgroundPhysicsComponent>(Vector2f((float)texture_clouds2.getSize().x * scale.x, (float)texture_clouds2.getSize().y * scale.y));
 		overbackground2->setPosition(Vector2f((Engine::getWindowSize().x - (float)texture.getSize().x * scale.x) / 2, -(float)texture_clouds2.getSize().y * scale.y));
 		auto b2 = overbackground2->GetCompatibleComponent<BackgroundPhysicsComponent>()[0];
 		b2->ChangeVelocity(Vector2f(0.f, 65.f));
-		overbackground2->_view = mainView;
+		
+		
 	}
 
 	//Create player
@@ -135,18 +139,20 @@ void Level3Scene::Load() {
 			
 		}
 	}
-
+	
 	//Create text for left and right boxes
 	{
 		auto txt = makeEntity();		
 		txt->_view = leftView;
 		auto t = txt->addComponent<TextComponent>("This is the left view");		
-
+		/*
 		auto txt2 = makeEntity();		
 		txt2->_view = rightView;
 		auto t2 = txt->addComponent<TextComponent>("This is the right view");		
+		*/
 	}
-
+	
+	//Engine::GetWindow().setView(*mainView);
 	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	cout << " Scene 1 Load Done" << endl;
 	setLoaded(true);	

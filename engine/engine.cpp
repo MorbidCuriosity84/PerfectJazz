@@ -40,7 +40,9 @@ void Loading_render()
   t.setFillColor(Color(255,255,255,min(255.f,40.f*loadingTime)));
   t.setPosition(Vcast<float>(Engine::getWindowSize()) * Vector2f(0.4f,0.3f));
   Renderer::queue(&t);
-  Renderer::queue(&octagon);
+  Renderer::queue(&octagon);  
+  Renderer::map(&t, make_shared<View>(Engine::GetWindow().getView()));
+  Renderer::map(&octagon, make_shared<View>(Engine::GetWindow().getView()));
 }
 
 float frametimes[256] = {};

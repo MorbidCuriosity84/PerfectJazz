@@ -12,5 +12,7 @@ void update(const double&);
 
 void queue(const sf::Drawable* s);
 
+void map(const sf::Drawable*, std::shared_ptr<sf::View>);
+
 void render();
 }; // namespace Renderer
