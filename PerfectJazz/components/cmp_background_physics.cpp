@@ -22,7 +22,7 @@ sf::Vector2f BackgroundPhysicsComponent::GetVelocity() {
 BackgroundPhysicsComponent::BackgroundPhysicsComponent(Entity* p,
     const Vector2f& size)
     : PhysicsComponent(p, true, size) {
-    _size = sv2_to_bv2(size, false);
+    _size = sv2_to_bv2(size, true);
     _Velocity = Vector2f(20.f, 350.f);
     _body->SetActive(false);
 }

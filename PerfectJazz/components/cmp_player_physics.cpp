@@ -36,7 +36,6 @@ void PlayerPhysicsComponent::update(double dt) {
 
 	// I commented this out so the player doesn't teleport
 	// Maybe we can use it when the players dies?
-
 	//Teleport to start if we fall off map.
 	//if (pos.y > ls::getHeight() * ls::getTileSize()) {
 	//  teleport(ls::getTilePosition(ls::findTiles(ls::START)[0]));
@@ -67,16 +66,21 @@ void PlayerPhysicsComponent::update(double dt) {
 
 	//Player movement
 	{
+		_direction = "none";
+
 		if (Keyboard::isKeyPressed(Keyboard::Left) ||
 			Keyboard::isKeyPressed(Keyboard::Right)) {
 			// Moving Either Left or Right
 			if (Keyboard::isKeyPressed(Keyboard::Right)) {
 				if (getVelocity().x < _maxVelocity.x)
 					impulse({ (float)(dt * _groundspeed), 0 });
+					_direction = "right";
 			}
 			else {
 				if (getVelocity().x > -_maxVelocity.x)
 					impulse({ -(float)(dt * _groundspeed), 0 });
+					_direction = "left";
+
 			}
 		}
 
@@ -93,8 +97,6 @@ void PlayerPhysicsComponent::update(double dt) {
 			}
 		}
 	}
-
-
 
 	// Clamp velocity.
 	auto v = getVelocity();
@@ -116,4 +118,8 @@ PlayerPhysicsComponent::PlayerPhysicsComponent(Entity* p,
 	_body->SetFixedRotation(true);
 	//Bullet items have higher-res collision detection
 	_body->SetBullet(true);
+}
+
+std::string PlayerPhysicsComponent::GetDirection() {
+	return _direction;
 }
