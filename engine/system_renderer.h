@@ -10,9 +10,9 @@ void shutdown();
 
 void update(const double&);
 
-void queue(const sf::Drawable* s);
+void queue(const sf::Drawable* d, const sf::View w);
 
-void map(const sf::Drawable*, std::shared_ptr<sf::View>);
+void map(const sf::Drawable*, sf::View);
 
 void render();
 }; // namespace Renderer

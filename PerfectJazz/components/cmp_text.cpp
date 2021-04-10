@@ -4,10 +4,7 @@
 
 void TextComponent::update(double dt) {}
 
-void TextComponent::render() { 
-    Renderer::map(&_text, _parent->_view);
-    Renderer::queue(&_text);
-}
+void TextComponent::render() { Renderer::queue(&_text, _parent->getView()); }
 
 TextComponent::TextComponent(Entity* const p, const std::string& str)
     : Component(p), _string(str) {
@@ -19,6 +16,11 @@ TextComponent::TextComponent(Entity* const p, const std::string& str)
 void TextComponent::SetText(const std::string& str) {
   _string = str;
   _text.setString(_string);
+  _text.setCharacterSize(12);
+}
+
+void TextComponent::setFontSize(double size) {
+    _text.setCharacterSize(size);
 }
 
 void TextComponent::setFontSize(unsigned int size)

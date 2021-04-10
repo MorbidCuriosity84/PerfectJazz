@@ -33,9 +33,11 @@ void Entity::render() {
   //Switches view to the viewport then renders entity
   //I'm not sure why this isn't working properly, it might be the way I',m handling the pointers for view
   //The only other thing I can think of is it comes from the bullet which gets its view from its parent
-  Engine::GetWindow().setView(*_view);
+  //cout << _view.getSize() << endl;
+
   for (auto& c : _components) {
-    c->render();
+      Engine::GetWindow().setView(c->_parent->getView());
+      c->render();
   }
 }
 
@@ -45,6 +47,8 @@ void Entity::setPosition(const sf::Vector2f& _position) {
   Entity::_position = _position;
 }
 
+void Entity::setView(sf::View _view) { Entity::_view = _view; }
+sf::View Entity::getView() { return _view; }
 float Entity::getRotation() const { return _rotation; }
 
 void Entity::setRotation(float _rotation) { Entity::_rotation = _rotation; }

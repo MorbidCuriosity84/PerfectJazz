@@ -8,11 +8,9 @@ public:
   TextComponent() = delete;
   explicit TextComponent(Entity* p, const std::string& str = "");
   void update(double dt) override;
-
   void render() override;
-
+  void setFontSize(double size);
   ~TextComponent() override = default;
-
   void SetText(const std::string& str);
 
   void setFontSize(unsigned int size);
