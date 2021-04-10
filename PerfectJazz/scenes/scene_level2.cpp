@@ -77,6 +77,9 @@ void Level2Scene::Load() {
 void Level2Scene::UnLoad() {
 	cout << "Scene 2 Unload" << endl;
 	ls::unload();
+	player.reset();
+	background.reset();
+	background2.reset();
 	Scene::UnLoad();
 }
 

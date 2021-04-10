@@ -16,4 +16,9 @@ TextComponent::TextComponent(Entity* const p, const std::string& str)
 void TextComponent::SetText(const std::string& str) {
   _string = str;
   _text.setString(_string);
+  _text.setCharacterSize(12);
+}
+
+void TextComponent::setFontSize(double size) {
+    _text.setCharacterSize(size);
 }
