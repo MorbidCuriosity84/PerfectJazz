@@ -8,11 +8,11 @@ using namespace sf;
 
 void MenuScene::Load() {
     cout << "Menu Load \n";
-    std::shared_ptr<sf::View> mainView = make_shared<sf::View>();
-    mainView->setViewport(sf::FloatRect(0.f, 0.f, 1.f, 1.f));
+    sf::View mainView(sf::FloatRect(0, 0, Engine::getWindowSize().x, Engine::getWindowSize().y));
+    mainView.setViewport(sf::FloatRect(0, 0, 1, 1));
     //views.push_back(mainView);
     auto txt = makeEntity();
-    txt->_view = mainView;
+    txt->setView(mainView);
     auto t = txt->addComponent<TextComponent>("Perfect Jazz v0.003\nPress 1 for Level 1\nPress 2 for Level 2\nPress 3 for Level 3");
     setLoaded(true);
 }

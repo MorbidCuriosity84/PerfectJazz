@@ -49,6 +49,7 @@ protected:
   bool _alive;       // should be updated
   bool _visible;     // should be rendered
   bool _fordeletion; // should be deleted
+  sf::View _view;  //This *should* tell the renderer which view to render it in
   std::set<std::string> _tags;
   
 
@@ -56,7 +57,6 @@ public:
   void addTag(const std::string& t);
   const std::set<std::string>& getTags() const;
   Scene* const scene;    
-  std::shared_ptr<sf::View> _view;  //This *should* tell the renderer which view to render it in
   Entity(Scene* const s);
 
   virtual ~Entity();
@@ -69,6 +69,9 @@ public:
   const sf::Vector2f& getPosition() const;
 
   void setPosition(const sf::Vector2f& _position);
+
+  void setView(sf::View _view);
+  sf::View getView();
 
   bool is_fordeletion() const;
 
