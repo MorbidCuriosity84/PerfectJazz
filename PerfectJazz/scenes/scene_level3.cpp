@@ -35,14 +35,11 @@ void Level3Scene::Load() {
 	
 	//Create left view
 	std::shared_ptr<sf::View> leftView = make_shared<sf::View>();
-	leftView->setViewport(sf::FloatRect(0.f, 0.f, 0.2f, 1.f));
+	leftView->setViewport(sf::FloatRect(0.f, 0.f, 0.2f, 0.2f));
 	
 	//Create right view
 	std::shared_ptr<sf::View> rightView = make_shared<sf::View>();
 	rightView->setViewport(sf::FloatRect(0.8f, 0.f, 0.2f, 1.f));	
-	
-
-	
 
 	auto ho = Engine::getWindowSize().y - (ls::getHeight() * 40.f);
 	ls::setOffset(Vector2f(0, ho));	
@@ -134,8 +131,8 @@ void Level3Scene::Load() {
 			s->getShape().setOrigin(7.5f, 7.5f);			
 			
 			en->addComponent<EnemyPhysicsComponent>(Vector2f(15.f, 15.f));			
-			en->addComponent<EnemyTurretComponent>();			
-			en->addComponent<HurtComponent>();
+			//en->addComponent<EnemyTurretComponent>();			
+			//en->addComponent<HurtComponent>();
 			
 		}
 	}
@@ -145,6 +142,7 @@ void Level3Scene::Load() {
 		auto txt = makeEntity();		
 		txt->_view = leftView;
 		auto t = txt->addComponent<TextComponent>("This is the left view");		
+		t.get()->setFontSize(32);
 		/*
 		auto txt2 = makeEntity();		
 		txt2->_view = rightView;
