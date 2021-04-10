@@ -126,7 +126,7 @@ std::shared_ptr<Entity> Scene::makeEntity() {
 	return std::move(e);
 }
 
-void Scene::loadEnemies(std::string waveFilename, sf::View view)
+void Scene::loadEnemies(std::string waveFilename, sf::View& view)
 {
 	ls::loadLevelFile("res/levels/" + waveFilename, 40.0f);
 	for (int i = 0; i < ls::findTiles(ls::ENEMY).size(); i++)
@@ -134,7 +134,8 @@ void Scene::loadEnemies(std::string waveFilename, sf::View view)
 		auto en = makeEntity();
 		en->setView(view);		
 		en->setPosition(ls::getTilePosition(ls::findTiles(ls::ENEMY)[i]));
-		en->setPosition(Vector2f( en->getPosition().x + ((view.getSize().x * 0.5f ) - (0.5f * ls::getWidth() * ls::getTileSize())) , en->getPosition().y ));
+		en->setPosition(Vector2f( en->getPosition().x + ((view.getSize().x * 0.5f ) - (0.5f * ls::getWidth() * ls::getTileSize())) , en->getPosition().y - view.getSize().y ));
+		
 		cout << "Position " + to_string(en->getPosition().x) + "," + to_string(en->getPosition().y) + "\n";
 		cout << "Position " + to_string(ls::getTilePosition(ls::findTiles(ls::ENEMY)[i]).x) + "\n";
 		auto s = en->addComponent<ShapeComponent>();

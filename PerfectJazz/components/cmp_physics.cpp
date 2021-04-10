@@ -75,6 +75,11 @@ void PhysicsComponent::teleport(const sf::Vector2f& v) {
   _body->SetTransform(sv2_to_bv2(invert_height(v)), 0.0f);
 }
 
+void PhysicsComponent::setSensor(bool b)
+{
+    _fixture->SetSensor(b);
+}
+
 const sf::Vector2f PhysicsComponent::getVelocity() const {
   return bv2_to_sv2(_body->GetLinearVelocity(), true);
 }

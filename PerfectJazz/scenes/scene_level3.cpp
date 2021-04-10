@@ -94,7 +94,7 @@ void Level3Scene::Load() {
 			overbackground2->setView(mainView);
 		}
 	}
-
+	
 	//Create player
 	{
 		player = makeEntity();
@@ -107,7 +107,7 @@ void Level3Scene::Load() {
 		player->addComponent<PlayerPhysicsComponent>(Vector2f(20.f, 30.f));
 		player->addTag("player");
 	}
-
+	
 	//Create Enemies
 	{
 		//loadEnemies("wave1.txt", mainView);
@@ -116,7 +116,10 @@ void Level3Scene::Load() {
 			auto en = makeEntity();
 			en->setView(mainView);
 			en->setPosition(ls::getTilePosition(ls::findTiles(ls::ENEMY)[i]));
-			en->setPosition(Vector2f(en->getPosition().x + ((mainView.getSize().x * 0.5f) - (0.5f * ls::getWidth() * ls::getTileSize())), en->getPosition().y - mainView.getSize().y));
+			en->setPosition({en->getPosition().x + ((mainView.getSize().x * 0.5f) - (0.5f * ls::getWidth() * ls::getTileSize())), en->getPosition().y - mainView.getSize().y });
+
+			//en->setPosition(Vector2f(((mainView.getSize().x * 0.5f) - (0.5f * ls::getWidth() * ls::getTileSize())), 0.f));
+			//en->setPosition(Vector2f(en->getPosition().x + ls::getTilePosition(ls::findTiles(ls::ENEMY)[i]).x, en->getPosition().y - 720.f + ls::getTilePosition(ls::findTiles(ls::ENEMY)[i]).y));
 			cout << "Position " + to_string(en->getPosition().x) + "," + to_string(en->getPosition().y) + "\n";
 			cout << "Position " + to_string(ls::getTilePosition(ls::findTiles(ls::ENEMY)[i]).x) + "\n";
 			auto s = en->addComponent<ShapeComponent>();
@@ -125,7 +128,8 @@ void Level3Scene::Load() {
 			s->getShape().setOrigin(7.5f, 7.5f);
 
 			en->addComponent<EnemyPhysicsComponent>(Vector2f(15.f, 15.f));
-			//en->addComponent<EnemyTurretComponent>();
+			en->addComponent<EnemyTurretComponent>();			
+			enemies.push_back(en);
 		}
 	}
 
@@ -188,6 +192,6 @@ void Level3Scene::Update(const double& dt) {
 }
 
 void Level3Scene::Render() {
-	ls::render(Engine::GetWindow());
+	ls::render(Engine::GetWindow());	
 	Scene::Render();
 }
