@@ -3,10 +3,14 @@
 #include "system_physics.h"
 #include "system_renderer.h"
 #include "system_resources.h"
+#include "../lib_tile_level_loader/LevelSystem.h"
 #include <SFML/Graphics.hpp>
+#include "../PerfectJazz/components/cmp_sprite.h"
 #include <future>
 #include <iostream>
 #include <stdexcept>
+#include "../PerfectJazz/components/cmp_enemy_physics.h"
+#include "../PerfectJazz/components/cmp_enemy_turret.h"
 
 using namespace sf;
 using namespace std;
@@ -120,6 +124,27 @@ std::shared_ptr<Entity> Scene::makeEntity() {
 	auto e = make_shared<Entity>(this);
 	ents.list.push_back(e);
 	return std::move(e);
+}
+
+void Scene::loadEnemies(std::string waveFilename, sf::View view)
+{
+	ls::loadLevelFile("res/levels/" + waveFilename, 40.0f);
+	for (int i = 0; i < ls::findTiles(ls::ENEMY).size(); i++)
+	{
+		auto en = makeEntity();
+		en->setView(view);		
+		en->setPosition(ls::getTilePosition(ls::findTiles(ls::ENEMY)[i]));
+		en->setPosition(Vector2f( en->getPosition().x + ((view.getSize().x * 0.5f ) - (0.5f * ls::getWidth() * ls::getTileSize())) , en->getPosition().y ));
+		cout << "Position " + to_string(en->getPosition().x) + "," + to_string(en->getPosition().y) + "\n";
+		cout << "Position " + to_string(ls::getTilePosition(ls::findTiles(ls::ENEMY)[i]).x) + "\n";
+		auto s = en->addComponent<ShapeComponent>();
+		s->setShape<sf::CircleShape>(15.f);
+		s->getShape().setFillColor(Color::Red);
+		s->getShape().setOrigin(7.5f, 7.5f);		
+
+		en->addComponent<EnemyPhysicsComponent>(Vector2f(15.f,15.f));
+		//en->addComponent<EnemyTurretComponent>();
+	}
 }
 
 void Engine::setVsync(bool b) { _window->setVerticalSyncEnabled(b); }

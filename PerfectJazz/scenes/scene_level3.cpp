@@ -33,14 +33,6 @@ void Level3Scene::Load() {
 	ls::loadLevelFile("res/levels/wave1.txt", 40.0f);
 
 	//Create left view
-<<<<<<< HEAD
-	std::shared_ptr<sf::View> leftView = make_shared<sf::View>();
-	leftView->setViewport(sf::FloatRect(0.f, 0.f, 0.2f, 0.2f));
-	
-	//Create right view
-	std::shared_ptr<sf::View> rightView = make_shared<sf::View>();
-	rightView->setViewport(sf::FloatRect(0.8f, 0.f, 0.2f, 1.f));	
-=======
 	sf::View tempLeft(sf::FloatRect(0, 0, Engine::getWindowSize().x / 5, Engine::getWindowSize().y));
 	leftView = tempLeft;
 	leftView.setViewport(sf::FloatRect(0, 0, 0.2f, 1.f));
@@ -56,7 +48,6 @@ void Level3Scene::Load() {
 	mainView.setViewport(sf::FloatRect(0.2f, 0, 0.6f, 1.f));
 	//views.push_back(mainView);	
 
->>>>>>> 2bf427f7e54247d341c94da1ba4f50973ed5c34d
 
 	auto ho = Engine::getWindowSize().y - (ls::getHeight() * 40.f);
 	ls::setOffset(Vector2f(0, ho));
@@ -118,74 +109,37 @@ void Level3Scene::Load() {
 	}
 
 	//Create Enemies
-<<<<<<< HEAD
 	{
+		//loadEnemies("wave1.txt", mainView);
 		for (int i = 0; i < ls::findTiles(ls::ENEMY).size(); i++)
 		{
 			auto en = makeEntity();
-			en->_view = mainView;
+			en->setView(mainView);
 			en->setPosition(ls::getTilePosition(ls::findTiles(ls::ENEMY)[i]));
-			
-			en->setPosition({ en->getPosition().x + ((gameWidth /2.f) - (0.5f * ls::getWidth() * ls::getTileSize())) , en->getPosition().y - gameHeight });
-			
+			en->setPosition(Vector2f(en->getPosition().x + ((mainView.getSize().x * 0.5f) - (0.5f * ls::getWidth() * ls::getTileSize())), en->getPosition().y - mainView.getSize().y));
+			cout << "Position " + to_string(en->getPosition().x) + "," + to_string(en->getPosition().y) + "\n";
 			cout << "Position " + to_string(ls::getTilePosition(ls::findTiles(ls::ENEMY)[i]).x) + "\n";
 			auto s = en->addComponent<ShapeComponent>();
 			s->setShape<sf::CircleShape>(15.f);
 			s->getShape().setFillColor(Color::Red);
-			s->getShape().setOrigin(7.5f, 7.5f);			
-			
-			en->addComponent<EnemyPhysicsComponent>(Vector2f(15.f, 15.f));			
-			//en->addComponent<EnemyTurretComponent>();			
-			//en->addComponent<HurtComponent>();
-			
+			s->getShape().setOrigin(7.5f, 7.5f);
+
+			en->addComponent<EnemyPhysicsComponent>(Vector2f(15.f, 15.f));
+			//en->addComponent<EnemyTurretComponent>();
 		}
 	}
-	
-	//Create text for left and right boxes
-	{
-		auto txt = makeEntity();		
-		txt->_view = leftView;
-		auto t = txt->addComponent<TextComponent>("This is the left view");		
-		t.get()->setFontSize(32);
-		/*
-		auto txt2 = makeEntity();		
-		txt2->_view = rightView;
-		auto t2 = txt->addComponent<TextComponent>("This is the right view");		
-		*/
-=======
-	//{
-	//	for (int i = 0; i < ls::findTiles(ls::ENEMY).size(); i++)
-	//	{
-	//		auto en = makeEntity();
-	//		en->_view = mainView;
-	//		en->setPosition(ls::getTilePosition(ls::findTiles(ls::ENEMY)[i]));
-	//		
-	//		en->setPosition({ en->getPosition().x + ((gameWidth /2.f) - (0.5f * ls::getWidth() * ls::getTileSize())) , en->getPosition().y - gameHeight });
-	//		
-	//		cout << "Position " + to_string(ls::getTilePosition(ls::findTiles(ls::ENEMY)[i]).x) + "\n";
-	//		auto s = en->addComponent<ShapeComponent>();
-	//		s->setShape<sf::CircleShape>(15.f);
-	//		s->getShape().setFillColor(Color::Red);
-	//		s->getShape().setOrigin(7.5f, 7.5f);			
-	//		
-	//		en->addComponent<EnemyPhysicsComponent>(Vector2f(15.f, 15.f));			
-	//		en->addComponent<EnemyTurretComponent>();			
-	//		en->addComponent<HurtComponent>();			
-	//	}
-	//}
 
 	//Create text for left and right boxes
 	{
 		auto txt = makeEntity();
 		txt->setView(leftView);
 		auto t = txt->addComponent<TextComponent>("This is the left view");
-		t->setFontSize(18);
+		t->setFontSize(18u);
 
 		auto txt2 = makeEntity();
 		txt2->setView(rightView);
 		auto t2 = txt2->addComponent<TextComponent>("This is the right view");
-		t2->setFontSize(18);
->>>>>>> 2bf427f7e54247d341c94da1ba4f50973ed5c34d
+		t2->setFontSize(18u);
 	}
 
 	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
@@ -237,4 +191,3 @@ void Level3Scene::Render() {
 	ls::render(Engine::GetWindow());
 	Scene::Render();
 }
-
