@@ -30,7 +30,7 @@ sf::View mainView;
 
 void Level3Scene::Load() {
 	cout << " Scene 3 Load" << endl;
-	ls::loadLevelFile("res/levels/wave1.txt", 40.0f);
+	ls::loadLevelFile("res/levels/wave1.txt", mainView.getSize().x / 16);
 
 	//Create left view
 	sf::View tempLeft(sf::FloatRect(0, 0, Engine::getWindowSize().x / 5, Engine::getWindowSize().y));
@@ -98,7 +98,7 @@ void Level3Scene::Load() {
 	//Create player
 	{
 		player = makeEntity();
-		player->setPosition(Vector2f(mainView.getSize().x / 2, mainView.getSize().y / 2));
+		player->setPosition(Vector2f(mainView.getSize().x / 2, mainView.getSize().y - 100.f));
 		player->setView(mainView);
 		auto s = player->addComponent<ShapeComponent>();
 		s->setShape<sf::RectangleShape>(Vector2f(20.f, 30.f));
@@ -108,27 +108,24 @@ void Level3Scene::Load() {
 		player->addTag("player");
 	}
 
+	cout << "main view size: " << mainView.getSize();
 	//Create Enemies
-	//{
-	//	for (int i = 0; i < ls::findTiles(ls::ENEMY).size(); i++)
-	//	{
-	//		auto en = makeEntity();
-	//		en->_view = mainView;
-	//		en->setPosition(ls::getTilePosition(ls::findTiles(ls::ENEMY)[i]));
-	//		
-	//		en->setPosition({ en->getPosition().x + ((gameWidth /2.f) - (0.5f * ls::getWidth() * ls::getTileSize())) , en->getPosition().y - gameHeight });
-	//		
-	//		cout << "Position " + to_string(ls::getTilePosition(ls::findTiles(ls::ENEMY)[i]).x) + "\n";
-	//		auto s = en->addComponent<ShapeComponent>();
-	//		s->setShape<sf::CircleShape>(15.f);
-	//		s->getShape().setFillColor(Color::Red);
-	//		s->getShape().setOrigin(7.5f, 7.5f);			
-	//		
-	//		en->addComponent<EnemyPhysicsComponent>(Vector2f(15.f, 15.f));			
-	//		en->addComponent<EnemyTurretComponent>();			
-	//		en->addComponent<HurtComponent>();			
-	//	}
-	//}
+	{
+		for (int i = 0; i < ls::findTiles(ls::ENEMY).size(); i++) {
+			auto en = makeEntity();
+			en->setView(mainView);
+			auto s = en->addComponent<ShapeComponent>();
+			s->setShape<sf::CircleShape>(15.f);
+			s->getShape().setFillColor(Color::Red);
+			s->getShape().setOrigin(15.f, 15.f);
+			vector<Vector2ul> tile = ls::findTiles(ls::ENEMY);
+			en->setPosition(Vector2f(ls::getTilePosition(tile[i]).x + 15.f, ls::getTilePosition(tile[i]).y - 500.f));
+			en->addComponent<EnemyPhysicsComponent>(Vector2f(15.f, 15.f));
+			en->addTag("enemies");
+		}
+	}
+
+
 
 	//Create text for left and right boxes
 	{
@@ -143,7 +140,7 @@ void Level3Scene::Load() {
 		t2->setFontSize(18);
 	}
 
-	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+	//std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	cout << " Scene 1 Load Done" << endl;
 	setLoaded(true);
 }
