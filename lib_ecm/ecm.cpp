@@ -1,10 +1,12 @@
 #include "ecm.h"
+#include "../engine/engine.h"
 
+using namespace sf;
 using namespace std;
 
 Entity::Entity(Scene* const s)
-    : _position({0, 0}), _rotation(0), _alive(true), _visible(true),
-      scene(s), _fordeletion(false) {}
+    : _position({ 0, 0 }), _rotation(0), _alive(true), _visible(true),
+    scene(s), _fordeletion(false) {}
 
 void Entity::addTag(const std::string& t) { _tags.insert(t); }
 const std::set<std::string>& Entity::getTags() const { return _tags; }
@@ -28,8 +30,14 @@ void Entity::render() {
   if (!_visible) {
     return;
   }
+  //Switches view to the viewport then renders entity
+  //I'm not sure why this isn't working properly, it might be the way I',m handling the pointers for view
+  //The only other thing I can think of is it comes from the bullet which gets its view from its parent
+  //cout << _view.getSize() << endl;
+
   for (auto& c : _components) {
-    c->render();
+      Engine::GetWindow().setView(c->_parent->getView());
+      c->render();
   }
 }
 
@@ -39,6 +47,8 @@ void Entity::setPosition(const sf::Vector2f& _position) {
   Entity::_position = _position;
 }
 
+void Entity::setView(sf::View _view) { Entity::_view = _view; }
+sf::View Entity::getView() { return _view; }
 float Entity::getRotation() const { return _rotation; }
 
 void Entity::setRotation(float _rotation) { Entity::_rotation = _rotation; }

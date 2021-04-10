@@ -9,7 +9,7 @@ using namespace Physics;
 
 void BackgroundPhysicsComponent::update(double dt) {
     const auto pos = _parent->getPosition();
-    _parent->setPosition(Vector2f(pos.x, pos.y + (float)dt * _Velocity.y));
+    _parent->setPosition(Vector2f(pos.x, pos.y + (float)dt * _Velocity.y));    
 }
 
 void BackgroundPhysicsComponent::ChangeVelocity(sf::Vector2f velocity) {

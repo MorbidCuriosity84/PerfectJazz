@@ -10,7 +10,7 @@ void shutdown();
 
 void update(const double&);
 
-void queue(const sf::Drawable* s);
+void queue(const sf::Drawable* d, const sf::View w);
 
 void render();
 }; // namespace Renderer
