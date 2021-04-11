@@ -133,6 +133,8 @@ void Level3Scene::Load() {
 			vector<Vector2ul> tile = ls::findTiles(ls::ENEMY);
 			en->setPosition(Vector2f(ls::getTilePosition(tile[i]).x + 15.f, ls::getTilePosition(tile[i]).y - 500.f));
 			en->addComponent<EnemyPhysicsComponent>(Vector2f(15.f, 15.f));
+			en->addComponent<EnemyTurretComponent>();
+			en->addComponent<HurtComponent>();
 			en->addTag("enemies");
 		}
 	}

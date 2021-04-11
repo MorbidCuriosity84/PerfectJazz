@@ -10,7 +10,7 @@ void EnemyTurretComponent::update(double dt) {
   _firetime -= dt;
   if (_firetime <= 0.f) {
     fire();
-    _firetime = 0.5f;
+    _firetime = 1.5f;
   }
   static float angle = 0.f;
   angle += 1.f * dt;
