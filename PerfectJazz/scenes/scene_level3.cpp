@@ -1,14 +1,13 @@
 #include "scene_level3.h"
 #include "../components/cmp_player_physics.h"
 #include "../components/cmp_background_physics.h"
-#include "../components/cmp_enemy_physics.h"
-#include "../components/cmp_enemy_turret.h"
 #include "../components//cmp_hurt_player.h"
 #include "../components/cmp_sprite.h"
 #include "../game.h"
-#include <LevelSystem.h>
+#include "../enemies/load_enemies.h"
 #include <iostream>
 #include <thread>
+#include <LevelSystem.h>
 #include "../components/cmp_text.h"
 
 using namespace std;
@@ -33,7 +32,6 @@ sf::Clock timer;
 
 void Level3Scene::Load() {
 	cout << " Scene 3 Load" << endl;
-	ls::loadLevelFile("res/levels/wave1.txt", mainView.getSize().x / 16);
 
 	//Create left view
 	sf::View tempLeft(sf::FloatRect(0, 0, Engine::getWindowSize().x / 5, Engine::getWindowSize().y));
@@ -51,9 +49,6 @@ void Level3Scene::Load() {
 	mainView.setViewport(sf::FloatRect(0.2f, 0, 0.6f, 1.f));
 	//views.push_back(mainView);	
 
-
-	auto ho = Engine::getWindowSize().y - (ls::getHeight() * 40.f);
-	ls::setOffset(Vector2f(0, ho));
 
 	//Create background	
 	{
@@ -101,7 +96,7 @@ void Level3Scene::Load() {
 			overbackground2->setView(mainView);
 		}
 	}
-	
+
 	//Create player
 	{
 		player = makeEntity();
@@ -121,35 +116,13 @@ void Level3Scene::Load() {
 	}
 
 	cout << "main view size: " << mainView.getSize();
+
 	//Create Enemies
 	{
-		loadEnemies("wave1.txt", mainView);
-		/*enemyTex.loadFromFile("res/img/enemies/enemy-big.png");
-		for (int i = 0; i < ls::findTiles(ls::ENEMY).size(); i++) {
-			auto en = makeEntity();
-			en->setView(mainView);
-			auto s = en->addComponent<SpriteComponent>();			
-			sf::IntRect texRectangle;
-			texRectangle.left = (0);
-			texRectangle.top = (0);
-			texRectangle.width = (enemyTex.getSize().x / 2);
-			texRectangle.height = (enemyTex.getSize().y);
-			s->getSprite().setTexture(enemyTex);
-			s->getSprite().setTextureRect(texRectangle);
-			s->getSprite().setOrigin(enemyTex.getSize().x / 4, enemyTex.getSize().y / 2);
-			vector<Vector2ul> tile = ls::findTiles(ls::ENEMY);
-			en->setPosition(Vector2f(ls::getTilePosition(tile[i]).x + 15.f, ls::getTilePosition(tile[i]).y - mainView.getSize().y));
-			en->addComponent<EnemyPhysicsComponent>(Vector2f(15.f, 15.f));
-			en->addComponent<EnemyTurretComponent>();
-			en->addComponent<HurtComponent>();
-			en->addTag("enemies");
-			enemies.push_back(en);
-		}*/
+
+		LoadEnemies::initiliseEnemies("wave1", dynamic_cast<Scene*>(&level3));
+
 	}
-
-
-
-
 
 	//Create text for left and right boxes
 	{
@@ -173,6 +146,7 @@ void Level3Scene::Load() {
 void Level3Scene::UnLoad() {
 	cout << "Scene 3 Unload" << endl;
 	ls::unload();
+
 	player.reset();
 	background.reset();
 	background2.reset();
@@ -181,6 +155,7 @@ void Level3Scene::UnLoad() {
 	for (auto e : enemies) {
 		e.reset();
 	}
+	
 	Scene::UnLoad();
 }
 
@@ -240,6 +215,6 @@ void Level3Scene::Update(const double& dt) {
 }
 
 void Level3Scene::Render() {
-	ls::render(Engine::GetWindow());	
+	ls::render(Engine::GetWindow());
 	Scene::Render();
 }

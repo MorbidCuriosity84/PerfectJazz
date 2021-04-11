@@ -21,7 +21,7 @@ public:
     START = 's',
     END = 'e',
     WALL = 'w',
-    ENEMY = 'n',
+    AIRMAN = 'n',
     WAYPOINT = '+'
   };
 
