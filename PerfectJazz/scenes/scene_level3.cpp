@@ -101,7 +101,7 @@ void Level3Scene::Load() {
 			overbackground2->setView(mainView);
 		}
 	}
-
+	
 	//Create player
 	{
 		player = makeEntity();
@@ -139,17 +139,19 @@ void Level3Scene::Load() {
 
 
 
+
+
 	//Create text for left and right boxes
 	{
 		auto txt = makeEntity();
 		txt->setView(leftView);
 		auto t = txt->addComponent<TextComponent>("This is the left view");
-		t->setFontSize(18);
+		t->setFontSize(18u);
 
 		auto txt2 = makeEntity();
 		txt2->setView(rightView);
 		auto t2 = txt2->addComponent<TextComponent>("This is the right view");
-		t2->setFontSize(18);
+		t2->setFontSize(18u);
 	}
 
 	//std::this_thread::sleep_for(std::chrono::milliseconds(1000));
@@ -228,7 +230,6 @@ void Level3Scene::Update(const double& dt) {
 }
 
 void Level3Scene::Render() {
-	ls::render(Engine::GetWindow());
+	ls::render(Engine::GetWindow());	
 	Scene::Render();
 }
-

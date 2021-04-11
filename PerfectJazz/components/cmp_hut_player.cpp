@@ -7,8 +7,12 @@ using namespace sf;
 void HurtComponent::update(double dt) {
   if (auto pl = _player.lock()) {
     if (length(pl->getPosition() - _parent->getPosition()) < 25.0) {
-      pl->setForDelete();
-      _parent->setForDelete();
+        pl->setVisible(false);
+        pl->setAlive(false);
+        pl->setPosition({ -50.f, -50.f });
+      _parent->setVisible(false);
+      _parent->setAlive(false);
+      _parent->setPosition({ -50.f, -50.f });
     }
   }  
 }

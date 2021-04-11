@@ -18,6 +18,7 @@ public:
 	bool isLoaded() const;
 	std::shared_ptr<Entity> makeEntity();
 	EntityManager ents;
+	void loadEnemies(std::string waveFilename, sf::View& view);
 
 protected:
 	void setLoaded(bool);
