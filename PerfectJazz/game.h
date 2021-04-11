@@ -12,6 +12,5 @@ extern Level3Scene level3;
 extern sf::View leftView;
 extern sf::View rightView;
 extern sf::View mainView;
-//static vector<shared_ptr<Entity>> enemies;
 extern unsigned int gameWidth;
 extern unsigned int gameHeight;
