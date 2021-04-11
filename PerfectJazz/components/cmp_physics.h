@@ -28,5 +28,6 @@ public:
   void dampen(const sf::Vector2f& s);
   void setVelocity(const sf::Vector2f& v);
   void teleport(const sf::Vector2f& v);
+  void setSensor(bool b);
   ~PhysicsComponent() override;
 };

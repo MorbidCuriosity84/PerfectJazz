@@ -122,7 +122,7 @@ vector<shared_ptr<Entity>> EntityManager::find(const string& tag) const {
     if (tgs.find(tag) != tgs.end()) {
       ret.push_back(e);
     }
-  }
+   }
   return ret;
 }
 
