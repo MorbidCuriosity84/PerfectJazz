@@ -9,5 +9,8 @@ extern MenuScene menu;
 extern Level1Scene level1;
 extern Level2Scene level2;
 extern Level3Scene level3;
+extern sf::View leftView;
+extern sf::View rightView;
+extern sf::View mainView;
 extern unsigned int gameWidth;
 extern unsigned int gameHeight;
