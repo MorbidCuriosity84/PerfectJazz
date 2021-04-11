@@ -126,28 +126,6 @@ std::shared_ptr<Entity> Scene::makeEntity() {
 	return std::move(e);
 }
 
-void Scene::loadEnemies(std::string waveFilename, sf::View& view)
-{
-	ls::loadLevelFile("res/levels/" + waveFilename, 40.0f);
-	for (int i = 0; i < ls::findTiles(ls::ENEMY).size(); i++)
-	{
-		auto en = makeEntity();
-		en->setView(view);		
-		en->setPosition(ls::getTilePosition(ls::findTiles(ls::ENEMY)[i]));
-		en->setPosition(Vector2f( en->getPosition().x + ((view.getSize().x * 0.5f ) - (0.5f * ls::getWidth() * ls::getTileSize())) , en->getPosition().y - view.getSize().y ));
-		
-		cout << "Position " + to_string(en->getPosition().x) + "," + to_string(en->getPosition().y) + "\n";
-		cout << "Position " + to_string(ls::getTilePosition(ls::findTiles(ls::ENEMY)[i]).x) + "\n";
-		auto s = en->addComponent<ShapeComponent>();
-		s->setShape<sf::CircleShape>(15.f);
-		s->getShape().setFillColor(Color::Red);
-		s->getShape().setOrigin(7.5f, 7.5f);		
-
-		en->addComponent<EnemyPhysicsComponent>(Vector2f(15.f,15.f));
-		//en->addComponent<EnemyTurretComponent>();
-	}
-}
-
 void Engine::setVsync(bool b) { _window->setVerticalSyncEnabled(b); }
 
 void Engine::ChangeScene(Scene* s) {
