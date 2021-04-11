@@ -8,13 +8,13 @@ protected:
   sf::Vector2f _maxVelocity;
   bool _grounded;
   float _groundspeed;
+  std::string _direction;
 
   bool isGrounded() const;
 
 public:
   void update(double dt) override;
-
   explicit PlayerPhysicsComponent(Entity* p, const sf::Vector2f& size);
-
   PlayerPhysicsComponent() = delete;
+  std::string GetDirection();
 };
