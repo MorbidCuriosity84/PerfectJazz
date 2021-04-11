@@ -17,7 +17,8 @@ public:
 	virtual void Render();
 	bool isLoaded() const;
 	std::shared_ptr<Entity> makeEntity();
-	EntityManager ents;
+	EntityManager ents;	
+	std::vector<shared_ptr<Entity>> enemies;
 	void loadEnemies(std::string waveFilename, sf::View& view);
 
 protected:

@@ -6,17 +6,19 @@
 #include "../lib_tile_level_loader/LevelSystem.h"
 #include <SFML/Graphics.hpp>
 #include "../PerfectJazz/components/cmp_sprite.h"
+#include "../PerfectJazz/game.h"
 #include <future>
 #include <iostream>
 #include <stdexcept>
 #include "../PerfectJazz/components/cmp_enemy_physics.h"
 #include "../PerfectJazz/components/cmp_enemy_turret.h"
+#include "../PerfectJazz/components/cmp_hurt_player.h"
 
 using namespace sf;
 using namespace std;
 Scene* Engine::_activeScene = nullptr;
 std::string Engine::_gameName;
-
+std::vector<shared_ptr<Entity>> enemies;
 static bool loading = false;
 static float loadingspinner = 0.f;
 static float loadingTime;
@@ -128,25 +130,62 @@ std::shared_ptr<Entity> Scene::makeEntity() {
 
 void Scene::loadEnemies(std::string waveFilename, sf::View& view)
 {
-	ls::loadLevelFile("res/levels/" + waveFilename, 40.0f);
-	for (int i = 0; i < ls::findTiles(ls::ENEMY).size(); i++)
-	{
-		auto en = makeEntity();
-		en->setView(view);		
-		en->setPosition(ls::getTilePosition(ls::findTiles(ls::ENEMY)[i]));
-		en->setPosition(Vector2f( en->getPosition().x + ((view.getSize().x * 0.5f ) - (0.5f * ls::getWidth() * ls::getTileSize())) , en->getPosition().y - view.getSize().y ));
+	ls::loadLevelFile("res/levels/" + waveFilename, mainView.getSize().x / 16);
 		
-		cout << "Position " + to_string(en->getPosition().x) + "," + to_string(en->getPosition().y) + "\n";
-		cout << "Position " + to_string(ls::getTilePosition(ls::findTiles(ls::ENEMY)[i]).x) + "\n";
-		auto s = en->addComponent<ShapeComponent>();
-		s->setShape<sf::CircleShape>(15.f);
-		s->getShape().setFillColor(Color::Red);
-		s->getShape().setOrigin(7.5f, 7.5f);		
-
-		en->addComponent<EnemyPhysicsComponent>(Vector2f(15.f,15.f));
-		//en->addComponent<EnemyTurretComponent>();
-	}
+	for (int i = 0; i < ls::findTiles(ls::ENEMY).size(); i++) {
+		auto en = makeEntity();
+		en->setView(mainView);
+		auto s = en->addComponent<SpriteComponent>();
+		sf::Texture texture;
+		texture.loadFromFile("res/img/enemies/enemy-big.png");
+		sf::IntRect texRectangle;		
+		texRectangle.left = (0);
+		texRectangle.top = (0);
+		texRectangle.width = (texture.getSize().x / 2);
+		texRectangle.height = (texture.getSize().y);
+		s->getSprite().setTexture(texture);
+		s->getSprite().setTextureRect(texRectangle);
+		s->getSprite().setOrigin(texture.getSize().x / 4, texture.getSize().y / 2);
+		vector<Vector2ul> tile = ls::findTiles(ls::ENEMY);
+		en->setPosition(Vector2f(ls::getTilePosition(tile[i]).x + 15.f, ls::getTilePosition(tile[i]).y - mainView.getSize().y));
+		en->addComponent<EnemyPhysicsComponent>(Vector2f(15.f, 15.f));
+		en->addComponent<EnemyTurretComponent>();
+		en->addComponent<HurtComponent>();
+		en->addTag("enemies");
+		enemies.push_back(en);
+	}	
 }
+
+//void Scene::loadEnemies(std::string waveFilename, sf::View& view, std::vector<shared_ptr<Entity>>& enemies)
+//{	
+//	ls::loadLevelFile("res/levels/" + waveFilename, mainView.getSize().x / 16);
+//	
+//	for (int i = 0; i < ls::findTiles(ls::ENEMY).size(); i++) {
+//		auto en = makeEntity();
+//		en->setView(mainView);
+//		auto s = en->addComponent<SpriteComponent>();
+//		sf::Texture texture;
+//		texture.loadFromFile("res/img/enemies/enemy-big.png");
+//		sf::IntRect texRectangle;		
+//		texRectangle.left = (0);
+//		texRectangle.top = (0);
+//		texRectangle.width = (texture.getSize().x / 2);
+//		texRectangle.height = (texture.getSize().y);
+//		s->getSprite().setTexture(texture);
+//		s->getSprite().setTextureRect(texRectangle);
+//		s->getSprite().setOrigin(texture.getSize().x / 4, texture.getSize().y / 2);
+//		vector<Vector2ul> tile = ls::findTiles(ls::ENEMY);
+//		en->setPosition(Vector2f(ls::getTilePosition(tile[i]).x + 15.f, ls::getTilePosition(tile[i]).y - mainView.getSize().y));
+//		en->addComponent<EnemyPhysicsComponent>(Vector2f(15.f, 15.f));
+//		en->addComponent<EnemyTurretComponent>();
+//		en->addComponent<HurtComponent>();
+//		en->addTag("enemies");
+//		enemies.push_back(en);
+//	}	
+//	//return retEnemies;
+//}
+
+
 
 void Engine::setVsync(bool b) { _window->setVerticalSyncEnabled(b); }
 

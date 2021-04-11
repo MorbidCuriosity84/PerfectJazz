@@ -54,3 +54,16 @@ EnemyPhysicsComponent::EnemyPhysicsComponent(Entity* p,
   //Bullet items have higher-res collision detection
   _body->SetBullet(true);
 }
+
+//void EnemyPhysicsComponent::update(double dt) {
+//
+//    const auto ppos = _parent->getPosition();
+//    if (ppos.x > mainView.getSize().x / 16 + _parent->GetCompatibleComponent<SpriteComponent>()[0].get()->getSprite().getGlobalBounds().width
+//        || ppos.x < 0 - _parent->GetCompatibleComponent<SpriteComponent>()[0].get()->getSprite().getGlobalBounds().width) {
+//        _parent->setForDelete();
+//    }
+//    if (ppos.y > mainView.getSize().y + _parent->GetCompatibleComponent<SpriteComponent>()[0].get()->getSprite().getGlobalBounds().height) {
+//        _parent->setForDelete();
+//    }
+//    PhysicsComponent::update(dt);
+//}

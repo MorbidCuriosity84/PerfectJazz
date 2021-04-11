@@ -19,13 +19,13 @@ static shared_ptr<Entity> background;
 static shared_ptr<Entity> background2;
 static shared_ptr<Entity> overbackground;
 static shared_ptr<Entity> overbackground2;
-static vector<shared_ptr<Entity>> enemies;
 sf::Texture sc3_backgroundtexture_1;
 sf::Texture sc3_backgroundtexture_2;
 sf::Texture sc3_overbackgroundtexture_1;
 sf::Texture sc3_overbackgroundtexture_2;
 sf::Texture playerTexture;
 sf::IntRect playerRectangle;
+sf::Texture enemyTex;
 sf::View leftView;
 sf::View rightView;
 sf::View mainView;
@@ -123,20 +123,28 @@ void Level3Scene::Load() {
 	cout << "main view size: " << mainView.getSize();
 	//Create Enemies
 	{
+		loadEnemies("wave1.txt", mainView);
+		/*enemyTex.loadFromFile("res/img/enemies/enemy-big.png");
 		for (int i = 0; i < ls::findTiles(ls::ENEMY).size(); i++) {
 			auto en = makeEntity();
 			en->setView(mainView);
-			auto s = en->addComponent<ShapeComponent>();
-			s->setShape<sf::CircleShape>(15.f);
-			s->getShape().setFillColor(Color::Red);
-			s->getShape().setOrigin(15.f, 15.f);
+			auto s = en->addComponent<SpriteComponent>();			
+			sf::IntRect texRectangle;
+			texRectangle.left = (0);
+			texRectangle.top = (0);
+			texRectangle.width = (enemyTex.getSize().x / 2);
+			texRectangle.height = (enemyTex.getSize().y);
+			s->getSprite().setTexture(enemyTex);
+			s->getSprite().setTextureRect(texRectangle);
+			s->getSprite().setOrigin(enemyTex.getSize().x / 4, enemyTex.getSize().y / 2);
 			vector<Vector2ul> tile = ls::findTiles(ls::ENEMY);
-			en->setPosition(Vector2f(ls::getTilePosition(tile[i]).x + 15.f, ls::getTilePosition(tile[i]).y - 500.f));
+			en->setPosition(Vector2f(ls::getTilePosition(tile[i]).x + 15.f, ls::getTilePosition(tile[i]).y - mainView.getSize().y));
 			en->addComponent<EnemyPhysicsComponent>(Vector2f(15.f, 15.f));
 			en->addComponent<EnemyTurretComponent>();
 			en->addComponent<HurtComponent>();
 			en->addTag("enemies");
-		}
+			enemies.push_back(en);
+		}*/
 	}
 
 
