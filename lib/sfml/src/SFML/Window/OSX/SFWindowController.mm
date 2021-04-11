@@ -123,8 +123,6 @@
 
         // Set the view to the window as its content view.
         [m_window setContentView:m_oglView];
-        
-        [m_oglView finishInit];
     }
 
     return self;

@@ -60,9 +60,9 @@ subject to the following restrictions:
             <string>ResourcePath.mm</string>
             <string>ResourcePath.hpp</string>
             <string>main.cpp</string>
-            <string>background.jpg</string>
-            <string>doodle_pop.ogg</string>
-            <string>tuffy.ttf</string>
+            <string>cute_image.jpg</string>
+            <string>nice_music.ogg</string>
+            <string>sansation.ttf</string>
             <string>icon.png</string>
         </array>
 
@@ -93,26 +93,26 @@ subject to the following restrictions:
             </dict>
 
             <!-- RESOURCES -->
-            <key>background.jpg</key>
+            <key>cute_image.jpg</key>
             <dict>
                 <key>Path</key>
-                <string>background.jpg</string>
+                <string>cute_image.jpg</string>
                 <key>Group</key>
                 <string>Resources</string>
             </dict>
 
-            <key>doodle_pop.ogg</key>
+            <key>nice_music.ogg</key>
             <dict>
                 <key>Path</key>
-                <string>doodle_pop.ogg</string>
+                <string>nice_music.ogg</string>
                 <key>Group</key>
                 <string>Resources</string>
             </dict>
 
-            <key>tuffy.ttf</key>
+            <key>sansation.ttf</key>
             <dict>
                 <key>Path</key>
-                <string>tuffy.ttf</string>
+                <string>sansation.ttf</string>
                 <key>Group</key>
                 <string>Resources</string>
             </dict>

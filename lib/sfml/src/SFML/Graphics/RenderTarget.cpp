@@ -110,36 +110,13 @@ namespace
     {
         switch (blendEquation)
         {
-            case sf::BlendMode::Add:
-                return GLEXT_GL_FUNC_ADD;
-            case sf::BlendMode::Subtract:
-                if (GLEXT_blend_subtract)
-                    return GLEXT_GL_FUNC_SUBTRACT;
-                break;
-            case sf::BlendMode::ReverseSubtract:
-                if (GLEXT_blend_subtract)
-                    return GLEXT_GL_FUNC_REVERSE_SUBTRACT;
-                break;
-            case sf::BlendMode::Min:
-                if (GLEXT_blend_minmax)
-                    return GLEXT_GL_MIN;
-                break;
-            case sf::BlendMode::Max:
-                if (GLEXT_blend_minmax)
-                    return GLEXT_GL_MAX;
-                break;
+            case sf::BlendMode::Add:             return GLEXT_GL_FUNC_ADD;
+            case sf::BlendMode::Subtract:        return GLEXT_GL_FUNC_SUBTRACT;
+            case sf::BlendMode::ReverseSubtract: return GLEXT_GL_FUNC_REVERSE_SUBTRACT;
         }
 
-        static bool warned = false;
-        if (!warned)
-        {
-            sf::err() << "OpenGL extension EXT_blend_minmax or EXT_blend_subtract unavailable" << std::endl;
-            sf::err() << "Some blending equations will fallback to sf::BlendMode::Add" << std::endl;
-            sf::err() << "Ensure that hardware acceleration is enabled if available" << std::endl;
-
-            warned = true;
-        }
-
+        sf::err() << "Invalid value for sf::BlendMode::Equation! Fallback to sf::BlendMode::Add." << std::endl;
+        assert(false);
         return GLEXT_GL_FUNC_ADD;
     }
 }
@@ -614,7 +591,7 @@ void RenderTarget::applyBlendMode(const BlendMode& mode)
             factorToGlConstant(mode.colorDstFactor)));
     }
 
-    if (GLEXT_blend_minmax || GLEXT_blend_subtract)
+    if (GLEXT_blend_minmax && GLEXT_blend_subtract)
     {
         if (GLEXT_blend_equation_separate)
         {
@@ -633,11 +610,7 @@ void RenderTarget::applyBlendMode(const BlendMode& mode)
 
         if (!warned)
         {
-#ifdef SFML_OPENGL_ES
-            err() << "OpenGL ES extension OES_blend_subtract unavailable" << std::endl;
-#else
-            err() << "OpenGL extension EXT_blend_minmax and EXT_blend_subtract unavailable" << std::endl;
-#endif
+            err() << "OpenGL extension EXT_blend_minmax and/or EXT_blend_subtract unavailable" << std::endl;
             err() << "Selecting a blend equation not possible" << std::endl;
             err() << "Ensure that hardware acceleration is enabled if available" << std::endl;
 

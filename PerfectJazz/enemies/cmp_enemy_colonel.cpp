@@ -11,6 +11,8 @@ using namespace std;
 using namespace sf;
 sf::Texture colonelTexture;
 sf::IntRect colonelRectangle;
+sf::Texture bulletTexture;
+sf::IntRect bulletRectangle;
 double colonelSpriteTimer;
 
 void ColonelEnemyComponent::Load(int _index) {
@@ -61,19 +63,25 @@ void ColonelEnemyComponent::fire() const {
 	bullet->setPosition({ _parent->getPosition().x, _parent->getPosition().y + 5.f });
 	bullet->addComponent<HurtComponent>();
 	bullet->addComponent<BulletComponent>();
-	bullet->setView(_parent->getView());
-	auto s = bullet->addComponent<ShapeComponent>();
-
-	s->setShape<sf::CircleShape>(10.f);
-	s->getShape().setFillColor(Color::Green);
-	s->getShape().setOutlineColor(Color::Red);
-	s->getShape().setOrigin(5.f, 5.f);
-	auto p = bullet->addComponent<PhysicsComponent>(true, Vector2f(4.f, 4.f));
+	bullet->setView(_parent->getView());	
+	
+	bulletTexture.loadFromFile("res/img/weapons/Fx_02.png");
+	auto s = bullet->addComponent<SpriteComponent>();
+	bulletRectangle.left = (bulletTexture.getSize().x / 3);
+	bulletRectangle.top = (bulletTexture.getSize().y) * 0;
+	bulletRectangle.width = (bulletTexture.getSize().x / 3);
+	bulletRectangle.height = (bulletTexture.getSize().y);
+	s->getSprite().setTexture(bulletTexture);
+	s->getSprite().setTextureRect(bulletRectangle);
+	s->getSprite().setOrigin(bulletTexture.getSize().x / 6, bulletTexture.getSize().y / 2);
+	
+	auto p = bullet->addComponent<PhysicsComponent>(true, Vector2f(5.f, 5.f));
 	p->getBody()->SetBullet(true);
 	p->setSensor(true);
 	p->setRestitution(.4f);
 	p->setFriction(.005f);
 	p->setVelocity({ 0.f, -500.f });
+	p->setCategory(ENEMY);
 	//p->impulse(sf::rotate(Vector2f(0, 15.f), -_parent->getRotation()));
 }
 

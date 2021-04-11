@@ -11,6 +11,8 @@ using namespace std;
 using namespace sf;
 sf::Texture sergeantTexture;
 sf::IntRect sergeantRectangle;
+sf::Texture sg_bulletTexture;
+sf::IntRect sg_bulletRectangle;
 double sergeantSpriteTimer;
 
 void SergeantEnemyComponent::Load(int _index) {
@@ -62,17 +64,25 @@ void SergeantEnemyComponent::fire() const {
 	bullet->addComponent<HurtComponent>();
 	bullet->addComponent<BulletComponent>();
 	bullet->setView(_parent->getView());
-	auto s = bullet->addComponent<ShapeComponent>();
+	
+	sg_bulletTexture.loadFromFile("res/img/weapons/Fx_02.png");
+	auto s = bullet->addComponent<SpriteComponent>();
+	sg_bulletRectangle.left = (sg_bulletTexture.getSize().x / 3);
+	sg_bulletRectangle.top = (sg_bulletTexture.getSize().y) * 0;
+	sg_bulletRectangle.width = (sg_bulletTexture.getSize().x / 3);
+	sg_bulletRectangle.height = (sg_bulletTexture.getSize().y);
+	s->getSprite().setTexture(sg_bulletTexture);
+	s->getSprite().setTextureRect(sg_bulletRectangle);
+	//s->getSprite().setColor(Color(128, 128, 128, 128));
+	s->getSprite().setOrigin(sg_bulletTexture.getSize().x / 6, sg_bulletTexture.getSize().y / 2);
 
-	s->setShape<sf::CircleShape>(4.f);
-	s->getShape().setFillColor(Color::Blue);
-	s->getShape().setOrigin(2.f, 2.f);
 	auto p = bullet->addComponent<PhysicsComponent>(true, Vector2f(4.f, 4.f));
 	p->getBody()->SetBullet(true);
 	p->setSensor(true);
 	p->setRestitution(.4f);
 	p->setFriction(.005f);
 	p->setVelocity({ 0.f, -500.f });
+	p->setCategory(ENEMY);
 	//p->impulse(sf::rotate(Vector2f(0, 15.f), -_parent->getRotation()));
 }
 

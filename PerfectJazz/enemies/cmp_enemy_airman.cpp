@@ -11,6 +11,8 @@ using namespace std;
 using namespace sf;
 sf::Texture airmanTexture;
 sf::IntRect airmanRectangle;
+sf::Texture air_bulletTexture;
+sf::IntRect air_bulletRectangle;
 double airmanSpriteTimer;
 
 void AirManEnemyComponent::Load(int _index) {
@@ -62,17 +64,24 @@ void AirManEnemyComponent::fire() const {
 	bullet->addComponent<HurtComponent>();
 	bullet->addComponent<BulletComponent>();
 	bullet->setView(_parent->getView());
-	auto s = bullet->addComponent<ShapeComponent>();
+	
+	air_bulletTexture.loadFromFile("res/img/weapons/Fx_01.png");
+	auto s = bullet->addComponent<SpriteComponent>();
+	air_bulletRectangle.left = (air_bulletTexture.getSize().x / 3);
+	air_bulletRectangle.top = (air_bulletTexture.getSize().y) * 0;
+	air_bulletRectangle.width = (air_bulletTexture.getSize().x / 3);
+	air_bulletRectangle.height = (air_bulletTexture.getSize().y);
+	s->getSprite().setTexture(air_bulletTexture);
+	s->getSprite().setTextureRect(air_bulletRectangle);
+	s->getSprite().setOrigin(air_bulletTexture.getSize().x / 6, air_bulletTexture.getSize().y / 2);
 
-	s->setShape<sf::CircleShape>(4.f);
-	s->getShape().setFillColor(Color::Red);
-	s->getShape().setOrigin(2.f, 2.f);
 	auto p = bullet->addComponent<PhysicsComponent>(true, Vector2f(4.f, 4.f));
 	p->getBody()->SetBullet(true);
 	p->setSensor(true);
 	p->setRestitution(.4f);
 	p->setFriction(.005f);
 	p->setVelocity({ 0.f, -300.f });
+	p->setCategory(ENEMY);
 	//p->impulse(sf::rotate(Vector2f(0, 15.f), -_parent->getRotation()));
 }
 

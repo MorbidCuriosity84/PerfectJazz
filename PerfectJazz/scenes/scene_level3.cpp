@@ -13,7 +13,7 @@
 using namespace std;
 using namespace sf;
 
-static shared_ptr<Entity> player;
+shared_ptr<Entity> player;
 static shared_ptr<Entity> background;
 static shared_ptr<Entity> background2;
 static shared_ptr<Entity> overbackground;
@@ -111,7 +111,8 @@ void Level3Scene::Load() {
 		s->getSprite().setTexture(playerTexture);
 		s->getSprite().setTextureRect(playerRectangle);
 		s->getSprite().setOrigin(playerTexture.getSize().x / 10, playerTexture.getSize().y / 4);
-		player->addComponent<PlayerPhysicsComponent>(Vector2f(playerTexture.getSize().x / 5, playerTexture.getSize().y / 2));
+		auto phys = player->addComponent<PlayerPhysicsComponent>(Vector2f(playerTexture.getSize().x / 5, playerTexture.getSize().y / 2));
+		phys.get()->setCategory(PLAYER);
 		player->addTag("player");
 	}
 
