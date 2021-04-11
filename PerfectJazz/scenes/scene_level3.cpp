@@ -173,55 +173,62 @@ void Level3Scene::UnLoad() {
 }
 
 void Level3Scene::Update(const double& dt) {
-	if (background->getPosition().y > Engine::getWindowSize().y) {
-		background->setPosition(Vector2f((mainView.getSize().x - (float)sc3_backgroundtexture_1.getSize().x),
-			background2->getPosition().y - sc3_backgroundtexture_1.getSize().y + 1.f));
-		cout << "out" << endl;
-	}
-	if (background2->getPosition().y > Engine::getWindowSize().y) {
-		background2->setPosition(Vector2f((mainView.getSize().x - (float)sc3_backgroundtexture_1.getSize().x),
-			background->getPosition().y - sc3_backgroundtexture_1.getSize().y + 1.f));
-		cout << "out2" << endl;
+	//Update background
+	{
+		if (background->getPosition().y > Engine::getWindowSize().y) {
+			background->setPosition(Vector2f((mainView.getSize().x - (float)sc3_backgroundtexture_1.getSize().x),
+				background2->getPosition().y - sc3_backgroundtexture_1.getSize().y + 1.f));
+			cout << "out" << endl;
+		}
+		if (background2->getPosition().y > Engine::getWindowSize().y) {
+			background2->setPosition(Vector2f((mainView.getSize().x - (float)sc3_backgroundtexture_1.getSize().x),
+				background->getPosition().y - sc3_backgroundtexture_1.getSize().y + 1.f));
+			cout << "out2" << endl;
+		}
 	}
 
-	//TODO set the y value from SetPosition to a range of random
-	if (overbackground->getPosition().y > Engine::getWindowSize().y) {
-		overbackground->setPosition(Vector2f((mainView.getSize().x - (float)sc3_backgroundtexture_1.getSize().x),
-			-(float)sc3_overbackgroundtexture_2.getSize().y));
-	}
-	if (overbackground2->getPosition().y > Engine::getWindowSize().y) {
-		overbackground2->setPosition(Vector2f((mainView.getSize().x - (float)sc3_backgroundtexture_1.getSize().x),
-			-(float)sc3_overbackgroundtexture_2.getSize().y * 3));
+	//Update overbackground
+	{
+		if (overbackground->getPosition().y > Engine::getWindowSize().y) {
+			overbackground->setPosition(Vector2f((mainView.getSize().x - (float)sc3_backgroundtexture_1.getSize().x),
+				-(float)sc3_overbackgroundtexture_2.getSize().y));
+		}
+		if (overbackground2->getPosition().y > Engine::getWindowSize().y) {
+			overbackground2->setPosition(Vector2f((mainView.getSize().x - (float)sc3_backgroundtexture_1.getSize().x),
+				-(float)sc3_overbackgroundtexture_2.getSize().y * 3));
+		}
 	}
 
 	//Update player texture
-	auto pPhysics = player->GetCompatibleComponent<PlayerPhysicsComponent>();
-	auto pSprite = player->GetCompatibleComponent<SpriteComponent>();
+	{
+		auto pPhysics = player->GetCompatibleComponent<PlayerPhysicsComponent>();
+		auto pSprite = player->GetCompatibleComponent<SpriteComponent>();
 
-	if (timer.getElapsedTime().asSeconds() > 0.1f) {
+		if (timer.getElapsedTime().asSeconds() > 0.1f) {
 
-		//Check if the loaded sprite is the bottom, if so, load the top. And viceversa
-		if (playerRectangle.top == playerTexture.getSize().y / 2) { playerRectangle.top = 0; }
-		else { playerRectangle.top = playerTexture.getSize().y / 2; }
+			//Check if the loaded sprite is the bottom, if so, load the top. And viceversa
+			if (playerRectangle.top == playerTexture.getSize().y / 2) { playerRectangle.top = 0; }
+			else { playerRectangle.top = playerTexture.getSize().y / 2; }
 
-		//Check if it's loaded the right sprite for the movement
-		if (pPhysics[0]->GetDirection() == "right") {
-			if (timer.getElapsedTime().asSeconds() > 0.2f) {
-				playerRectangle.left = (playerTexture.getSize().x / 5) * 4;
+			//Check if it's loaded the right sprite for the movement
+			if (pPhysics[0]->GetDirection() == "right") {
+				if (timer.getElapsedTime().asSeconds() > 0.2f) {
+					playerRectangle.left = (playerTexture.getSize().x / 5) * 4;
+				}
+				else { playerRectangle.left = (playerTexture.getSize().x / 5) * 3; }
 			}
-			else { playerRectangle.left = (playerTexture.getSize().x / 5) * 3; }
-		}
-		if (pPhysics[0]->GetDirection() == "left") {
-			if (timer.getElapsedTime().asSeconds() > 0.2f) {
-				playerRectangle.left = (playerTexture.getSize().x / 5) * 0;
+			if (pPhysics[0]->GetDirection() == "left") {
+				if (timer.getElapsedTime().asSeconds() > 0.2f) {
+					playerRectangle.left = (playerTexture.getSize().x / 5) * 0;
+				}
+				else { playerRectangle.left = (playerTexture.getSize().x / 5) * 1; }
 			}
-			else { playerRectangle.left = (playerTexture.getSize().x / 5) * 1; }
+			if (pPhysics[0]->GetDirection() == "none") {
+				playerRectangle.left = (playerTexture.getSize().x / 5) * 2;
+				timer.restart();
+			}
+			pSprite[0]->getSprite().setTextureRect(playerRectangle);
 		}
-		if (pPhysics[0]->GetDirection() == "none") {
-			playerRectangle.left = (playerTexture.getSize().x / 5) * 2;
-			timer.restart();
-		}
-		pSprite[0]->getSprite().setTextureRect(playerRectangle);
 	}
 
 	Scene::Update(dt);
