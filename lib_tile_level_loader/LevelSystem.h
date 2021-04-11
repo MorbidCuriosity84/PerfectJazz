@@ -21,7 +21,9 @@ public:
     START = 's',
     END = 'e',
     WALL = 'w',
-    AIRMAN = 'n',
+    AIRMAN = '1',
+    SERGEANT = '2',
+    COLONEL = '3',
     WAYPOINT = '+'
   };
 
