@@ -1,4 +1,4 @@
-#include "cmp_enemy_airman.h"
+#include "cmp_enemy_colonel.h"
 #include "../components/cmp_bullet.h"
 #include "../components/cmp_enemy_physics.h"
 #include "../components/cmp_enemy_turret.h"
@@ -9,43 +9,43 @@
 #include <SFML/Graphics/CircleShape.hpp>
 using namespace std;
 using namespace sf;
-sf::Texture airmanTexture;
-sf::IntRect airmanRectangle;
-double airmanSpriteTimer;
+sf::Texture colonelTexture;
+sf::IntRect colonelRectangle;
+double colonelSpriteTimer;
 
-void AirManEnemyComponent::Load(int _index) {
-	airmanTexture.loadFromFile("res/img/enemies/enemy1_900.png");
+void ColonelEnemyComponent::Load(int _index) {
+	colonelTexture.loadFromFile("res/img/enemies/enemy3_900.png");
 	auto s = _parent->addComponent<SpriteComponent>();
-	airmanRectangle.left = (airmanTexture.getSize().x / 2);
-	airmanRectangle.top = (airmanTexture.getSize().y) * 0;
-	airmanRectangle.width = (airmanTexture.getSize().x / 2);
-	airmanRectangle.height = (airmanTexture.getSize().y);
-	s->getSprite().setTexture(airmanTexture);
-	s->getSprite().setTextureRect(airmanRectangle);
-	s->getSprite().setOrigin(airmanTexture.getSize().x / 4, airmanTexture.getSize().y / 2);
+	colonelRectangle.left = (colonelTexture.getSize().x / 2);
+	colonelRectangle.top = (colonelTexture.getSize().y) * 0;
+	colonelRectangle.width = (colonelTexture.getSize().x / 2);
+	colonelRectangle.height = (colonelTexture.getSize().y);
+	s->getSprite().setTexture(colonelTexture);
+	s->getSprite().setTextureRect(colonelRectangle);
+	s->getSprite().setOrigin(colonelTexture.getSize().x / 4, colonelTexture.getSize().y / 2);
 
-	vector<Vector2ul> tile = ls::findTiles(ls::AIRMAN);
+	vector<Vector2ul> tile = ls::findTiles(ls::COLONEL);
 	_parent->setPosition(Vector2f(ls::getTilePosition(tile[_index]).x + 15.f, ls::getTilePosition(tile[_index]).y - 500.f));
 	_parent->addComponent<EnemyPhysicsComponent>(Vector2f(15.f, 15.f));
 	_parent->addComponent<HurtComponent>();
 	_parent->addTag("enemies");
 }
-void AirManEnemyComponent::update(double dt) {
+void ColonelEnemyComponent::update(double dt) {
 	auto s = _parent->GetCompatibleComponent<SpriteComponent>();
 	auto p = _parent->GetCompatibleComponent<PhysicsComponent>();
 
-	airmanSpriteTimer += dt /2;
+	colonelSpriteTimer += dt / 2;
 
-	if (airmanSpriteTimer < 0.5) {
-		airmanRectangle.left = (airmanTexture.getSize().x / 2) * 0;
+	if (colonelSpriteTimer < 0.5) {
+		colonelRectangle.left = (colonelTexture.getSize().x / 2) * 0;
 	}
-	if (airmanSpriteTimer >= 0.5 && airmanSpriteTimer < 1) {
-		airmanRectangle.left = (airmanTexture.getSize().x / 2) * 1;
+	if (colonelSpriteTimer >= 0.5 && colonelSpriteTimer < 1) {
+		colonelRectangle.left = (colonelTexture.getSize().x / 2) * 1;
 	}
-	if (airmanSpriteTimer > 1) {
-		airmanSpriteTimer = 0.0;
+	if (colonelSpriteTimer > 1) {
+		colonelSpriteTimer = 0.0;
 	}
-	s[0]->getSprite().setTextureRect(airmanRectangle);
+	s[0]->getSprite().setTextureRect(colonelRectangle);
 
 	_firetime -= dt;
 	if (_firetime <= 0.f) {
@@ -56,7 +56,7 @@ void AirManEnemyComponent::update(double dt) {
 	angle += 1.f * dt;
 }
 
-void AirManEnemyComponent::fire() const {
+void ColonelEnemyComponent::fire() const {
 	auto bullet = _parent->scene->makeEntity();
 	bullet->setPosition({ _parent->getPosition().x, _parent->getPosition().y + 5.f });
 	bullet->addComponent<HurtComponent>();
@@ -64,18 +64,19 @@ void AirManEnemyComponent::fire() const {
 	bullet->setView(_parent->getView());
 	auto s = bullet->addComponent<ShapeComponent>();
 
-	s->setShape<sf::CircleShape>(4.f);
-	s->getShape().setFillColor(Color::Red);
-	s->getShape().setOrigin(2.f, 2.f);
+	s->setShape<sf::CircleShape>(10.f);
+	s->getShape().setFillColor(Color::Green);
+	s->getShape().setOutlineColor(Color::Red);
+	s->getShape().setOrigin(5.f, 5.f);
 	auto p = bullet->addComponent<PhysicsComponent>(true, Vector2f(4.f, 4.f));
 	p->getBody()->SetBullet(true);
 	p->setSensor(true);
 	p->setRestitution(.4f);
 	p->setFriction(.005f);
-	p->setVelocity({ 0.f, -300.f });
+	p->setVelocity({ 0.f, -500.f });
 	//p->impulse(sf::rotate(Vector2f(0, 15.f), -_parent->getRotation()));
 }
 
-AirManEnemyComponent::AirManEnemyComponent(Entity* p)
+ColonelEnemyComponent::ColonelEnemyComponent(Entity* p)
 	: Component(p), _firetime(2.f) {
 }
