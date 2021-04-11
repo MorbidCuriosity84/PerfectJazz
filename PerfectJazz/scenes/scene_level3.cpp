@@ -18,13 +18,13 @@ static shared_ptr<Entity> background;
 static shared_ptr<Entity> background2;
 static shared_ptr<Entity> overbackground;
 static shared_ptr<Entity> overbackground2;
-static vector<shared_ptr<Entity>> enemies;
 sf::Texture sc3_backgroundtexture_1;
 sf::Texture sc3_backgroundtexture_2;
 sf::Texture sc3_overbackgroundtexture_1;
 sf::Texture sc3_overbackgroundtexture_2;
 sf::Texture playerTexture;
 sf::IntRect playerRectangle;
+sf::Texture enemyTex;
 sf::View leftView;
 sf::View rightView;
 sf::View mainView;
@@ -119,7 +119,9 @@ void Level3Scene::Load() {
 
 	//Create Enemies
 	{
+
 		LoadEnemies::initiliseEnemies("wave1", dynamic_cast<Scene*>(&level3));
+
 	}
 
 	//Create text for left and right boxes

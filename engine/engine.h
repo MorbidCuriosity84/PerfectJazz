@@ -17,7 +17,9 @@ public:
 	virtual void Render();
 	bool isLoaded() const;
 	std::shared_ptr<Entity> makeEntity();
+
 	EntityManager ents;
+
 
 protected:
 	void setLoaded(bool);

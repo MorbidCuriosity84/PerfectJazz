@@ -6,17 +6,19 @@
 #include "../lib_tile_level_loader/LevelSystem.h"
 #include <SFML/Graphics.hpp>
 #include "../PerfectJazz/components/cmp_sprite.h"
+#include "../PerfectJazz/game.h"
 #include <future>
 #include <iostream>
 #include <stdexcept>
 #include "../PerfectJazz/components/cmp_enemy_physics.h"
 #include "../PerfectJazz/components/cmp_enemy_turret.h"
+#include "../PerfectJazz/components/cmp_hurt_player.h"
 
 using namespace sf;
 using namespace std;
 Scene* Engine::_activeScene = nullptr;
 std::string Engine::_gameName;
-
+std::vector<shared_ptr<Entity>> enemies;
 static bool loading = false;
 static float loadingspinner = 0.f;
 static float loadingTime;
