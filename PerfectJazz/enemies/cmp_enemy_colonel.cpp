@@ -7,6 +7,7 @@
 #include <LevelSystem.h>
 #include "engine.h"
 #include <SFML/Graphics/CircleShape.hpp>
+#include "../components/cmp_health.h"
 using namespace std;
 using namespace sf;
 sf::Texture colonelTexture;
@@ -63,14 +64,15 @@ void ColonelEnemyComponent::fire() const {
 	auto s = bullet->addComponent<SpriteComponent>();
 	s->loadTexture(1, 3, 0, 1, bulletRectangle, bulletTexture);
 	
+	auto h = bullet->addComponent<HealthComponent>();
 	auto p = bullet->addComponent<PhysicsComponent>(true, Vector2f(5.f, 5.f));
 	p->getBody()->SetBullet(true);
 	p->setSensor(true);
 	p->setRestitution(.4f);
 	p->setFriction(.005f);
 	p->setVelocity({ 0.f, -500.f });
-	p->setCategory(ENEMY);	
-	p->getBody()->SetUserData(&bullet);
+	p->setCategory(ENEMY);		
+	p->getBody()->SetUserData(&h);
 	//p->impulse(sf::rotate(Vector2f(0, 15.f), -_parent->getRotation()));
 }
 

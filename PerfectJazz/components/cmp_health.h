@@ -5,14 +5,20 @@
 
 class HealthComponent : public Component {
 protected:
-	double _health;
+	float _health;
 
 public:
-	HealthComponent() = delete;	
-	explicit HealthComponent(Entity* p);
+	//HealthComponent();	
+	HealthComponent(Entity* p);
 
-	double getHealth();
-	void addHealth(double health2add);
+	void update(double dt) override;
+
+	void render() override ;
+
+	~HealthComponent();
+
+	float getHealth();
+	void addHealth(float health2add);
 
 	void handleContact(b2Contact* contact);
 };

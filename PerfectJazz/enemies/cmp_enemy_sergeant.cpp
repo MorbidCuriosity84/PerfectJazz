@@ -7,6 +7,7 @@
 #include <LevelSystem.h>
 #include "engine.h"
 #include <SFML/Graphics/CircleShape.hpp>
+#include "../components/cmp_health.h"
 using namespace std;
 using namespace sf;
 sf::Texture sergeantTexture;
@@ -55,13 +56,15 @@ void SergeantEnemyComponent::fire() const {
 	auto bullet = _parent->scene->makeEntity();
 	bullet->setPosition({ _parent->getPosition().x, _parent->getPosition().y + 5.f });
 	bullet->addComponent<HurtComponent>();
-	bullet->addComponent<BulletComponent>();
+	auto b =bullet->addComponent<BulletComponent>();
 	bullet->setView(_parent->getView());
 	
 	sg_bulletTexture.loadFromFile("res/img/weapons/Fx_02.png");
 	auto s = bullet->addComponent<SpriteComponent>();
 	s->loadTexture(1, 3, 0, 2, sg_bulletRectangle, sg_bulletTexture);	
 	s->getSprite().setScale({ 1.f,2.f });
+
+	auto h = bullet->addComponent<HealthComponent>();
 	auto p = bullet->addComponent<PhysicsComponent>(true, Vector2f(4.f, 4.f));
 	p->getBody()->SetBullet(true);
 	p->setSensor(true);
@@ -69,7 +72,7 @@ void SergeantEnemyComponent::fire() const {
 	p->setFriction(.005f);
 	p->setVelocity({ 0.f, -500.f });
 	p->setCategory(ENEMY);
-	p->getBody()->SetUserData(&bullet);
+	p->getBody()->SetUserData(&h);
 	//p->impulse(sf::rotate(Vector2f(0, 15.f), -_parent->getRotation()));
 }
 
