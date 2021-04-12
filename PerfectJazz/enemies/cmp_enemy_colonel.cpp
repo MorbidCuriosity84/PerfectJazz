@@ -82,5 +82,5 @@ void ColonelEnemyComponent::fire() const {
 }
 
 ColonelEnemyComponent::ColonelEnemyComponent(Entity* p, Scene* scene)
-	: Component(p), _firetime(2.f) {
+	: Component(p), _firetime(2.f), _scene(scene) {
 }

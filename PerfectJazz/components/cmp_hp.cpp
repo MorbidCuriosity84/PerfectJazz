@@ -20,7 +20,9 @@ void HPComponent::update(double dt) {
 	auto posX = spr[0]->getSprite().getPosition().x - spr[0]->getSprite().getTextureRect().getSize().x/2;
 	comp[0]->setPosition(Vector2f(posX, posY));
 	comp[0]->setText(std::to_string(_hp));
-	_hp--;
+	if (_visible) { //dont decrement bullet hp
+		_hp--;
+	}	
 }
 
 void HPComponent::render() { 
