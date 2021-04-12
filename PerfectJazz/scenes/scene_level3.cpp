@@ -10,6 +10,7 @@
 #include <LevelSystem.h>
 #include "../components/cmp_text.h"
 #include "../components/cmp_health.h"
+#include "../components/cmp_hp.h"
 
 using namespace std;
 using namespace sf;
@@ -114,9 +115,9 @@ void Level3Scene::Load() {
 		s->getSprite().setOrigin(playerTexture.getSize().x / 10, playerTexture.getSize().y / 4);
 		auto phys = player->addComponent<PlayerPhysicsComponent>(Vector2f(playerTexture.getSize().x / 5, playerTexture.getSize().y / 2));
 		phys.get()->setCategory(PLAYER);			
-		auto h = player.get()->addComponent<HealthComponent>();
-		h.get()->addHealth(100.0);
-		cout << "PLayer health at creation = " << h.get()->getHealth() << endl;
+				
+		auto h = player.get()->addComponent<HPComponent>(this, 1000);
+		cout << "PLayer health at creation = " << h.get()->getHP() << endl;
 		phys->getBody()->SetUserData(&h);
 		player->addTag("player");
 	}

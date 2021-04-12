@@ -8,6 +8,7 @@
 #include "engine.h"
 #include <SFML/Graphics/CircleShape.hpp>
 #include "../components/cmp_health.h"
+#include "../components/cmp_hp.h"
 using namespace std;
 using namespace sf;
 sf::Texture colonelTexture;
@@ -24,6 +25,7 @@ void ColonelEnemyComponent::Load(int _index) {
 	vector<Vector2ul> tile = ls::findTiles(ls::COLONEL);
 	_parent->setPosition(Vector2f(ls::getTilePosition(tile[_index]).x + 15.f, ls::getTilePosition(tile[_index]).y - 500.f));
 	_parent->addComponent<EnemyPhysicsComponent>(Vector2f(15.f, 15.f));
+	_parent->addComponent<HPComponent>(_scene, 1000);
 	_parent->addComponent<HurtComponent>();
 	_parent->addTag("enemies");
 }
@@ -57,14 +59,14 @@ void ColonelEnemyComponent::fire() const {
 	auto bullet = _parent->scene->makeEntity();
 	bullet->setPosition({ _parent->getPosition().x, _parent->getPosition().y + 5.f });
 	bullet->addComponent<HurtComponent>();
-	bullet->addComponent<BulletComponent>();
+	auto b = bullet->addComponent<BulletComponent>();
+	b->setDamage(100u);
 	bullet->setView(_parent->getView());	
 	
 	bulletTexture.loadFromFile("res/img/weapons/Fx_02.png");
 	auto s = bullet->addComponent<SpriteComponent>();
 	s->loadTexture(1, 3, 0, 1, bulletRectangle, bulletTexture);
-	
-	auto h = bullet->addComponent<HealthComponent>();
+		
 	auto p = bullet->addComponent<PhysicsComponent>(true, Vector2f(5.f, 5.f));
 	p->getBody()->SetBullet(true);
 	p->setSensor(true);
@@ -72,10 +74,13 @@ void ColonelEnemyComponent::fire() const {
 	p->setFriction(.005f);
 	p->setVelocity({ 0.f, -500.f });
 	p->setCategory(ENEMY);		
+
+	auto h = bullet->addComponent<HPComponent>(_scene, 100);
+	h->setVisible(false);
 	p->getBody()->SetUserData(&h);
 	//p->impulse(sf::rotate(Vector2f(0, 15.f), -_parent->getRotation()));
 }
 
-ColonelEnemyComponent::ColonelEnemyComponent(Entity* p)
+ColonelEnemyComponent::ColonelEnemyComponent(Entity* p, Scene* scene)
 	: Component(p), _firetime(2.f) {
 }
