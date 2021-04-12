@@ -68,11 +68,9 @@ struct SFML_GRAPHICS_API BlendMode
     ////////////////////////////////////////////////////////
     enum Equation
     {
-        Add,             //!< Pixel = Src * SrcFactor + Dst * DstFactor
-        Subtract,        //!< Pixel = Src * SrcFactor - Dst * DstFactor
-        ReverseSubtract, //!< Pixel = Dst * DstFactor - Src * SrcFactor
-        Min,             //!< Pixel = min(Dst, Src)
-        Max              //!< Pixel = max(Dst, Src)
+        Add,            //!< Pixel = Src * SrcFactor + Dst * DstFactor
+        Subtract,       //!< Pixel = Src * SrcFactor - Dst * DstFactor
+        ReverseSubtract //!< Pixel = Dst * DstFactor - Src * SrcFactor
     };
 
     ////////////////////////////////////////////////////////////
@@ -152,8 +150,6 @@ SFML_GRAPHICS_API bool operator !=(const BlendMode& left, const BlendMode& right
 SFML_GRAPHICS_API extern const BlendMode BlendAlpha;    //!< Blend source and dest according to dest alpha
 SFML_GRAPHICS_API extern const BlendMode BlendAdd;      //!< Add source to dest
 SFML_GRAPHICS_API extern const BlendMode BlendMultiply; //!< Multiply source and dest
-SFML_GRAPHICS_API extern const BlendMode BlendMin;      //!< Take minimum between source and dest
-SFML_GRAPHICS_API extern const BlendMode BlendMax;      //!< Take maximum between source and dest
 SFML_GRAPHICS_API extern const BlendMode BlendNone;     //!< Overwrite dest with source
 
 } // namespace sf

@@ -17,7 +17,7 @@ class Pixelate : public Effect
 public:
 
     Pixelate() :
-    Effect("Pixelate")
+    Effect("pixelate")
     {
     }
 
@@ -63,7 +63,7 @@ class WaveBlur : public Effect
 public:
 
     WaveBlur() :
-    Effect("Wave + Blur")
+    Effect("wave + blur")
     {
     }
 
@@ -127,7 +127,7 @@ class StormBlink : public Effect
 public:
 
     StormBlink() :
-    Effect("Storm + Blink")
+    Effect("storm + blink")
     {
     }
 
@@ -182,7 +182,7 @@ class Edge : public Effect
 public:
 
     Edge() :
-    Effect("Edge Post-effect")
+    Effect("edge post-effect")
     {
     }
 
@@ -266,7 +266,7 @@ class Geometry : public Effect
 public:
 
     Geometry() :
-        Effect("Geometry Shader Billboards"),
+        Effect("geometry shader billboards"),
         m_pointCloud(sf::Points, 10000)
     {
     }
@@ -352,7 +352,7 @@ int main()
 
     // Load the application font and pass it to the Effect class
     sf::Font font;
-    if (!font.loadFromFile("resources/tuffy.ttf"))
+    if (!font.loadFromFile("resources/sansation.ttf"))
         return EXIT_FAILURE;
     Effect::setFont(font);
 
@@ -438,11 +438,7 @@ int main()
         effects[current]->update(clock.getElapsedTime().asSeconds(), x, y);
 
         // Clear the window
-        if(effects[current]->getName() == "Edge Post-effect"){
-            window.clear(sf::Color::White);
-        } else {
-            window.clear(sf::Color(50, 50, 50));
-        }
+        window.clear(sf::Color(255, 128, 0));
 
         // Draw the current example
         window.draw(*effects[current]);
