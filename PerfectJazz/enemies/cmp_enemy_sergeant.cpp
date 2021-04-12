@@ -4,9 +4,11 @@
 #include "../components/cmp_enemy_turret.h"
 #include "../components//cmp_hurt_player.h"
 #include "../components/cmp_sprite.h"
+#include "../components/cmp_hp.h"
 #include <LevelSystem.h>
 #include "engine.h"
 #include <SFML/Graphics/CircleShape.hpp>
+
 #include "../components/cmp_health.h"
 using namespace std;
 using namespace sf;
@@ -23,6 +25,7 @@ void SergeantEnemyComponent::Load(int _index) {
 	vector<Vector2ul> tile = ls::findTiles(ls::SERGEANT);
 	_parent->setPosition(Vector2f(ls::getTilePosition(tile[_index]).x + 15.f, ls::getTilePosition(tile[_index]).y - 500.f));
 	_parent->addComponent<EnemyPhysicsComponent>(Vector2f(15.f, 15.f));
+	_parent->addComponent<HPComponent>(_scene, 1000);
 	_parent->addComponent<HurtComponent>();
 	_parent->addTag("enemies");
 }
@@ -76,6 +79,6 @@ void SergeantEnemyComponent::fire() const {
 	//p->impulse(sf::rotate(Vector2f(0, 15.f), -_parent->getRotation()));
 }
 
-SergeantEnemyComponent::SergeantEnemyComponent(Entity* p)
-	: Component(p), _firetime(3.f) {
+SergeantEnemyComponent::SergeantEnemyComponent(Entity* p, Scene* scene)
+	: Component(p), _firetime(3.f), _scene(scene) {
 }

@@ -13,10 +13,18 @@ TextComponent::TextComponent(Entity* const p, const std::string& str)
   _text.setFont(*_font);  
 }
 
-void TextComponent::SetText(const std::string& str) {
+void TextComponent::setText(const std::string& str) {
   _string = str;
   _text.setString(_string);
   _text.setCharacterSize(12);
+}
+
+sf::Vector2f TextComponent::getPosition() {
+    return _position;
+}
+
+void TextComponent::setPosition(sf::Vector2f position) {
+    _text.setPosition(position);
 }
 
 void TextComponent::setFontSize(double size) {

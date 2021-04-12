@@ -5,18 +5,21 @@
 
 class TextComponent : public Component {
 public:
-  TextComponent() = delete;
-  explicit TextComponent(Entity* p, const std::string& str = "");
-  void update(double dt) override;
-  void render() override;
-  void setFontSize(double size);
-  ~TextComponent() override = default;
-  void SetText(const std::string& str);
+	TextComponent() = delete;
+	explicit TextComponent(Entity* p, const std::string& str = "");
+	void update(double dt) override;
+	void render() override;
+	void setFontSize(double size);
+	~TextComponent() override = default;
+	void setText(const std::string& str);
+	void setPosition(sf::Vector2f position);
+	sf::Vector2f  getPosition();
 
-  void setFontSize(unsigned int size);
+	void setFontSize(unsigned int size);
 
 protected:
-  std::shared_ptr<sf::Font> _font;
-  std::string _string;
-  sf::Text _text;
+	std::shared_ptr<sf::Font> _font;
+	std::string _string;
+	sf::Vector2f _position;
+	sf::Text _text;
 };

@@ -41,9 +41,6 @@ void PlayerPhysicsComponent::update(double dt) {
 	//  teleport(ls::getTilePosition(ls::findTiles(ls::START)[0]));
 	//}
 
-	/*cout << pos.x << " : player position" << endl;
-	cout << mainView.getSize().x << " : view x size" << endl;*/
-
 	//Set boundaries for player movement
 	{
 		if (pos.x <= 15.f) {
