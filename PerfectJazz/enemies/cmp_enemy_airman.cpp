@@ -25,8 +25,10 @@ void AirManEnemyComponent::Load(int _index) {
 
 	vector<Vector2ul> tile = ls::findTiles(ls::AIRMAN);
 	_parent->setPosition(Vector2f(ls::getTilePosition(tile[_index]).x + 15.f, ls::getTilePosition(tile[_index]).y - 500.f));
-	_parent->addComponent<EnemyPhysicsComponent>(Vector2f(15.f, 15.f));
-	_parent->addComponent<HPComponent>(_scene, 100);
+	auto phys = _parent->addComponent<EnemyPhysicsComponent>(Vector2f(15.f, 15.f));
+	phys.get()->setCategory(ENEMY);	
+	auto h = _parent->addComponent<HPComponent>(_scene, 1000);
+	phys.get()->getBody()->SetUserData(&h);
 	_parent->addComponent<HurtComponent>();
 	_parent->addTag("enemies");
 }
@@ -60,7 +62,7 @@ void AirManEnemyComponent::fire() const {
 	auto bullet = _parent->scene->makeEntity();
 	bullet->setPosition({ _parent->getPosition().x, _parent->getPosition().y + 5.f });
 	bullet->addComponent<HurtComponent>();
-	auto b = bullet->addComponent<BulletComponent>();
+	auto b = bullet->addComponent<BulletComponent>(100u, 3.0f);
 	b->setDamage(100u);
 	cout << "Bullet damage at creation = " << b->getDamage() << endl;
 	bullet->setView(_parent->getView());	
@@ -75,7 +77,7 @@ void AirManEnemyComponent::fire() const {
 	p->setRestitution(.4f);
 	p->setFriction(.005f);
 	p->setVelocity({ 0.f, -300.f });
-	p->setCategory(ENEMY);	
+	p->setCategory(ENEMY_BULLET);
 
 	auto h = bullet->addComponent<HPComponent>(_scene, 100);
 	h->setVisible(false);

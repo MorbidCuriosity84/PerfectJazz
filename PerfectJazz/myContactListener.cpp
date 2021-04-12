@@ -34,7 +34,7 @@ HPComponent* castContact(uint16 categoryBits, b2Body* body)
         }
         case 16:
         {
-            //Enemy
+            //Enemy                       
             return static_cast<HPComponent*>(body->GetUserData());
             break;
         }
@@ -53,6 +53,7 @@ HPComponent* castContact(uint16 categoryBits, b2Body* body)
 
         default:
         {
+            return static_cast<HPComponent*>(body->GetUserData());
             break;
         }
     }
@@ -70,8 +71,8 @@ void myContactListener::BeginContact(b2Contact* contact) {
     entContact1 = castContact(contact->GetFixtureA()->GetFilterData().categoryBits, contact->GetFixtureA()->GetBody());
     entContact2 = castContact(contact->GetFixtureB()->GetFilterData().categoryBits, contact->GetFixtureB()->GetBody());
 
-    entContact1->handleContact(contact);
-    entContact2->handleContact(contact);
+    entContact1->handleContact(contact, entContact1, entContact2);
+    //entContact2->handleContact(contact);
 }
 
 void myContactListener::EndContact(b2Contact* contact) {

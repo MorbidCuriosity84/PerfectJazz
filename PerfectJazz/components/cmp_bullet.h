@@ -10,7 +10,7 @@ protected:
 public:
   void update(double dt) override;
   void render() override {}
-  explicit BulletComponent(Entity* p, uint16 damage = 50.f, float lifetime = 3.f);
+  explicit BulletComponent(Entity* p, uint16 damage, float lifetime);
   BulletComponent() = delete;
 
   void setDamage(uint16 damage);

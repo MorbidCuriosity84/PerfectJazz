@@ -92,13 +92,13 @@ void PhysicsComponent::setCategory(_entityCategory cat)
         break;
     case ENEMY:
         filter.categoryBits = ENEMY; 
-        filter.maskBits = PLAYER | FRIENDLY_BULLET | FRIENDLY_MISSILE; 
+        filter.maskBits = PLAYER | ENEMY | FRIENDLY_BULLET | FRIENDLY_MISSILE; 
         break;
     case ENEMY_BULLET:
         filter.categoryBits = ENEMY_BULLET; 
         filter.maskBits = PLAYER | FRIENDLY_MISSILE; 
         break;
-    case ENEMY_MISSILE:
+    case ENEMY_MISSILE:        
         filter.categoryBits = ENEMY_MISSILE;
         filter.maskBits = PLAYER | FRIENDLY_BULLET | FRIENDLY_MISSILE;
         break;

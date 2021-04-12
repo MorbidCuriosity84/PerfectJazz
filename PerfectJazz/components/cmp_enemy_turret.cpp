@@ -22,7 +22,7 @@ void EnemyTurretComponent::fire() const {
   auto bullet = _parent->scene->makeEntity();
   bullet->setPosition({ _parent->getPosition().x, _parent->getPosition().y + 5.f });
   bullet->addComponent<HurtComponent>();
-  bullet->addComponent<BulletComponent>();
+  bullet->addComponent<BulletComponent>(100u, 3.0f);
   bullet->setView(_parent->getView());
   auto s = bullet->addComponent<ShapeComponent>();
 
