@@ -115,8 +115,6 @@ void Level3Scene::Load() {
 		player->addTag("player");
 	}
 
-	cout << "main view size: " << mainView.getSize();
-
 	//Create Enemies
 	{
 		LoadEnemies::initiliseEnemies("wave1", dynamic_cast<Scene*>(&level3));
@@ -128,6 +126,7 @@ void Level3Scene::Load() {
 		txt->setView(leftView);
 		auto t = txt->addComponent<TextComponent>("This is the left view");
 		t->setFontSize(18u);
+		t->setPosition(Vector2f(100.f, 100.f));
 
 		auto txt2 = makeEntity();
 		txt2->setView(rightView);
@@ -163,12 +162,10 @@ void Level3Scene::Update(const double& dt) {
 		if (background->getPosition().y > Engine::getWindowSize().y) {
 			background->setPosition(Vector2f((mainView.getSize().x - (float)sc3_backgroundtexture_1.getSize().x),
 				background2->getPosition().y - sc3_backgroundtexture_1.getSize().y + 1.f));
-			cout << "out" << endl;
 		}
 		if (background2->getPosition().y > Engine::getWindowSize().y) {
 			background2->setPosition(Vector2f((mainView.getSize().x - (float)sc3_backgroundtexture_1.getSize().x),
 				background->getPosition().y - sc3_backgroundtexture_1.getSize().y + 1.f));
-			cout << "out2" << endl;
 		}
 	}
 

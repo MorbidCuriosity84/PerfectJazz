@@ -4,6 +4,7 @@
 #include "../components/cmp_enemy_turret.h"
 #include "../components//cmp_hurt_player.h"
 #include "../components/cmp_sprite.h"
+#include "../components/cmp_hp.h"
 #include <LevelSystem.h>
 #include "engine.h"
 #include <SFML/Graphics/CircleShape.hpp>
@@ -27,6 +28,7 @@ void AirManEnemyComponent::Load(int _index) {
 	vector<Vector2ul> tile = ls::findTiles(ls::AIRMAN);
 	_parent->setPosition(Vector2f(ls::getTilePosition(tile[_index]).x + 15.f, ls::getTilePosition(tile[_index]).y - 500.f));
 	_parent->addComponent<EnemyPhysicsComponent>(Vector2f(15.f, 15.f));
+	_parent->addComponent<HPComponent>(100);
 	_parent->addComponent<HurtComponent>();
 	_parent->addTag("enemies");
 }
