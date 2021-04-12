@@ -28,6 +28,8 @@ public:
   virtual void render() = 0;
 
   virtual ~Component();
+
+  //virtual void handleContact(b2Contact* contact) = 0;
 };
 
 struct EntityManager {
@@ -63,7 +65,7 @@ public:
 
   virtual void update(double dt);
 
-  virtual void render();
+  virtual void render();  
 
   //  
   const sf::Vector2f& getPosition() const;

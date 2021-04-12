@@ -112,7 +112,8 @@ void Level3Scene::Load() {
 		s->getSprite().setTextureRect(playerRectangle);
 		s->getSprite().setOrigin(playerTexture.getSize().x / 10, playerTexture.getSize().y / 4);
 		auto phys = player->addComponent<PlayerPhysicsComponent>(Vector2f(playerTexture.getSize().x / 5, playerTexture.getSize().y / 2));
-		phys.get()->setCategory(PLAYER);
+		phys.get()->setCategory(PLAYER);	
+		phys->getBody()->SetUserData(&player);
 		player->addTag("player");
 	}
 

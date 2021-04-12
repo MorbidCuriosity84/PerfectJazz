@@ -81,7 +81,8 @@ void ColonelEnemyComponent::fire() const {
 	p->setRestitution(.4f);
 	p->setFriction(.005f);
 	p->setVelocity({ 0.f, -500.f });
-	p->setCategory(ENEMY);
+	p->setCategory(ENEMY);	
+	p->getBody()->SetUserData(&bullet);
 	//p->impulse(sf::rotate(Vector2f(0, 15.f), -_parent->getRotation()));
 }
 

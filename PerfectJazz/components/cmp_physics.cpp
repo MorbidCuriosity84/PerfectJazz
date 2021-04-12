@@ -22,7 +22,7 @@ PhysicsComponent::PhysicsComponent(Entity* p, bool dyn,
 
   // Create the body
   _body = Physics::GetWorld()->CreateBody(&BodyDef);
-  _body->SetActive(true);
+  _body->SetActive(true);  
   {
     // Create the fixture shape
     b2PolygonShape Shape;

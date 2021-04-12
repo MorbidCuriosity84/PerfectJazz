@@ -5,6 +5,7 @@
 #include "scenes/scene_level3.h"
 #include "scenes/scene_menu.h"
 #include "ecm.h"
+#include "myContactListener.h"
 
 using namespace std;
 
@@ -18,7 +19,7 @@ extern sf::View mainView;
 extern unsigned int gameWidth;
 extern unsigned int gameHeight;
 extern std::shared_ptr<Entity> player;
-
+extern myContactListener mContLis;
 
 
 /*

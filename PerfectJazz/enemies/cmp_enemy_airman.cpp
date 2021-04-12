@@ -63,7 +63,7 @@ void AirManEnemyComponent::fire() const {
 	bullet->setPosition({ _parent->getPosition().x, _parent->getPosition().y + 5.f });
 	bullet->addComponent<HurtComponent>();
 	bullet->addComponent<BulletComponent>();
-	bullet->setView(_parent->getView());
+	bullet->setView(_parent->getView());	
 	
 	air_bulletTexture.loadFromFile("res/img/weapons/Fx_01.png");
 	auto s = bullet->addComponent<SpriteComponent>();
@@ -73,7 +73,7 @@ void AirManEnemyComponent::fire() const {
 	air_bulletRectangle.height = (air_bulletTexture.getSize().y);
 	s->getSprite().setTexture(air_bulletTexture);
 	s->getSprite().setTextureRect(air_bulletRectangle);
-	s->getSprite().setOrigin(air_bulletTexture.getSize().x / 6, air_bulletTexture.getSize().y / 2);
+	s->getSprite().setOrigin(air_bulletTexture.getSize().x / 6, air_bulletTexture.getSize().y / 2);	
 
 	auto p = bullet->addComponent<PhysicsComponent>(true, Vector2f(4.f, 4.f));
 	p->getBody()->SetBullet(true);
@@ -81,7 +81,8 @@ void AirManEnemyComponent::fire() const {
 	p->setRestitution(.4f);
 	p->setFriction(.005f);
 	p->setVelocity({ 0.f, -300.f });
-	p->setCategory(ENEMY);
+	p->setCategory(ENEMY);	
+	p->getBody()->SetUserData(&bullet);
 	//p->impulse(sf::rotate(Vector2f(0, 15.f), -_parent->getRotation()));
 }
 
