@@ -8,6 +8,7 @@
 #include <LevelSystem.h>
 #include "engine.h"
 #include <SFML/Graphics/CircleShape.hpp>
+
 using namespace std;
 using namespace sf;
 sf::Texture airmanTexture;
@@ -28,7 +29,7 @@ void AirManEnemyComponent::Load(int _index) {
 	vector<Vector2ul> tile = ls::findTiles(ls::AIRMAN);
 	_parent->setPosition(Vector2f(ls::getTilePosition(tile[_index]).x + 15.f, ls::getTilePosition(tile[_index]).y - 500.f));
 	_parent->addComponent<EnemyPhysicsComponent>(Vector2f(15.f, 15.f));
-	_parent->addComponent<HPComponent>(100);
+	_parent->addComponent<HPComponent>(_scene, 100);
 	_parent->addComponent<HurtComponent>();
 	_parent->addTag("enemies");
 }
@@ -78,6 +79,6 @@ void AirManEnemyComponent::fire() const {
 	//p->impulse(sf::rotate(Vector2f(0, 15.f), -_parent->getRotation()));
 }
 
-AirManEnemyComponent::AirManEnemyComponent(Entity* p)
-	: Component(p), _firetime(2.f) {
+AirManEnemyComponent::AirManEnemyComponent(Entity* p, Scene* scene)
+	: Component(p), _firetime(2.f), _scene(scene) {
 }

@@ -18,18 +18,18 @@ void LoadEnemies::initiliseEnemies(std::string _waveFile, Scene* _scene) {
 	for (int index = 0; index < ls::findTiles(ls::AIRMAN).size(); index++) {
 		auto en = _scene->makeEntity();
 		en->setView(mainView);
-		en->addComponent<AirManEnemyComponent>();
+		en->addComponent<AirManEnemyComponent>(_scene);
 		auto loadEnemy = en->GetCompatibleComponent<AirManEnemyComponent>();
 		loadEnemy[0]->Load(index);
 	}
 
-	for (int index = 0; index < ls::findTiles(ls::SERGEANT).size(); index++) {
-		auto en = _scene->makeEntity();
-		en->setView(mainView);
-		en->addComponent<SergeantEnemyComponent>();
-		auto loadEnemy = en->GetCompatibleComponent<SergeantEnemyComponent>();
-		loadEnemy[0]->Load(index);
-	}
+	//for (int index = 0; index < ls::findTiles(ls::SERGEANT).size(); index++) {
+	//	auto en = _scene->makeEntity();
+	//	en->setView(mainView);
+	//	en->addComponent<SergeantEnemyComponent>(_scene);
+	//	auto loadEnemy = en->GetCompatibleComponent<SergeantEnemyComponent>();
+	//	loadEnemy[0]->Load(index);
+	//}
 
 	for (int index = 0; index < ls::findTiles(ls::COLONEL).size(); index++) {
 		auto en = _scene->makeEntity();

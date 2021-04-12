@@ -126,7 +126,6 @@ void Level3Scene::Load() {
 		txt->setView(leftView);
 		auto t = txt->addComponent<TextComponent>("This is the left view");
 		t->setFontSize(18u);
-		t->setPosition(Vector2f(100.f, 100.f));
 
 		auto txt2 = makeEntity();
 		txt2->setView(rightView);
