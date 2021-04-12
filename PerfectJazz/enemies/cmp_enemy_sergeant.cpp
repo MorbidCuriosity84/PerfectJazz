@@ -18,14 +18,7 @@ double sergeantSpriteTimer;
 void SergeantEnemyComponent::Load(int _index) {
 	sergeantTexture.loadFromFile("res/img/enemies/enemy2_900.png");
 	auto s = _parent->addComponent<SpriteComponent>();
-	sergeantRectangle.left = (sergeantTexture.getSize().x / 2);
-	sergeantRectangle.top = (sergeantTexture.getSize().y) * 0;
-	sergeantRectangle.width = (sergeantTexture.getSize().x / 2);
-	sergeantRectangle.height = (sergeantTexture.getSize().y);
-	s->getSprite().setTexture(sergeantTexture);
-	s->getSprite().setTextureRect(sergeantRectangle);
-	s->getSprite().setOrigin(sergeantTexture.getSize().x / 4, sergeantTexture.getSize().y / 2);
-
+	s->loadTexture(1, 2, 0, 0, sergeantRectangle, sergeantTexture);		
 	vector<Vector2ul> tile = ls::findTiles(ls::SERGEANT);
 	_parent->setPosition(Vector2f(ls::getTilePosition(tile[_index]).x + 15.f, ls::getTilePosition(tile[_index]).y - 500.f));
 	_parent->addComponent<EnemyPhysicsComponent>(Vector2f(15.f, 15.f));
@@ -67,15 +60,8 @@ void SergeantEnemyComponent::fire() const {
 	
 	sg_bulletTexture.loadFromFile("res/img/weapons/Fx_02.png");
 	auto s = bullet->addComponent<SpriteComponent>();
-	sg_bulletRectangle.left = (sg_bulletTexture.getSize().x / 3);
-	sg_bulletRectangle.top = (sg_bulletTexture.getSize().y) * 0;
-	sg_bulletRectangle.width = (sg_bulletTexture.getSize().x / 3);
-	sg_bulletRectangle.height = (sg_bulletTexture.getSize().y);
-	s->getSprite().setTexture(sg_bulletTexture);
-	s->getSprite().setTextureRect(sg_bulletRectangle);
-	//s->getSprite().setColor(Color(128, 128, 128, 128));
-	s->getSprite().setOrigin(sg_bulletTexture.getSize().x / 6, sg_bulletTexture.getSize().y / 2);
-
+	s->loadTexture(1, 3, 0, 2, sg_bulletRectangle, sg_bulletTexture);	
+	s->getSprite().setScale({ 1.f,2.f });
 	auto p = bullet->addComponent<PhysicsComponent>(true, Vector2f(4.f, 4.f));
 	p->getBody()->SetBullet(true);
 	p->setSensor(true);

@@ -1,13 +1,6 @@
 #include "myContactListener.h"
 #include <iostream>
 
-myContactListener::myContactListener() : b2ContactListener(), _contacts()
-{
-}
-
-myContactListener::~myContactListener()
-{
-}
 
 void myContactListener::BeginContact(b2Contact* contact) {
 

@@ -21,8 +21,8 @@ class myContactListener : public b2ContactListener {
 public:
     std::vector<std::shared_ptr<myContact>> _contacts;
 
-    myContactListener();
-    ~myContactListener();
+    /*myContactListener();
+    ~myContactListener();*/
 
     void BeginContact(b2Contact* contact) override;
     void EndContact(b2Contact* contact) override;    

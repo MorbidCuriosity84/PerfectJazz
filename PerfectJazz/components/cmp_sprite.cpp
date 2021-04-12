@@ -5,6 +5,17 @@
 using namespace std;
 
 
+void SpriteComponent::loadTexture(int numRows, int numCols, int row, int col, sf::IntRect& rect, sf::Texture& texture)
+{
+	rect.left = (texture.getSize().x / numCols) * col;
+	rect.top = (texture.getSize().y / numRows) * row;
+	rect.width = (texture.getSize().x / numCols);
+	rect.height = (texture.getSize().y / numRows);
+	getSprite().setTexture(texture);
+	getSprite().setTextureRect(rect);
+	getSprite().setOrigin(texture.getSize().x / (2 * numCols), texture.getSize().y / (2 * numRows));
+}
+
 void SpriteComponent::setTexure(std::shared_ptr<sf::Texture> tex)
 {
   _texture = tex;

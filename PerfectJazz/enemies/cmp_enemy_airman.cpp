@@ -18,13 +18,7 @@ double airmanSpriteTimer;
 void AirManEnemyComponent::Load(int _index) {
 	airmanTexture.loadFromFile("res/img/enemies/enemy1_900.png");
 	auto s = _parent->addComponent<SpriteComponent>();
-	airmanRectangle.left = (airmanTexture.getSize().x / 2);
-	airmanRectangle.top = (airmanTexture.getSize().y) * 0;
-	airmanRectangle.width = (airmanTexture.getSize().x / 2);
-	airmanRectangle.height = (airmanTexture.getSize().y);
-	s->getSprite().setTexture(airmanTexture);
-	s->getSprite().setTextureRect(airmanRectangle);
-	s->getSprite().setOrigin(airmanTexture.getSize().x / 4, airmanTexture.getSize().y / 2);
+	s.get()->loadTexture(1, 2, 0, 0, airmanRectangle, airmanTexture);	
 
 	vector<Vector2ul> tile = ls::findTiles(ls::AIRMAN);
 	_parent->setPosition(Vector2f(ls::getTilePosition(tile[_index]).x + 15.f, ls::getTilePosition(tile[_index]).y - 500.f));
@@ -67,13 +61,7 @@ void AirManEnemyComponent::fire() const {
 	
 	air_bulletTexture.loadFromFile("res/img/weapons/Fx_01.png");
 	auto s = bullet->addComponent<SpriteComponent>();
-	air_bulletRectangle.left = (air_bulletTexture.getSize().x / 3);
-	air_bulletRectangle.top = (air_bulletTexture.getSize().y) * 0;
-	air_bulletRectangle.width = (air_bulletTexture.getSize().x / 3);
-	air_bulletRectangle.height = (air_bulletTexture.getSize().y);
-	s->getSprite().setTexture(air_bulletTexture);
-	s->getSprite().setTextureRect(air_bulletRectangle);
-	s->getSprite().setOrigin(air_bulletTexture.getSize().x / 6, air_bulletTexture.getSize().y / 2);	
+	s->loadTexture(1, 3, 0, 1, air_bulletRectangle, air_bulletTexture);
 
 	auto p = bullet->addComponent<PhysicsComponent>(true, Vector2f(4.f, 4.f));
 	p->getBody()->SetBullet(true);

@@ -18,13 +18,7 @@ double colonelSpriteTimer;
 void ColonelEnemyComponent::Load(int _index) {
 	colonelTexture.loadFromFile("res/img/enemies/enemy3_900.png");
 	auto s = _parent->addComponent<SpriteComponent>();
-	colonelRectangle.left = (colonelTexture.getSize().x / 2);
-	colonelRectangle.top = (colonelTexture.getSize().y) * 0;
-	colonelRectangle.width = (colonelTexture.getSize().x / 2);
-	colonelRectangle.height = (colonelTexture.getSize().y);
-	s->getSprite().setTexture(colonelTexture);
-	s->getSprite().setTextureRect(colonelRectangle);
-	s->getSprite().setOrigin(colonelTexture.getSize().x / 4, colonelTexture.getSize().y / 2);
+	s->loadTexture(1, 2, 0, 0, colonelRectangle, colonelTexture);	
 
 	vector<Vector2ul> tile = ls::findTiles(ls::COLONEL);
 	_parent->setPosition(Vector2f(ls::getTilePosition(tile[_index]).x + 15.f, ls::getTilePosition(tile[_index]).y - 500.f));
@@ -67,13 +61,7 @@ void ColonelEnemyComponent::fire() const {
 	
 	bulletTexture.loadFromFile("res/img/weapons/Fx_02.png");
 	auto s = bullet->addComponent<SpriteComponent>();
-	bulletRectangle.left = (bulletTexture.getSize().x / 3);
-	bulletRectangle.top = (bulletTexture.getSize().y) * 0;
-	bulletRectangle.width = (bulletTexture.getSize().x / 3);
-	bulletRectangle.height = (bulletTexture.getSize().y);
-	s->getSprite().setTexture(bulletTexture);
-	s->getSprite().setTextureRect(bulletRectangle);
-	s->getSprite().setOrigin(bulletTexture.getSize().x / 6, bulletTexture.getSize().y / 2);
+	s->loadTexture(1, 3, 0, 1, bulletRectangle, bulletTexture);
 	
 	auto p = bullet->addComponent<PhysicsComponent>(true, Vector2f(5.f, 5.f));
 	p->getBody()->SetBullet(true);
