@@ -10,8 +10,6 @@
 using namespace std;
 using namespace sf;
 
-
-
 void LoadEnemies::initiliseEnemies(std::string _waveFile, Scene* _scene) {
 
 	ls::loadLevelFile("res/levels/" + _waveFile + ".txt", mainView.getSize().x / 16);
@@ -21,18 +19,18 @@ void LoadEnemies::initiliseEnemies(std::string _waveFile, Scene* _scene) {
 	int index;
 	for (int index = 0; index < ls::findTiles(ls::AIRMAN).size(); index++) {
 		auto en = _scene->makeEntity();
-		en->setView(mainView);
-		/*en->addComponent<AirManEnemyComponent>(_scene);
-		auto loadEnemy = en->GetCompatibleComponent<AirManEnemyComponent>();		*/
+		en->setView(mainView);	
 		
+		enemySettings settings(100, 1000, 1.5, _scene, ls::AIRMAN, .4f, .005f, { 0.f,-300.f }, ENEMY, true, { 1.f,2.f }, { 1.f,1.f }, ENEMY_BULLET);
+
 		auto spriteTexture = make_shared<sf::Texture>();
 		auto spriteRectangle = make_shared<sf::IntRect>();
 		textureHelper spriteHelp("res/img/enemies/enemy1_900.png", 1, 2, 0, 0, spriteTexture, spriteRectangle, 1.5);				
-		auto _wepSpriteTexture = make_shared<sf::Texture>();
-		auto _wepSpriteRectangle = make_shared<sf::IntRect>();
-		textureHelper wepHelp("res/img/weapons/Fx_01.png", 1, 3, 0, 0, _wepSpriteTexture, _wepSpriteRectangle, 2.0);
+		auto wepSpriteTexture = make_shared<sf::Texture>();
+		auto wepSpriteRectangle = make_shared<sf::IntRect>();
+		textureHelper wepHelp("res/img/weapons/Fx_01.png", 1, 3, 0, 2, wepSpriteTexture, wepSpriteRectangle, 2.0);
 
-		auto loadEnemy = en->addComponent<EnemyComponent>(1.5f, _scene, ls::AIRMAN, spriteHelp, wepHelp);		
+		auto loadEnemy = en->addComponent<EnemyComponent>(spriteHelp, wepHelp, settings);		
 		loadEnemy->Load(index);
 	}
 
@@ -40,19 +38,18 @@ void LoadEnemies::initiliseEnemies(std::string _waveFile, Scene* _scene) {
 		auto en = _scene->makeEntity();
 		en->setView(mainView);
 
+		enemySettings settings(100, 1000, 2.5, _scene, ls::SERGEANT, .4f, .005f, { 0.f,-300.f }, ENEMY, true, { 1.f,2.f }, { 1.f,1.f }, ENEMY_BULLET);
+
 		auto spriteTexture = make_shared<sf::Texture>();
 		auto spriteRectangle = make_shared<sf::IntRect>();
 		textureHelper spriteHelp("res/img/enemies/enemy2_900.png", 1, 2, 0, 0, spriteTexture, spriteRectangle, 1.5);
-		auto _wepSpriteTexture = make_shared<sf::Texture>();
-		auto _wepSpriteRectangle = make_shared<sf::IntRect>();
-		textureHelper wepHelp("res/img/weapons/Fx_02.png", 1, 3, 0, 0, _wepSpriteTexture, _wepSpriteRectangle, 2.0);
+		auto wepSpriteTexture = make_shared<sf::Texture>();
+		auto wepSpriteRectangle = make_shared<sf::IntRect>();
+		textureHelper wepHelp("res/img/weapons/Fx_02.png", 1, 3, 0, 2, wepSpriteTexture, wepSpriteRectangle, 2.0);
 
-		auto loadEnemy = en->addComponent<EnemyComponent>(2.5f, _scene, ls::SERGEANT, spriteHelp, wepHelp);
+		auto loadEnemy = en->addComponent<EnemyComponent>(spriteHelp, wepHelp, settings);
 		loadEnemy->Load(index);		
-
-		/*en->addComponent<SergeantEnemyComponent>(_scene);
-		auto loadEnemy = en->GetCompatibleComponent<SergeantEnemyComponent>();
-		loadEnemy[0]->Load(index);*/
+	
 	}
 
 	for (int index = 0; index < ls::findTiles(ls::COLONEL).size(); index++) {
@@ -60,14 +57,17 @@ void LoadEnemies::initiliseEnemies(std::string _waveFile, Scene* _scene) {
 		en->setView(mainView);
 		en->addComponent<ColonelEnemyComponent>(_scene);
 
+		enemySettings settings(100, 1000, 3.5, _scene, ls::COLONEL, .4f, .005f, { 0.f,-300.f }, ENEMY, true, { 1.f,2.f }, { 1.f,1.f }, ENEMY_BULLET);
+
 		auto spriteTexture = make_shared<sf::Texture>();
 		auto spriteRectangle = make_shared<sf::IntRect>();
 		textureHelper spriteHelp("res/img/enemies/enemy3_900.png", 1, 2, 0, 0, spriteTexture, spriteRectangle, 1.5);
-		auto _wepSpriteTexture = make_shared<sf::Texture>();
-		auto _wepSpriteRectangle = make_shared<sf::IntRect>();
-		textureHelper wepHelp("res/img/weapons/Fx_02.png", 1, 3, 0, 0, _wepSpriteTexture, _wepSpriteRectangle, 2.0);
+		auto wepSpriteTexture = make_shared<sf::Texture>();
+		auto wepSpriteRectangle = make_shared<sf::IntRect>();
+		textureHelper wepHelp("res/img/weapons/Fx_02.png", 1, 3, 0, 2, wepSpriteTexture, wepSpriteRectangle, 2.0);
 
-		auto loadEnemy = en->addComponent<EnemyComponent>(3.5f, _scene, ls::COLONEL, spriteHelp, wepHelp);
+		//auto loadEnemy = en->addComponent<EnemyComponent>(3.5f, _scene, ls::COLONEL, spriteHelp, wepHelp);
+		auto loadEnemy = en->addComponent<EnemyComponent>(spriteHelp, wepHelp, settings);
 		loadEnemy->Load(index);
 
 		/*auto loadEnemy = en->GetCompatibleComponent<ColonelEnemyComponent>();

@@ -3,17 +3,30 @@
 #include <SFML/Graphics.hpp>
 #include "LevelSystem.h"
 #include "../components/cmp_sprite.h"
+#include "../game.h"
 
 using namespace sf;
 
+/*
+* @param int dam, int hp, double ft, Scene* scene, ls::Tile t, float res, float fr, sf::Vector2f vel, _entityCategory cat, bool hpV, sf::Vector2f wScale, sf::Vector2f sScale, _entityCategory wepCat; 
+*/
 struct enemySettings {
-	int _damage;
+	int _damage; 
 	int _hp;
+	double _fireTime;
+	Scene* _scene;
+	ls::Tile _tile;	
+	float _restitution;
+	float _friction;
+	sf::Vector2f _velocity;
+	_entityCategory _cat;
+	_entityCategory _wepCat;
+	bool _hpVisible;
 	sf::Vector2f _wepSpriteScale;
 	sf::Vector2f _spriteScale;
 
-	enemySettings(int damage, int hp, sf::Vector2f wepSpriteScale, sf::Vector2f spriteScale)
-		: _damage(damage), _hp(hp), _wepSpriteScale(wepSpriteScale), _spriteScale(spriteScale) {}
+	enemySettings(int dam, int hp, double ft, Scene* scene, ls::Tile t, float res, float fr, sf::Vector2f vel, _entityCategory cat, bool hpV, sf::Vector2f wScale, sf::Vector2f sScale, _entityCategory wepCat )
+		: _damage(dam), _hp(hp), _fireTime(ft), _wepSpriteScale(sScale), _spriteScale(sScale), _scene(scene), _tile(t), _restitution(res), _friction(fr), _velocity(vel), _cat(cat), _hpVisible(hpV), _wepCat(wepCat) {}
 };
 
 class EnemyComponent : public Component
@@ -24,6 +37,7 @@ protected:
 	textureHelper _spriteHelper;	
 	ls::Tile _tileType;
 	textureHelper _weaponSpriteHelper;
+	enemySettings _settings;
 
 public:
 	void fire();
@@ -31,7 +45,7 @@ public:
 	void render() override {};
 	void update(double dt);
 
-	EnemyComponent() = delete;
-	explicit EnemyComponent(Entity* p, double fireTime, Scene* scene, ls::Tile tileType, textureHelper spriteTexHelp, textureHelper wepSpriteTexHelp);	
+	EnemyComponent() = delete;	
+	explicit EnemyComponent(Entity* p, textureHelper spriteTexHelp, textureHelper wepSpriteTexHelp, enemySettings settings);
 };
 
