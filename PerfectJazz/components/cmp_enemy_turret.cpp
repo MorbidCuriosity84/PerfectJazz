@@ -21,8 +21,8 @@ void EnemyTurretComponent::update(double dt) {
 void EnemyTurretComponent::fire() const {
   auto bullet = _parent->scene->makeEntity();
   bullet->setPosition({ _parent->getPosition().x, _parent->getPosition().y + 5.f });
-  bullet->addComponent<HurtComponent>();
-  bullet->addComponent<BulletComponent>(100u, 3.0f);
+  auto d = bullet->addComponent<DamageComponent>(100u);
+  auto b = bullet->addComponent<BulletComponent>(d, 3.0f);	
   bullet->setView(_parent->getView());
   auto s = bullet->addComponent<ShapeComponent>();
 

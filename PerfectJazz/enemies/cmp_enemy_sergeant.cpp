@@ -25,9 +25,10 @@ void SergeantEnemyComponent::Load(int _index) {
 	vector<Vector2ul> tile = ls::findTiles(ls::SERGEANT);
 	_parent->setPosition(Vector2f(ls::getTilePosition(tile[_index]).x + 15.f, ls::getTilePosition(tile[_index]).y - 500.f));
 	auto phys = _parent->addComponent<EnemyPhysicsComponent>(Vector2f(15.f, 15.f));
+	auto d = _parent->addComponent<DamageComponent>(100u);	
 	phys.get()->setCategory(ENEMY);	
 	auto h = _parent->addComponent<HPComponent>(_scene, 1000);	
-	phys.get()->getBody()->SetUserData(&h);
+	phys.get()->getBody()->SetUserData(h.get());
 	_parent->addComponent<HurtComponent>();
 	_parent->addTag("enemies");
 }
@@ -61,8 +62,8 @@ void SergeantEnemyComponent::fire() const {
 	auto bullet = _parent->scene->makeEntity();
 	bullet->setPosition({ _parent->getPosition().x, _parent->getPosition().y + 5.f });
 	bullet->addComponent<HurtComponent>();
-	auto b = bullet->addComponent<BulletComponent>(100u, 3.0f);
-	b->setDamage(100u);
+	auto d = bullet->addComponent<DamageComponent>(100u);
+	auto b = bullet->addComponent<BulletComponent>(d, 3.0f);	
 	bullet->setView(_parent->getView());
 	
 	sg_bulletTexture.loadFromFile("res/img/weapons/Fx_02.png");
@@ -80,7 +81,7 @@ void SergeantEnemyComponent::fire() const {
 
 	auto h = bullet->addComponent<HPComponent>(_scene, 100);
 	h->setVisible(false);
-	p->getBody()->SetUserData(&h);
+	p->getBody()->SetUserData(h.get());
 	//p->impulse(sf::rotate(Vector2f(0, 15.f), -_parent->getRotation()));
 }
 

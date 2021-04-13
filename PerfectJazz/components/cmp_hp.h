@@ -15,10 +15,7 @@ public:
 	void setPosition(sf::Vector2f position);
 	void setVisible(bool b);
 	bool isVisible() const;
-	void handleContact(b2Contact* contact, HPComponent* compOne, HPComponent* compTwo);
-	void collideBullets(HPComponent* compOne, HPComponent* compTwo);
-	void collideBulletAndShip(HPComponent* ship, HPComponent* bullet);
-	void collideShips(HPComponent* shipOne, HPComponent* shipTwo);
+	void handleContact(b2Contact* contact);	
 
 protected:
 	int _hp;

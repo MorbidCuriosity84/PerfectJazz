@@ -11,6 +11,7 @@
 #include "../components/cmp_text.h"
 #include "../components/cmp_health.h"
 #include "../components/cmp_hp.h"
+#include "../components/cmp_damage.h"
 
 using namespace std;
 using namespace sf;
@@ -117,8 +118,9 @@ void Level3Scene::Load() {
 		phys.get()->setCategory(PLAYER);			
 				
 		auto h = player.get()->addComponent<HPComponent>(this, 1000);
+		auto d = player->addComponent<DamageComponent>(100u);
 		cout << "PLayer health at creation = " << h.get()->getHP() << endl;
-		phys->getBody()->SetUserData(&h);
+		phys->getBody()->SetUserData(h.get());
 		player->addTag("player");
 	}
 

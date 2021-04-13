@@ -20,10 +20,7 @@ void HPComponent::update(double dt) {
 	auto posY = spr[0]->getSprite().getPosition().y - spr[0]->getSprite().getTextureRect().getSize().y;
 	auto posX = spr[0]->getSprite().getPosition().x - spr[0]->getSprite().getTextureRect().getSize().x/2;
 	comp[0]->setPosition(Vector2f(posX, posY));
-	comp[0]->setText(std::to_string(_hp));
-	if (_visible) { //dont decrement bullet hp
-		_hp--;
-	}	
+	comp[0]->setText(std::to_string(_hp));	
 }
 
 void HPComponent::render() { 
@@ -57,102 +54,28 @@ void HPComponent::setPosition(sf::Vector2f position) {
 	auto pos = _parent->getPosition();
 }
 
-void HPComponent::setVisible(bool b)
-{
-	_visible = b;
-}
+void HPComponent::setVisible(bool b) { _visible = b; }
 
-bool HPComponent::isVisible() const
-{
-	return _visible;
-}
+bool HPComponent::isVisible() const { return _visible; }
 
 HPComponent::HPComponent(Entity* const p, Scene* scene, const int& hp)
 	: Component(p), _hp(hp), _scene(scene), _visible(true) {
 	loadHP();
 }
 
-void HPComponent::handleContact(b2Contact* contact, HPComponent* compOne, HPComponent* compTwo)
+void HPComponent::handleContact(b2Contact* contact)
 {		
+	HPComponent* compOneHP = static_cast<HPComponent*>(contact->GetFixtureA()->GetBody()->GetUserData());
+	HPComponent* compTwoHP = static_cast<HPComponent*>(contact->GetFixtureB()->GetBody()->GetUserData());
+	shared_ptr<DamageComponent> d1 = compOneHP->_parent->GetCompatibleComponent<DamageComponent>()[0];
+	shared_ptr<DamageComponent> d2 = compTwoHP->_parent->GetCompatibleComponent<DamageComponent>()[0];
 
-	/*if (compOne->_visible && compTwo->_visible) {
-		collideShips(compOne, compTwo);
-	}
-	if (compOne->_visible && !compTwo->_visible) {
-		collideBulletAndShip(compOne, compTwo);
-	}
-	if (!compOne->_visible && compTwo->_visible) {
-		collideBulletAndShip(compTwo, compOne);
-	}
-	if (!compOne->_visible && !compTwo->_visible) {
-		collideBullets(compOne, compTwo);
-	}*/
-
-	if (compOne->_visible && !compTwo->_visible) { //is bullet or missile
-		vector<shared_ptr<BulletComponent>> bullet = compOne->_parent->GetCompatibleComponent<BulletComponent>();
-		uint16 damage = bullet[0].get()->getDamage();
-		cout << "Damage = " << damage << endl;
-		cout << "Player health before collision = " << compTwo->getHP() << endl;
-		compTwo->setHP(compTwo->getHP() - damage);
-		cout << "Player health after collision = " << compTwo->getHP() << endl;
-	}
-	else if (compOne->_visible && compTwo->_visible) {
-		collideShips(compOne, compTwo);
-		/*vector<shared_ptr<BulletComponent>> bullet = compOne->_parent->GetCompatibleComponent<BulletComponent>();
-		uint16 damage = bullet[0].get()->getDamage();
-		cout << "Damage = " << damage << endl;
-		cout << "Player health before collision = " << compTwo->getHP() << endl;
-		compTwo->setHP(compTwo->getHP() - damage);
-		cout << "Player health after collision = " << compTwo->getHP() << endl;*/
-	}
-	else { // is player or enemy
-		cout << "Damage to component One = " << compTwo->getHP() << endl;
-		cout << "Damage to component Two = " << compOne->getHP() << endl;
-		uint16 damageToOne = compTwo->getHP();
-		uint16 damageToTwo = compOne->getHP();
-		cout << "Component One health before collision = " << compOne->getHP() << endl;
-		compTwo->setHP(compOne->getHP() - damageToOne);
-		cout << "Component One health after collision = " << compOne->getHP() << endl;
-		cout << "Component Two health before collision = " << compTwo->getHP() << endl;
-		compTwo->setHP(compTwo->getHP() - damageToTwo);
-		cout << "Component Two health after collision = " << compTwo->getHP() << endl;
-	}		
-}
-
-void HPComponent::collideBullets(HPComponent* compOne, HPComponent* compTwo)
-{
-	vector<shared_ptr<BulletComponent>> bulletOne = compOne->_parent->GetCompatibleComponent<BulletComponent>();
-	vector<shared_ptr<BulletComponent>> bulletTwo = compTwo->_parent->GetCompatibleComponent<BulletComponent>();
-	uint16 damageToTwo = bulletOne[0].get()->getDamage();
-	uint16 damageToOne = bulletTwo[0].get()->getDamage();
-	cout << "Bullet One health before collision = " << compOne->getHP() << endl;
-	compTwo->setHP(compOne->getHP() - damageToOne);
-	cout << "Bullet One health after collision = " << compOne->getHP() << endl;
-	cout << "Bullet Two health before collision = " << compTwo->getHP() << endl;
-	compTwo->setHP(compTwo->getHP() - damageToTwo);
-	cout << "Bullet Two health after collision = " << compTwo->getHP() << endl;
-}
-
-void HPComponent::collideBulletAndShip(HPComponent* ship, HPComponent* bullet)
-{
-	vector<shared_ptr<BulletComponent>> bulletList = bullet->_parent->GetCompatibleComponent<BulletComponent>();
-	uint16 damage = bulletList[0].get()->getDamage();
-	cout << "Damage = " << damage << endl;
-	cout << "Ship health before collision = " << ship->getHP() << endl;
-	ship->setHP(ship->getHP() - damage);
-	cout << "Ship health after collision = " << ship->getHP() << endl;
-}
-
-void HPComponent::collideShips(HPComponent* compOne, HPComponent* compTwo)
-{
-	cout << "Damage to Ship One = " << compTwo->getHP() << endl;
-	cout << "Damage to Ship Two = " << compOne->getHP() << endl;
-	uint16 damageToOne = compTwo->getHP();
-	uint16 damageToTwo = compOne->getHP();
-	cout << "Ship One health before collision = " << compOne->getHP() << endl;
-	compTwo->setHP(compOne->getHP() - damageToOne);
-	cout << "Ship One health after collision = " << compOne->getHP() << endl;
-	cout << "Ship Two health before collision = " << compTwo->getHP() << endl;
-	compTwo->setHP(compTwo->getHP() - damageToTwo);
-	cout << "Ship Two health after collision = " << compTwo->getHP() << endl;
+	cout << "Component One health before collision = " << compOneHP->getHP() << endl;
+	cout << "Damage applied = " << d2.get()->getDamage() << endl;
+	d2.get()->applyDamage(compOneHP);
+	cout << "Component One health after collision = " << compOneHP->getHP() << endl;
+	cout << "Damage applied = " << d1.get()->getDamage() << endl;
+	cout << "Component Two health before collision = " << compTwoHP->getHP() << endl;
+	d1.get()->applyDamage(compTwoHP);
+	cout << "Component Two health after collision = " << compTwoHP->getHP() << endl;
 }
