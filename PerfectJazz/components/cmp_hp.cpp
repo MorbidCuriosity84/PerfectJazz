@@ -22,7 +22,7 @@ void HPComponent::update(double dt) {
 	comp[0]->setPosition(Vector2f(posX, posY));
 	comp[0]->setText(std::to_string(_hp));	
 
-	if (_hp < 0) {
+	if (_hp <= 0) {
 		_parent->setForDelete();
 	}
 }
@@ -40,13 +40,7 @@ int HPComponent::getHP() { return _hp; }
 
 void HPComponent::loadHP() {	
 	auto t = _parent->addComponent<TextComponent>(std::to_string(_hp));
-	t->setFontSize(14u);
-
-	/*overSpriteHP = _scene->makeEntity();
-	overSpriteHP->setView(mainView);
-	overSpriteHP->addComponent<TextComponent>(std::to_string(_hp));
-	auto comp = overSpriteHP->GetCompatibleComponent<TextComponent>();
-	comp[0]->setFontSize(14u);*/
+	t->setFontSize(14u);	
 }
 
 sf::Vector2f HPComponent::getPosition() {

@@ -10,7 +10,6 @@
 #include <iostream>
 #include <stdexcept>
 #include "../PerfectJazz/components/cmp_enemy_physics.h"
-#include "../PerfectJazz/components/cmp_enemy_turret.h"
 
 using namespace sf;
 using namespace std;
