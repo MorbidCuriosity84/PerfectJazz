@@ -29,7 +29,7 @@ void ColonelEnemyComponent::Load(int _index) {
 	auto h = _parent->addComponent<HPComponent>(_scene, 1000);	
 	auto d = _parent->addComponent<DamageComponent>(100u);
 	phys.get()->getBody()->SetUserData(h.get());
-	_parent->addComponent<HurtComponent>();
+	//_parent->addComponent<HurtComponent>();
 	_parent->addTag("enemies");
 }
 void ColonelEnemyComponent::update(double dt) {
@@ -60,8 +60,7 @@ void ColonelEnemyComponent::update(double dt) {
 
 void ColonelEnemyComponent::fire() const {
 	auto bullet = _parent->scene->makeEntity();
-	bullet->setPosition({ _parent->getPosition().x, _parent->getPosition().y + 5.f });
-	bullet->addComponent<HurtComponent>();
+	bullet->setPosition({ _parent->getPosition().x, _parent->getPosition().y + 5.f });	
 	auto d = bullet->addComponent<DamageComponent>(100u);
 	auto b = bullet->addComponent<BulletComponent>(d, 3.0f);
 	bullet->setView(_parent->getView());		
