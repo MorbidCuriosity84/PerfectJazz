@@ -25,9 +25,12 @@ void AirManEnemyComponent::Load(int _index) {
 
 	vector<Vector2ul> tile = ls::findTiles(ls::AIRMAN);
 	_parent->setPosition(Vector2f(ls::getTilePosition(tile[_index]).x + 15.f, ls::getTilePosition(tile[_index]).y - 500.f));
-	_parent->addComponent<EnemyPhysicsComponent>(Vector2f(15.f, 15.f));
-	_parent->addComponent<HPComponent>(_scene, 100);
-	_parent->addComponent<HurtComponent>();
+	auto phys = _parent->addComponent<EnemyPhysicsComponent>(Vector2f(15.f, 15.f));
+	phys.get()->setCategory(ENEMY);	
+	auto h = _parent->addComponent<HPComponent>(_scene, 1000);
+	auto d = _parent->addComponent<DamageComponent>(100u);
+	phys.get()->getBody()->SetUserData(h.get());
+	//_parent->addComponent<HurtComponent>();
 	_parent->addTag("enemies");
 }
 void AirManEnemyComponent::update(double dt) {
@@ -58,24 +61,27 @@ void AirManEnemyComponent::update(double dt) {
 
 void AirManEnemyComponent::fire() const {
 	auto bullet = _parent->scene->makeEntity();
-	bullet->setPosition({ _parent->getPosition().x, _parent->getPosition().y + 5.f });
-	bullet->addComponent<HurtComponent>();
-	auto b =bullet->addComponent<BulletComponent>();
+	bullet->setPosition({ _parent->getPosition().x, _parent->getPosition().y + 5.f });	
+	auto d = bullet->addComponent<DamageComponent>(100u);
+	auto b = bullet->addComponent<BulletComponent>(d, 3.0f);	
+	cout << "Bullet damage at creation = " << b->getDamage().get()->getDamage() << endl;
 	bullet->setView(_parent->getView());	
 	
 	air_bulletTexture.loadFromFile("res/img/weapons/Fx_01.png");
 	auto s = bullet->addComponent<SpriteComponent>();
 	s->loadTexture(1, 3, 0, 1, air_bulletRectangle, air_bulletTexture);
-
-	auto h = bullet->addComponent<HealthComponent>();
+	
 	auto p = bullet->addComponent<PhysicsComponent>(true, Vector2f(4.f, 4.f));
 	p->getBody()->SetBullet(true);
 	p->setSensor(true);
 	p->setRestitution(.4f);
 	p->setFriction(.005f);
 	p->setVelocity({ 0.f, -300.f });
-	p->setCategory(ENEMY);	
-	p->getBody()->SetUserData(&h);
+	p->setCategory(ENEMY_BULLET);	
+	
+	auto h = bullet->addComponent<HPComponent>(_scene, 100);
+	h->setVisible(false);
+	p->getBody()->SetUserData(h.get());
 	//p->impulse(sf::rotate(Vector2f(0, 15.f), -_parent->getRotation()));
 }
 

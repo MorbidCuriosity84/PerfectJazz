@@ -9,14 +9,14 @@ void BulletComponent::update(double dt) {
   }
 }
 
-BulletComponent::BulletComponent(Entity* p, float damage, float lifetime)
+BulletComponent::BulletComponent(Entity* p, shared_ptr<DamageComponent>damage, float lifetime)
     : Component(p), _lifetime(lifetime), _damage(damage) {}
 
-void BulletComponent::setDamage(float damage)
+void BulletComponent::setDamage(shared_ptr<DamageComponent> damage)
 {
     _damage = damage;
 }
 
-float BulletComponent::getDamage() const {
+shared_ptr<DamageComponent> BulletComponent::getDamage() const {
     return _damage;
 }
