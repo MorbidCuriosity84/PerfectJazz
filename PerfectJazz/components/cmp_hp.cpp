@@ -119,8 +119,11 @@ void HPComponent::setVisible(bool b) {
 	if (!_visible) {
 		auto textComp = _parent->GetCompatibleComponent<TextComponent>();
 		auto spritComp = _parent->GetCompatibleComponent<SpriteComponent>();
-		spritComp[1]->getSprite().setTextureRect(sf::IntRect(0, 0, 0, 0));
-		spritComp[2]->getSprite().setTextureRect(sf::IntRect(0, 0, 0, 0));
+		textComp[0].get()->setVisible(false);		
+		spritComp[1].get()->setVisible(false);
+		spritComp[2].get()->setVisible(false);
+		/*spritComp[1]->getSprite().setTextureRect(sf::IntRect(0, 0, 0, 0));
+		spritComp[2]->getSprite().setTextureRect(sf::IntRect(0, 0, 0, 0));*/
 	}
 }
 

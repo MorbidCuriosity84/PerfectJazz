@@ -10,7 +10,6 @@ using namespace sf;
 /*
 * @param int dam, int hp, double ft, Scene* scene, ls::Tile t, float res, float fr, sf::Vector2f vel, _entityCategory cat, bool hpV, sf::Vector2f wScale, sf::Vector2f sScale, _entityCategory wepCat;
 */
-
 struct playerSettings {
 	int _damage;
 	int _hp;
