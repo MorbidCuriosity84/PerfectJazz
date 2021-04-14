@@ -5,7 +5,6 @@
 #include "../components/cmp_damage.h"
 #include "../components/cmp_bullet.h"
 
-
 using namespace std;
 
 void EnemyComponent::fire()
@@ -29,7 +28,7 @@ void EnemyComponent::fire()
 	p->setCategory(_settings._wepCat);
 
 	auto h = bullet->addComponent<HPComponent>(_settings._scene, 100);
-	h->setVisible(_settings._hpVisible);
+	h->setVisible(false);
 	p->getBody()->SetUserData(h.get());
 }
 
@@ -38,9 +37,10 @@ void EnemyComponent::Load(int index)
 	_spriteHelper._spriteTexture.get()->loadFromFile(_spriteHelper.spriteFilename);
 	auto s = _parent->addComponent<SpriteComponent>();
 	s.get()->loadTexture(_spriteHelper, _settings._spriteScale);
-
+	
 	vector<Vector2ul> tile = ls::findTiles(_settings._tile);
-	_parent->setPosition(Vector2f(ls::getTilePosition(tile[index]).x + 15.f, ls::getTilePosition(tile[index]).y - 500.f));
+
+	_parent->setPosition(Vector2f(ls::getTilePosition(tile[index]).x + s->getSprite().getTextureRect().width/2, ls::getTilePosition(tile[index]).y - 480.f));
 	auto phys = _parent->addComponent<EnemyPhysicsComponent>(s.get()->getSprite().getGlobalBounds().getSize());
 	phys.get()->setCategory(_settings._cat);
 	auto h = _parent->addComponent<HPComponent>(_settings._scene, _settings._hp);

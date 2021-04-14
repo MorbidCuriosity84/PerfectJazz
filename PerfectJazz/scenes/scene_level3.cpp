@@ -1,35 +1,32 @@
 #include "scene_level3.h"
-#include "../components/cmp_player_physics.h"
-#include "../components/cmp_background_physics.h"
-#include "../components/cmp_sprite.h"
-#include "../game.h"
-#include "../enemies/load_enemies.h"
 #include <iostream>
 #include <thread>
 #include <LevelSystem.h>
+#include "../components/cmp_player_physics.h"
+#include "../components/cmp_background_physics.h"
+#include "../components/cmp_sprite.h"
 #include "../components/cmp_text.h"
 #include "../components/cmp_hp.h"
 #include "../components/cmp_damage.h"
+#include "../enemies/load_enemies.h"
+#include "../player/create_player.h"
+#include "../game.h"
 
 using namespace std;
 using namespace sf;
 
-shared_ptr<Entity> player;
 static shared_ptr<Entity> background;
 static shared_ptr<Entity> background2;
 static shared_ptr<Entity> overbackground;
 static shared_ptr<Entity> overbackground2;
-static vector<shared_ptr<Entity>> enemies;
 sf::Texture sc3_backgroundtexture_1;
 sf::Texture sc3_backgroundtexture_2;
 sf::Texture sc3_overbackgroundtexture_1;
 sf::Texture sc3_overbackgroundtexture_2;
-sf::Texture playerTexture;
-sf::IntRect playerRectangle;
 sf::View leftView;
 sf::View rightView;
 sf::View mainView;
-sf::Clock timer;
+
 
 void Level3Scene::Load() {
 	cout << " Scene 3 Load" << endl;
@@ -100,26 +97,7 @@ void Level3Scene::Load() {
 
 	//Create player
 	{
-		player = makeEntity();
-		player->setPosition(Vector2f(mainView.getSize().x / 2, mainView.getSize().y - 100.f));
-		player->setView(mainView);
-		auto s = player->addComponent<SpriteComponent>();
-		playerTexture.loadFromFile("res/img/player/player_900.png");
-		playerRectangle.left = (playerTexture.getSize().x / 5) * 2;
-		playerRectangle.top = (playerTexture.getSize().y / 2) * 0;
-		playerRectangle.width = (playerTexture.getSize().x / 5);
-		playerRectangle.height = (playerTexture.getSize().y / 2);
-		s->getSprite().setTexture(playerTexture);
-		s->getSprite().setTextureRect(playerRectangle);
-		s->getSprite().setOrigin(playerTexture.getSize().x / 10, playerTexture.getSize().y / 4);
-		auto phys = player->addComponent<PlayerPhysicsComponent>(Vector2f(playerTexture.getSize().x / 5, playerTexture.getSize().y / 2));
-		phys.get()->setCategory(PLAYER);			
-				
-		auto h = player.get()->addComponent<HPComponent>(this, 1000);
-		auto d = player->addComponent<DamageComponent>(100u);
-		cout << "PLayer health at creation = " << h.get()->getHP() << endl;
-		phys->getBody()->SetUserData(h.get());
-		player->addTag("player");
+		Player::createPlayer(dynamic_cast<Scene*>(&level3));
 	}
 
 	//Create Enemies
@@ -143,7 +121,6 @@ void Level3Scene::Load() {
 	//std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	cout << " Scene 1 Load Done" << endl;
 	setLoaded(true);
-	timer.restart();
 }
 
 void Level3Scene::UnLoad() {
@@ -158,7 +135,7 @@ void Level3Scene::UnLoad() {
 	for (auto e : enemies) {
 		e.reset();
 	}
-	
+
 	Scene::UnLoad();
 }
 
@@ -184,38 +161,6 @@ void Level3Scene::Update(const double& dt) {
 		if (overbackground2->getPosition().y > Engine::getWindowSize().y) {
 			overbackground2->setPosition(Vector2f((mainView.getSize().x - (float)sc3_backgroundtexture_1.getSize().x),
 				-(float)sc3_overbackgroundtexture_2.getSize().y * 3));
-		}
-	}
-
-	//Update player texture
-	{
-		auto pPhysics = player->GetCompatibleComponent<PlayerPhysicsComponent>();
-		auto pSprite = player->GetCompatibleComponent<SpriteComponent>();
-
-		if (timer.getElapsedTime().asSeconds() > 0.1f) {
-
-			//Check if the loaded sprite is the bottom, if so, load the top. And viceversa
-			if (playerRectangle.top == playerTexture.getSize().y / 2) { playerRectangle.top = 0; }
-			else { playerRectangle.top = playerTexture.getSize().y / 2; }
-
-			//Check if it's loaded the right sprite for the movement
-			if (pPhysics[0]->GetDirection() == "right") {
-				if (timer.getElapsedTime().asSeconds() > 0.2f) {
-					playerRectangle.left = (playerTexture.getSize().x / 5) * 4;
-				}
-				else { playerRectangle.left = (playerTexture.getSize().x / 5) * 3; }
-			}
-			if (pPhysics[0]->GetDirection() == "left") {
-				if (timer.getElapsedTime().asSeconds() > 0.2f) {
-					playerRectangle.left = (playerTexture.getSize().x / 5) * 0;
-				}
-				else { playerRectangle.left = (playerTexture.getSize().x / 5) * 1; }
-			}
-			if (pPhysics[0]->GetDirection() == "none") {
-				playerRectangle.left = (playerTexture.getSize().x / 5) * 2;
-				timer.restart();
-			}
-			pSprite[0]->getSprite().setTextureRect(playerRectangle);
 		}
 	}
 

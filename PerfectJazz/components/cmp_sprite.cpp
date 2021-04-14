@@ -5,17 +5,6 @@
 using namespace std;
 
 
-void SpriteComponent::loadTexture(int numRows, int numCols, int row, int col, sf::IntRect& rect, sf::Texture& texture)
-{
-	rect.left = (texture.getSize().x / numCols) * col;
-	rect.top = (texture.getSize().y / numRows) * row;
-	rect.width = (texture.getSize().x / numCols);
-	rect.height = (texture.getSize().y / numRows);
-	getSprite().setTexture(texture);
-	getSprite().setTextureRect(rect);
-	getSprite().setOrigin(texture.getSize().x / (2 * numCols), texture.getSize().y / (2 * numRows));
-}
-
 void SpriteComponent::loadTexture(textureHelper texHelper, sf::Vector2f scale)
 {
 	texHelper._spriteRectangle.get()->left = (texHelper._spriteTexture.get()->getSize().x / texHelper.spriteCols) * texHelper.desiredCol;
@@ -24,7 +13,7 @@ void SpriteComponent::loadTexture(textureHelper texHelper, sf::Vector2f scale)
 	texHelper._spriteRectangle.get()->height = (texHelper._spriteTexture.get()->getSize().y / texHelper.spriteRows);
 	getSprite().setTexture(*texHelper._spriteTexture.get());
 	getSprite().setTextureRect(*texHelper._spriteRectangle.get());	
-	getSprite().setOrigin(texHelper._spriteTexture.get()->getSize().x / (2.f * texHelper.spriteCols), texHelper._spriteTexture.get()->getSize().y / (2.f * texHelper.spriteRows));
+	getSprite().setOrigin(texHelper._spriteTexture->getSize().x / 2.f, texHelper._spriteTexture->getSize().y / 2.f);
 	getSprite().setScale(scale);
 }
 
@@ -34,16 +23,18 @@ void SpriteComponent::setTexure(std::shared_ptr<sf::Texture> tex)
   _sprite->setTexture(*_texture);
 }
 
-
 SpriteComponent::SpriteComponent(Entity* p)
     : Component(p), _sprite(make_shared<sf::Sprite>()) {}
+
+sf::Sprite& SpriteComponent::getSprite() const { return *_sprite; }
+
 
 void SpriteComponent::update(double dt) {
   _sprite->setPosition(_parent->getPosition());
   _sprite->setRotation(_parent->getRotation());
 }
-
 void SpriteComponent::render() { Renderer::queue(_sprite.get(), _parent->getView()); }
+
 
 void ShapeComponent::update(double dt) {
   _shape->setPosition(_parent->getPosition());
@@ -57,4 +48,3 @@ sf::Shape& ShapeComponent::getShape() const { return *_shape; }
 ShapeComponent::ShapeComponent(Entity* p)
     : Component(p), _shape(make_shared<sf::CircleShape>()) {}
 
-sf::Sprite& SpriteComponent::getSprite() const { return *_sprite; }

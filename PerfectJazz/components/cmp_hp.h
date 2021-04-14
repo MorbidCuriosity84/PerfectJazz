@@ -19,6 +19,7 @@ public:
 
 protected:
 	int _hp;
+	int _maxHp;
 	sf::Vector2f position;
 	sf::Text _hpText;
 	Scene* _scene;	
