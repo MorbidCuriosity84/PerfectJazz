@@ -1,14 +1,11 @@
 #include "cmp_enemy_airman.h"
 #include "../components/cmp_bullet.h"
 #include "../components/cmp_enemy_physics.h"
-#include "../components/cmp_enemy_turret.h"
-#include "../components//cmp_hurt_player.h"
 #include "../components/cmp_sprite.h"
 #include "../components/cmp_hp.h"
 #include <LevelSystem.h>
 #include "engine.h"
 #include <SFML/Graphics/CircleShape.hpp>
-#include "../components/cmp_health.h"
 
 using namespace std;
 using namespace sf;
@@ -29,8 +26,7 @@ void AirManEnemyComponent::Load(int _index) {
 	phys.get()->setCategory(ENEMY);	
 	auto h = _parent->addComponent<HPComponent>(_scene, 1000);
 	auto d = _parent->addComponent<DamageComponent>(100u);
-	phys.get()->getBody()->SetUserData(h.get());
-	//_parent->addComponent<HurtComponent>();
+	phys.get()->getBody()->SetUserData(h.get());	
 	_parent->addTag("enemies");
 }
 void AirManEnemyComponent::update(double dt) {

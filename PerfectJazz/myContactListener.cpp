@@ -2,7 +2,6 @@
 #include <iostream>
 #include <ecm.h>
 #include "components/cmp_bullet.h"
-#include "components/cmp_health.h"
 #include "components/cmp_hp.h"
 
 

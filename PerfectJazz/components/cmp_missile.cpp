@@ -13,15 +13,6 @@ void MissileComponent::update(double dt)
 	else {
 		//dumb behaviour
 	}
-
-	if (length(pl->getPosition() - _parent->getPosition()) < 25.0) {
-		pl->setVisible(false);
-		pl->setAlive(false);
-		pl->setPosition({ -50.f, -50.f });
-		_parent->setVisible(false);
-		_parent->setAlive(false);
-		_parent->setPosition({ -50.f, -50.f });
-	}
 }
 
 MissileComponent::MissileComponent(Entity* p, bool seek, double range, _entityCategory category) : Component(p), _seeking(seek), _seekRange(range) 
@@ -33,14 +24,7 @@ MissileComponent::MissileComponent(Entity* p, bool seek, double range, _entityCa
 	b2FixtureDef mFixtureDef;
 	mFixtureDef.shape = &circleShape;
 	mFixtureDef.isSensor = true;	
-	if (category == PLAYER) {
-		mFixtureDef.filter.categoryBits = PLAYER; //belongs to player group
-		mFixtureDef.filter.maskBits = ENEMY; //only collides with enemy group
-	}
-	else {
-		mFixtureDef.filter.categoryBits = ENEMY;
-		mFixtureDef.filter.maskBits = PLAYER;
-	}
+	phys.get()->setCategory(category);
 	auto f = _body->CreateFixture(&mFixtureDef);
 	_fixture = f;
 }

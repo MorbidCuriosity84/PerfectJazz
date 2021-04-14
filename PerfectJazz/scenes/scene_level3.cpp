@@ -1,7 +1,6 @@
 #include "scene_level3.h"
 #include "../components/cmp_player_physics.h"
 #include "../components/cmp_background_physics.h"
-#include "../components//cmp_hurt_player.h"
 #include "../components/cmp_sprite.h"
 #include "../game.h"
 #include "../enemies/load_enemies.h"
@@ -9,7 +8,6 @@
 #include <thread>
 #include <LevelSystem.h>
 #include "../components/cmp_text.h"
-#include "../components/cmp_health.h"
 #include "../components/cmp_hp.h"
 #include "../components/cmp_damage.h"
 

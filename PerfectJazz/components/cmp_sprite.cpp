@@ -16,6 +16,18 @@ void SpriteComponent::loadTexture(int numRows, int numCols, int row, int col, sf
 	getSprite().setOrigin(texture.getSize().x / (2 * numCols), texture.getSize().y / (2 * numRows));
 }
 
+void SpriteComponent::loadTexture(textureHelper texHelper, sf::Vector2f scale)
+{
+	texHelper._spriteRectangle.get()->left = (texHelper._spriteTexture.get()->getSize().x / texHelper.spriteCols) * texHelper.desiredCol;
+	texHelper._spriteRectangle.get()->top = (texHelper._spriteTexture.get()->getSize().y / texHelper.spriteRows) * texHelper.desiredRow;
+	texHelper._spriteRectangle.get()->width = (texHelper._spriteTexture.get()->getSize().x / texHelper.spriteCols);
+	texHelper._spriteRectangle.get()->height = (texHelper._spriteTexture.get()->getSize().y / texHelper.spriteRows);
+	getSprite().setTexture(*texHelper._spriteTexture.get());
+	getSprite().setTextureRect(*texHelper._spriteRectangle.get());	
+	getSprite().setOrigin(texHelper._spriteTexture.get()->getSize().x / (2.f * texHelper.spriteCols), texHelper._spriteTexture.get()->getSize().y / (2.f * texHelper.spriteRows));
+	getSprite().setScale(scale);
+}
+
 void SpriteComponent::setTexure(std::shared_ptr<sf::Texture> tex)
 {
   _texture = tex;

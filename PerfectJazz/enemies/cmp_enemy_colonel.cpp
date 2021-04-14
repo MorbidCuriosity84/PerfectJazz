@@ -1,13 +1,10 @@
 #include "cmp_enemy_colonel.h"
 #include "../components/cmp_bullet.h"
 #include "../components/cmp_enemy_physics.h"
-#include "../components/cmp_enemy_turret.h"
-#include "../components//cmp_hurt_player.h"
 #include "../components/cmp_sprite.h"
 #include <LevelSystem.h>
 #include "engine.h"
 #include <SFML/Graphics/CircleShape.hpp>
-#include "../components/cmp_health.h"
 #include "../components/cmp_hp.h"
 using namespace std;
 using namespace sf;
