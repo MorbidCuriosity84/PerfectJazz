@@ -1,7 +1,6 @@
 #include "scene_level3.h"
 #include "../components/cmp_player_physics.h"
 #include "../components/cmp_background_physics.h"
-#include "../components//cmp_hurt_player.h"
 #include "../components/cmp_sprite.h"
 #include "../game.h"
 #include "../enemies/load_enemies.h"
@@ -9,11 +8,13 @@
 #include <thread>
 #include <LevelSystem.h>
 #include "../components/cmp_text.h"
+#include "../components/cmp_hp.h"
+#include "../components/cmp_damage.h"
 
 using namespace std;
 using namespace sf;
 
-static shared_ptr<Entity> player;
+shared_ptr<Entity> player;
 static shared_ptr<Entity> background;
 static shared_ptr<Entity> background2;
 static shared_ptr<Entity> overbackground;
@@ -111,7 +112,13 @@ void Level3Scene::Load() {
 		s->getSprite().setTexture(playerTexture);
 		s->getSprite().setTextureRect(playerRectangle);
 		s->getSprite().setOrigin(playerTexture.getSize().x / 10, playerTexture.getSize().y / 4);
-		player->addComponent<PlayerPhysicsComponent>(Vector2f(playerTexture.getSize().x / 5, playerTexture.getSize().y / 2));
+		auto phys = player->addComponent<PlayerPhysicsComponent>(Vector2f(playerTexture.getSize().x / 5, playerTexture.getSize().y / 2));
+		phys.get()->setCategory(PLAYER);			
+				
+		auto h = player.get()->addComponent<HPComponent>(this, 1000);
+		auto d = player->addComponent<DamageComponent>(100u);
+		cout << "PLayer health at creation = " << h.get()->getHP() << endl;
+		phys->getBody()->SetUserData(h.get());
 		player->addTag("player");
 	}
 

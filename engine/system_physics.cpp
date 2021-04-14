@@ -1,9 +1,13 @@
 
 #include "system_physics.h"
 #include "Box2D/Box2D.h"
+#include "../PerfectJazz/myContactListener.h"
+#include "../PerfectJazz/game.h"
 
 using namespace std;
 using namespace sf;
+
+myContactListener mContLis;
 
 namespace Physics {
 static shared_ptr<b2World> world;
@@ -11,10 +15,11 @@ const int32 velocityIterations = 6;
 const int32 positionIterations = 2;
 
 void initialise() {
-  b2Vec2 gravity(0.0f, -2.0f);
+  b2Vec2 gravity(0.0f, 0.0f);
   // Construct a world object, which will hold and simulate the rigid
   // bodies.
-  world.reset(new b2World(gravity));
+  world.reset(new b2World(gravity));  
+  world.get()->SetContactListener(&mContLis);
 }
 
 void shutdown() { world.reset(); }

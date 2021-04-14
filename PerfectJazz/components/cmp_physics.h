@@ -2,6 +2,7 @@
 
 #include "cmp_sprite.h"
 #include "ecm.h"
+#include "../game.h"
 #include <Box2D/Dynamics/b2Body.h>
 
 class PhysicsComponent : public Component {
@@ -29,5 +30,6 @@ public:
   void setVelocity(const sf::Vector2f& v);
   void teleport(const sf::Vector2f& v);
   void setSensor(bool b);
+  void setCategory(_entityCategory cat);
   ~PhysicsComponent() override;
 };
