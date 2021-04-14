@@ -14,19 +14,15 @@ sf::IntRect playerRectangle;
 
 void PlayerComponent::fire() {
 	auto bullet = _parent->scene->makeEntity();
-	auto d = bullet->addComponent<DamageComponent>(_settings._damage);
-	auto b = bullet->addComponent<BulletComponent>(d, 5.f);
-
-	auto pS = _parent->GetCompatibleComponent<SpriteComponent>();
-
-	auto playerSpriteBounds = pS[0]->getSprite().getPosition();
-
+	auto pSpr = _parent->GetCompatibleComponent<SpriteComponent>();
 	_weaponSpriteHelper._spriteTexture.get()->loadFromFile(_weaponSpriteHelper.spriteFilename);
 	auto s = bullet->addComponent<SpriteComponent>();
 	s->loadTexture(_weaponSpriteHelper, _settings._wepSpriteScale);
-
-	bullet->setPosition(playerSpriteBounds);
+	bullet->setPosition({ _parent->getPosition().x, _parent->getPosition().y - pSpr[0]->getSprite().getTextureRect().height});
+	auto d = bullet->addComponent<DamageComponent>(_settings._damage);
+	auto b = bullet->addComponent<BulletComponent>(d, 5.f);
 	bullet->setView(_parent->getView());
+
 
 	auto p = bullet->addComponent<PhysicsComponent>(true, s.get()->getSprite().getLocalBounds().getSize());
 	p->getBody()->SetBullet(true);
@@ -37,7 +33,7 @@ void PlayerComponent::fire() {
 	p->setCategory(_settings._wepCat);
 
 	auto h = bullet->addComponent<HPComponent>(_settings._scene, 100);	
-	h.get()->setVisible(false);
+	h.get()->setVisible(_settings._hpVisible);
 	p->getBody()->SetUserData(h.get());
 }
 
@@ -47,13 +43,11 @@ void PlayerComponent::Load() {
 	s.get()->loadTexture(_spriteHelper, _settings._spriteScale);
 
 	_parent->setPosition(Vector2f(mainView.getSize().x / 2, mainView.getSize().y - 100.f));
-
 	auto phys = _parent->addComponent<PlayerPhysicsComponent>(s->getSprite().getGlobalBounds().getSize());
 	phys.get()->setCategory(_settings._cat);
-
 	auto h = _parent->addComponent<HPComponent>(_settings._scene, _settings._hp);
 	auto d = _parent->addComponent<DamageComponent>(_settings._damage);
-
+	h.get()->setVisible(true);
 	phys->getBody()->SetUserData(h.get());	
 	_parent->addTag("player");
 	timer.restart();
@@ -98,9 +92,6 @@ void PlayerComponent::update(double dt) {
 	static float angle = 0.f;
 	angle += 1.f * dt;
 }
-
-//EnemyComponent::EnemyComponent(Entity* p, double fireTime, Scene* scene, ls::Tile tileType, textureHelper spriteTexHelp, textureHelper wepSpriteTexHelp)
-//	: Component(p), _fireTime(fireTime), _scene(scene), _tileType(tileType), _spriteHelper(spriteTexHelp), _weaponSpriteHelper(wepSpriteTexHelp) {}
 
 PlayerComponent::PlayerComponent(Entity* p, textureHelper spriteTexHelp, textureHelper wepSpriteTexHelp, playerSettings settings)
 	: Component(p), _spriteHelper(spriteTexHelp), _weaponSpriteHelper(wepSpriteTexHelp), _settings(settings) {
