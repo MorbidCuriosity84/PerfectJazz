@@ -20,11 +20,19 @@ void TextComponent::setText(const std::string& str) {
 }
 
 sf::Vector2f TextComponent::getPosition() {
-    return _position;
+    return _text.getPosition();
 }
 
 void TextComponent::setPosition(sf::Vector2f position) {
     _text.setPosition(position);
+}
+
+void TextComponent::setOrigin(sf::Vector2f position) {
+    _text.setOrigin(position);
+}
+
+sf::Vector2f TextComponent::getOrigin() {
+    return _text.getOrigin();
 }
 
 void TextComponent::setFontSize(double size) {

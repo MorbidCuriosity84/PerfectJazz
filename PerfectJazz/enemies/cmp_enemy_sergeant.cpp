@@ -18,15 +18,15 @@ double sergeantSpriteTimer;
 void SergeantEnemyComponent::Load(int _index) {
 	sergeantTexture.loadFromFile("res/img/enemies/enemy2_900.png");
 	auto s = _parent->addComponent<SpriteComponent>();
-	s->loadTexture(1, 2, 0, 0, sergeantRectangle, sergeantTexture);		
+	s->loadTexture(1, 2, 0, 0, sergeantRectangle, sergeantTexture);	
+
 	vector<Vector2ul> tile = ls::findTiles(ls::SERGEANT);
 	_parent->setPosition(Vector2f(ls::getTilePosition(tile[_index]).x + 15.f, ls::getTilePosition(tile[_index]).y - 500.f));
 	auto phys = _parent->addComponent<EnemyPhysicsComponent>(Vector2f(15.f, 15.f));
-	auto d = _parent->addComponent<DamageComponent>(100u);	
 	phys.get()->setCategory(ENEMY);	
 	auto h = _parent->addComponent<HPComponent>(_scene, 1000);	
+	auto d = _parent->addComponent<DamageComponent>(100u);
 	phys.get()->getBody()->SetUserData(h.get());
-	//_parent->addComponent<HurtComponent>();
 	_parent->addTag("enemies");
 }
 void SergeantEnemyComponent::update(double dt) {

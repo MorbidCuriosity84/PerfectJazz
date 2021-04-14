@@ -10,27 +10,25 @@
 #include "cmp_player_physics.h"
 
 using namespace std;
-shared_ptr<Entity> overSpriteHP;
-
 
 void HPComponent::update(double dt) {
 	_hpText.setString(std::to_string(_hp));
-	auto comp = _parent->GetCompatibleComponent<TextComponent>();	
+	auto comp = _parent->GetCompatibleComponent<TextComponent>();
 	auto spr = _parent->GetCompatibleComponent<SpriteComponent>();
-	auto posY = spr[0]->getSprite().getPosition().y - spr[0]->getSprite().getTextureRect().getSize().y;
-	auto posX = spr[0]->getSprite().getPosition().x - spr[0]->getSprite().getTextureRect().getSize().x/2;
-	comp[0]->setPosition(Vector2f(posX, posY));
-	comp[0]->setText(std::to_string(_hp));	
+
+	sf::FloatRect textRect = spr[0]->getSprite().getLocalBounds();
+	auto pos = spr[0]->getSprite().getPosition();
+	comp[0]->setPosition(Vector2f(pos.x, pos.y));
 
 	if (_hp <= 0) {
 		_parent->setForDelete();
 	}
 }
 
-void HPComponent::render() { 
+void HPComponent::render() {
 	if (_visible) {
 		Renderer::queue(&_hpText, _parent->getView());
-	}	
+	}
 }
 
 
@@ -38,9 +36,12 @@ void HPComponent::setHP(int hp_value) { _hp = hp_value; }
 
 int HPComponent::getHP() { return _hp; }
 
-void HPComponent::loadHP() {	
+void HPComponent::loadHP() {
 	auto t = _parent->addComponent<TextComponent>(std::to_string(_hp));
-	t->setFontSize(14u);	
+	auto s = _parent->GetCompatibleComponent<SpriteComponent>();
+	sf::FloatRect textRect = s[0]->getSprite().getLocalBounds();
+	t->setOrigin(Vector2f(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f));
+	t->setFontSize(14u);
 }
 
 sf::Vector2f HPComponent::getPosition() {
@@ -61,8 +62,7 @@ HPComponent::HPComponent(Entity* const p, Scene* scene, const int& hp)
 	loadHP();
 }
 
-void HPComponent::handleContact(b2Contact* contact)
-{		
+void HPComponent::handleContact(b2Contact* contact) {
 	HPComponent* compOneHP = static_cast<HPComponent*>(contact->GetFixtureA()->GetBody()->GetUserData());
 	HPComponent* compTwoHP = static_cast<HPComponent*>(contact->GetFixtureB()->GetBody()->GetUserData());
 	shared_ptr<DamageComponent> d1 = compOneHP->_parent->GetCompatibleComponent<DamageComponent>()[0];

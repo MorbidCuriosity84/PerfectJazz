@@ -2,10 +2,11 @@
 #include "../components/cmp_bullet.h"
 #include "../components/cmp_enemy_physics.h"
 #include "../components/cmp_sprite.h"
+#include "../components/cmp_hp.h"
 #include <LevelSystem.h>
 #include "engine.h"
 #include <SFML/Graphics/CircleShape.hpp>
-#include "../components/cmp_hp.h"
+
 using namespace std;
 using namespace sf;
 sf::Texture colonelTexture;
@@ -26,7 +27,6 @@ void ColonelEnemyComponent::Load(int _index) {
 	auto h = _parent->addComponent<HPComponent>(_scene, 1000);	
 	auto d = _parent->addComponent<DamageComponent>(100u);
 	phys.get()->getBody()->SetUserData(h.get());
-	//_parent->addComponent<HurtComponent>();
 	_parent->addTag("enemies");
 }
 void ColonelEnemyComponent::update(double dt) {
