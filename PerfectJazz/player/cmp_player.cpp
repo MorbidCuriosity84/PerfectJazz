@@ -36,8 +36,8 @@ void PlayerComponent::fire() {
 	p->setVelocity(_settings._velocity);
 	p->setCategory(_settings._wepCat);
 
-	auto h = bullet->addComponent<HPComponent>(_settings._scene, 100);
-	h->setVisible(false);
+	auto h = bullet->addComponent<HPComponent>(_settings._scene, 100);	
+	h.get()->setVisible(false);
 	p->getBody()->SetUserData(h.get());
 }
 
@@ -54,8 +54,7 @@ void PlayerComponent::Load() {
 	auto h = _parent->addComponent<HPComponent>(_settings._scene, _settings._hp);
 	auto d = _parent->addComponent<DamageComponent>(_settings._damage);
 
-	phys->getBody()->SetUserData(h.get());
-	h->setVisible(false);
+	phys->getBody()->SetUserData(h.get());	
 	_parent->addTag("player");
 	timer.restart();
 }
