@@ -13,6 +13,7 @@ public:
 	~TextComponent() override = default;
 	void setText(const std::string& str);
 	void setPosition(sf::Vector2f position);
+	sf::FloatRect getLocalBounds();
 	void setOrigin(sf::Vector2f position);
 	sf::Vector2f getOrigin();
 	sf::Vector2f  getPosition();

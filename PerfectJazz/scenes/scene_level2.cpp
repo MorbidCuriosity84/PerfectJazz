@@ -10,11 +10,11 @@
 using namespace std;
 using namespace sf;
 
-static shared_ptr<Entity> player;
 static shared_ptr<Entity> background;
 static shared_ptr<Entity> background2;
 sf::Texture sc2_backgroundtexture_1;
 sf::Texture sc2_backgroundtexture_2;
+
 
 void Level2Scene::Load() {
 	cout << " Scene 2 Load" << endl;

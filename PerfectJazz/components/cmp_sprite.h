@@ -38,7 +38,6 @@ public:
 
   sf::Sprite& getSprite() const;
 
-  void loadTexture(int numRows, int numCols, int row, int col, sf::IntRect& rect, sf::Texture& texture);
   void loadTexture(textureHelper texHelper, sf::Vector2f scale);
   void setTexure(std::shared_ptr<sf::Texture> tex);
 };

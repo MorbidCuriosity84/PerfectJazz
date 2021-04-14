@@ -3,5 +3,6 @@
 
 class LoadEnemies {
 public:
-	static void initiliseEnemies(std::string _waveFile, Scene* _scene);
+	static void initiliseEnemies(std::string _waveFile, Scene* 
+	);
 };

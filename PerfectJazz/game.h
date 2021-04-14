@@ -18,7 +18,8 @@ extern sf::View rightView;
 extern sf::View mainView;
 extern unsigned int gameWidth;
 extern unsigned int gameHeight;
-extern std::shared_ptr<Entity> player;
+static vector<shared_ptr<Entity>> enemies;
+static std::shared_ptr<Entity> player;
 extern myContactListener mContLis;
 
 
