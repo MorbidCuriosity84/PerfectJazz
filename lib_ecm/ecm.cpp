@@ -20,7 +20,9 @@ void Entity::update(double dt) {
       _components.erase(_components.begin() + i);
       --i;
     }
-    _components[i]->update(dt);
+    if (_components[i].get()->isAlive()) {
+        _components[i]->update(dt);
+    }    
   }
 }
 
@@ -29,15 +31,13 @@ bool Entity::is_fordeletion() const { return _fordeletion; }
 void Entity::render() {
   if (!_visible) {
     return;
-  }
-  //Switches view to the viewport then renders entity
-  //I'm not sure why this isn't working properly, it might be the way I',m handling the pointers for view
-  //The only other thing I can think of is it comes from the bullet which gets its view from its parent
-  //cout << _view.getSize() << endl;
+  }  
 
   for (auto& c : _components) {
-      Engine::GetWindow().setView(c->_parent->getView());
-      c->render();
+      //Engine::GetWindow().setView(c->_parent->getView());      
+      if (c.get()->isVisible()) {
+          c->render();
+      }      
   }
 }
 
@@ -67,7 +67,7 @@ bool Entity::isVisible() const { return _visible; }
 
 void Entity::setVisible(bool _visible) { Entity::_visible = _visible; }
 
-Component::Component(Entity* const p) : _parent(p), _fordeletion(false) {}
+Component::Component(Entity* const p) : _parent(p), _fordeletion(false), _isAlive(true), _isVisible(true) {}
 
 Entity::~Entity() {
   // Components can inter-depend on each other, so deleting them may take
@@ -93,6 +93,14 @@ Entity::~Entity() {
 Component::~Component() {}
 
 bool Component::is_fordeletion() const { return _fordeletion; }
+
+void Component::setVisible(bool b) { _isVisible = b; }
+
+bool Component::isVisible() const { return _isVisible; }
+
+void Component::setAlive(bool b) { _isAlive = b; }
+
+bool Component::isAlive() const { return _isAlive; }
 
 void EntityManager::update(double dt) {
   for (size_t i = 0; i < list.size(); i++) {

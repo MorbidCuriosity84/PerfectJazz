@@ -12,7 +12,7 @@ void EnemyComponent::fire()
 	auto bullet = _parent->scene->makeEntity();
 	bullet->setPosition({ _parent->getPosition().x, _parent->getPosition().y + 5.f });
 	auto d = bullet->addComponent<DamageComponent>(_settings._damage);
-	auto b = bullet->addComponent<BulletComponent>(d, 5.f);	
+	auto b = bullet->addComponent<BulletComponent>(d, 5.f);		
 	bullet->setView(_parent->getView());
 
 	_weaponSpriteHelper._spriteTexture.get()->loadFromFile(_weaponSpriteHelper.spriteFilename);
@@ -27,8 +27,8 @@ void EnemyComponent::fire()
 	p->setVelocity(_settings._velocity);
 	p->setCategory(_settings._wepCat);
 
-	auto h = bullet->addComponent<HPComponent>(_settings._scene, 100);
-	h->setVisible(false);
+	auto h = bullet->addComponent<HPComponent>(_settings._scene, 100);		
+	h.get()->setVisible(false);
 	p->getBody()->SetUserData(h.get());
 }
 
@@ -74,9 +74,6 @@ void EnemyComponent::update(double dt)
 	static float angle = 0.f;
 	angle += 1.f * dt;
 }
-
-//EnemyComponent::EnemyComponent(Entity* p, double fireTime, Scene* scene, ls::Tile tileType, textureHelper spriteTexHelp, textureHelper wepSpriteTexHelp)
-//	: Component(p), _fireTime(fireTime), _scene(scene), _tileType(tileType), _spriteHelper(spriteTexHelp), _weaponSpriteHelper(wepSpriteTexHelp) {}
 
 EnemyComponent::EnemyComponent(Entity* p, textureHelper spriteTexHelp, textureHelper wepSpriteTexHelp, enemySettings settings) 
 	: Component(p), _spriteHelper(spriteTexHelp), _weaponSpriteHelper(wepSpriteTexHelp), _settings(settings) {}
