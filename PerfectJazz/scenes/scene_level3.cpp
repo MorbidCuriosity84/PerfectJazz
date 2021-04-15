@@ -135,7 +135,14 @@ void Level3Scene::UnLoad() {
 	for (auto e : enemies) {
 		e.reset();
 	}
-
+	for (auto b : playerBullets) {
+		b.reset();
+		playerBullets.pop_back();
+	}	
+	for (auto b : enemyBullets) {
+		b.reset();
+		enemyBullets.pop_back();
+	}
 	Scene::UnLoad();
 }
 

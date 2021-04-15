@@ -9,16 +9,18 @@
 
 using namespace std;
 sf::Clock timer;
+sf::Clock bTimer;
 sf::Texture playerTexture;
 sf::IntRect playerRectangle;
 
 void PlayerComponent::fire() {
-	auto bullet = _parent->scene->makeEntity();
-	auto pSpr = _parent->GetCompatibleComponent<SpriteComponent>();
 	_weaponSpriteHelper._spriteTexture.get()->loadFromFile(_weaponSpriteHelper.spriteFilename);
-	auto s = bullet->addComponent<SpriteComponent>();
 
+	auto bullet = _parent->scene->makeEntity();
+	auto s = bullet->addComponent<SpriteComponent>();
 	s->loadTexture(_weaponSpriteHelper, _settings._wepSpriteScale, _settings._wepAngle);
+
+	auto pSpr = _parent->GetCompatibleComponent<SpriteComponent>();
 	bullet->setPosition({ _parent->getPosition().x, _parent->getPosition().y - pSpr[0]->getSprite().getTextureRect().height/2});
 	auto d = bullet->addComponent<DamageComponent>(_settings._damage);
 	auto b = bullet->addComponent<BulletComponent>(d, 5.f);
@@ -37,6 +39,7 @@ void PlayerComponent::fire() {
 	auto h = bullet->addComponent<HPComponent>(_settings._scene, 100);	
 	h.get()->setVisible(_settings._hpVisible);
 	p->getBody()->SetUserData(h.get());
+	playerBullets.push_back(bullet);
 }
 
 void PlayerComponent::Load() {
@@ -64,35 +67,59 @@ void PlayerComponent::update(double dt) {
 
 		//Check if the loaded sprite is the bottom, if so, load the top. And viceversa
 		if (_spriteHelper._spriteRectangle.get()->top == _spriteHelper._spriteTexture.get()->getSize().y / 2) { _spriteHelper._spriteRectangle.get()->top = 0; }
-		else { _spriteHelper._spriteRectangle.get()->top = _spriteHelper._spriteTexture.get()->getSize().y / 2; }
+		else { _spriteHelper._spriteRectangle.get()->top = _spriteHelper._spriteTexture.get()->getSize().y / _spriteHelper.spriteRows; }
 
 		//Check if it's loaded the right sprite for the movement
 		if (pPhysics[0]->GetDirection() == "right") {
 			if (timer.getElapsedTime().asSeconds() > 0.2f) {
-				_spriteHelper._spriteRectangle.get()->left = (_spriteHelper._spriteTexture.get()->getSize().x / 5) * 4;
+				_spriteHelper._spriteRectangle.get()->left = (_spriteHelper._spriteTexture.get()->getSize().x / _spriteHelper.spriteCols) * 4;
 			}
-			else { _spriteHelper._spriteRectangle.get()->left = (_spriteHelper._spriteTexture.get()->getSize().x / 5) * 3; }
+			else { _spriteHelper._spriteRectangle.get()->left = (_spriteHelper._spriteTexture.get()->getSize().x / _spriteHelper.spriteCols) * 3; }
 		}
 		if (pPhysics[0]->GetDirection() == "left") {
 			if (timer.getElapsedTime().asSeconds() > 0.2f) {
-				_spriteHelper._spriteRectangle.get()->left = (_spriteHelper._spriteTexture.get()->getSize().x / 5) * 0;
+				_spriteHelper._spriteRectangle.get()->left = (_spriteHelper._spriteTexture.get()->getSize().x / _spriteHelper.spriteCols) * 0;
 			}
-			else { _spriteHelper._spriteRectangle.get()->left = (_spriteHelper._spriteTexture.get()->getSize().x / 5) * 1; }
+			else { _spriteHelper._spriteRectangle.get()->left = (_spriteHelper._spriteTexture.get()->getSize().x / _spriteHelper.spriteCols) * 1; }
 		}
 		if (pPhysics[0]->GetDirection() == "none") {
-			_spriteHelper._spriteRectangle.get()->left = (_spriteHelper._spriteTexture.get()->getSize().x / 5) * 2;
+			_spriteHelper._spriteRectangle.get()->left = (_spriteHelper._spriteTexture.get()->getSize().x / _spriteHelper.spriteCols) * 2;
 			timer.restart();
 		}
 		pSprite[0]->getSprite().setTextureRect(*_spriteHelper._spriteRectangle.get());
 	}
 
+
+	for (auto b : playerBullets) {
+		auto pSprite = b->GetCompatibleComponent<SpriteComponent>();
+		_weaponSpriteHelper._spriteTimer += dt / 2;
+
+		if (_weaponSpriteHelper._spriteTimer >= 1) {
+			_weaponSpriteHelper._spriteRectangle.get()->left = (_weaponSpriteHelper._spriteTexture.get()->getSize().x / _weaponSpriteHelper.spriteCols) * 0;
+		}
+		if (_weaponSpriteHelper._spriteTimer >= 1 && _weaponSpriteHelper._spriteTimer < 2) {
+			_weaponSpriteHelper._spriteRectangle.get()->left = (_weaponSpriteHelper._spriteTexture.get()->getSize().x / _weaponSpriteHelper.spriteCols) * 1;
+		}
+		if (_weaponSpriteHelper._spriteTimer >= 2 && _weaponSpriteHelper._spriteTimer < 3) {
+			_weaponSpriteHelper._spriteRectangle.get()->left = (_weaponSpriteHelper._spriteTexture.get()->getSize().x / _weaponSpriteHelper.spriteCols) * 2;
+		}
+		if (_weaponSpriteHelper._spriteTimer >= 3) {
+			_weaponSpriteHelper._spriteTimer = 0.0;
+
+		}
+
+		pSprite[0]->getSprite().setTextureRect(*_weaponSpriteHelper._spriteRectangle.get());
+
+		if (b->is_fordeletion()) {
+			playerBullets.pop_back();
+		}
+	}
+
 	_fireTime -= dt;
 	if (_fireTime <= 0.f) {
 		fire();
-		_fireTime = _settings._fireTime;
+		_fireTime = _settings._fireTimer;
 	}
-	static float angle = 0.f;
-	angle += 1.f * dt;
 }
 
 PlayerComponent::PlayerComponent(Entity* p, textureHelper spriteTexHelp, textureHelper wepSpriteTexHelp, playerSettings settings)

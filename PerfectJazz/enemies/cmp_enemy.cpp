@@ -32,7 +32,8 @@ void EnemyComponent::fire() {
 
 	auto h = bullet->addComponent<HPComponent>(_settings._scene, 99);
 	h.get()->setVisible(false);
-	p->getBody()->SetUserData(h.get());*/
+	p->getBody()->SetUserData(h.get());
+	enemyBullets.push_back(bullet);
 }
 
 void EnemyComponent::Load(int index) {
@@ -70,13 +71,32 @@ void EnemyComponent::update(double dt) {
 	}
 	s[0]->getSprite().setTextureRect(*_spriteHelper._spriteRectangle.get());
 
+	for (auto b : enemyBullets) {
+		auto pSprite = b->GetCompatibleComponent<SpriteComponent>();
+		_weaponSpriteHelper._spriteTimer += dt / 2;
+
+		if (_weaponSpriteHelper._spriteTimer >= 1) {
+			_weaponSpriteHelper._spriteRectangle.get()->left = (_weaponSpriteHelper._spriteTexture.get()->getSize().x / _weaponSpriteHelper.spriteCols) * 0;
+		}
+		if (_weaponSpriteHelper._spriteTimer >= 1 && _weaponSpriteHelper._spriteTimer < 2) {
+			_weaponSpriteHelper._spriteRectangle.get()->left = (_weaponSpriteHelper._spriteTexture.get()->getSize().x / _weaponSpriteHelper.spriteCols) * 1;
+		}
+		if (_weaponSpriteHelper._spriteTimer >= 2 && _weaponSpriteHelper._spriteTimer < 3) {
+			_weaponSpriteHelper._spriteRectangle.get()->left = (_weaponSpriteHelper._spriteTexture.get()->getSize().x / _weaponSpriteHelper.spriteCols) * 2;
+		}
+		if (_weaponSpriteHelper._spriteTimer >= 3) {
+			_weaponSpriteHelper._spriteTimer = 0.0;
+
+		}
+
+		pSprite[0]->getSprite().setTextureRect(*_weaponSpriteHelper._spriteRectangle.get());
+	}
+
 	_fireTime -= dt;
 	if (_fireTime <= 0.f) {
 		fire();
-		_fireTime = _settings._fireTime;
+		_fireTime = _settings._fireTimer;
 	}
-	static float angle = 0.f;
-	angle += 1.f * dt;
 }
 
 EnemyComponent::EnemyComponent(Entity* p, textureHelper spriteTexHelp, textureHelper wepSpriteTexHelp, enemySettings settings)
