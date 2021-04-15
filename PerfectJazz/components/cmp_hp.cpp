@@ -27,6 +27,7 @@ void HPComponent::update(double dt) {
 	auto hpSpriteBounds = spr[1]->getSprite().getTextureRect().getSize();
 	auto textBounds = comp[0]->getLocalBounds();
 
+
 	comp[0]->setOrigin(Vector2f((floor)((textBounds.width - hpSpriteBounds.x)/2), (textBounds.height + entitySpriteBounds.y/2)));
 	spr[1]->getSprite().setOrigin(Vector2f((floor)((hpSpriteBounds.x + entitySpriteBounds.x)/2), (textBounds.height + entitySpriteBounds.y/2)));
 	spr[2]->getSprite().setOrigin(Vector2f((floor)((hpSpriteBounds.x + entitySpriteBounds.x)/2), (textBounds.height + entitySpriteBounds.y/2)));

@@ -6,9 +6,9 @@
 #include <SFML/Graphics/Texture.hpp>
 
 /*
-* @param string filename, uint16_t rows, uint16_t  cols, uint16_t dRow, uint16_t dCol
+* @param string filename, uint16_t rows, uint16_t  cols, uint16_t dRow, uint16_t dCol, double timer
 * 
-* @Desc Helper structure for creating textures
+* @desc Helper structure for creating textures
 */
 struct textureHelper {
 	std::string spriteFilename;
@@ -19,6 +19,8 @@ struct textureHelper {
 	uint16_t desiredRow;
 	uint16_t desiredCol;
 	double _spriteTimer;
+
+	textureHelper() {}
 	
 	textureHelper(std::string filename, uint16_t rows, uint16_t cols, uint16_t dRow, uint16_t dCol, std::shared_ptr<sf::Texture> texture, std::shared_ptr<sf::IntRect> rect, double timer)
 		: spriteFilename(filename), spriteRows(rows), spriteCols(cols), desiredRow(dRow), desiredCol(dCol) , _spriteRectangle(rect), _spriteTexture(texture), _spriteTimer(timer) {}

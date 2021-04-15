@@ -110,6 +110,9 @@ void PhysicsComponent::setCategory(_entityCategory cat)
         filter.categoryBits = FRIENDLY_MISSILE;
         filter.maskBits = ENEMY | ENEMY_BULLET | ENEMY_MISSILE;
         break;
+    case NO_COLLIDE:        
+        filter.groupIndex = -1;
+        break;
     default:
         break;
     }    

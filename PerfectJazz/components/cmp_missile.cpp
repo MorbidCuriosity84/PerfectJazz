@@ -2,6 +2,7 @@
 #include "maths.h"
 #include "Box2D/Collision/Shapes/b2CircleShape.h"
 #include "cmp_physics.h"
+#include "cmp_bullet.h"
 
 void MissileComponent::update(double dt)
 {
@@ -11,35 +12,45 @@ void MissileComponent::update(double dt)
 		//seek behaviour		
 	}
 	else {
-		//dumb behaviour
+		//dumb behaviour i think this 
 	}
 }
 
-MissileComponent::MissileComponent(Entity* p, bool seek, double range, _entityCategory category) : Component(p), _seeking(seek), _seekRange(range) 
+void MissileComponent::render() { Renderer::queue(&_sprite.get()->getSprite(), _parent->getView()); }
+
+void MissileComponent::fire() 
 {
-	auto phys = _parent->GetCompatibleComponent<PhysicsComponent>()[0];
-	_body = phys.get()->getBody();	
-	b2CircleShape circleShape;
-	circleShape.m_radius = _seekRange;
-	b2FixtureDef mFixtureDef;
-	mFixtureDef.shape = &circleShape;
-	mFixtureDef.isSensor = true;	
-	phys.get()->setCategory(category);
-	auto f = _body->CreateFixture(&mFixtureDef);
-	_fixture = f;
+	auto bullet = _parent->scene->makeEntity();
+	auto d = bullet->addComponent<DamageComponent>(_damage.get()->getDamage());
+	auto b = bullet->addComponent<BulletComponent>(d, 5.f);
+
+	auto pS = _parent->GetCompatibleComponent<SpriteComponent>();
+
+	auto playerSpriteBounds = pS[0]->getSprite().getPosition();
+
+	_wepHelper._spriteTexture.get()->loadFromFile(_wepHelper.spriteFilename);
+	auto s = bullet->addComponent<SpriteComponent>();
+	s->loadTexture(_wepHelper, _wepSettings.wepSpriteScale);
+
+	bullet->setPosition(playerSpriteBounds);
+	bullet->setView(_parent->getView());
+
+	auto p = bullet->addComponent<PhysicsComponent>(true, s.get()->getSprite().getLocalBounds().getSize());
+	p->getBody()->SetBullet(true);
+	p->setSensor(true);
+	p->setRestitution(_wepSettings.restitution);
+	p->setFriction(_wepSettings.friction);
+	p->setVelocity(_wepSettings.velocity);
+	p->setCategory(_wepSettings.wepCat);
+
+	auto h = bullet->addComponent<HPComponent>(_wepSettings.scene, 100);
+	h.get()->setVisible(false);
+	p->getBody()->SetUserData(h.get());
 }
 
-b2Fixture* MissileComponent::getFixture()
-{
-	return _fixture;
-}
-
-b2Body* MissileComponent::getBody()
-{
-	return _body;
-}
-
-void MissileComponent::setSenors(bool sensor)
+MissileComponent::MissileComponent(Entity* p, bool seek, double range, _entityCategory category, textureHelper wepHelper, wepSettings settings) : WeaponComponent(p), _seeking(seek), _seekRange(range)
 {	
-	_fixture->SetSensor(sensor);
+	setCategory(category);
+	_wepHelper = wepHelper;	
+	_wepSettings = settings;
 }

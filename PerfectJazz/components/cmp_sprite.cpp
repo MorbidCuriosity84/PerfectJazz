@@ -14,6 +14,7 @@ void SpriteComponent::loadTexture(textureHelper texHelper, sf::Vector2f scale, f
 	getSprite().setTexture(*texHelper._spriteTexture.get());
 	getSprite().setTextureRect(*texHelper._spriteRectangle.get());	
 
+
 	getSprite().setOrigin(texHelper._spriteTexture->getSize().x / (texHelper.spriteCols * 2),  texHelper._spriteTexture->getSize().y / (texHelper.spriteRows * 2));
 	getSprite().setScale(scale);
 	getSprite().setRotation(angle);
