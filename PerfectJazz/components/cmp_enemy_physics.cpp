@@ -53,4 +53,5 @@ EnemyPhysicsComponent::EnemyPhysicsComponent(Entity* p,
   _body->SetFixedRotation(true);
   //Bullet items have higher-res collision detection
   _body->SetBullet(true);
+  setSensor(false);
 }

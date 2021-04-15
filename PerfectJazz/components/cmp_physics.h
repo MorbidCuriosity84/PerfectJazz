@@ -2,6 +2,7 @@
 
 #include "cmp_sprite.h"
 #include "ecm.h"
+#include "../game.h"
 #include <Box2D/Dynamics/b2Body.h>
 
 class PhysicsComponent : public Component {
@@ -14,6 +15,7 @@ public:
   PhysicsComponent(Entity* p, bool dyn, const sf::Vector2f& size);
 
   b2Fixture* const getFixture() const;
+  b2Body* getBody();
   bool isTouching(const PhysicsComponent& pc) const;
   bool isTouching(const PhysicsComponent& pc, b2Contact const* bc) const;
   std::vector<const b2Contact*> getTouching() const;
@@ -27,5 +29,7 @@ public:
   void dampen(const sf::Vector2f& s);
   void setVelocity(const sf::Vector2f& v);
   void teleport(const sf::Vector2f& v);
+  void setSensor(bool b);
+  void setCategory(_entityCategory cat);
   ~PhysicsComponent() override;
 };

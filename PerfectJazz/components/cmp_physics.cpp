@@ -22,7 +22,7 @@ PhysicsComponent::PhysicsComponent(Entity* p, bool dyn,
 
   // Create the body
   _body = Physics::GetWorld()->CreateBody(&BodyDef);
-  _body->SetActive(true);
+  _body->SetActive(true);  
   {
     // Create the fixture shape
     b2PolygonShape Shape;
@@ -75,6 +75,50 @@ void PhysicsComponent::teleport(const sf::Vector2f& v) {
   _body->SetTransform(sv2_to_bv2(invert_height(v)), 0.0f);
 }
 
+void PhysicsComponent::setSensor(bool b)
+{
+    _fixture->SetSensor(b);
+}
+
+void PhysicsComponent::setCategory(_entityCategory cat)
+{
+    b2Filter filter;
+
+    //Switch case of doom. This is where we *should* be able to define what collides with what
+    switch (cat) {
+    case PLAYER:
+        filter.categoryBits = PLAYER; //belongs to player group
+        filter.maskBits = ENEMY | ENEMY_BULLET | ENEMY_MISSILE; //only collides with enemy group
+        break;
+    case ENEMY:
+        filter.categoryBits = ENEMY; 
+        filter.maskBits = PLAYER | ENEMY | FRIENDLY_BULLET | FRIENDLY_MISSILE; 
+        break;
+    case ENEMY_BULLET:
+        filter.categoryBits = ENEMY_BULLET; 
+        filter.maskBits = PLAYER | FRIENDLY_MISSILE; 
+        break;
+    case ENEMY_MISSILE:        
+        filter.categoryBits = ENEMY_MISSILE;
+        filter.maskBits = PLAYER | FRIENDLY_BULLET | FRIENDLY_MISSILE;
+        break;
+    case FRIENDLY_BULLET:
+        filter.categoryBits = FRIENDLY_BULLET;
+        filter.maskBits = ENEMY| ENEMY_MISSILE;
+        break;
+    case FRIENDLY_MISSILE:
+        filter.categoryBits = FRIENDLY_MISSILE;
+        filter.maskBits = ENEMY | ENEMY_BULLET | ENEMY_MISSILE;
+        break;
+    case NO_COLLIDE:        
+        filter.groupIndex = -1;
+        break;
+    default:
+        break;
+    }    
+    _fixture->SetFilterData(filter);
+}
+
 const sf::Vector2f PhysicsComponent::getVelocity() const {
   return bv2_to_sv2(_body->GetLinearVelocity(), true);
 }
@@ -83,6 +127,11 @@ void PhysicsComponent::setVelocity(const sf::Vector2f& v) {
 }
 
 b2Fixture* const PhysicsComponent::getFixture() const { return _fixture; }
+
+b2Body* PhysicsComponent::getBody()
+{
+    return _body;
+}
 
 PhysicsComponent::~PhysicsComponent() {
   auto a = Physics::GetWorld();

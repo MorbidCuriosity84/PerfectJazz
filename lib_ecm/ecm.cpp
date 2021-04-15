@@ -1,10 +1,12 @@
 #include "ecm.h"
+#include "../engine/engine.h"
 
+using namespace sf;
 using namespace std;
 
 Entity::Entity(Scene* const s)
-    : _position({0, 0}), _rotation(0), _alive(true), _visible(true),
-      scene(s), _fordeletion(false) {}
+    : _position({ 0, 0 }), _rotation(0), _alive(true), _visible(true),
+    scene(s), _fordeletion(false) {}
 
 void Entity::addTag(const std::string& t) { _tags.insert(t); }
 const std::set<std::string>& Entity::getTags() const { return _tags; }
@@ -18,7 +20,9 @@ void Entity::update(double dt) {
       _components.erase(_components.begin() + i);
       --i;
     }
-    _components[i]->update(dt);
+    if (_components[i].get()->isAlive()) {
+        _components[i]->update(dt);
+    }    
   }
 }
 
@@ -27,9 +31,13 @@ bool Entity::is_fordeletion() const { return _fordeletion; }
 void Entity::render() {
   if (!_visible) {
     return;
-  }
+  }  
+
   for (auto& c : _components) {
-    c->render();
+      //Engine::GetWindow().setView(c->_parent->getView());      
+      if (c.get()->isVisible()) {
+          c->render();
+      }      
   }
 }
 
@@ -39,6 +47,8 @@ void Entity::setPosition(const sf::Vector2f& _position) {
   Entity::_position = _position;
 }
 
+void Entity::setView(sf::View _view) { Entity::_view = _view; }
+sf::View Entity::getView() { return _view; }
 float Entity::getRotation() const { return _rotation; }
 
 void Entity::setRotation(float _rotation) { Entity::_rotation = _rotation; }
@@ -57,7 +67,7 @@ bool Entity::isVisible() const { return _visible; }
 
 void Entity::setVisible(bool _visible) { Entity::_visible = _visible; }
 
-Component::Component(Entity* const p) : _parent(p), _fordeletion(false) {}
+Component::Component(Entity* const p) : _parent(p), _fordeletion(false), _isAlive(true), _isVisible(true) {}
 
 Entity::~Entity() {
   // Components can inter-depend on each other, so deleting them may take
@@ -83,6 +93,14 @@ Entity::~Entity() {
 Component::~Component() {}
 
 bool Component::is_fordeletion() const { return _fordeletion; }
+
+void Component::setVisible(bool b) { _isVisible = b; }
+
+bool Component::isVisible() const { return _isVisible; }
+
+void Component::setAlive(bool b) { _isAlive = b; }
+
+bool Component::isAlive() const { return _isAlive; }
 
 void EntityManager::update(double dt) {
   for (size_t i = 0; i < list.size(); i++) {
@@ -112,7 +130,7 @@ vector<shared_ptr<Entity>> EntityManager::find(const string& tag) const {
     if (tgs.find(tag) != tgs.end()) {
       ret.push_back(e);
     }
-  }
+   }
   return ret;
 }
 
