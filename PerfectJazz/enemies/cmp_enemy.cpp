@@ -16,7 +16,7 @@ void EnemyComponent::fire() {
 
 	_weaponSpriteHelper._spriteTexture.get()->loadFromFile(_weaponSpriteHelper.spriteFilename);
 	auto s = bullet->addComponent<SpriteComponent>();
-	s->loadTexture(_weaponSpriteHelper, _settings._wepSpriteScale);
+	s->loadTexture(_weaponSpriteHelper, _settings._wepSpriteScale, _settings._wepAngle);
 
 	auto p = bullet->addComponent<PhysicsComponent>(true, s.get()->getSprite().getLocalBounds().getSize());
 	p->getBody()->SetBullet(true);
@@ -34,7 +34,7 @@ void EnemyComponent::fire() {
 void EnemyComponent::Load(int index) {
 	_spriteHelper._spriteTexture.get()->loadFromFile(_spriteHelper.spriteFilename);
 	auto s = _parent->addComponent<SpriteComponent>();
-	s.get()->loadTexture(_spriteHelper, _settings._spriteScale);
+	s.get()->loadTexture(_spriteHelper, _settings._spriteScale, _settings._spriteAngle);
 
 	vector<Vector2ul> tile = ls::findTiles(_settings._tile);
 
@@ -43,6 +43,7 @@ void EnemyComponent::Load(int index) {
 	phys.get()->setCategory(_settings._cat);
 	auto h = _parent->addComponent<HPComponent>(_settings._scene, _settings._hp);
 	auto d = _parent->addComponent<DamageComponent>(_settings._damage);
+
 	phys.get()->getBody()->SetUserData(h.get());
 	_parent->addTag("enemies");
 }

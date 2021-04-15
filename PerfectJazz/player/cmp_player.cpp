@@ -17,7 +17,7 @@ void PlayerComponent::fire() {
 	auto pSpr = _parent->GetCompatibleComponent<SpriteComponent>();
 	_weaponSpriteHelper._spriteTexture.get()->loadFromFile(_weaponSpriteHelper.spriteFilename);
 	auto s = bullet->addComponent<SpriteComponent>();
-	s->loadTexture(_weaponSpriteHelper, _settings._wepSpriteScale);
+	s->loadTexture(_weaponSpriteHelper, _settings._wepSpriteScale, _settings._wepAngle);
 	bullet->setPosition({ _parent->getPosition().x, _parent->getPosition().y - pSpr[0]->getSprite().getTextureRect().height});
 	auto d = bullet->addComponent<DamageComponent>(_settings._damage);
 	auto b = bullet->addComponent<BulletComponent>(d, 5.f);
@@ -40,7 +40,7 @@ void PlayerComponent::fire() {
 void PlayerComponent::Load() {
 	_spriteHelper._spriteTexture.get()->loadFromFile(_spriteHelper.spriteFilename);
 	auto s = _parent->addComponent<SpriteComponent>();
-	s.get()->loadTexture(_spriteHelper, _settings._spriteScale);
+	s.get()->loadTexture(_spriteHelper, _settings._spriteScale, _settings._spriteAngle);
 
 	_parent->setPosition(Vector2f(mainView.getSize().x / 2, mainView.getSize().y - 100.f));
 	auto phys = _parent->addComponent<PlayerPhysicsComponent>(s->getSprite().getGlobalBounds().getSize());

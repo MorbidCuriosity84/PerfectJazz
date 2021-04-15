@@ -38,7 +38,7 @@ public:
 
   sf::Sprite& getSprite() const;
 
-  void loadTexture(textureHelper texHelper, sf::Vector2f scale);
+  void loadTexture(textureHelper texHelper, sf::Vector2f scale, float angle);
   void setTexure(std::shared_ptr<sf::Texture> tex);
 };
 

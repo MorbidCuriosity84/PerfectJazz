@@ -5,7 +5,7 @@
 using namespace std;
 
 
-void SpriteComponent::loadTexture(textureHelper texHelper, sf::Vector2f scale)
+void SpriteComponent::loadTexture(textureHelper texHelper, sf::Vector2f scale, float angle)
 {
 	texHelper._spriteRectangle.get()->left = (texHelper._spriteTexture.get()->getSize().x / texHelper.spriteCols) * texHelper.desiredCol;
 	texHelper._spriteRectangle.get()->top = (texHelper._spriteTexture.get()->getSize().y / texHelper.spriteRows) * texHelper.desiredRow;
@@ -15,6 +15,7 @@ void SpriteComponent::loadTexture(textureHelper texHelper, sf::Vector2f scale)
 	getSprite().setTextureRect(*texHelper._spriteRectangle.get());	
 	getSprite().setOrigin(texHelper._spriteTexture->getSize().x / (texHelper.spriteCols * 2),  texHelper._spriteTexture->getSize().y / (texHelper.spriteRows * 2));
 	getSprite().setScale(scale);
+	getSprite().setRotation(35.f);
 }
 
 void SpriteComponent::setTexure(std::shared_ptr<sf::Texture> tex)
