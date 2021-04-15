@@ -27,9 +27,10 @@ void HPComponent::update(double dt) {
 	auto hpSpriteBounds = spr[1]->getSprite().getTextureRect().getSize();
 	auto textBounds = comp[0]->getLocalBounds();
 
-	comp[0]->setOrigin(Vector2f((floor)((textBounds.width - hpSpriteBounds.x) / 2), (textBounds.height + entitySpriteBounds.y / 2)));
-	spr[1]->getSprite().setOrigin(Vector2f((floor)((hpSpriteBounds.x + entitySpriteBounds.x) / 2), (textBounds.height + entitySpriteBounds.y / 2)));
-	spr[2]->getSprite().setOrigin(Vector2f((floor)((hpSpriteBounds.x + entitySpriteBounds.x) / 2), (textBounds.height + entitySpriteBounds.y / 2)));
+
+	comp[0]->setOrigin(Vector2f((floor)((textBounds.width - hpSpriteBounds.x)/2), (textBounds.height + entitySpriteBounds.y/2)));
+	spr[1]->getSprite().setOrigin(Vector2f((floor)((hpSpriteBounds.x + entitySpriteBounds.x)/2), (textBounds.height + entitySpriteBounds.y/2)));
+	spr[2]->getSprite().setOrigin(Vector2f((floor)((hpSpriteBounds.x + entitySpriteBounds.x)/2), (textBounds.height + entitySpriteBounds.y/2)));
 
 	auto pos = spr[0]->getSprite().getPosition();
 
@@ -122,8 +123,6 @@ void HPComponent::setVisible(bool b) {
 		textComp[0].get()->setVisible(false);		
 		spritComp[1].get()->setVisible(false);
 		spritComp[2].get()->setVisible(false);
-		/*spritComp[1]->getSprite().setTextureRect(sf::IntRect(0, 0, 0, 0));
-		spritComp[2]->getSprite().setTextureRect(sf::IntRect(0, 0, 0, 0));*/
 	}
 }
 
