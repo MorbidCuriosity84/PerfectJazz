@@ -13,8 +13,9 @@ protected:
 
 public:
 	void update(double dt) override;
-	//void render() override;
+	void render() override;
 	void fire() override;
 	explicit MissileComponent(Entity* p, bool seek, double range, _entityCategory category, textureHelper texHelper, wepSettings settings);
-	MissileComponent(Entity* p, wepSettings w);
+	MissileComponent() = delete;	
+
 };
