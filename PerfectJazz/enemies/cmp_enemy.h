@@ -53,5 +53,8 @@ public:
 
 	EnemyComponent() = delete;	
 	explicit EnemyComponent(Entity* p, textureHelper spriteTexHelp, textureHelper wepSpriteTexHelp, enemySettings settings);
+
+	void addWeapon(shared_ptr<WeaponComponent> wep);
+	shared_ptr<WeaponComponent> getWeapon() const;
 };
 
