@@ -13,7 +13,7 @@ void SpriteComponent::loadTexture(textureHelper texHelper, sf::Vector2f scale)
 	texHelper._spriteRectangle.get()->height = (texHelper._spriteTexture.get()->getSize().y / texHelper.spriteRows);
 	getSprite().setTexture(*texHelper._spriteTexture.get());
 	getSprite().setTextureRect(*texHelper._spriteRectangle.get());	
-	getSprite().setOrigin(texHelper._spriteTexture->getSize().x / 2.f, texHelper._spriteTexture->getSize().y / 2.f);
+	getSprite().setOrigin(texHelper._spriteTexture->getSize().x / (texHelper.spriteCols * 2 ), texHelper._spriteTexture->getSize().y / (texHelper.spriteRows * 2));
 	getSprite().setScale(scale);
 }
 

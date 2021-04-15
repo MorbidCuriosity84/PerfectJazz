@@ -10,7 +10,7 @@ using namespace std;
 void EnemyComponent::fire()
 {
 	auto bullet = _parent->scene->makeEntity();
-	bullet->setPosition({ _parent->getPosition().x, _parent->getPosition().y + 5.f });
+	bullet->setPosition(_parent->getPosition());
 	auto d = bullet->addComponent<DamageComponent>(_settings._damage);
 	auto b = bullet->addComponent<BulletComponent>(d, 5.f);		
 	bullet->setView(_parent->getView());

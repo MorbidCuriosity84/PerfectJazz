@@ -10,7 +10,6 @@ using namespace sf;
 /*
 * @param int dam, int hp, double ft, Scene* scene, ls::Tile t, float res, float fr, sf::Vector2f vel, _entityCategory cat, bool hpV, sf::Vector2f wScale, sf::Vector2f sScale, _entityCategory wepCat; 
 */
-
 struct enemySettings {
 	int _damage;
 	int _hp;
@@ -27,7 +26,7 @@ struct enemySettings {
 	sf::Vector2f _spriteScale;
 
 	enemySettings(int dam, int hp, double ft, Scene* scene, ls::Tile t, float res, float fr, sf::Vector2f vel, _entityCategory cat, bool hpV, sf::Vector2f wScale, sf::Vector2f sScale, _entityCategory wepCat )
-		: _damage(dam), _hp(hp), _fireTime(ft), _wepSpriteScale(sScale), _spriteScale(sScale), _scene(scene), _tile(t), _restitution(res), _friction(fr), _velocity(vel), _cat(cat), _hpVisible(hpV), _wepCat(wepCat) {}
+		: _damage(dam), _hp(hp), _fireTime(ft), _wepSpriteScale(wScale), _spriteScale(sScale), _scene(scene), _tile(t), _restitution(res), _friction(fr), _velocity(vel), _cat(cat), _hpVisible(hpV), _wepCat(wepCat) {}
 };
 
 class EnemyComponent : public Component
