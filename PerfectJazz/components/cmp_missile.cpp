@@ -30,7 +30,7 @@ void MissileComponent::fire()
 
 	_wepHelper._spriteTexture.get()->loadFromFile(_wepHelper.spriteFilename);
 	auto s = bullet->addComponent<SpriteComponent>();
-	s->loadTexture(_wepHelper, _wepSettings.wepSpriteScale);
+	//s->loadTexture(_wepHelper, _wepSettings.wepSpriteScale);
 
 	bullet->setPosition(playerSpriteBounds);
 	bullet->setView(_parent->getView());
