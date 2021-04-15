@@ -22,6 +22,7 @@ void MissileComponent::fire()
 {
 	auto bullet = _parent->scene->makeEntity();
 	auto d = bullet->addComponent<DamageComponent>(_wepSettings.damage);
+
 	auto b = bullet->addComponent<BulletComponent>(d, 5.f);
 
 	auto pS = _parent->GetCompatibleComponent<SpriteComponent>();
@@ -44,7 +45,7 @@ void MissileComponent::fire()
 
 	auto h = bullet->addComponent<HPComponent>(_wepSettings.scene, 100);
 	h.get()->setVisible(false);
-	p->getBody()->SetUserData(h.get());
+	p->getBody()->SetUserData(h.get());*/
 }
 
 MissileComponent::MissileComponent(Entity* p, bool seek, double range, _entityCategory category, textureHelper wepHelper, wepSettings settings) : WeaponComponent(p, settings), _seeking(seek), _seekRange(range)
