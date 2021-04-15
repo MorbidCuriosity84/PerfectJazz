@@ -8,7 +8,10 @@
 using namespace std;
 
 void EnemyComponent::fire() {
-	auto bullet = _parent->scene->makeEntity();
+
+	_weapon.get()->fire();
+
+	/*auto bullet = _parent->scene->makeEntity();
 	auto pS = _parent->GetCompatibleComponent<SpriteComponent>();	
 	
 	_weaponSpriteHelper._spriteTexture.get()->loadFromFile(_weaponSpriteHelper.spriteFilename);
@@ -29,7 +32,7 @@ void EnemyComponent::fire() {
 
 	auto h = bullet->addComponent<HPComponent>(_settings._scene, 99);
 	h.get()->setVisible(false);
-	p->getBody()->SetUserData(h.get());
+	p->getBody()->SetUserData(h.get());*/
 }
 
 void EnemyComponent::Load(int index) {
@@ -38,12 +41,15 @@ void EnemyComponent::Load(int index) {
 	s.get()->loadTexture(_spriteHelper, _settings._spriteScale, _settings._spriteAngle);
 
 	vector<Vector2ul> tile = ls::findTiles(_settings._tile);
-
+	
+	wepSettings weaponSettings(100.0, _settings._restitution, _settings._fireTime, _settings._velocity, _settings._wepSpriteScale, _settings._wepCat, _settings._scene, _settings._fireTime, 1);
+	auto w = _parent->addComponent<MissileComponent>(false, 0.0, ENEMY_MISSILE, _weaponSpriteHelper, weaponSettings);
+	_weapon = w;
 	_parent->setPosition(Vector2f(ls::getTilePosition(tile[index]).x + s->getSprite().getTextureRect().width / 2, ls::getTilePosition(tile[index]).y - 460.f));
 	auto phys = _parent->addComponent<EnemyPhysicsComponent>(s->getSprite().getGlobalBounds().getSize());
 	phys.get()->setCategory(_settings._cat);
 	auto h = _parent->addComponent<HPComponent>(_settings._scene, _settings._hp);
-	auto d = _parent->addComponent<DamageComponent>(_settings._damage);
+	auto d = _parent->addComponent<DamageComponent>(_settings._damage);	
 
 	phys.get()->getBody()->SetUserData(h.get());
 	_parent->addTag("enemies");
@@ -77,5 +83,9 @@ void EnemyComponent::update(double dt) {
 EnemyComponent::EnemyComponent(Entity* p, textureHelper spriteTexHelp, textureHelper wepSpriteTexHelp, enemySettings settings)
 	: Component(p), _spriteHelper(spriteTexHelp), _weaponSpriteHelper(wepSpriteTexHelp), _settings(settings) {
 }
+
+void EnemyComponent::addWeapon(shared_ptr<WeaponComponent> wep) { _weapon = wep; }
+
+shared_ptr<WeaponComponent> EnemyComponent::getWeapon() const { return _weapon; }
 
 
