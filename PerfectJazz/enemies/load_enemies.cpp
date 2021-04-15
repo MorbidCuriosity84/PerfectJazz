@@ -17,7 +17,7 @@ void LoadEnemies::initiliseEnemies(std::string _waveFile, Scene* _scene) {
 		auto en = _scene->makeEntity();
 		en->setView(mainView);
 
-		enemySettings settings(100, 1000, 1.5, _scene, ls::AIRMAN, .4f, .005f, { 0.f,-300.f }, ENEMY, true, { 1.f,1.f }, { 1.f,1.f }, 0, 0, ENEMY_BULLET);
+		enemySettings settings(100, 1000, 1.5, _scene, ls::AIRMAN, .4f, .005f, { 0.f,-300.f }, ENEMY, true, { 1.f,1.f }, { 1.f,1.f }, 90.f, 0, ENEMY_BULLET);
 
 		auto spriteTexture = make_shared<sf::Texture>();
 		auto spriteRectangle = make_shared<sf::IntRect>();
@@ -34,7 +34,7 @@ void LoadEnemies::initiliseEnemies(std::string _waveFile, Scene* _scene) {
 		auto en = _scene->makeEntity();
 		en->setView(mainView);
 
-		enemySettings settings(100, 2000, 2.5, _scene, ls::SERGEANT, .4f, .005f, { 0.f,-300.f }, ENEMY, true, { 1.f,1.f }, { 1.f,1.f }, 0, 0, ENEMY_BULLET);
+		enemySettings settings(100, 2000, 2.5, _scene, ls::SERGEANT, .4f, .005f, { 0.f,-300.f }, ENEMY, true, { 1.f,1.f }, { 1.f,1.f }, 90.f, 0, ENEMY_BULLET);
 
 		auto spriteTexture = make_shared<sf::Texture>();
 		auto spriteRectangle = make_shared<sf::IntRect>();
@@ -51,7 +51,7 @@ void LoadEnemies::initiliseEnemies(std::string _waveFile, Scene* _scene) {
 		auto en = _scene->makeEntity();
 		en->setView(mainView);
 
-		enemySettings settings(100, 3000, 3.5, _scene, ls::COLONEL, .4f, .005f, { 0.f,-300.f }, ENEMY, true, { 1.f,1.f }, { 1.f,1.f }, 0, 0, ENEMY_BULLET);
+		enemySettings settings(100, 3000, 3.5, _scene, ls::COLONEL, .4f, .005f, { 0.f,-300.f }, ENEMY, true, { 1.f,1.f }, { 1.f,1.f }, 90.f, 0, ENEMY_BULLET);
 
 		auto spriteTexture = make_shared<sf::Texture>();
 		auto spriteRectangle = make_shared<sf::IntRect>();
