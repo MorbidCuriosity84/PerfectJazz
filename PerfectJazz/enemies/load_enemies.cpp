@@ -17,7 +17,7 @@ void LoadEnemies::initiliseEnemies(std::string _waveFile, Scene* _scene) {
 		auto en = _scene->makeEntity();
 		en->setView(mainView);
 
-		enemySettings settings(100, 1000, 1.5, _scene, ls::AIRMAN, .4f, .005f, { 0.f,-300.f }, ENEMY, true, { 1.f,1.f }, { 1.f,1.f }, 0, 45.f, ENEMY_BULLET);
+		enemySettings settings(100, 1000, 1.5, _scene, ls::AIRMAN, .4f, .005f, { 0.f,-300.f }, ENEMY, true, { 1.f,1.f }, { 1.f,1.f }, 0, 0, ENEMY_BULLET);
 
 		auto spriteTexture = make_shared<sf::Texture>();
 		auto spriteRectangle = make_shared<sf::IntRect>();

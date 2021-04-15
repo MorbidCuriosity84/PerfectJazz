@@ -13,9 +13,11 @@ void SpriteComponent::loadTexture(textureHelper texHelper, sf::Vector2f scale, f
 	texHelper._spriteRectangle.get()->height = (texHelper._spriteTexture.get()->getSize().y / texHelper.spriteRows);
 	getSprite().setTexture(*texHelper._spriteTexture.get());
 	getSprite().setTextureRect(*texHelper._spriteRectangle.get());	
+	getSprite().setRotation(14.f);
+
 	getSprite().setOrigin(texHelper._spriteTexture->getSize().x / (texHelper.spriteCols * 2),  texHelper._spriteTexture->getSize().y / (texHelper.spriteRows * 2));
 	getSprite().setScale(scale);
-	getSprite().setRotation(35.f);
+	_parent->setRotation(angle);
 }
 
 void SpriteComponent::setTexure(std::shared_ptr<sf::Texture> tex)
@@ -32,7 +34,6 @@ sf::Sprite& SpriteComponent::getSprite() const { return *_sprite; }
 
 void SpriteComponent::update(double dt) {
   _sprite->setPosition(_parent->getPosition());
-  _sprite->setRotation(_parent->getRotation());
 }
 void SpriteComponent::render() { Renderer::queue(_sprite.get(), _parent->getView()); }
 
