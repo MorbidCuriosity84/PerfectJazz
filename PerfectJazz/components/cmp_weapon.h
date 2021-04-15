@@ -12,13 +12,14 @@ using namespace std;
 * @param uint16_t dam, float restitution, float firetime, sf::Vector2f vel, sf::Vector2f wScale, _entityCategory wepCat, Scene* scene, double firetime, uint16_t spread, bool seeking, float range;
 */
 struct wepSettings {
-	uint16_t damage;
 	float restitution;
 	float friction;
 	sf::Vector2f velocity;	
-	_entityCategory wepCat;	
+	_entityCategory wepCat;
+	bool hpVisible;
 	sf::Vector2f wepSpriteScale;	
 	Scene* scene;	
+
 	uint16_t spread;
 	double firetime;
 	bool seeking;
@@ -28,13 +29,14 @@ struct wepSettings {
 
 	wepSettings(uint16_t dam, float res, float fr, sf::Vector2f vel, sf::Vector2f wScale, _entityCategory wepCat, Scene* scene, double ft, uint16_t sp, bool seek, float rng)
 		: wepSpriteScale(wScale), restitution(res), friction(fr), velocity(vel), wepCat(wepCat), scene(scene), damage(dam), firetime(ft), spread(sp), seeking(seek), range(rng) {}
+
 };
 
 class WeaponComponent : public Component
 {
 protected:
-	//std::shared_ptr<DamageComponent> _damage;
-	//std::shared_ptr<SpriteComponent> _sprite;
+	std::shared_ptr<DamageComponent> _damage;
+	std::shared_ptr<SpriteComponent> _sprite;
 	_entityCategory _category;
 	double _firetime; 
 	uint16_t _spread; //number to spawn
@@ -44,16 +46,17 @@ protected:
 
 public:
 	virtual void fire() = 0;
-	void update(double dt) override;
-	void render() override;
+	virtual void update(double dt) = 0;
+	virtual void render() = 0;
 
-	WeaponComponent(Entity* p, wepSettings w);	
+	WeaponComponent() = delete;
+	WeaponComponent(Entity* const p);
 	~WeaponComponent();
 
-	/*std::shared_ptr<DamageComponent> getDamage() const;
+	std::shared_ptr<DamageComponent> getDamage() const;
 	void setDamage(std::shared_ptr<DamageComponent> d);
 	std::shared_ptr<SpriteComponent> getSprite() const;
-	void setSprite(std::shared_ptr<SpriteComponent> s);*/
+	void setSprite(std::shared_ptr<SpriteComponent> s);
 	_entityCategory getCategory() const;
 	void setCategory(_entityCategory cat);
 	double getFiretime() const;

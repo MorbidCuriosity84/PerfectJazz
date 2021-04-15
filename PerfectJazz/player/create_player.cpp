@@ -9,6 +9,7 @@ using namespace sf;
 void Player::createPlayer(Scene* _scene) {
 	auto p = _scene->makeEntity();
 	p->setView(mainView);
+
 	playerSettings settings(100, 100000, 0.5f, _scene, .4f, .005f, { 0.f,100.f }, PLAYER, false, { 1.f,1.f }, { 1.f,1.f }, 90.f, 0, FRIENDLY_BULLET);
 
 	auto spriteTexture = make_shared<sf::Texture>();
