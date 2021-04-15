@@ -9,7 +9,7 @@
 using namespace sf;
 
 /*
-* @param int dam, int hp, double ft, Scene* scene, ls::Tile t, float res, float fr, sf::Vector2f vel, _entityCategory cat, bool hpV, sf::Vector2f wScale, sf::Vector2f sScale, _entityCategory wepCat; 
+* @param int dam, int hp, double ft, Scene* scene, ls::Tile t, float res, float fr, sf::Vector2f vel, _entityCategory cat, bool hpV, sf::Vector2f wScale, sf::Vector2f sScale, float _wepAngle, float _spriteAngle, _entityCategory wepCat, wepSettings wSettings
 */
 struct enemySettings {
 	int _damage;
@@ -28,9 +28,15 @@ struct enemySettings {
 	bool _hpVisible;
 	sf::Vector2f _wepSpriteScale;
 	sf::Vector2f _spriteScale;
+	wepSettings weaponSettings;
 
+<<<<<<< HEAD
+	enemySettings(int dam, int hp, double ft, Scene* scene, ls::Tile t, float res, float fr, sf::Vector2f vel, _entityCategory cat, bool hpV, sf::Vector2f wScale, sf::Vector2f sScale, float wAngle, float sAngle, _entityCategory wepCat, wepSettings wSettings)
+		: _damage(dam), _hp(hp), _fireTime(ft), _wepSpriteScale(wScale), _spriteScale(sScale), _wepAngle(wAngle), _spriteAngle(sAngle), _scene(scene), _tile(t), _restitution(res), _friction(fr), _velocity(vel), _cat(cat), _hpVisible(hpV), _wepCat(wepCat), weaponSettings(wSettings) {}
+=======
 	enemySettings(int dam, int hp, double ft, Scene* scene, ls::Tile t, float res, float fr, sf::Vector2f vel, _entityCategory cat, bool hpV, sf::Vector2f wScale, sf::Vector2f sScale, float wAngle, float sAngle, _entityCategory wepCat )
 		: _damage(dam), _hp(hp), _fireTime(ft), _fireTimer(ft), _wepSpriteScale(wScale), _spriteScale(sScale), _wepAngle(wAngle), _spriteAngle(sAngle), _scene(scene), _tile(t), _restitution(res), _friction(fr), _velocity(vel), _cat(cat), _hpVisible(hpV), _wepCat(wepCat) {}
+>>>>>>> 5f00eea67672c79ca92cc531c00b875e25e290df
 
 };
 
@@ -43,7 +49,7 @@ protected:
 	ls::Tile _tileType;
 	textureHelper _weaponSpriteHelper;
 	enemySettings _settings;
-	shared_ptr<WeaponComponent> _weapon;
+	shared_ptr<WeaponComponent> _weapon;	
 
 public:
 	void fire();

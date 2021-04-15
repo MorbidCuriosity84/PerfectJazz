@@ -41,7 +41,9 @@ void EnemyComponent::Load(int index) {
 	s.get()->loadTexture(_spriteHelper, _settings._spriteScale, _settings._spriteAngle);
 
 	vector<Vector2ul> tile = ls::findTiles(_settings._tile);
-
+		
+	auto w = _parent->addComponent<MissileComponent>(_weaponSpriteHelper, _settings.weaponSettings);
+	_weapon = w;
 	_parent->setPosition(Vector2f(ls::getTilePosition(tile[index]).x + s->getSprite().getTextureRect().width / 2, ls::getTilePosition(tile[index]).y - 460.f));
 	auto phys = _parent->addComponent<EnemyPhysicsComponent>(s->getSprite().getGlobalBounds().getSize());
 	phys.get()->setCategory(_settings._cat);

@@ -8,6 +8,9 @@
 using namespace sf;
 using namespace std;
 
+/*
+* @param uint16_t dam, float restitution, float firetime, sf::Vector2f vel, sf::Vector2f wScale, _entityCategory wepCat, Scene* scene, double firetime, uint16_t spread, bool seeking, float range;
+*/
 struct wepSettings {
 	float restitution;
 	float friction;
@@ -17,10 +20,16 @@ struct wepSettings {
 	sf::Vector2f wepSpriteScale;	
 	Scene* scene;	
 
+	uint16_t spread;
+	double firetime;
+	bool seeking;
+	float range;
+
 	wepSettings() {}
 
-	wepSettings(float res, float fr, sf::Vector2f vel, sf::Vector2f wScale, _entityCategory wepCat, Scene* scene)
-		: wepSpriteScale(wScale), restitution(res), friction(fr), velocity(vel), wepCat(wepCat), scene(scene) {}
+	wepSettings(uint16_t dam, float res, float fr, sf::Vector2f vel, sf::Vector2f wScale, _entityCategory wepCat, Scene* scene, double ft, uint16_t sp, bool seek, float rng)
+		: wepSpriteScale(wScale), restitution(res), friction(fr), velocity(vel), wepCat(wepCat), scene(scene), damage(dam), firetime(ft), spread(sp), seeking(seek), range(rng) {}
+
 };
 
 class WeaponComponent : public Component
