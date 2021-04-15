@@ -4,6 +4,7 @@
 #include "LevelSystem.h"
 #include "../components/cmp_sprite.h"
 #include "../game.h"
+#include "../components/cmp_missile.h"
 
 using namespace sf;
 
@@ -38,6 +39,7 @@ protected:
 	ls::Tile _tileType;
 	textureHelper _weaponSpriteHelper;
 	enemySettings _settings;
+	shared_ptr<WeaponComponent> _weapon;
 
 public:
 	void fire();
