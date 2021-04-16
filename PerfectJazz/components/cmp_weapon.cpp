@@ -2,21 +2,21 @@
 
 void WeaponComponent::fire() {}
 
-void WeaponComponent::update(double dt) {}
+void WeaponComponent::update(double dt) {} 
 
-void WeaponComponent::render() {}
+void WeaponComponent::render()  {} 
 
-WeaponComponent::WeaponComponent(Entity* const p) : Component(p) {}
+WeaponComponent::WeaponComponent(Entity* const p, wepSettings w) : Component(p), _category(w.wepCat), _firetime(w.firetime), _spread(w.spread) {}
 
 WeaponComponent::~WeaponComponent() {}
 
-std::shared_ptr<DamageComponent> WeaponComponent::getDamage() const { return _damage; }
-
-void WeaponComponent::setDamage(std::shared_ptr<DamageComponent> d) { _damage = d; }
-
-std::shared_ptr<SpriteComponent> WeaponComponent::getSprite() const { return _sprite; }
-
-void WeaponComponent::setSprite(std::shared_ptr<SpriteComponent> s) { _sprite = s; }
+//std::shared_ptr<DamageComponent> WeaponComponent::getDamage() const { return _damage; }
+//
+//void WeaponComponent::setDamage(std::shared_ptr<DamageComponent> d) { _damage = d; }
+//
+//std::shared_ptr<SpriteComponent> WeaponComponent::getSprite() const { return _sprite; }
+//
+//void WeaponComponent::setSprite(std::shared_ptr<SpriteComponent> s) { _sprite = s; }
 
 _entityCategory WeaponComponent::getCategory() const { return _category; }
 

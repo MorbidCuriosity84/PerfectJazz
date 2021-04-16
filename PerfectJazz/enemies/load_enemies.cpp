@@ -3,6 +3,7 @@
 #include <LevelSystem.h>
 #include "cmp_enemy.h"
 #include "../components/cmp_sprite.h"
+#include "../components/cmp_weapon.h"
 
 using namespace std;
 using namespace sf;
@@ -17,7 +18,9 @@ void LoadEnemies::initiliseEnemies(std::string _waveFile, Scene* _scene) {
 		auto en = _scene->makeEntity();
 		en->setView(mainView);
 
-		enemySettings settings(100, 1000, 1.5, _scene, ls::AIRMAN, .4f, .005f, { 0.f,-300.f }, ENEMY, true, { 1.f,1.f }, { 1.f,1.f }, 90.f, 0, ENEMY_BULLET);
+		wepSettings wepSettings(150, .4f, .005f, { 0.f,-300.f }, { 1.f,1.f }, ENEMY_MISSILE, _scene, 2.0f, 1, false, 0.f);
+		enemySettings settings(100, 2000, 2.5, _scene, ls::AIRMAN, .4f, .005f, { 0.f,-300.f }, ENEMY, true, { 1.f,1.f }, { 1.f,1.f }, 0.f, 0.f, ENEMY_BULLET, wepSettings);
+
 
 		auto spriteTexture = make_shared<sf::Texture>();
 		auto spriteRectangle = make_shared<sf::IntRect>();
@@ -34,7 +37,9 @@ void LoadEnemies::initiliseEnemies(std::string _waveFile, Scene* _scene) {
 		auto en = _scene->makeEntity();
 		en->setView(mainView);
 
-		enemySettings settings(100, 2000, 2.5, _scene, ls::SERGEANT, .4f, .005f, { 0.f,-300.f }, ENEMY, true, { 1.f,1.f }, { 1.f,1.f }, 90.f, 0, ENEMY_BULLET);
+		wepSettings wepSettings(150, .4f, .005f, { 0.f,-300.f }, { 1.f,1.f }, ENEMY_MISSILE, _scene,2.0f, 1, false, 0.f);
+		enemySettings settings(100, 2000, 2.5, _scene, ls::SERGEANT, .4f, .005f, { 0.f,-300.f }, ENEMY, true, { 1.f,1.f }, { 1.f,1.f }, 0.f, 0.f, ENEMY_BULLET, wepSettings);
+
 
 		auto spriteTexture = make_shared<sf::Texture>();
 		auto spriteRectangle = make_shared<sf::IntRect>();
@@ -51,7 +56,8 @@ void LoadEnemies::initiliseEnemies(std::string _waveFile, Scene* _scene) {
 		auto en = _scene->makeEntity();
 		en->setView(mainView);
 
-		enemySettings settings(100, 3000, 3.5, _scene, ls::COLONEL, .4f, .005f, { 0.f,-300.f }, ENEMY, true, { 1.f,1.f }, { 1.f,1.f }, 90.f, 0, ENEMY_BULLET);
+		wepSettings wepSettings(150, .4f, .005f, { 0.f,-300.f }, { 1.f,1.f }, ENEMY_MISSILE, _scene, 2.0f, 1, false, 0.f);
+		enemySettings settings(100, 2000, 2.5, _scene, ls::COLONEL, .4f, .005f, { 0.f,-300.f }, ENEMY, true, { 1.f,1.f }, { 1.f,1.f }, 0.f, 0.f, ENEMY_BULLET, wepSettings);
 
 		auto spriteTexture = make_shared<sf::Texture>();
 		auto spriteRectangle = make_shared<sf::IntRect>();
