@@ -16,27 +16,25 @@ void MissileComponent::update(double dt)
 	}
 }
 
-void MissileComponent::render() { Renderer::queue(&_sprite.get()->getSprite(), _parent->getView()); }
+//void MissileComponent::render() { Renderer::queue(&_sprite.get()->getSprite(), _parent->getView()); }
 
 void MissileComponent::fire() 
 {
-
 	auto bullet = _parent->scene->makeEntity();
 	auto d = bullet->addComponent<DamageComponent>(_wepSettings.damage);
-
-	/*auto bullet = _parent->scene->makeEntity();
-	auto d = bullet->addComponent<DamageComponent>(_damage.get()->getDamage());
+<<<<<<< HEAD
+=======
 
 	auto b = bullet->addComponent<BulletComponent>(d, 5.f);
+>>>>>>> 5f00eea67672c79ca92cc531c00b875e25e290df
 
 	auto pS = _parent->GetCompatibleComponent<SpriteComponent>();
-
+	
 	auto playerSpriteBounds = pS[0]->getSprite().getPosition();
 
 	_wepHelper._spriteTexture.get()->loadFromFile(_wepHelper.spriteFilename);
 	auto s = bullet->addComponent<SpriteComponent>();
-	s->loadTexture(_wepHelper, _wepSettings.wepSpriteScale);
-
+	s.get()->loadTexture(_wepHelper, _wepSettings.wepSpriteScale, 0.f);	
 	bullet->setPosition(playerSpriteBounds);
 	bullet->setView(_parent->getView());
 
@@ -54,9 +52,10 @@ void MissileComponent::fire()
 }
 
 MissileComponent::MissileComponent(Entity* p,textureHelper wepHelper, wepSettings settings) : WeaponComponent(p, settings), _seeking(settings.seeking), _seekRange(settings.range)
-
 {	
 	setCategory(settings.wepCat);
 	_wepHelper = wepHelper;	
-	_wepSettings = settings;
+	_wepSettings = settings;		
 }
+
+MissileComponent::MissileComponent(Entity* p, wepSettings w) : WeaponComponent(p,w) {}
