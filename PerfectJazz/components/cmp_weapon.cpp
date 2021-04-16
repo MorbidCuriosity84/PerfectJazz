@@ -3,39 +3,33 @@
 
 
 void WeaponComponent::fire() {
-	auto bullet = _settings.scene->makeEntity();
+	auto bullet = _wSettings.scene->makeEntity();
+	auto pS = _parent->GetCompatibleComponent<SpriteComponent>();
 	bullet->setView(_parent->getView());
-	bullet->setPosition({ _parent->getPosition().x, _parent->getPosition().y / 2 });
+	bullet->setPosition({ _parent->getPosition().x, _parent->getPosition().y + (pS[0]->getSprite().getTextureRect().height/2 * _wSettings.direction) });
 
 	auto wepSpriteTexture = make_shared<sf::Texture>();
 	auto wepSpriteRectangle = make_shared<sf::IntRect>();
 	textureHelper spriteHelp("res/img/weapons/Fx_01.png", 1, 3, 0, 2, wepSpriteTexture, wepSpriteRectangle, 2.0);
-	bulletSettings settings;
-	settings.damage = 100;
-	settings.hp = 100;
-	settings.lifetime = 10.f;
-	settings.scene = _settings.scene;
-	settings.spriteAngle = 90.f;
-	settings.category = ENEMY_BULLET;
-	settings.velocity = Vector2f(0.f, -100.f);
-	bullet->addComponent<BulletComponent>(settings, spriteHelp);
+
+	bullet->addComponent<BulletComponent>(_bSettings, spriteHelp);
 }
 
 void WeaponComponent::update(double dt) {
-	_settings.fireTime -= dt;
-	if (_settings.fireTime <= 0.f) {
+	_wSettings.fireTime -= dt;
+	if (_wSettings.fireTime <= 0.f) {
 		fire();
-		_settings.fireTime = _settings.fireTimer;
+		_wSettings.fireTime = _wSettings.fireTimer;
 	}
 }
 
 
 void WeaponComponent::setDamage(uint16_t damage) {
-	_settings.damage = damage;
+	_wSettings.damage = damage;
 }
 
 uint16_t WeaponComponent::getDamage() const {
-	return _settings.damage;
+	return _wSettings.damage;
 }
-WeaponComponent::WeaponComponent(Entity* p, wepSettings settings)
-	: Component(p), _settings(settings) {}
+WeaponComponent::WeaponComponent(Entity* p, wepSettings wSettings, bulletSettings bSettings)
+	: Component(p), _wSettings(wSettings), _bSettings(bSettings) {}

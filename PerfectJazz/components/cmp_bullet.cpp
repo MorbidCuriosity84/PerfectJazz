@@ -5,8 +5,8 @@ using namespace sf;
 void BulletComponent::createBullet() {
 	_bulletTextHelper.spriteTexture.get()->loadFromFile(_bulletTextHelper.spriteFilename);
 	_bulletSprite = _parent->addComponent<SpriteComponent>();
-	_bulletSprite->loadTexture(_bulletTextHelper, _settings.spriteScale, _settings.spriteAngle);
-	_bulletSprite->getSprite().setPosition({ _parent->getPosition().x, _parent->getPosition().y + _bulletSprite->getSprite().getTextureRect().height / 2 });
+	_bulletSprite->loadTexture(_bulletTextHelper, _settings.spriteScale, _settings.angle);
+	_bulletSprite->getSprite().setPosition({ _parent->getPosition().x, _parent->getPosition().y });
 	_bulletSprite->getSprite().setScale(Vector2f(1.f, 1.f));
 	auto d = _parent->addComponent<DamageComponent>(_settings.damage);
 	auto p = _parent->addComponent<PhysicsComponent>(true, _bulletSprite.get()->getSprite().getLocalBounds().getSize());
@@ -15,7 +15,7 @@ void BulletComponent::createBullet() {
 
 	p->getBody()->SetBullet(true);
 	p->setSensor(true);
-	p->setVelocity(_settings.velocity);
+	p->setVelocity(_settings.velocity * _settings.direction);
 	p->setCategory(_settings.category);
 
 	h.get()->setVisible(false);

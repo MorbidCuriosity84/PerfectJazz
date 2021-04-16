@@ -7,29 +7,29 @@
 using namespace sf;
 
 /*
-* @param int dam, int hp, double ft, Scene* scene, ls::Tile t, float res, float fr, sf::Vector2f vel, _entityCategory cat, bool hpV, sf::Vector2f wScale, sf::Vector2f sScale, _entityCategory wepCat;
+* @param int _damage, int _hp, Scene* _scene, float _restitution, float _friction, sf::Vector2f _velocity, _entityCategory _category, bool _hpVisible, sf::Vector2f _scale, float _angle;
 */
 struct playerSettings {
-	int _damage;
-	int _hp;
-	bool _hpVisible;
-	float _restitution;
-	float _friction;
-	float _spriteAngle;
-	Scene* _scene;
-	_entityCategory _cat;
-	sf::Vector2f _velocity;
-	sf::Vector2f _spriteScale;
+	int damage;
+	int hp;
+	bool hpVisible;
+	float restitution;
+	float friction;
+	float angle;
+	Scene* scene;
+	_entityCategory category;
+	sf::Vector2f velocity;
+	sf::Vector2f scale;
 
 	playerSettings() {};
-	playerSettings(int dam, int hp, Scene* scene, float res, float fr, sf::Vector2f vel, _entityCategory cat, bool hpV, sf::Vector2f sScale, float sAngle)
-		: _damage(dam), _hp(hp), _spriteScale(sScale), _spriteAngle(sAngle), _scene(scene), _restitution(res), _friction(fr), _velocity(vel), _cat(cat), _hpVisible(hpV) {
+	playerSettings(int _damage, int _hp, Scene* _scene, float _restitution, float _friction, sf::Vector2f _velocity, _entityCategory _category, bool _hpVisible, sf::Vector2f _scale, float _angle)
+		: damage(_damage), hp(_hp), scene(_scene), restitution(_restitution), friction(_friction), velocity(_velocity), category(_category), hpVisible(_hpVisible), scale(_scale), angle(_angle) {
 	}
 };
 class PlayerComponent : public Component {
 protected:
 	textureHelper _spriteHelper;
-	playerSettings _settings;
+	playerSettings _playerSettings;
 
 public:
 	void Load();

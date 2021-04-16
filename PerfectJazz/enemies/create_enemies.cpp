@@ -50,7 +50,7 @@ void CreateEnemies::setType(_enemyType type, Scene* _scene) {
 	case AIRMAN:
 	{
 		textureHelper spriteHelp("res/img/enemies/enemy1_900.png", 1, 2, 0, 0, spriteTexture, spriteRectangle, 1.5);
-		enemySettings settings(100, 1000, _scene, ls::AIRMAN, .4f, .005f, { 0.f,-300.f }, ENEMY, true, { 1.f,1.f }, 0);
+		enemySettings settings(ls::AIRMAN, 100, 1000, _scene,  .4f, .005f, { 0.f,-300.f }, ENEMY, true, { 1.f,1.f }, 0);
 		_spriteHelp = spriteHelp;
 		_settings = settings;
 		break;
@@ -58,7 +58,7 @@ void CreateEnemies::setType(_enemyType type, Scene* _scene) {
 	case SERGEANT:
 	{
 		textureHelper spriteHelp("res/img/enemies/enemy2_900.png", 1, 2, 0, 0, spriteTexture, spriteRectangle, 1.5);
-		enemySettings settings(100, 2000, _scene, ls::SERGEANT, .4f, .005f, { 0.f,-300.f }, ENEMY, true, { 1.f,1.f }, 0);
+		enemySettings settings(ls::SERGEANT, 100, 2000, _scene, .4f, .005f, { 0.f,-300.f }, ENEMY, true, { 1.f,1.f }, 0);
 		_spriteHelp = spriteHelp;
 		_settings = settings;
 		break;
@@ -66,7 +66,7 @@ void CreateEnemies::setType(_enemyType type, Scene* _scene) {
 	case COLONEL:
 	{
 		textureHelper spriteHelp("res/img/enemies/enemy3_900.png", 1, 2, 0, 0, spriteTexture, spriteRectangle, 1.5);
-		enemySettings settings(100, 3000, _scene, ls::COLONEL, .4f, .005f, { 0.f,-300.f }, ENEMY, true, { 1.f,1.f }, 0);
+		enemySettings settings(ls::COLONEL, 100, 3000, _scene, .4f, .005f, { 0.f,-300.f }, ENEMY, true, { 1.f,1.f }, 0);
 		_spriteHelp = spriteHelp;
 		_settings = settings;
 		break;
