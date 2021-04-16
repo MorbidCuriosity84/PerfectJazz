@@ -12,19 +12,17 @@
 */
 struct textureHelper {
 	std::string spriteFilename;
-	std::shared_ptr<sf::IntRect> _spriteRectangle;
-	std::shared_ptr<sf::Texture> _spriteTexture;
+	std::shared_ptr<sf::IntRect> spriteRectangle;
+	std::shared_ptr<sf::Texture> spriteTexture;
 	uint16_t spriteRows;
 	uint16_t spriteCols;
 	uint16_t desiredRow;
 	uint16_t desiredCol;
-	double _spriteTimer;
-
-	textureHelper() {}
+	double spriteTimer;
 	
+	textureHelper() {};
 	textureHelper(std::string filename, uint16_t rows, uint16_t cols, uint16_t dRow, uint16_t dCol, std::shared_ptr<sf::Texture> texture, std::shared_ptr<sf::IntRect> rect, double timer)
-		: spriteFilename(filename), spriteRows(rows), spriteCols(cols), desiredRow(dRow), desiredCol(dCol) , _spriteRectangle(rect), _spriteTexture(texture), _spriteTimer(timer) {}
-	
+		: spriteFilename(filename), spriteRows(rows), spriteCols(cols), desiredRow(dRow), desiredCol(dCol) , spriteRectangle(rect), spriteTexture(texture), spriteTimer(timer) {}	
 };
 
 class SpriteComponent : public Component {

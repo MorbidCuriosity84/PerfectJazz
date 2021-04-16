@@ -94,14 +94,25 @@ void HPComponent::handleContact(b2Contact* contact) {
 	shared_ptr<DamageComponent> d1 = compOneHP->_parent->GetCompatibleComponent<DamageComponent>()[0];
 	shared_ptr<DamageComponent> d2 = compTwoHP->_parent->GetCompatibleComponent<DamageComponent>()[0];
 
-	cout << "Component One health before collision = " << compOneHP->getHP() << endl;
-	cout << "Damage applied = " << d2.get()->getDamage() << endl;
+	//cout << "Component One health before collision = " << compOneHP->getHP() << endl;
+	//cout << "Damage applied = " << d2.get()->getDamage() << endl;
 	d2.get()->applyDamage(compOneHP);
-	cout << "Component One health after collision = " << compOneHP->getHP() << endl;
-	cout << "Damage applied = " << d1.get()->getDamage() << endl;
-	cout << "Component Two health before collision = " << compTwoHP->getHP() << endl;
+	//cout << "Component One health after collision = " << compOneHP->getHP() << endl;
+	//cout << "Damage applied = " << d1.get()->getDamage() << endl;
+	//cout << "Component Two health before collision = " << compTwoHP->getHP() << endl;
 	d1.get()->applyDamage(compTwoHP);
-	cout << "Component Two health after collision = " << compTwoHP->getHP() << endl;
+	//cout << "Component Two health after collision = " << compTwoHP->getHP() << endl;
+}
+
+void HPComponent::setVisible(bool b) {
+	_visible = b;
+	if (!_visible) {
+		auto textComp = _parent->GetCompatibleComponent<TextComponent>();
+		auto spritComp = _parent->GetCompatibleComponent<SpriteComponent>();
+		textComp[0].get()->setVisible(false);
+		spritComp[1].get()->setVisible(false);
+		spritComp[2].get()->setVisible(false);
+	}
 }
 
 sf::Vector2f HPComponent::getPosition() {
@@ -112,18 +123,6 @@ sf::Vector2f HPComponent::getPosition() {
 void HPComponent::setPosition(sf::Vector2f position) {
 	auto comp = _parent->GetCompatibleComponent<TextComponent>();
 	comp[0]->setPosition(position);
-}
-
-void HPComponent::setVisible(bool b) {
-	_visible = b;
-	//CARLOS - We should be able to not draw this???
-	if (!_visible) {
-		auto textComp = _parent->GetCompatibleComponent<TextComponent>();
-		auto spritComp = _parent->GetCompatibleComponent<SpriteComponent>();
-		textComp[0].get()->setVisible(false);		
-		spritComp[1].get()->setVisible(false);
-		spritComp[2].get()->setVisible(false);
-	}
 }
 
 bool HPComponent::isVisible() const { return _visible; }

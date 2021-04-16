@@ -13,9 +13,9 @@ public:
 	void loadHP();
 	sf::Vector2f getPosition();
 	void setPosition(sf::Vector2f position);
-	void setVisible(bool b);
 	bool isVisible() const;
 	void handleContact(b2Contact* contact);	
+	void setVisible(bool b);
 
 protected:
 	int _hp;

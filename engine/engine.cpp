@@ -3,13 +3,13 @@
 #include "system_physics.h"
 #include "system_renderer.h"
 #include "system_resources.h"
-#include "../lib_tile_level_loader/LevelSystem.h"
 #include <SFML/Graphics.hpp>
+#include "../lib_tile_level_loader/LevelSystem.h"
 #include "../PerfectJazz/components/cmp_sprite.h"
+#include "../PerfectJazz/components/cmp_enemy_physics.h"
 #include <future>
 #include <iostream>
 #include <stdexcept>
-#include "../PerfectJazz/components/cmp_enemy_physics.h"
 
 using namespace sf;
 using namespace std;

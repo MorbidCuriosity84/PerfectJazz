@@ -19,9 +19,10 @@ extern sf::View mainView;
 extern unsigned int gameWidth;
 extern unsigned int gameHeight;
 static vector<shared_ptr<Entity>> enemies;
+static std::shared_ptr<Entity> player;
+static std::shared_ptr<Entity> bullet;
 static vector<shared_ptr<Entity>> playerBullets;
 static vector<shared_ptr<Entity>> enemyBullets;
-static std::shared_ptr<Entity> player;
 extern myContactListener mContLis;
 
 
@@ -51,4 +52,10 @@ enum _entityCategory {
     FRIENDLY_MISSILE = 0x0020,
     ENEMY_MISSILE = 0x0040,
     NO_COLLIDE = 0x0080,    
+};
+
+enum _enemyType {
+    AIRMAN,
+    SERGEANT,
+    COLONEL,
 };

@@ -8,9 +8,10 @@
 #include "../components/cmp_text.h"
 #include "../components/cmp_hp.h"
 #include "../components/cmp_damage.h"
-#include "../enemies/load_enemies.h"
+#include "../enemies/create_enemies.h"
 #include "../player/create_player.h"
 #include "../game.h"
+
 
 using namespace std;
 using namespace sf;
@@ -42,7 +43,7 @@ void Level3Scene::Load() {
 	rightView.setViewport(sf::FloatRect(0.8f, 0, 0.2f, 1.f));
 	//views.push_back(rightView);
 	//Create main view
-	sf::View tempMain(sf::FloatRect(0, 0, Engine::getWindowSize().x / 1.666, Engine::getWindowSize().y));
+	sf::View tempMain(sf::FloatRect(0, 0, (floor)(Engine::getWindowSize().x / 1.66666), Engine::getWindowSize().y));
 	mainView = tempMain;
 	mainView.setViewport(sf::FloatRect(0.2f, 0, 0.6f, 1.f));
 	//views.push_back(mainView);	
@@ -102,7 +103,7 @@ void Level3Scene::Load() {
 
 	//Create Enemies
 	{
-		LoadEnemies::initiliseEnemies("wave1", dynamic_cast<Scene*>(&level3));
+		CreateEnemies::initiliseEnemies("wave1", dynamic_cast<Scene*>(&level3));
 	}
 
 	//Create text for left and right boxes
@@ -126,23 +127,25 @@ void Level3Scene::Load() {
 void Level3Scene::UnLoad() {
 	cout << "Scene 3 Unload" << endl;
 	ls::unload();
-
-	player.reset();
-	background.reset();
-	background2.reset();
-	overbackground.reset();
-	overbackground2.reset();
 	for (auto e : enemies) {
+		enemies.clear();
 		e.reset();
 	}
 	for (auto b : playerBullets) {
 		b.reset();
-		playerBullets.pop_back();
-	}	
+	}
 	for (auto b : enemyBullets) {
 		b.reset();
-		enemyBullets.pop_back();
 	}
+	enemyBullets.clear();
+	player.reset();
+	bullet.reset();
+	background.reset();
+	background2.reset();
+	overbackground.reset();
+	overbackground2.reset();
+
+
 	Scene::UnLoad();
 }
 

@@ -1,37 +1,41 @@
 #include "cmp_weapon.h"
+#include "cmp_bullet.h"
 
-void WeaponComponent::fire() {}
 
-void WeaponComponent::update(double dt) {} 
+void WeaponComponent::fire() {
+	auto bullet = _settings.scene->makeEntity();
+	bullet->setView(_parent->getView());
+	bullet->setPosition({ _parent->getPosition().x, _parent->getPosition().y / 2 });
 
-void WeaponComponent::render()  {} 
+	auto wepSpriteTexture = make_shared<sf::Texture>();
+	auto wepSpriteRectangle = make_shared<sf::IntRect>();
+	textureHelper spriteHelp("res/img/weapons/Fx_01.png", 1, 3, 0, 2, wepSpriteTexture, wepSpriteRectangle, 2.0);
+	bulletSettings settings;
+	settings.damage = 100;
+	settings.hp = 100;
+	settings.lifetime = 10.f;
+	settings.scene = _settings.scene;
+	settings.spriteAngle = 90.f;
+	settings.category = ENEMY_BULLET;
+	settings.velocity = Vector2f(0.f, -100.f);
+	bullet->addComponent<BulletComponent>(settings, spriteHelp);
+}
 
-WeaponComponent::WeaponComponent(Entity* const p, wepSettings w) : Component(p), _category(w.wepCat), _firetime(w.firetime), _spread(w.spread) {}
+void WeaponComponent::update(double dt) {
+	_settings.fireTime -= dt;
+	if (_settings.fireTime <= 0.f) {
+		fire();
+		_settings.fireTime = _settings.fireTimer;
+	}
+}
 
-WeaponComponent::~WeaponComponent() {}
 
-//std::shared_ptr<DamageComponent> WeaponComponent::getDamage() const { return _damage; }
-//
-//void WeaponComponent::setDamage(std::shared_ptr<DamageComponent> d) { _damage = d; }
-//
-//std::shared_ptr<SpriteComponent> WeaponComponent::getSprite() const { return _sprite; }
-//
-//void WeaponComponent::setSprite(std::shared_ptr<SpriteComponent> s) { _sprite = s; }
+void WeaponComponent::setDamage(uint16_t damage) {
+	_settings.damage = damage;
+}
 
-_entityCategory WeaponComponent::getCategory() const { return _category; }
-
-void WeaponComponent::setCategory(_entityCategory cat) { _category = cat; }
-
-double WeaponComponent::getFiretime() const { return _firetime; }
-
-void WeaponComponent::setFiretime(double ft) { _firetime = ft; }
-
-uint16_t WeaponComponent::getSpread() const { return _spread; }
-
-void WeaponComponent::setSpread(uint16_t sp) { _spread = sp; }
-
-Vector2f WeaponComponent::getDirection() const { return _direction; }
-
-void WeaponComponent::setDirection(Vector2f dir) { _direction = dir; }
-
-wepSettings WeaponComponent::getSettings() const { return _wepSettings; }
+uint16_t WeaponComponent::getDamage() const {
+	return _settings.damage;
+}
+WeaponComponent::WeaponComponent(Entity* p, wepSettings settings)
+	: Component(p), _settings(settings) {}

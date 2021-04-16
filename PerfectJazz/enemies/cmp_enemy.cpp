@@ -1,111 +1,53 @@
 #include "cmp_enemy.h"
+#include "engine.h"
 #include "../components/cmp_sprite.h"
 #include "../components/cmp_enemy_physics.h"
 #include "../components/cmp_hp.h"
 #include "../components/cmp_damage.h"
-#include "../components/cmp_bullet.h"
+#include "../components/cmp_weapon.h"
 
 using namespace std;
 
-void EnemyComponent::fire() {
-
-	_weapon.get()->fire();
-
-	/*auto bullet = _parent->scene->makeEntity();
-	auto pS = _parent->GetCompatibleComponent<SpriteComponent>();	
-	
-	_weaponSpriteHelper._spriteTexture.get()->loadFromFile(_weaponSpriteHelper.spriteFilename);
-	auto s = bullet->addComponent<SpriteComponent>();
-	s->loadTexture(_weaponSpriteHelper, _settings._wepSpriteScale, _settings._wepAngle);
-	bullet->setPosition({ _parent->getPosition().x, _parent->getPosition().y + pS[0]->getSprite().getTextureRect().height / 2 });
-	auto d = bullet->addComponent<DamageComponent>(_settings._damage);
-	auto b = bullet->addComponent<BulletComponent>(d, 5.f);
-	bullet->setView(_parent->getView());	
-
-	auto p = bullet->addComponent<PhysicsComponent>(true, s.get()->getSprite().getLocalBounds().getSize());
-	p->getBody()->SetBullet(true);
-	p->setSensor(true);
-	p->setRestitution(_settings._restitution);
-	p->setFriction(_settings._friction);
-	p->setVelocity(_settings._velocity);
-	p->setCategory(_settings._wepCat);
-
-	auto h = bullet->addComponent<HPComponent>(_settings._scene, 99);
-	h.get()->setVisible(false);
-	p->getBody()->SetUserData(h.get());
-	enemyBullets.push_back(bullet);
-}
-
 void EnemyComponent::Load(int index) {
-	_spriteHelper._spriteTexture.get()->loadFromFile(_spriteHelper.spriteFilename);
+	vector<Vector2ul> tile = ls::findTiles(_settings._tile);
+	wepSettings wS(1.5f, 1, _settings._scene);
+
+	_parent->setPosition(Vector2f(ls::getTilePosition(tile[index]).x, ls::getTilePosition(tile[index]).y - 460.f));
+	_parent->addComponent<DamageComponent>(_settings._damage);
+	_parent->addComponent<WeaponComponent>(wS);
+	_parent->addTag("enemies");
+	_spriteHelper.spriteTexture.get()->loadFromFile(_spriteHelper.spriteFilename);
+
 	auto s = _parent->addComponent<SpriteComponent>();
 	s.get()->loadTexture(_spriteHelper, _settings._spriteScale, _settings._spriteAngle);
-
-	vector<Vector2ul> tile = ls::findTiles(_settings._tile);
-	
-	wepSettings weaponSettings(100.0, _settings._restitution, _settings._fireTime, _settings._velocity, _settings._wepSpriteScale, _settings._wepCat, _settings._scene, _settings._fireTime, 1);
-	auto w = _parent->addComponent<MissileComponent>(false, 0.0, ENEMY_MISSILE, _weaponSpriteHelper, weaponSettings);
-	_weapon = w;
-	_parent->setPosition(Vector2f(ls::getTilePosition(tile[index]).x + s->getSprite().getTextureRect().width / 2, ls::getTilePosition(tile[index]).y - 460.f));
 	auto phys = _parent->addComponent<EnemyPhysicsComponent>(s->getSprite().getGlobalBounds().getSize());
 	phys.get()->setCategory(_settings._cat);
-	auto h = _parent->addComponent<HPComponent>(_settings._scene, _settings._hp);
-	auto d = _parent->addComponent<DamageComponent>(_settings._damage);	
 
+	auto h = _parent->addComponent<HPComponent>(_settings._scene, _settings._hp);
 	phys.get()->getBody()->SetUserData(h.get());
-	_parent->addTag("enemies");
 }
 
 void EnemyComponent::update(double dt) {
 	auto s = _parent->GetCompatibleComponent<SpriteComponent>();
 
-	_spriteHelper._spriteTimer += dt / 2;
+	_spriteHelper.spriteTimer += dt / 2;
 
-	if (_spriteHelper._spriteTimer < 0.5) {
-		_spriteHelper._spriteRectangle.get()->left = (_spriteHelper._spriteTexture.get()->getSize().x / 2) * 0;
+	if (_spriteHelper.spriteTimer < 0.5) {
+		_spriteHelper.spriteRectangle.get()->left = (_spriteHelper.spriteTexture.get()->getSize().x / 2) * 0;
 	}
-	if (_spriteHelper._spriteTimer >= 0.5 && _spriteHelper._spriteTimer < 1) {
-		_spriteHelper._spriteRectangle.get()->left = (_spriteHelper._spriteTexture.get()->getSize().x / 2) * 1;
+	if (_spriteHelper.spriteTimer >= 0.5 && _spriteHelper.spriteTimer < 1) {
+		_spriteHelper.spriteRectangle.get()->left = (_spriteHelper.spriteTexture.get()->getSize().x / 2) * 1;
 	}
-	if (_spriteHelper._spriteTimer > 1) {
-		_spriteHelper._spriteTimer = 0.0;
+	if (_spriteHelper.spriteTimer > 1) {
+		_spriteHelper.spriteTimer = 0.0;
 	}
-	s[0]->getSprite().setTextureRect(*_spriteHelper._spriteRectangle.get());
-
-	for (auto b : enemyBullets) {
-		auto pSprite = b->GetCompatibleComponent<SpriteComponent>();
-		_weaponSpriteHelper._spriteTimer += dt / 2;
-
-		if (_weaponSpriteHelper._spriteTimer >= 1) {
-			_weaponSpriteHelper._spriteRectangle.get()->left = (_weaponSpriteHelper._spriteTexture.get()->getSize().x / _weaponSpriteHelper.spriteCols) * 0;
-		}
-		if (_weaponSpriteHelper._spriteTimer >= 1 && _weaponSpriteHelper._spriteTimer < 2) {
-			_weaponSpriteHelper._spriteRectangle.get()->left = (_weaponSpriteHelper._spriteTexture.get()->getSize().x / _weaponSpriteHelper.spriteCols) * 1;
-		}
-		if (_weaponSpriteHelper._spriteTimer >= 2 && _weaponSpriteHelper._spriteTimer < 3) {
-			_weaponSpriteHelper._spriteRectangle.get()->left = (_weaponSpriteHelper._spriteTexture.get()->getSize().x / _weaponSpriteHelper.spriteCols) * 2;
-		}
-		if (_weaponSpriteHelper._spriteTimer >= 3) {
-			_weaponSpriteHelper._spriteTimer = 0.0;
-
-		}
-
-		pSprite[0]->getSprite().setTextureRect(*_weaponSpriteHelper._spriteRectangle.get());
-	}
-
-	_fireTime -= dt;
-	if (_fireTime <= 0.f) {
-		fire();
-		_fireTime = _settings._fireTimer;
-	}
+	s[0]->getSprite().setTextureRect(*_spriteHelper.spriteRectangle.get());
 }
 
-EnemyComponent::EnemyComponent(Entity* p, textureHelper spriteTexHelp, textureHelper wepSpriteTexHelp, enemySettings settings)
-	: Component(p), _spriteHelper(spriteTexHelp), _weaponSpriteHelper(wepSpriteTexHelp), _settings(settings) {
-}
+EnemyComponent::EnemyComponent(Entity* p, textureHelper spriteTexHelp, enemySettings settings)
+	: Component(p), _spriteHelper(spriteTexHelp), _settings(settings) { }
 
-void EnemyComponent::addWeapon(shared_ptr<WeaponComponent> wep) { _weapon = wep; }
 
-shared_ptr<WeaponComponent> EnemyComponent::getWeapon() const { return _weapon; }
+
 
 

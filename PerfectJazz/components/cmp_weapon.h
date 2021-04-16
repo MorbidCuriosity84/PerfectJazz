@@ -1,65 +1,38 @@
 #pragma once
-#include <ecm.h>
 #include "cmp_damage.h"
 #include "cmp_sprite.h"
 #include "../game.h"
+#include <ecm.h>
+#include "cmp_physics.h"
 #include <system_renderer.h>
 
 using namespace sf;
 using namespace std;
 
-/*
-* @param uint16_t dam, float res, float fr, sf::Vector2f vel, sf::Vector2f wScale, _entityCategory wepCat, Scene* scene, double firetime, uint16_t spread
-*/
 struct wepSettings {
-	uint16_t damage;
-	float restitution;
-	float friction;
-	sf::Vector2f velocity;	
-	_entityCategory wepCat;	
-	sf::Vector2f wepSpriteScale;	
-	Scene* scene;	
-	uint16_t spread;
-	double firetime;
+	Scene* scene;
+	double fireTime;
+	double fireTimer;
+	int damage;
+	int numBullets;
 
 	wepSettings() {}
-
-	wepSettings(uint16_t dam, float res, float fr, sf::Vector2f vel, sf::Vector2f wScale, _entityCategory wepCat, Scene* scene, double ft, uint16_t sp)
-		: wepSpriteScale(wScale), restitution(res), friction(fr), velocity(vel), wepCat(wepCat), scene(scene), damage(dam), firetime(ft), spread(sp) {}
+	wepSettings(double _fireTime, int _numBullets, Scene* _scene)
+		: fireTime(_fireTime), fireTimer(_fireTime), numBullets(_numBullets), scene(_scene) {
+	}
 };
 
-class WeaponComponent : public Component
-{
+class WeaponComponent : public Component {
 protected:
-	//std::shared_ptr<DamageComponent> _damage;
-	//std::shared_ptr<SpriteComponent> _sprite;
-	_entityCategory _category;
-	double _firetime; 
-	uint16_t _spread; //number to spawn
-	sf::Vector2f _direction;
-	textureHelper _wepHelper;
-	wepSettings _wepSettings;
-
+	wepSettings _settings;
 public:
-	virtual void fire() = 0;
 	void update(double dt) override;
-	void render() override;
-
-	WeaponComponent(Entity* p, wepSettings w);	
-	~WeaponComponent();
-
-	/*std::shared_ptr<DamageComponent> getDamage() const;
-	void setDamage(std::shared_ptr<DamageComponent> d);
-	std::shared_ptr<SpriteComponent> getSprite() const;
-	void setSprite(std::shared_ptr<SpriteComponent> s);*/
-	_entityCategory getCategory() const;
-	void setCategory(_entityCategory cat);
-	double getFiretime() const;
-	void setFiretime(double ft);
-	uint16_t getSpread() const;
-	void setSpread(uint16_t sp);
-	Vector2f getDirection() const;
-	void setDirection(Vector2f dir);
-	wepSettings getSettings()  const;
+	void render() override {};
+	void fire();
+	void setDamage(uint16_t damage);
+	uint16_t getDamage() const;
+	explicit WeaponComponent(Entity* p, wepSettings settings);
+	WeaponComponent() = delete;
 };
+
 
