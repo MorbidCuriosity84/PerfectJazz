@@ -31,7 +31,7 @@ struct enemySettings {
 	wepSettings weaponSettings;
 
 	enemySettings(int dam, int hp, double ft, Scene* scene, ls::Tile t, float res, float fr, sf::Vector2f vel, _entityCategory cat, bool hpV, sf::Vector2f wScale, sf::Vector2f sScale, float wAngle, float sAngle, _entityCategory wepCat, wepSettings wSettings)
-		: _damage(dam), _hp(hp), _fireTime(ft), _wepSpriteScale(wScale), _spriteScale(sScale), _wepAngle(wAngle), _spriteAngle(sAngle), _scene(scene), _tile(t), _restitution(res), _friction(fr), _velocity(vel), _cat(cat), _hpVisible(hpV), _wepCat(wepCat), weaponSettings(wSettings) {}
+		: _damage(dam), _hp(hp), _fireTime(ft), _wepSpriteScale(wScale), _spriteScale(sScale), _wepAngle(wAngle), _spriteAngle(sAngle), _scene(scene), _tile(t), _restitution(res), _friction(fr), _velocity(vel), _cat(cat), _hpVisible(hpV), _wepCat(wepCat), weaponSettings(wSettings), _fireTimer(ft) {}
 
 
 };
