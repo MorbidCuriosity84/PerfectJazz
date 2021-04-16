@@ -12,24 +12,41 @@ sf::Clock timer;
 sf::Clock bTimer;
 
 void PlayerComponent::Load() {
-	wepSettings wS(1.5f, 1, _settings._scene);
+
+	wepSettings wSettings;
+	wSettings.damage = 100;
+	wSettings.fireTime = 1.5f;
+	wSettings.fireTimer = 1.5f;
+	wSettings.numBullets = 1;
+	wSettings.scene = _playerSettings.scene;
+	wSettings.direction = -1.f;
+
+	bulletSettings bSettings;
+	bSettings.damage = 100;
+	bSettings.hp = 100;
+	bSettings.lifetime = 10.f;
+	bSettings.scene = _playerSettings.scene;
+	bSettings.angle = 90.f;
+	bSettings.category = FRIENDLY_BULLET;
+	bSettings.direction = 1.f;
+	bSettings.velocity = Vector2f(0.f, 100.f);
 
 	_parent->setPosition(Vector2f(mainView.getSize().x / 2, mainView.getSize().y - 100.f));
-	_parent->addComponent<DamageComponent>(_settings._damage);
-	_parent->addComponent<WeaponComponent>(wS);
+	_parent->addComponent<DamageComponent>(_playerSettings.damage);
+	_parent->addComponent<WeaponComponent>(wSettings, bSettings);
 	_parent->addTag("player");
 	_spriteHelper.spriteTexture.get()->loadFromFile(_spriteHelper.spriteFilename);
 
 	auto s = _parent->addComponent<SpriteComponent>();
-	s.get()->loadTexture(_spriteHelper, _settings._spriteScale, _settings._spriteAngle);
+	s.get()->loadTexture(_spriteHelper, _playerSettings.scale, _playerSettings.angle);
 	auto phys = _parent->addComponent<PlayerPhysicsComponent>(s->getSprite().getGlobalBounds().getSize());
-	phys.get()->setCategory(_settings._cat);
+	phys.get()->setCategory(_playerSettings.category);
 
-	auto h = _parent->addComponent<HPComponent>(_settings._scene, _settings._hp);
+	auto h = _parent->addComponent<HPComponent>(_playerSettings.scene, _playerSettings.hp);
 	phys.get()->getBody()->SetUserData(h.get());
 	_spriteHelper.spriteTexture.get()->loadFromFile(_spriteHelper.spriteFilename);
-	h.get()->setVisible(_settings._hpVisible);
-	s.get()->loadTexture(_spriteHelper, _settings._spriteScale, _settings._spriteAngle);
+	h.get()->setVisible(_playerSettings.hpVisible);
+	s.get()->loadTexture(_spriteHelper, _playerSettings.scale, _playerSettings.angle);
 
 	timer.restart();
 }
@@ -66,6 +83,6 @@ void PlayerComponent::update(double dt) {
 	}
 }
 
-PlayerComponent::PlayerComponent(Entity* p, textureHelper spriteTexHelp, playerSettings settings)
-	: Component(p), _spriteHelper(spriteTexHelp), _settings(settings) {
+PlayerComponent::PlayerComponent(Entity* p, textureHelper spriteTexHelp, playerSettings playerSettings)
+	: Component(p), _spriteHelper(spriteTexHelp), _playerSettings(playerSettings) {
 }

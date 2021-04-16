@@ -9,7 +9,7 @@ using namespace sf;
 void Player::createPlayer(Scene* _scene) {
 	auto p = _scene->makeEntity();
 	p->setView(mainView);
-	playerSettings settings(100, 100000, _scene, .4f, .005f, { 0.f,100.f }, PLAYER, true, { 1.f,1.f }, 0.f);
+	playerSettings settings(100, 100000, _scene, .4f, .005f, { 0.f,100.f }, PLAYER, true, { 1.f,1.f }, 0);
 
 	auto spriteTexture = make_shared<sf::Texture>();
 	auto spriteRectangle = make_shared<sf::IntRect>();

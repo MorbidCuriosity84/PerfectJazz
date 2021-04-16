@@ -4,35 +4,36 @@
 #include "LevelSystem.h"
 #include "../components/cmp_sprite.h"
 #include "../components/cmp_weapon.h"
+#include <LevelSystem.h>
 
 using namespace sf;
 
 /*
-* @param int dam, int hp, double ft, Scene* scene, ls::Tile t, float res, float fr, sf::Vector2f vel, _entityCategory cat, bool hpV, sf::Vector2f wScale, sf::Vector2f sScale, _entityCategory wepCat;
+* @param ls::Tile _tile, int _damage, int _hp, Scene* _scene, float _restitution, float _friction, sf::Vector2f _velocity, _entityCategory _category, bool _hpVisible, sf::Vector2f _scale, float _angle;
 */
 struct enemySettings {
-	ls::Tile _tile;
-	int _damage;
-	int _hp;
-	bool _hpVisible;
-	float _restitution;
-	float _friction;
-	float _spriteAngle;
-	Scene* _scene;
-	_entityCategory _cat;
-	sf::Vector2f _velocity;
-	sf::Vector2f _spriteScale;
+	ls::Tile tile;
+	int damage;
+	int hp;
+	bool hpVisible;
+	float restitution;
+	float friction;
+	float angle;
+	Scene* scene;
+	_entityCategory category;
+	sf::Vector2f velocity;
+	sf::Vector2f scale;
 
 	enemySettings() {};
-	enemySettings(int dam, int hp, Scene* scene, ls::Tile t, float res, float fr, sf::Vector2f vel, _entityCategory cat, bool hpV, sf::Vector2f sScale, float sAngle)
-		: _damage(dam), _hp(hp), _spriteScale(sScale), _spriteAngle(sAngle), _scene(scene), _tile(t), _restitution(res), _friction(fr), _velocity(vel), _cat(cat), _hpVisible(hpV) {
+	enemySettings(ls::Tile _tile, int _damage, int _hp, Scene* _scene, float _restitution, float _friction, sf::Vector2f _velocity, _entityCategory _category, bool _hpVisible, sf::Vector2f _scale, float _angle)
+		: tile(_tile), damage(_damage), hp(_hp), scene(_scene), restitution(_restitution), friction(_friction), velocity(_velocity), category(_category), hpVisible(_hpVisible), scale(_scale), angle(_angle) {
 	}
 };
 
 class EnemyComponent : public Component {
 protected:
 	textureHelper _spriteHelper;
-	enemySettings _settings;
+	enemySettings _enemySettings;
 
 public:
 	void Load(int index);

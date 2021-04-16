@@ -9,21 +9,38 @@
 using namespace std;
 
 void EnemyComponent::Load(int index) {
-	vector<Vector2ul> tile = ls::findTiles(_settings._tile);
-	wepSettings wS(1.5f, 1, _settings._scene);
+	vector<Vector2ul> tile = ls::findTiles(_enemySettings.tile);
+
+	wepSettings wSettings;
+	wSettings.damage = 100;
+	wSettings.fireTime = 1.5f;
+	wSettings.fireTimer = 1.5f;
+	wSettings.numBullets = 1;
+	wSettings.scene = _enemySettings.scene;
+	wSettings.direction = 1;
+
+	bulletSettings bSettings;
+	bSettings.damage = 100;
+	bSettings.hp = 100;
+	bSettings.lifetime = 10.f;
+	bSettings.scene = _enemySettings.scene;
+	bSettings.angle = 90.f;
+	bSettings.category = ENEMY_BULLET;
+	bSettings.direction = -1;
+	bSettings.velocity = Vector2f(0.f, 100.f);
 
 	_parent->setPosition(Vector2f(ls::getTilePosition(tile[index]).x, ls::getTilePosition(tile[index]).y - 460.f));
-	_parent->addComponent<DamageComponent>(_settings._damage);
-	_parent->addComponent<WeaponComponent>(wS);
+	_parent->addComponent<DamageComponent>(_enemySettings.damage);
+	_parent->addComponent<WeaponComponent>(wSettings, bSettings);
 	_parent->addTag("enemies");
 	_spriteHelper.spriteTexture.get()->loadFromFile(_spriteHelper.spriteFilename);
 
 	auto s = _parent->addComponent<SpriteComponent>();
-	s.get()->loadTexture(_spriteHelper, _settings._spriteScale, _settings._spriteAngle);
+	s.get()->loadTexture(_spriteHelper, _enemySettings.scale, _enemySettings.angle);
 	auto phys = _parent->addComponent<EnemyPhysicsComponent>(s->getSprite().getGlobalBounds().getSize());
-	phys.get()->setCategory(_settings._cat);
+	phys.get()->setCategory(_enemySettings.category);
 
-	auto h = _parent->addComponent<HPComponent>(_settings._scene, _settings._hp);
+	auto h = _parent->addComponent<HPComponent>(_enemySettings.scene, _enemySettings.hp);
 	phys.get()->getBody()->SetUserData(h.get());
 }
 
@@ -44,8 +61,8 @@ void EnemyComponent::update(double dt) {
 	s[0]->getSprite().setTextureRect(*_spriteHelper.spriteRectangle.get());
 }
 
-EnemyComponent::EnemyComponent(Entity* p, textureHelper spriteTexHelp, enemySettings settings)
-	: Component(p), _spriteHelper(spriteTexHelp), _settings(settings) { }
+EnemyComponent::EnemyComponent(Entity* p, textureHelper spriteTexHelp, enemySettings enemySettings)
+	: Component(p), _spriteHelper(spriteTexHelp), _enemySettings(enemySettings) { }
 
 
 
