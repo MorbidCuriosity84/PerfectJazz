@@ -29,5 +29,5 @@ void WeaponComponent::setDamage(uint16_t damage) {
 uint16_t WeaponComponent::getDamage() const {
 	return _wSettings.damage;
 }
-WeaponComponent::WeaponComponent(Entity* p, wepSettings wSettings, bulletSettings bSettings, textureHelper bTextureHelper)
+WeaponComponent::WeaponComponent(Entity* p, weaponSettings wSettings, bulletSettings bSettings, textureSettings bTextureHelper)
 	: Component(p), _wSettings(wSettings), _bSettings(bSettings), _bulletTextureHelper(bTextureHelper){}

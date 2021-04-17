@@ -45,7 +45,10 @@ void Level3Scene::Load() {
 	//Create main view
 	sf::View tempMain(sf::FloatRect(0, 0, (floor)(Engine::getWindowSize().x / 1.66666), Engine::getWindowSize().y));
 	mainView = tempMain;
+
 	mainView.setViewport(sf::FloatRect(0.2f, 0, 0.6f, 1.f));
+
+	//mainScene = dynamic_cast<Scene*>(&level3);
 	//views.push_back(mainView);	
 
 

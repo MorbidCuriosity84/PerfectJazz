@@ -1,10 +1,5 @@
 #include "cmp_enemy.h"
-#include "engine.h"
-#include "../components/cmp_sprite.h"
 #include "../components/cmp_enemy_physics.h"
-#include "../components/cmp_hp.h"
-#include "../components/cmp_damage.h"
-#include "../components/cmp_weapon.h"
 
 using namespace std;
 
@@ -43,7 +38,7 @@ void EnemyComponent::update(double dt) {
 	s[0]->getSprite().setTextureRect(*_enemyTextureHelper.spriteRectangle.get());
 }
 
-EnemyComponent::EnemyComponent(Entity* p, textureHelper enemyTextureHelper, textureHelper bulletTextureHelper, enemySettings enemySettings, wepSettings weaponSettings, bulletSettings bulletSettings)
+EnemyComponent::EnemyComponent(Entity* p, textureSettings enemyTextureHelper, textureSettings bulletTextureHelper, enemySettings enemySettings, weaponSettings weaponSettings, bulletSettings bulletSettings)
 	: Component(p), _enemyTextureHelper(enemyTextureHelper), _bulletTextureHelper(bulletTextureHelper), _enemySettings(enemySettings), _weaponSettings(weaponSettings), _bulletSettings(bulletSettings){ }
 
 

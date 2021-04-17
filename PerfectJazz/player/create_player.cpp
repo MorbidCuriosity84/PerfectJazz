@@ -1,7 +1,7 @@
 #include "create_player.h"
-#include "../game.h"
 #include "cmp_player.h"
 #include <LevelSystem.h>
+#include "../game.h"
 
 using namespace std;
 using namespace sf;
@@ -16,14 +16,14 @@ void Player::createPlayer(Scene* _scene) {
 	pSettings.restitution = 0.4f;
 	pSettings.friction = 0.005f;
 	pSettings.velocity = { 0.f,100.f };
-	pSettings.category = PLAYER;
+	pSettings.category = PLAYER_BODY;
 	pSettings.hpVisible = false;
 	pSettings.scale = { 1.f,1.f };
 	pSettings.angle = 0;
 	
 	auto playerSpriteTexture = make_shared<sf::Texture>();
 	auto playerSpriteRectangle = make_shared<sf::IntRect>();
-	textureHelper playerTextureHelper;
+	textureSettings playerTextureHelper;
 	playerTextureHelper.spriteFilename = "res/img/player/player_900.png";
 	playerTextureHelper.spriteRows = 2;
 	playerTextureHelper.spriteCols = 5;
@@ -34,7 +34,7 @@ void Player::createPlayer(Scene* _scene) {
 	playerTextureHelper.spriteRectangle = playerSpriteRectangle;
 	playerTextureHelper.spriteTimer = 1.5;
 
-	wepSettings wSettings;
+	weaponSettings wSettings;
 	wSettings.damage = 100;
 	wSettings.fireTime = 1.5f;
 	wSettings.fireTimer = 1.5f;
@@ -55,7 +55,7 @@ void Player::createPlayer(Scene* _scene) {
 
 	auto bulletSpriteTexture = make_shared<sf::Texture>();
 	auto bulletSpriteRectangle = make_shared<sf::IntRect>();
-	textureHelper bulletTextureHelper;
+	textureSettings bulletTextureHelper;
 	bulletTextureHelper.spriteFilename = "res/img/weapons/Fx_01.png";
 	bulletTextureHelper.spriteRows = 1;
 	bulletTextureHelper.spriteCols = 3;

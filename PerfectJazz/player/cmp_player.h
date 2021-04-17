@@ -4,7 +4,7 @@
 #include "../components/cmp_sprite.h"
 #include "../components/cmp_weapon.h"
 #include "../components/cmp_bullet.h"
-
+#include "../game.h"
 using namespace sf;
 
 /*
@@ -29,10 +29,10 @@ struct playerSettings {
 };
 class PlayerComponent : public Component {
 protected:
-	textureHelper _playerTextureHelper;
-	textureHelper _bulletTextureHelper;
+	textureSettings _playerTextureHelper;
+	textureSettings _bulletTextureHelper;
 	playerSettings _playerSettings;
-	wepSettings _weaponSettings;
+	weaponSettings _weaponSettings;
 	bulletSettings _bulletSettings;
 
 public:
@@ -41,5 +41,5 @@ public:
 	void update(double dt);
 
 	PlayerComponent() = delete;
-	explicit PlayerComponent(Entity* p, textureHelper playerTextureHelper, textureHelper bulletTextureHelper, playerSettings playerSettings, wepSettings weaponSettings, bulletSettings bulletSettings);
+	explicit PlayerComponent(Entity* p, textureSettings playerTextureHelper, textureSettings bulletTextureHelper, playerSettings playerSettings, weaponSettings weaponSettings, bulletSettings bulletSettings);
 };

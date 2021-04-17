@@ -64,6 +64,6 @@ void PlayerComponent::update(double dt) {
 	}
 }
 
-PlayerComponent::PlayerComponent(Entity* p, textureHelper playerTextureHelper, textureHelper bulletTextureHelper, playerSettings playerSettings, wepSettings weaponSettings, bulletSettings bulletSettings)
+PlayerComponent::PlayerComponent(Entity* p, textureSettings playerTextureHelper, textureSettings bulletTextureHelper, playerSettings playerSettings, weaponSettings weaponSettings, bulletSettings bulletSettings)
 	: Component(p), _playerTextureHelper(playerTextureHelper), _bulletTextureHelper(bulletTextureHelper), _playerSettings(playerSettings), _weaponSettings(weaponSettings), _bulletSettings(bulletSettings) {
 }
