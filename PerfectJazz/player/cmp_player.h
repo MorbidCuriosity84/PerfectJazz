@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include "../components/cmp_sprite.h"
 #include "../components/cmp_weapon.h"
+#include "../components/cmp_bullet.h"
 
 using namespace sf;
 
@@ -28,8 +29,11 @@ struct playerSettings {
 };
 class PlayerComponent : public Component {
 protected:
-	textureHelper _spriteHelper;
+	textureHelper _playerTextureHelper;
+	textureHelper _bulletTextureHelper;
 	playerSettings _playerSettings;
+	wepSettings _weaponSettings;
+	bulletSettings _bulletSettings;
 
 public:
 	void Load();
@@ -37,5 +41,5 @@ public:
 	void update(double dt);
 
 	PlayerComponent() = delete;
-	explicit PlayerComponent(Entity* p, textureHelper spriteTexHelp, playerSettings settings);
+	explicit PlayerComponent(Entity* p, textureHelper playerTextureHelper, textureHelper bulletTextureHelper, playerSettings playerSettings, wepSettings weaponSettings, bulletSettings bulletSettings);
 };

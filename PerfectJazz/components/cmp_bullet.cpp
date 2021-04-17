@@ -26,16 +26,19 @@ void BulletComponent::createBullet() {
 void BulletComponent::update(double dt) {
 	_bulletTextHelper.spriteTimer += dt / 2;
 
-	if (_bulletTextHelper.spriteTimer >= 1) {
-		_bulletTextHelper.spriteRectangle.get()->left = (_bulletTextHelper.spriteTexture.get()->getSize().x / _bulletTextHelper.spriteCols) * 0;
-	}
-	if (_bulletTextHelper.spriteTimer >= 1 && _bulletTextHelper.spriteTimer < 2) {
+	if (_bulletTextHelper.spriteTimer < 0.1) {
 		_bulletTextHelper.spriteRectangle.get()->left = (_bulletTextHelper.spriteTexture.get()->getSize().x / _bulletTextHelper.spriteCols) * 1;
 	}
-	if (_bulletTextHelper.spriteTimer >= 2 && _bulletTextHelper.spriteTimer < 3) {
+	if (_bulletTextHelper.spriteTimer >= 0.1 && _bulletTextHelper.spriteTimer < 0.3) {
 		_bulletTextHelper.spriteRectangle.get()->left = (_bulletTextHelper.spriteTexture.get()->getSize().x / _bulletTextHelper.spriteCols) * 2;
 	}
-	if (_bulletTextHelper.spriteTimer >= 3) {
+	if (_bulletTextHelper.spriteTimer >= 0.3 && _bulletTextHelper.spriteTimer < 0.4) {
+		_bulletTextHelper.spriteRectangle.get()->left = (_bulletTextHelper.spriteTexture.get()->getSize().x / _bulletTextHelper.spriteCols) * 1;
+	}
+	if (_bulletTextHelper.spriteTimer >= 0.4 && _bulletTextHelper.spriteTimer < 0.5) {
+		_bulletTextHelper.spriteRectangle.get()->left = (_bulletTextHelper.spriteTexture.get()->getSize().x / _bulletTextHelper.spriteCols) * 0;
+	}
+	if (_bulletTextHelper.spriteTimer >= 0.6) {
 		_bulletTextHelper.spriteTimer = 0.0;
 	}	
 

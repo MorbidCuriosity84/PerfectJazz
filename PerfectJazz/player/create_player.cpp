@@ -9,12 +9,62 @@ using namespace sf;
 void Player::createPlayer(Scene* _scene) {
 	auto p = _scene->makeEntity();
 	p->setView(mainView);
-	playerSettings settings(100, 100000, _scene, .4f, .005f, { 0.f,100.f }, PLAYER, true, { 1.f,1.f }, 0);
+	playerSettings pSettings;
+	pSettings.damage = 100;
+	pSettings.hp = 100000;
+	pSettings.scene = _scene;
+	pSettings.restitution = 0.4f;
+	pSettings.friction = 0.005f;
+	pSettings.velocity = { 0.f,100.f };
+	pSettings.category = PLAYER;
+	pSettings.hpVisible = false;
+	pSettings.scale = { 1.f,1.f };
+	pSettings.angle = 0;
+	
+	auto playerSpriteTexture = make_shared<sf::Texture>();
+	auto playerSpriteRectangle = make_shared<sf::IntRect>();
+	textureHelper playerTextureHelper;
+	playerTextureHelper.spriteFilename = "res/img/player/player_900.png";
+	playerTextureHelper.spriteRows = 2;
+	playerTextureHelper.spriteCols = 5;
+	playerTextureHelper.desiredRow = 0;
+	playerTextureHelper.desiredCol = 2;
 
-	auto spriteTexture = make_shared<sf::Texture>();
-	auto spriteRectangle = make_shared<sf::IntRect>();
-	textureHelper spriteHelp("res/img/player/player_900.png", 2, 5, 0, 2, spriteTexture, spriteRectangle, 1.5);
+	playerTextureHelper.spriteTexture = playerSpriteTexture;	
+	playerTextureHelper.spriteRectangle = playerSpriteRectangle;
+	playerTextureHelper.spriteTimer = 1.5;
 
-	auto loadPlayer = p->addComponent<PlayerComponent>(spriteHelp, settings);
+	wepSettings wSettings;
+	wSettings.damage = 100;
+	wSettings.fireTime = 1.5f;
+	wSettings.fireTimer = 1.5f;
+	wSettings.numBullets = 1;
+	wSettings.scene = _scene;
+	wSettings.direction = -1.f;
+
+	bulletSettings bSettings;
+	bSettings.damage = 100;
+	bSettings.hp = 100;
+	bSettings.lifetime = 10.f;
+	bSettings.scene = _scene;
+	bSettings.angle = 90.f;
+	bSettings.category = FRIENDLY_BULLET;
+	bSettings.direction = 1.f;
+	bSettings.velocity = Vector2f(0.f, 100.f);
+
+
+	auto bulletSpriteTexture = make_shared<sf::Texture>();
+	auto bulletSpriteRectangle = make_shared<sf::IntRect>();
+	textureHelper bulletTextureHelper;
+	bulletTextureHelper.spriteFilename = "res/img/weapons/Fx_01.png";
+	bulletTextureHelper.spriteRows = 1;
+	bulletTextureHelper.spriteCols = 3;
+	bulletTextureHelper.desiredRow = 0;
+	bulletTextureHelper.desiredCol = 2;
+	bulletTextureHelper.spriteTexture = bulletSpriteTexture;
+	bulletTextureHelper.spriteRectangle = bulletSpriteRectangle;
+	bulletTextureHelper.spriteTimer = 2.0;
+
+	auto loadPlayer = p->addComponent<PlayerComponent>(playerTextureHelper, bulletTextureHelper, pSettings, wSettings, bSettings);
 	loadPlayer->Load();
 }

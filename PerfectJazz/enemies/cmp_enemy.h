@@ -4,6 +4,7 @@
 #include "LevelSystem.h"
 #include "../components/cmp_sprite.h"
 #include "../components/cmp_weapon.h"
+#include "../components/cmp_bullet.h"
 #include <LevelSystem.h>
 
 using namespace sf;
@@ -32,8 +33,11 @@ struct enemySettings {
 
 class EnemyComponent : public Component {
 protected:
-	textureHelper _spriteHelper;
+	textureHelper _enemyTextureHelper;
+	textureHelper _bulletTextureHelper;
 	enemySettings _enemySettings;
+	wepSettings _weaponSettings;
+	bulletSettings _bulletSettings;
 
 public:
 	void Load(int index);
@@ -41,6 +45,6 @@ public:
 	void update(double dt);
 
 	EnemyComponent() = delete;
-	explicit EnemyComponent(Entity* p, textureHelper spriteTexHelp, enemySettings settings);
+	explicit EnemyComponent(Entity* p, textureHelper enemyTextureHelper, textureHelper bulletTextureHelper, enemySettings enemySettings, wepSettings weaponSettings, bulletSettings bulletSettings);
 };
 

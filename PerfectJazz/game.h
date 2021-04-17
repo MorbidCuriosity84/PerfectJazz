@@ -55,6 +55,7 @@ enum _entityCategory {
 };
 
 enum _enemyType {
+    NONE,
     AIRMAN,
     SERGEANT,
     COLONEL,

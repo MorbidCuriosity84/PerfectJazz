@@ -6,7 +6,7 @@
 #include <SFML/Graphics/Texture.hpp>
 
 /*
-* @param string filename, uint16_t rows, uint16_t  cols, uint16_t dRow, uint16_t dCol, double timer
+* @param std::string _filename, uint16_t _spriteRows, uint16_t _spriteCols, uint16_t _desiredRow, uint16_t _desiredCol, std::shared_ptr<sf::Texture> _texture, std::shared_ptr<sf::IntRect> _rect, double _timer
 * 
 * @desc Helper structure for creating textures
 */
@@ -21,8 +21,8 @@ struct textureHelper {
 	double spriteTimer;
 	
 	textureHelper() {};
-	textureHelper(std::string filename, uint16_t rows, uint16_t cols, uint16_t dRow, uint16_t dCol, std::shared_ptr<sf::Texture> texture, std::shared_ptr<sf::IntRect> rect, double timer)
-		: spriteFilename(filename), spriteRows(rows), spriteCols(cols), desiredRow(dRow), desiredCol(dCol) , spriteRectangle(rect), spriteTexture(texture), spriteTimer(timer) {}	
+	textureHelper(std::string _filename, uint16_t _spriteRows, uint16_t _spriteCols, uint16_t _desiredRow, uint16_t _desiredCol, std::shared_ptr<sf::Texture> _texture, std::shared_ptr<sf::IntRect> _rect, double _timer)
+		: spriteFilename(_filename), spriteRows(_spriteRows), spriteCols(_spriteCols), desiredRow(_desiredRow), desiredCol(_desiredCol), spriteTexture(_texture), spriteRectangle(_rect), spriteTimer(_timer) {}
 };
 
 class SpriteComponent : public Component {

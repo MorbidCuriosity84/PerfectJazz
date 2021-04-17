@@ -28,13 +28,14 @@ class WeaponComponent : public Component {
 protected:
 	wepSettings _wSettings;
 	bulletSettings _bSettings;
+	textureHelper _bulletTextureHelper;
 public:
 	void update(double dt) override;
 	void render() override {};
 	void fire();
 	void setDamage(uint16_t damage);
 	uint16_t getDamage() const;
-	explicit WeaponComponent(Entity* p, wepSettings settings, bulletSettings bSettings);
+	explicit WeaponComponent(Entity* p, wepSettings settings, bulletSettings bSettings, textureHelper bTextureHelper);
 	WeaponComponent() = delete;
 };
 
