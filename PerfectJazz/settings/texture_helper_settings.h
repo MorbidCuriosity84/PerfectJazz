@@ -29,6 +29,7 @@ struct textureSettings {
 class TextureHelpingSettings {
 public:
 	static textureSettings LoadSettings(_enemyType type, Scene* scene);
+	static textureSettings LoadSettings(_playerType type, Scene* scene);
 	static textureSettings LoadSettings(_bulletType type, Scene* scene);
 
 };

@@ -48,7 +48,6 @@ void Level3Scene::Load() {
 
 	mainView.setViewport(sf::FloatRect(0.2f, 0, 0.6f, 1.f));
 
-	//mainScene = dynamic_cast<Scene*>(&level3);
 	//views.push_back(mainView);	
 
 

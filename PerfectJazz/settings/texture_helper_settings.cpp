@@ -2,6 +2,35 @@
 #include "../game.h"
 #include "../engine/engine.h"
 
+textureSettings TextureHelpingSettings::LoadSettings(_playerType type, Scene* scene) {
+
+	textureSettings settings;
+	auto playerSpriteTexture = make_shared<sf::Texture>();
+	auto playerSpriteRectangle = make_shared<sf::IntRect>();
+	switch (type) {
+	case PLAYER1:
+	{
+		settings.spriteFilename = "res/img/player/player_900.png";
+		settings.spriteRows = 2;
+		settings.spriteCols = 5;
+		settings.desiredRow = 0;
+		settings.desiredCol = 2;
+		settings.spriteTexture = playerSpriteTexture;
+		settings.spriteRectangle = playerSpriteRectangle;
+		settings.spriteTimer = 1.5;
+		break;
+	}
+
+	case PLAYER2:
+	{
+		break;
+	}
+
+	default:
+		break;
+	}
+	return settings;
+}
 
 textureSettings TextureHelpingSettings::LoadSettings(_enemyType type, Scene* scene) {
 

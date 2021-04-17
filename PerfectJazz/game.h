@@ -61,6 +61,11 @@ enum _enemyType {
     COLONEL,
 };
 
+enum _playerType {
+    PLAYER1,
+    PLAYER2,
+};
+
 enum _bulletType {
     TYPE1,
     TYPE2,
