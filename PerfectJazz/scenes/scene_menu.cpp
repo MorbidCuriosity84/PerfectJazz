@@ -19,17 +19,9 @@ void MenuScene::Load() {
 
 void MenuScene::Update(const double& dt) {
     // cout << "Menu Update "<<dt<<"\n";
+    if (sf::Keyboard::isKeyPressed(Keyboard::Num1)) {Engine::ChangeScene(&level1);}
+    if (sf::Keyboard::isKeyPressed(Keyboard::Num2)) {Engine::ChangeScene(&level2);}
+    if (sf::Keyboard::isKeyPressed(Keyboard::Num3)) {Engine::ChangeScene(&level3);}
 
-    if (sf::Keyboard::isKeyPressed(Keyboard::Num1)) {
-        Engine::ChangeScene(&level1);
-    }
-
-    if (sf::Keyboard::isKeyPressed(Keyboard::Num2)) {
-        Engine::ChangeScene(&level2);
-    }
-
-    if (sf::Keyboard::isKeyPressed(Keyboard::Num3)) {
-        Engine::ChangeScene(&level3);
-    }
     Scene::Update(dt);
 }

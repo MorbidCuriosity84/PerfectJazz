@@ -129,3 +129,74 @@ textureSettings TextureHelpingSettings::LoadSettings(_bulletType type, Scene* sc
 	}
 	return settings;
 }
+
+textureSettings TextureHelpingSettings::LoadSettings(_backgroundType type, Scene* scene) {
+	textureSettings settings;
+	auto backgroundSpriteTexture = make_shared<sf::Texture>();
+	auto backgroundSpriteRectangle = make_shared<sf::IntRect>();
+	switch (type) {
+	case MOUNTAIN:
+	{
+		settings.spriteFilename = "res/img/backgrounds/desert_900.png";
+		settings.spriteRows = 1;
+		settings.spriteCols = 1;
+		settings.desiredRow = 0;
+		settings.desiredCol = 0;
+		settings.spriteTexture = backgroundSpriteTexture;
+		settings.spriteRectangle = backgroundSpriteRectangle;
+		settings.spriteTimer = 2.0;
+		break;
+	}
+	case MOUNTAIN_OVER1:
+	{
+		settings.spriteFilename = "res/img/backgrounds/desert_clouds.png";
+		settings.spriteRows = 1;
+		settings.spriteCols = 1;
+		settings.desiredRow = 0;
+		settings.desiredCol = 0;
+		settings.spriteTexture = backgroundSpriteTexture;
+		settings.spriteRectangle = backgroundSpriteRectangle;
+		settings.spriteTimer = 2.0;
+		break;
+	}
+	case MOUNTAIN_OVER2:
+	{
+		settings.spriteFilename = "res/img/backgrounds/desert_clouds_rotated.png";
+		settings.spriteRows = 1;
+		settings.spriteCols = 1;
+		settings.desiredRow = 0;
+		settings.desiredCol = 0;
+		settings.spriteTexture = backgroundSpriteTexture;
+		settings.spriteRectangle = backgroundSpriteRectangle;
+		settings.spriteTimer = 2.0;
+		break;
+	}
+	case FOREST:
+	{
+		settings.spriteFilename = "res/img/backgrounds/desert_900.png";
+		settings.spriteRows = 1;
+		settings.spriteCols = 3;
+		settings.desiredRow = 0;
+		settings.desiredCol = 2;
+		settings.spriteTexture = backgroundSpriteTexture;
+		settings.spriteRectangle = backgroundSpriteRectangle;
+		settings.spriteTimer = 2.0;
+		break;
+	}
+	case FOREST_OVER:
+	{
+		settings.spriteFilename = "res/img/backgrounds/desert_clouds.png";
+		settings.spriteRows = 1;
+		settings.spriteCols = 3;
+		settings.desiredRow = 0;
+		settings.desiredCol = 2;
+		settings.spriteTexture = backgroundSpriteTexture;
+		settings.spriteRectangle = backgroundSpriteRectangle;
+		settings.spriteTimer = 2.0;
+		break;
+	}
+	default:
+		break;
+	}
+	return settings;
+}

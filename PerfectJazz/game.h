@@ -21,6 +21,10 @@ extern unsigned int gameHeight;
 static vector<shared_ptr<Entity>> enemies;
 static std::shared_ptr<Entity> player;
 static std::shared_ptr<Entity> bullet;
+static shared_ptr<Entity> background;
+static shared_ptr<Entity> background2;
+static shared_ptr<Entity> overbackground;
+static shared_ptr<Entity> overbackground2;
 static vector<shared_ptr<Entity>> playerBullets;
 static vector<shared_ptr<Entity>> enemyBullets;
 extern myContactListener mContLis;
@@ -78,9 +82,17 @@ enum _weaponType {
     ROCKET_LAUNCHER,
 };
 
+enum _backgroundType {
+    MOUNTAIN,
+    MOUNTAIN_OVER1,
+    MOUNTAIN_OVER2,
+    FOREST,
+    FOREST_OVER,
+};
 enum _settingType {
     PLAYER,
     ENEMY,
     WEAPON,
     BULLET,
 };
+

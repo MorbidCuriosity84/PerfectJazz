@@ -9,7 +9,7 @@ playerSettings PlayerSettings::LoadSettings(_playerType type, Scene* scene) {
 	switch (type) {
 	case PLAYER1:
 	{
-		settings.damage = 100;
+		settings.damage = 300;
 		settings.hp = 99999;
 		settings.scene = scene;
 		settings.restitution = 0.4f;

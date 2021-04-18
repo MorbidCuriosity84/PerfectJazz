@@ -4,10 +4,10 @@ using namespace std;
 using namespace sf;
 
 void BulletComponent::createBullet() {
+	//CARLOS - I just noticed that it doesnt matter what position we get the sprite here, it matters the parent position only)
 	_bulletTextHelper.spriteTexture.get()->loadFromFile(_bulletTextHelper.spriteFilename);
 	_bulletSprite = _parent->addComponent<SpriteComponent>();
 	_bulletSprite->loadTexture(_bulletTextHelper, _settings.spriteScale, _settings.angle);
-	_bulletSprite->getSprite().setPosition({ _parent->getPosition().x, _parent->getPosition().y });
 	auto d = _parent->addComponent<DamageComponent>(_settings.damage);
 	auto p = _parent->addComponent<PhysicsComponent>(true, _bulletSprite.get()->getSprite().getLocalBounds().getSize());
 	auto h = _parent->addComponent<HPComponent>(_settings.scene, 100);
