@@ -16,7 +16,7 @@ bulletSettings _bulletSettings;
 
 void Enemies::createEnemies(std::string _waveFile, Scene* _scene) {
 
-	ls::loadLevelFile("res/levels/" + _waveFile + ".txt", mainView.getSize().x / 15);
+	ls::loadLevelFile("res/levels/" + _waveFile + ".txt", (floor)(mainView.getSize().x / 15));
 	auto ho = Engine::getWindowSize().y - (ls::getHeight() * mainView.getSize().y / 15);
 	ls::setOffset(Vector2f(mainView.getSize().y / 15 /2, ho));
 

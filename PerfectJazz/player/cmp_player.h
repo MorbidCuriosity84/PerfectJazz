@@ -12,7 +12,6 @@ class PlayerComponent : public Component {
 protected:
 	textureSettings _playerTextureHelper;
 	textureSettings _bulletTextureHelper;
-	playerSettings _playerSettings;
 	weaponSettings _weaponSettings;
 	bulletSettings _bulletSettings;
 
@@ -20,6 +19,7 @@ public:
 	void Load();
 	void render() override {};
 	void update(double dt);
+	playerSettings _playerSettings;
 
 	PlayerComponent() = delete;
 	explicit PlayerComponent(Entity* p, textureSettings playerTextureHelper, textureSettings bulletTextureHelper, playerSettings playerSettings, weaponSettings weaponSettings, bulletSettings bulletSettings);

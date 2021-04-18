@@ -12,10 +12,12 @@ textureSettings _playerBulletTextureHelper;
 textureSettings _playerSpriteTextureHelper;
 weaponSettings _playerWeaponSettings;
 bulletSettings _playerBulletSettings;
+shared_ptr<Entity> player;
 
 void Player::createPlayer(Scene* _scene) {
 	auto p = _scene->makeEntity();
-	p->setView(mainView);
+	player = p;
+	player->setView(mainView);
 
 	_playerSettings = PlayerSettings::LoadSettings(PLAYER1, _scene);
 	_playerSpriteTextureHelper = TextureHelpingSettings::LoadSettings(PLAYER1, _scene);
@@ -26,6 +28,6 @@ void Player::createPlayer(Scene* _scene) {
 	_playerWeaponSettings.direction = -1.f;
 	_playerBulletTextureHelper = TextureHelpingSettings::LoadSettings(TYPE1, _scene);
 
-	auto loadPlayer = p->addComponent<PlayerComponent>(_playerSpriteTextureHelper, _playerBulletTextureHelper, _playerSettings, _playerWeaponSettings, _playerBulletSettings);
+	auto loadPlayer = player->addComponent<PlayerComponent>(_playerSpriteTextureHelper, _playerBulletTextureHelper, _playerSettings, _playerWeaponSettings, _playerBulletSettings);
 	loadPlayer->Load();
 }

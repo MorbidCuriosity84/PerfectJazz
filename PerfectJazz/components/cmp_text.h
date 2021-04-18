@@ -10,13 +10,14 @@ public:
 	void update(double dt) override;
 	void render() override;
 	void setFontSize(double size);
+	double getFontSize();
 	~TextComponent() override = default;
 	void setText(const std::string& str);
 	void setPosition(sf::Vector2f position);
 	sf::FloatRect getLocalBounds();
 	void setOrigin(sf::Vector2f position);
 	sf::Vector2f getOrigin();
-	sf::Vector2f  getPosition();
+	sf::Vector2f getPosition();
 
 	void setFontSize(unsigned int size);
 

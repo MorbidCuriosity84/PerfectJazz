@@ -10,6 +10,7 @@
 #include <future>
 #include <iostream>
 #include <stdexcept>
+#include "../PerfectJazz/panels/create_panels.h"
 
 using namespace sf;
 using namespace std;
@@ -71,6 +72,7 @@ void Engine::Update() {
 	else if (_activeScene != nullptr) {
 		Physics::update(dt);
 		_activeScene->Update(dt);
+		Panels::update(dt);
 	}
 }
 

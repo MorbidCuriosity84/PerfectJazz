@@ -18,6 +18,8 @@ void EnemyComponent::Load(int index) {
 	phys.get()->setCategory(_enemySettings.category);
 
 	auto h = _parent->addComponent<HPComponent>(_enemySettings.scene, _enemySettings.hp);
+	h.get()->setVisible(_enemySettings.hpVisible);
+
 	phys.get()->getBody()->SetUserData(h.get());
 }
 

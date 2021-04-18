@@ -16,15 +16,9 @@ extern Scene* mainScene;
 extern sf::View leftView;
 extern sf::View rightView;
 extern sf::View mainView;
+extern shared_ptr<Entity> player;
 extern unsigned int gameWidth;
 extern unsigned int gameHeight;
-static vector<shared_ptr<Entity>> enemies;
-static std::shared_ptr<Entity> player;
-static std::shared_ptr<Entity> bullet;
-static shared_ptr<Entity> background;
-static shared_ptr<Entity> background2;
-static shared_ptr<Entity> overbackground;
-static shared_ptr<Entity> overbackground2;
 static vector<shared_ptr<Entity>> playerBullets;
 static vector<shared_ptr<Entity>> enemyBullets;
 extern myContactListener mContLis;
@@ -84,8 +78,7 @@ enum _weaponType {
 
 enum _backgroundType {
     MOUNTAIN,
-    MOUNTAIN_OVER1,
-    MOUNTAIN_OVER2,
+    MOUNTAIN_OVER,
     FOREST,
     FOREST_OVER,
 };

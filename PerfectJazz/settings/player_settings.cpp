@@ -2,23 +2,26 @@
 #include "../game.h"
 #include "../engine/engine.h"
 
-playerSettings PlayerSettings::LoadSettings(_playerType type, Scene* scene) {
 
-	playerSettings settings;
+playerSettings PlayerSettings::LoadSettings(_playerType type, Scene* scene) {
+	playerSettings currentPlayerSettings;
 
 	switch (type) {
 	case PLAYER1:
 	{
-		settings.damage = 300;
-		settings.hp = 99999;
-		settings.scene = scene;
-		settings.restitution = 0.4f;
-		settings.friction = 0.005f;
-		settings.velocity = { 0.f,100.f };
-		settings.category = PLAYER_BODY;
-		settings.hpVisible = true;
-		settings.scale = { 1.f,1.f };
-		settings.angle = 0;
+		currentPlayerSettings.damage = 300;
+		currentPlayerSettings.hp = 10000;
+		currentPlayerSettings.maxHP = currentPlayerSettings.hp;
+		currentPlayerSettings.scene = scene;
+		currentPlayerSettings.restitution = 0.4f;
+		currentPlayerSettings.friction = 0.005f;
+		currentPlayerSettings.velocity = { 0.f,100.f };
+		currentPlayerSettings.category = PLAYER_BODY;
+		currentPlayerSettings.hpVisible = true;
+		currentPlayerSettings.scale = { 1.f,1.f };
+		currentPlayerSettings.angle = 0;
+		currentPlayerSettings.score = 100;
+		currentPlayerSettings.shopPoints = 0;
 		break;
 	}
 
@@ -29,5 +32,6 @@ playerSettings PlayerSettings::LoadSettings(_playerType type, Scene* scene) {
 	default:
 		break;
 	}
-	return settings;
+	return currentPlayerSettings;
 }
+

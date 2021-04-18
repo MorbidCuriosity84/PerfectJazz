@@ -42,6 +42,10 @@ void TextComponent::setFontSize(double size) {
     _text.setCharacterSize(size);
 }
 
+double TextComponent::getFontSize() {
+    return _text.getCharacterSize();
+}
+
 void TextComponent::setFontSize(unsigned int size)
 {
     _text.setCharacterSize(size);

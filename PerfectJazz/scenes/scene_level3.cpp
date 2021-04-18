@@ -2,12 +2,6 @@
 #include <iostream>
 #include <thread>
 #include <LevelSystem.h>
-#include "../components/cmp_player_physics.h"
-#include "../components/cmp_background_physics.h"
-#include "../components/cmp_sprite.h"
-#include "../components/cmp_text.h"
-#include "../components/cmp_hp.h"
-#include "../components/cmp_damage.h"
 #include "../enemies/create_enemies.h"
 #include "../player/create_player.h"
 #include "../panels/create_panels.h"
@@ -72,10 +66,7 @@ void Level3Scene::Load() {
 void Level3Scene::UnLoad() {
 	cout << "Scene 3 Unload" << endl;
 	ls::unload();
-	for (auto e : enemies) {
-		enemies.clear();
-		e.reset();
-	}
+
 	for (auto b : playerBullets) {
 		b.reset();
 	}
@@ -84,13 +75,6 @@ void Level3Scene::UnLoad() {
 	}
 	enemyBullets.clear();
 	player.reset();
-	bullet.reset();
-	background.reset();
-	background2.reset();
-	overbackground.reset();
-	overbackground2.reset();
-
-
 	Scene::UnLoad();
 }
 

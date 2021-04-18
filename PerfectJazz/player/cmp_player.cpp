@@ -24,10 +24,9 @@ void PlayerComponent::Load() {
 	phys.get()->setCategory(_playerSettings.category);
 
 	auto h = _parent->addComponent<HPComponent>(_playerSettings.scene, _playerSettings.hp);
-	phys.get()->getBody()->SetUserData(h.get());
-	_playerTextureHelper.spriteTexture.get()->loadFromFile(_playerTextureHelper.spriteFilename);
 	h.get()->setVisible(_playerSettings.hpVisible);
-	s.get()->loadTexture(_playerTextureHelper, _playerSettings.scale, _playerSettings.angle);
+
+	phys.get()->getBody()->SetUserData(h.get());
 
 	timer.restart();
 }
@@ -62,6 +61,7 @@ void PlayerComponent::update(double dt) {
 		}
 		pSprite[0]->getSprite().setTextureRect(*_playerTextureHelper.spriteRectangle.get());
 	}
+	_playerSettings.score++;
 }
 
 PlayerComponent::PlayerComponent(Entity* p, textureSettings playerTextureHelper, textureSettings bulletTextureHelper, playerSettings playerSettings, weaponSettings weaponSettings, bulletSettings bulletSettings)

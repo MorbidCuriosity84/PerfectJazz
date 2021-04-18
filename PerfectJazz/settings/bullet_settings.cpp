@@ -22,7 +22,7 @@ bulletSettings BulletSettings::LoadSettings(_bulletType type, Scene* scene) {
 
 	case TYPE2:
 	{
-		settings.damage = 300;
+		settings.damage = 100;
 		settings.hp = 100;
 		settings.lifetime = 10.f;
 		settings.scene = scene;
