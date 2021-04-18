@@ -17,7 +17,7 @@ playerSettings PlayerSettings::LoadSettings(_playerType type, Scene* scene) {
 		currentPlayerSettings.friction = 0.005f;
 		currentPlayerSettings.velocity = { 0.f,100.f };
 		currentPlayerSettings.category = PLAYER_BODY;
-		currentPlayerSettings.hpVisible = true;
+		currentPlayerSettings.hpVisible = false;
 		currentPlayerSettings.scale = { 1.f,1.f };
 		currentPlayerSettings.angle = 0;
 		currentPlayerSettings.score = 100;

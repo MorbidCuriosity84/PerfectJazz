@@ -55,7 +55,7 @@ void Panels::createPanels(Scene* _scene) {
 void Panels::update(double dt) {
 	timer += dt;
 
-	if (timer > 1) {
+	if (timer > 0.1) {
 
 		auto currentPlayer = player->GetCompatibleComponent<PlayerComponent>()[0];
 		auto currentPlayerHP = player->GetCompatibleComponent<HPComponent>()[0];
