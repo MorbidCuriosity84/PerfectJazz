@@ -4,8 +4,8 @@
 #include "../components/cmp_sprite.h"
 #include "../game.h"
 
-class CreateEnemies {
+class Enemies {
 public:
-	static void initiliseEnemies(std::string _waveFile, Scene*);
+	static void createEnemies(std::string _waveFile, Scene*);
 	static void setType(_enemyType type, Scene*);
 };

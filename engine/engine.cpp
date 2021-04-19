@@ -10,6 +10,7 @@
 #include <future>
 #include <iostream>
 #include <stdexcept>
+#include "../PerfectJazz/panels/create_panels.h"
 
 using namespace sf;
 using namespace std;
@@ -144,7 +145,7 @@ void Engine::ChangeScene(Scene* s) {
 	}
 }
 
-void Scene::Update(const double& dt) { ents.update(dt); }
+void Scene::Update(const double& dt) { ents.update(dt); Panels::update(dt); }
 
 void Scene::Render() { ents.render(); }
 

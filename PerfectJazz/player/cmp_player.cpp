@@ -12,41 +12,21 @@ sf::Clock timer;
 sf::Clock bTimer;
 
 void PlayerComponent::Load() {
-
-	wepSettings wSettings;
-	wSettings.damage = 100;
-	wSettings.fireTime = 1.5f;
-	wSettings.fireTimer = 1.5f;
-	wSettings.numBullets = 1;
-	wSettings.scene = _playerSettings.scene;
-	wSettings.direction = -1.f;
-
-	bulletSettings bSettings;
-	bSettings.damage = 100;
-	bSettings.hp = 100;
-	bSettings.lifetime = 10.f;
-	bSettings.scene = _playerSettings.scene;
-	bSettings.angle = 90.f;
-	bSettings.category = FRIENDLY_BULLET;
-	bSettings.direction = 1.f;
-	bSettings.velocity = Vector2f(0.f, 100.f);
-
 	_parent->setPosition(Vector2f(mainView.getSize().x / 2, mainView.getSize().y - 100.f));
 	_parent->addComponent<DamageComponent>(_playerSettings.damage);
-	_parent->addComponent<WeaponComponent>(wSettings, bSettings);
+	_parent->addComponent<WeaponComponent>(_weaponSettings, _bulletSettings, _bulletTextureHelper);
 	_parent->addTag("player");
-	_spriteHelper.spriteTexture.get()->loadFromFile(_spriteHelper.spriteFilename);
+	_playerTextureHelper.spriteTexture.get()->loadFromFile(_playerTextureHelper.spriteFilename);
 
 	auto s = _parent->addComponent<SpriteComponent>();
-	s.get()->loadTexture(_spriteHelper, _playerSettings.scale, _playerSettings.angle);
+	s.get()->loadTexture(_playerTextureHelper, _playerSettings.scale, _playerSettings.angle);
 	auto phys = _parent->addComponent<PlayerPhysicsComponent>(s->getSprite().getGlobalBounds().getSize());
 	phys.get()->setCategory(_playerSettings.category);
 
 	auto h = _parent->addComponent<HPComponent>(_playerSettings.scene, _playerSettings.hp);
-	phys.get()->getBody()->SetUserData(h.get());
-	_spriteHelper.spriteTexture.get()->loadFromFile(_spriteHelper.spriteFilename);
 	h.get()->setVisible(_playerSettings.hpVisible);
-	s.get()->loadTexture(_spriteHelper, _playerSettings.scale, _playerSettings.angle);
+
+	phys.get()->getBody()->SetUserData(h.get());
 
 	timer.restart();
 }
@@ -59,30 +39,31 @@ void PlayerComponent::update(double dt) {
 	if (timer.getElapsedTime().asSeconds() > 0.1f) {
 
 		//Check if the loaded sprite is the bottom, if so, load the top. And viceversa
-		if (_spriteHelper.spriteRectangle.get()->top == _spriteHelper.spriteTexture.get()->getSize().y / 2) { _spriteHelper.spriteRectangle.get()->top = 0; }
-		else { _spriteHelper.spriteRectangle.get()->top = _spriteHelper.spriteTexture.get()->getSize().y / _spriteHelper.spriteRows; }
+		if (_playerTextureHelper.spriteRectangle.get()->top == _playerTextureHelper.spriteTexture.get()->getSize().y / 2) { _playerTextureHelper.spriteRectangle.get()->top = 0; }
+		else { _playerTextureHelper.spriteRectangle.get()->top = _playerTextureHelper.spriteTexture.get()->getSize().y / _playerTextureHelper.spriteRows; }
 
 		//Check if it's loaded the right sprite for the movement
 		if (pPhysics[0]->GetDirection() == "right") {
 			if (timer.getElapsedTime().asSeconds() > 0.2f) {
-				_spriteHelper.spriteRectangle.get()->left = (_spriteHelper.spriteTexture.get()->getSize().x / _spriteHelper.spriteCols) * 4;
+				_playerTextureHelper.spriteRectangle.get()->left = (_playerTextureHelper.spriteTexture.get()->getSize().x / _playerTextureHelper.spriteCols) * 4;
 			}
-			else { _spriteHelper.spriteRectangle.get()->left = (_spriteHelper.spriteTexture.get()->getSize().x / _spriteHelper.spriteCols) * 3; }
+			else { _playerTextureHelper.spriteRectangle.get()->left = (_playerTextureHelper.spriteTexture.get()->getSize().x / _playerTextureHelper.spriteCols) * 3; }
 		}
 		if (pPhysics[0]->GetDirection() == "left") {
 			if (timer.getElapsedTime().asSeconds() > 0.2f) {
-				_spriteHelper.spriteRectangle.get()->left = (_spriteHelper.spriteTexture.get()->getSize().x / _spriteHelper.spriteCols) * 0;
+				_playerTextureHelper.spriteRectangle.get()->left = (_playerTextureHelper.spriteTexture.get()->getSize().x / _playerTextureHelper.spriteCols) * 0;
 			}
-			else { _spriteHelper.spriteRectangle.get()->left = (_spriteHelper.spriteTexture.get()->getSize().x / _spriteHelper.spriteCols) * 1; }
+			else { _playerTextureHelper.spriteRectangle.get()->left = (_playerTextureHelper.spriteTexture.get()->getSize().x / _playerTextureHelper.spriteCols) * 1; }
 		}
 		if (pPhysics[0]->GetDirection() == "none") {
-			_spriteHelper.spriteRectangle.get()->left = (_spriteHelper.spriteTexture.get()->getSize().x / _spriteHelper.spriteCols) * 2;
+			_playerTextureHelper.spriteRectangle.get()->left = (_playerTextureHelper.spriteTexture.get()->getSize().x / _playerTextureHelper.spriteCols) * 2;
 			timer.restart();
 		}
-		pSprite[0]->getSprite().setTextureRect(*_spriteHelper.spriteRectangle.get());
+		pSprite[0]->getSprite().setTextureRect(*_playerTextureHelper.spriteRectangle.get());
 	}
+	_playerSettings.score++;
 }
 
-PlayerComponent::PlayerComponent(Entity* p, textureHelper spriteTexHelp, playerSettings playerSettings)
-	: Component(p), _spriteHelper(spriteTexHelp), _playerSettings(playerSettings) {
+PlayerComponent::PlayerComponent(Entity* p, textureSettings playerTextureHelper, textureSettings bulletTextureHelper, playerSettings playerSettings, weaponSettings weaponSettings, bulletSettings bulletSettings)
+	: Component(p), _playerTextureHelper(playerTextureHelper), _bulletTextureHelper(bulletTextureHelper), _playerSettings(playerSettings), _weaponSettings(weaponSettings), _bulletSettings(bulletSettings) {
 }

@@ -2,6 +2,7 @@
 #include "game.h"
 #include "scenes/scene_menu.h"
 #include <LevelSystem.h>
+#include "settings/player_settings.h"
 
 using namespace std;
 

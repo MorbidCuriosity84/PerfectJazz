@@ -10,9 +10,7 @@ void WeaponComponent::fire() {
 
 	auto wepSpriteTexture = make_shared<sf::Texture>();
 	auto wepSpriteRectangle = make_shared<sf::IntRect>();
-	textureHelper spriteHelp("res/img/weapons/Fx_01.png", 1, 3, 0, 2, wepSpriteTexture, wepSpriteRectangle, 2.0);
-
-	bullet->addComponent<BulletComponent>(_bSettings, spriteHelp);
+	bullet->addComponent<BulletComponent>(_bSettings, _bulletTextureHelper);
 }
 
 void WeaponComponent::update(double dt) {
@@ -31,5 +29,5 @@ void WeaponComponent::setDamage(uint16_t damage) {
 uint16_t WeaponComponent::getDamage() const {
 	return _wSettings.damage;
 }
-WeaponComponent::WeaponComponent(Entity* p, wepSettings wSettings, bulletSettings bSettings)
-	: Component(p), _wSettings(wSettings), _bSettings(bSettings) {}
+WeaponComponent::WeaponComponent(Entity* p, weaponSettings wSettings, bulletSettings bSettings, textureSettings bTextureHelper)
+	: Component(p), _wSettings(wSettings), _bSettings(bSettings), _bulletTextureHelper(bTextureHelper){}

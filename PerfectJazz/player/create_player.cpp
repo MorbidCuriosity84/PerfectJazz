@@ -1,20 +1,33 @@
 #include "create_player.h"
-#include "../game.h"
 #include "cmp_player.h"
 #include <LevelSystem.h>
+#include "../game.h"
+#include "../settings/player_settings.h"
 
 using namespace std;
 using namespace sf;
 
+playerSettings _playerSettings;
+textureSettings _playerBulletTextureHelper;
+textureSettings _playerSpriteTextureHelper;
+weaponSettings _playerWeaponSettings;
+bulletSettings _playerBulletSettings;
+shared_ptr<Entity> player;
+
 void Player::createPlayer(Scene* _scene) {
 	auto p = _scene->makeEntity();
-	p->setView(mainView);
-	playerSettings settings(100, 100000, _scene, .4f, .005f, { 0.f,100.f }, PLAYER, true, { 1.f,1.f }, 0);
+	player = p;
+	player->setView(mainView);
 
-	auto spriteTexture = make_shared<sf::Texture>();
-	auto spriteRectangle = make_shared<sf::IntRect>();
-	textureHelper spriteHelp("res/img/player/player_900.png", 2, 5, 0, 2, spriteTexture, spriteRectangle, 1.5);
+	_playerSettings = PlayerSettings::LoadSettings(PLAYER1, _scene);
+	_playerSpriteTextureHelper = TextureHelpingSettings::LoadSettings(PLAYER1, _scene);
+	_playerWeaponSettings = WeaponSettings::LoadSettings(GUN, _scene);
+	_playerBulletSettings = BulletSettings::LoadSettings(TYPE1, _scene);
+	_playerBulletSettings.direction = 1.f;
+	_playerBulletSettings.category = FRIENDLY_BULLET;
+	_playerWeaponSettings.direction = -1.f;
+	_playerBulletTextureHelper = TextureHelpingSettings::LoadSettings(TYPE1, _scene);
 
-	auto loadPlayer = p->addComponent<PlayerComponent>(spriteHelp, settings);
+	auto loadPlayer = player->addComponent<PlayerComponent>(_playerSpriteTextureHelper, _playerBulletTextureHelper, _playerSettings, _playerWeaponSettings, _playerBulletSettings);
 	loadPlayer->Load();
 }

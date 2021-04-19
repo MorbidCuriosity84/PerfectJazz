@@ -3,7 +3,7 @@
 
 using namespace std;
 
-void SpriteComponent::loadTexture(textureHelper texHelper, sf::Vector2f scale, float angle)
+void SpriteComponent::loadTexture(textureSettings texHelper, sf::Vector2f scale, float angle)
 {
 	texHelper.spriteRectangle.get()->left = (texHelper.spriteTexture.get()->getSize().x / texHelper.spriteCols) * texHelper.desiredCol;
 	texHelper.spriteRectangle.get()->top = (texHelper.spriteTexture.get()->getSize().y / texHelper.spriteRows) * texHelper.desiredRow;
@@ -30,6 +30,7 @@ sf::Sprite& SpriteComponent::getSprite() const { return *_sprite; }
 
 void SpriteComponent::update(double dt) {
   _sprite->setPosition(_parent->getPosition());
+  //_sprite->setRotation(_parent->getRotation());
 }
 void SpriteComponent::render() { Renderer::queue(_sprite.get(), _parent->getView()); }
 
