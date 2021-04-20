@@ -1,19 +1,21 @@
 #pragma once
 #include "cmp_physics.h"
-#include <ecm.h>
 #include "cmp_damage.h"
+#include "../settings/bullet_settings.h"
+#include "../game.h"
+#include <ecm.h>
 
 class BulletComponent : public Component {
 protected:
-  float _lifetime;
-  shared_ptr<DamageComponent> _damage;
-
+	shared_ptr<SpriteComponent> _bulletSprite;
+	textureSettings _bulletTextHelper;
+	bulletSettings _settings;
 public:
-  void update(double dt) override;
-  void render() override {}
-  explicit BulletComponent(Entity* p, shared_ptr<DamageComponent> _damage, float lifetime);
-  BulletComponent() = delete;
+	void update(double dt) override;
+	void render() override {}
+	void createBullet();
 
-  void setDamage(shared_ptr<DamageComponent> damage);
-  shared_ptr<DamageComponent> getDamage() const;
+	explicit BulletComponent(Entity* p, bulletSettings settings, textureSettings bulletTexHelper);
+	BulletComponent() = delete;
 };
+

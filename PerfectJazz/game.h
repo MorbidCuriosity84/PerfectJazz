@@ -1,5 +1,4 @@
 #pragma once
-
 #include "scenes/scene_level1.h"
 #include "scenes/scene_level2.h"
 #include "scenes/scene_level3.h"
@@ -13,15 +12,15 @@ extern MenuScene menu;
 extern Level1Scene level1;
 extern Level2Scene level2;
 extern Level3Scene level3;
+extern Scene* mainScene;
 extern sf::View leftView;
 extern sf::View rightView;
 extern sf::View mainView;
+extern shared_ptr<Entity> player;
 extern unsigned int gameWidth;
 extern unsigned int gameHeight;
-static vector<shared_ptr<Entity>> enemies;
 static vector<shared_ptr<Entity>> playerBullets;
 static vector<shared_ptr<Entity>> enemyBullets;
-static std::shared_ptr<Entity> player;
 extern myContactListener mContLis;
 
 
@@ -44,11 +43,48 @@ extern myContactListener mContLis;
 */
 enum _entityCategory {
     BOUNDARY = 0x0001,
-    PLAYER = 0x0002,
+    PLAYER_BODY = 0x0002,
     FRIENDLY_BULLET = 0x0004,
     ENEMY_BULLET = 0x0008,
-    ENEMY = 0x0010,
+    ENEMY_BODY = 0x0010,
     FRIENDLY_MISSILE = 0x0020,
     ENEMY_MISSILE = 0x0040,
     NO_COLLIDE = 0x0080,    
+};
+
+enum _enemyType {
+    NONE,
+    AIRMAN,
+    SERGEANT,
+    COLONEL,
+};
+
+enum _playerType {
+    PLAYER1,
+    PLAYER2,
+};
+
+enum _bulletType {
+    TYPE1,
+    TYPE2,
+    TYPE3,
+};
+
+enum _weaponType {
+    GUN,
+    MACHINE_GUN,
+    ROCKET_LAUNCHER,
+};
+
+enum _backgroundType {
+    MOUNTAIN,
+    MOUNTAIN_OVER,
+    FOREST,
+    FOREST_OVER,
+};
+enum _settingType {
+    PLAYER,
+    ENEMY,
+    WEAPON,
+    BULLET,
 };

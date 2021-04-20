@@ -86,29 +86,29 @@ void PhysicsComponent::setCategory(_entityCategory cat)
 
     //Switch case of doom. This is where we *should* be able to define what collides with what
     switch (cat) {
-    case PLAYER:
-        filter.categoryBits = PLAYER; //belongs to player group
-        filter.maskBits = ENEMY | ENEMY_BULLET | ENEMY_MISSILE; //only collides with enemy group
+    case PLAYER_BODY:
+        filter.categoryBits = PLAYER_BODY; //belongs to player group
+        filter.maskBits = ENEMY_BODY | ENEMY_BULLET | ENEMY_MISSILE; //only collides with enemy group
         break;
-    case ENEMY:
-        filter.categoryBits = ENEMY; 
-        filter.maskBits = PLAYER | ENEMY | FRIENDLY_BULLET | FRIENDLY_MISSILE; 
+    case ENEMY_BODY:
+        filter.categoryBits = ENEMY_BODY;
+        filter.maskBits = PLAYER_BODY | ENEMY_BODY | FRIENDLY_BULLET | FRIENDLY_MISSILE;
         break;
     case ENEMY_BULLET:
         filter.categoryBits = ENEMY_BULLET; 
-        filter.maskBits = PLAYER | FRIENDLY_MISSILE; 
+        filter.maskBits = PLAYER_BODY | FRIENDLY_MISSILE;
         break;
     case ENEMY_MISSILE:        
         filter.categoryBits = ENEMY_MISSILE;
-        filter.maskBits = PLAYER | FRIENDLY_BULLET | FRIENDLY_MISSILE;
+        filter.maskBits = PLAYER_BODY | FRIENDLY_BULLET | FRIENDLY_MISSILE;
         break;
     case FRIENDLY_BULLET:
         filter.categoryBits = FRIENDLY_BULLET;
-        filter.maskBits = ENEMY| ENEMY_MISSILE;
+        filter.maskBits = ENEMY_BODY | ENEMY_MISSILE;
         break;
     case FRIENDLY_MISSILE:
         filter.categoryBits = FRIENDLY_MISSILE;
-        filter.maskBits = ENEMY | ENEMY_BULLET | ENEMY_MISSILE;
+        filter.maskBits = ENEMY_BODY | ENEMY_BULLET | ENEMY_MISSILE;
         break;
     case NO_COLLIDE:        
         filter.groupIndex = -1;

@@ -1,21 +1,17 @@
-
 #include "cmp_sprite.h"
 #include "system_renderer.h"
 
 using namespace std;
 
-
-void SpriteComponent::loadTexture(textureHelper texHelper, sf::Vector2f scale, float angle)
+void SpriteComponent::loadTexture(textureSettings texHelper, sf::Vector2f scale, float angle)
 {
-	texHelper._spriteRectangle.get()->left = (texHelper._spriteTexture.get()->getSize().x / texHelper.spriteCols) * texHelper.desiredCol;
-	texHelper._spriteRectangle.get()->top = (texHelper._spriteTexture.get()->getSize().y / texHelper.spriteRows) * texHelper.desiredRow;
-	texHelper._spriteRectangle.get()->width = (texHelper._spriteTexture.get()->getSize().x / texHelper.spriteCols);
-	texHelper._spriteRectangle.get()->height = (texHelper._spriteTexture.get()->getSize().y / texHelper.spriteRows);
-	getSprite().setTexture(*texHelper._spriteTexture.get());
-	getSprite().setTextureRect(*texHelper._spriteRectangle.get());	
-
-
-	getSprite().setOrigin(texHelper._spriteTexture->getSize().x / (texHelper.spriteCols * 2),  texHelper._spriteTexture->getSize().y / (texHelper.spriteRows * 2));
+	texHelper.spriteRectangle.get()->left = (texHelper.spriteTexture.get()->getSize().x / texHelper.spriteCols) * texHelper.desiredCol;
+	texHelper.spriteRectangle.get()->top = (texHelper.spriteTexture.get()->getSize().y / texHelper.spriteRows) * texHelper.desiredRow;
+	texHelper.spriteRectangle.get()->width = (texHelper.spriteTexture.get()->getSize().x / texHelper.spriteCols);
+	texHelper.spriteRectangle.get()->height = (texHelper.spriteTexture.get()->getSize().y / texHelper.spriteRows);
+	getSprite().setTexture(*texHelper.spriteTexture.get());
+	getSprite().setTextureRect(*texHelper.spriteRectangle.get());
+	getSprite().setOrigin(texHelper.spriteRectangle.get()->width / 2, texHelper.spriteRectangle.get()->height / 2);
 	getSprite().setScale(scale);
 	getSprite().setRotation(angle);
 }

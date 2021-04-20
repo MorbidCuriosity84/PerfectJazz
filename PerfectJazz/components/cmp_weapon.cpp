@@ -1,37 +1,33 @@
 #include "cmp_weapon.h"
+#include "cmp_bullet.h"
 
-void WeaponComponent::fire() {}
 
-void WeaponComponent::update(double dt) {} 
+void WeaponComponent::fire() {
+	auto bullet = _wSettings.scene->makeEntity();
+	auto pS = _parent->GetCompatibleComponent<SpriteComponent>();
+	bullet->setView(_parent->getView());
+	bullet->setPosition({ _parent->getPosition().x, _parent->getPosition().y + (pS[0]->getSprite().getTextureRect().height/2 * _wSettings.direction) });
 
-void WeaponComponent::render()  {} 
+	auto wepSpriteTexture = make_shared<sf::Texture>();
+	auto wepSpriteRectangle = make_shared<sf::IntRect>();
+	bullet->addComponent<BulletComponent>(_bSettings, _bulletTextureHelper);
+}
 
-WeaponComponent::WeaponComponent(Entity* const p, wepSettings w) : Component(p), _category(w.wepCat), _firetime(w.firetime), _spread(w.spread) {}
+void WeaponComponent::update(double dt) {
+	_wSettings.fireTime -= dt;
+	if (_wSettings.fireTime <= 0.f) {
+		fire();
+		_wSettings.fireTime = _wSettings.fireTimer;
+	}
+}
 
-WeaponComponent::~WeaponComponent() {}
 
-//std::shared_ptr<DamageComponent> WeaponComponent::getDamage() const { return _damage; }
-//
-//void WeaponComponent::setDamage(std::shared_ptr<DamageComponent> d) { _damage = d; }
-//
-//std::shared_ptr<SpriteComponent> WeaponComponent::getSprite() const { return _sprite; }
-//
-//void WeaponComponent::setSprite(std::shared_ptr<SpriteComponent> s) { _sprite = s; }
+void WeaponComponent::setDamage(uint16_t damage) {
+	_wSettings.damage = damage;
+}
 
-_entityCategory WeaponComponent::getCategory() const { return _category; }
-
-void WeaponComponent::setCategory(_entityCategory cat) { _category = cat; }
-
-double WeaponComponent::getFiretime() const { return _firetime; }
-
-void WeaponComponent::setFiretime(double ft) { _firetime = ft; }
-
-uint16_t WeaponComponent::getSpread() const { return _spread; }
-
-void WeaponComponent::setSpread(uint16_t sp) { _spread = sp; }
-
-Vector2f WeaponComponent::getDirection() const { return _direction; }
-
-void WeaponComponent::setDirection(Vector2f dir) { _direction = dir; }
-
-wepSettings WeaponComponent::getSettings() const { return _wepSettings; }
+uint16_t WeaponComponent::getDamage() const {
+	return _wSettings.damage;
+}
+WeaponComponent::WeaponComponent(Entity* p, weaponSettings wSettings, bulletSettings bSettings, textureSettings bTextureHelper)
+	: Component(p), _wSettings(wSettings), _bSettings(bSettings), _bulletTextureHelper(bTextureHelper){}

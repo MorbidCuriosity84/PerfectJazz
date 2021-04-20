@@ -12,17 +12,18 @@ void BackgroundPhysicsComponent::update(double dt) {
     _parent->setPosition(Vector2f(pos.x, pos.y + (float)dt * _Velocity.y));    
 }
 
-void BackgroundPhysicsComponent::ChangeVelocity(sf::Vector2f velocity) {
+
+void BackgroundPhysicsComponent::setVelocity(sf::Vector2f velocity) {
     _Velocity = velocity;
 }
 
-sf::Vector2f BackgroundPhysicsComponent::GetVelocity() {
+sf::Vector2f BackgroundPhysicsComponent::getVelocity() {
     return _Velocity;
 }
+
 BackgroundPhysicsComponent::BackgroundPhysicsComponent(Entity* p,
     const Vector2f& size)
     : PhysicsComponent(p, true, size) {
     _size = sv2_to_bv2(size, true);
-    _Velocity = Vector2f(20.f, 150.f);
     _body->SetActive(false);
 }

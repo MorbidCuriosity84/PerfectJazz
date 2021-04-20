@@ -35,6 +35,7 @@ public:
   virtual void render() = 0;
 
   virtual ~Component();  
+
 };
 
 struct EntityManager {
