@@ -7,9 +7,8 @@
 /*
 * @param std::string _filename, uint16_t _spriteRows, uint16_t _spriteCols, uint16_t _desiredRow, uint16_t _desiredCol, std::shared_ptr<sf::Texture> _texture, std::shared_ptr<sf::IntRect> _rect, double _timer
 *
-* @desc Helper structure for creating textures
+* Helper structure for creating textures
 */
-
 struct textureSettings {
 	std::string spriteFilename;
 	std::shared_ptr<sf::IntRect> spriteRectangle;

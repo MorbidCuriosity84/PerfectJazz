@@ -21,6 +21,7 @@ void EnemyComponent::Load(int index) {
 	h.get()->setVisible(_enemySettings.hpVisible);
 
 	phys.get()->getBody()->SetUserData(h.get());
+	h->loadHP();
 }
 
 void EnemyComponent::update(double dt) {

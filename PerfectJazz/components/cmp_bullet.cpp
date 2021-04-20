@@ -11,7 +11,7 @@ void BulletComponent::createBullet() {
 	auto d = _parent->addComponent<DamageComponent>(_settings.damage);
 	auto p = _parent->addComponent<PhysicsComponent>(true, _bulletSprite.get()->getSprite().getLocalBounds().getSize());
 	auto h = _parent->addComponent<HPComponent>(_settings.scene, 100);
-
+	h.get()->loadHP();
 
 	p->getBody()->SetBullet(true);
 	p->setSensor(true);
