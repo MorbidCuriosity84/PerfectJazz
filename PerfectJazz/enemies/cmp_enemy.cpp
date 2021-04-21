@@ -2,9 +2,7 @@
 #include "ecm.h"
 #include "../components/cmp_sprite.h"
 #include "../components/cmp_enemy_physics.h"
-#include "../components/cmp_hp.h"
-#include "../components/cmp_damage.h"
-#include "../components/cmp_weapon.h"
+#include "../movement/cmp_movement.h"
 
 using namespace std;
 using namespace sf;
@@ -30,6 +28,9 @@ void EnemyComponent::Load(int index) {
 	h->setTextColour(Color::White);
 	h->setScale(Vector2f(1.f, 0.8f));
 	phys.get()->getBody()->SetUserData(h.get());
+	h->loadHP();
+
+	_parent->addComponent<MovementComponent>(Vector2f(0.f,-50.f));
 }
 
 void EnemyComponent::update(double dt) {
