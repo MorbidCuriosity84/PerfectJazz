@@ -14,7 +14,9 @@ protected:
 	textureSettings _bulletTextureHelper;
 	weaponSettings _weaponSettings;
 	bulletSettings _bulletSettings;
-	bool _playerAlive;
+	bool _gracePeriod;
+	float _gracePeriodTimer;
+	float _visibilityTimer;
 
 public:
 	void Load();
@@ -22,8 +24,7 @@ public:
 	void render() override {};
 	void update(double dt);
 	void setPlayerAlive(bool b);
-	bool isAlive();
-	void setAlive(bool b);
+	void GameOver();
 	playerSettings _playerSettings;
 
 	PlayerComponent() = delete;

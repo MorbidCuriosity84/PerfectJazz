@@ -6,6 +6,7 @@
 #include <iostream>
 #include "../components/cmp_sprite.h"
 #include "../components/cmp_player_physics.h"
+#include "../components/cmp_text.h"
 
 using namespace std;
 using namespace sf;
@@ -28,25 +29,40 @@ void PlayerComponent::Load() {
 	h->setSpriteColour(Color::Red);
 	h->setTextColour(Color::White);
 	h->setScale(Vector2f(1.f, 0.8f));
-
 	phys.get()->getBody()->SetUserData(h.get());
 }
 
 void PlayerComponent::revive() {
 
-	auto py = player->GetCompatibleComponent<PlayerPhysicsComponent>()[0];
-	py->teleport((Vector2f((round)(mainView.getSize().x / 2), mainView.getSize().y - 100.f)));
+	auto phy = player->GetCompatibleComponent<PlayerPhysicsComponent>()[0];
+	phy->teleport((Vector2f((round)(mainView.getSize().x / 2), mainView.getSize().y - 100.f)));
 	auto hp = player->GetCompatibleComponent<HPComponent>()[0];
 	setPlayerAlive(true);
-	player->setAlive(true);
+	_gracePeriod = true;
+	phy->setCategory(NO_COLLIDE);
 	hp->setHP(_playerSettings.maxHP);
-
 }
 
 void PlayerComponent::update(double dt) {
 
 	_playerTextureHelper.spriteTimer += dt;
 
+	if (_gracePeriod) {
+		_gracePeriodTimer += dt;
+
+		if (_gracePeriodTimer < 3.f) {
+			_visibilityTimer += dt;
+			if (_visibilityTimer >= 0.1f && _visibilityTimer < 0.2f) { player->setVisible(false); }
+			if (_visibilityTimer >= 0.2f) { player->setVisible(true); _visibilityTimer = 0; }
+		}
+
+		if (_gracePeriodTimer >= 3) {
+			auto phy = player->GetCompatibleComponent<PhysicsComponent>()[0];
+			phy->setCategory(PLAYER_BODY);
+			_gracePeriod = false;
+			setPlayerAlive(true);
+		}
+	}
 
 	if (player->isAlive()) {
 		auto pPhysics = player->GetCompatibleComponent<PlayerPhysicsComponent>();
@@ -88,20 +104,36 @@ void PlayerComponent::update(double dt) {
 			hp->setHP(0);
 			setPlayerAlive(false);
 			_playerSettings.lifes--;
+
+			if (_playerSettings.lifes <= 0) {
+				GameOver();
+			}
 		}
 	}
 }
 
 void PlayerComponent::setPlayerAlive(bool b) {
 	auto phy = player->GetCompatibleComponent<PhysicsComponent>()[0];
-	phy->getBody()->SetActive(b);
 	phy->impulse(Vector2f(0.f, 0.f));
 	phy->setVelocity(Vector2f(0.f, 0.f));
 	player->setVisible(b);
 	player->setAlive(b);
-	_playerAlive = b;
+	phy->getBody()->SetActive(b);
+
+	_gracePeriodTimer = 0;
+	_visibilityTimer = 0;
+}
+
+void PlayerComponent::GameOver() {
+	player->setAlive(true);
+	auto t = player->addComponent<TextComponent>("GAME OVER");
+	t->setFontSize(220u);
+	t->_text.setColor(Color::White);
+	t->_text.setOutlineColor(Color::White);
+	t->_text.setOutlineThickness(2);
+	t->setOrigin(Vector2f(100.f, 100.f));
 }
 
 PlayerComponent::PlayerComponent(Entity* p, textureSettings playerTextureHelper, textureSettings bulletTextureHelper, playerSettings playerSettings, weaponSettings weaponSettings, bulletSettings bulletSettings)
-	: Component(p), _playerTextureHelper(playerTextureHelper), _bulletTextureHelper(bulletTextureHelper), _playerSettings(playerSettings), _weaponSettings(weaponSettings), _bulletSettings(bulletSettings) {
+	: Component(p), _playerTextureHelper(playerTextureHelper), _bulletTextureHelper(bulletTextureHelper), _playerSettings(playerSettings), _weaponSettings(weaponSettings), _bulletSettings(bulletSettings), _gracePeriod(false), _gracePeriodTimer(0), _visibilityTimer(0) {
 }
