@@ -33,15 +33,16 @@ void HPComponent::loadHP() {
 
 	underHPBar->getSprite().setTexture(hpBarTexture);
 	underHPBar->getSprite().setTextureRect(hpBarRec);
+	//underHPBar->getSprite().setPosition(_parent->getPosition());
 	overHPBar->getSprite().setTexture(hpBarTexture);
 	overHPBar->getSprite().setTextureRect(overHPBarRec);
+	//overHPBar->getSprite().setPosition(_parent->getPosition());
 	t->setFontSize(12u);
 }
 
 HPComponent::HPComponent(Entity* const p, Scene* scene, const int& hp)
-	: Component(p), _hp(hp), _scene(scene), _visible(true) {
-	_maxHp = _hp;
-	loadHP();
+	: Component(p), _hp(hp), _scene(scene), _visible(true), _maxHp(hp), _dynamic(true) {	
+	//loadHP();
 }
 
 void HPComponent::handleContact(b2Contact* contact) {
@@ -136,3 +137,4 @@ void HPComponent::render() {
 		Renderer::queue(&_hpText, _parent->getView());
 	}
 }
+

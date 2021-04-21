@@ -68,4 +68,5 @@ private:
 	LevelSystem() = delete;
 
 	~LevelSystem() = delete;
+
 };

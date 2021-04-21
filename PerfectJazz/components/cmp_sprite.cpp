@@ -30,7 +30,6 @@ sf::Sprite& SpriteComponent::getSprite() const { return *_sprite; }
 
 void SpriteComponent::update(double dt) {
   _sprite->setPosition(_parent->getPosition());
-  //_sprite->setRotation(_parent->getRotation());
 }
 void SpriteComponent::render() { Renderer::queue(_sprite.get(), _parent->getView()); }
 

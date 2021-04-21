@@ -24,6 +24,7 @@ void PlayerComponent::Load() {
 	phys.get()->setCategory(_playerSettings.category);
 
 	auto h = _parent->addComponent<HPComponent>(_playerSettings.scene, _playerSettings.hp);
+	h.get()->loadHP();
 	h.get()->setVisible(_playerSettings.hpVisible);
 
 	phys.get()->getBody()->SetUserData(h.get());

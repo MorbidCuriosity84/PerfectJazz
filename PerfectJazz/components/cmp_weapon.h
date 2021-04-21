@@ -24,5 +24,3 @@ public:
 	explicit WeaponComponent(Entity* p, weaponSettings settings, bulletSettings bSettings, textureSettings bTextureHelper);
 	WeaponComponent() = delete;
 };
-
-

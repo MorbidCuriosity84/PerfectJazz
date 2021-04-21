@@ -34,9 +34,8 @@ public:
 
   virtual void render() = 0;
 
-  virtual ~Component();
+  virtual ~Component();  
 
-  //virtual void handleContact(b2Contact* contact) = 0;
 };
 
 struct EntityManager {

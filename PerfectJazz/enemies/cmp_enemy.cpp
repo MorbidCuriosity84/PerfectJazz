@@ -21,6 +21,7 @@ void EnemyComponent::Load(int index) {
 	h.get()->setVisible(_enemySettings.hpVisible);
 
 	phys.get()->getBody()->SetUserData(h.get());
+	h->loadHP();
 }
 
 void EnemyComponent::update(double dt) {
@@ -42,7 +43,6 @@ void EnemyComponent::update(double dt) {
 
 EnemyComponent::EnemyComponent(Entity* p, textureSettings enemyTextureHelper, textureSettings bulletTextureHelper, enemySettings enemySettings, weaponSettings weaponSettings, bulletSettings bulletSettings)
 	: Component(p), _enemyTextureHelper(enemyTextureHelper), _bulletTextureHelper(bulletTextureHelper), _enemySettings(enemySettings), _weaponSettings(weaponSettings), _bulletSettings(bulletSettings){ }
-
 
 
 

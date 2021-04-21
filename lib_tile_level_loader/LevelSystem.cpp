@@ -245,5 +245,3 @@ void LevelSystem::unload() {
 const Vector2f& LevelSystem::getOffset() { return _offset; }
 
 
-
-

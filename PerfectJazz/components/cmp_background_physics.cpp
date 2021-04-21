@@ -12,6 +12,7 @@ void BackgroundPhysicsComponent::update(double dt) {
     _parent->setPosition(Vector2f(pos.x, pos.y + (float)dt * _Velocity.y));    
 }
 
+
 void BackgroundPhysicsComponent::setVelocity(sf::Vector2f velocity) {
     _Velocity = velocity;
 }

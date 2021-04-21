@@ -88,4 +88,3 @@ enum _settingType {
     WEAPON,
     BULLET,
 };
-

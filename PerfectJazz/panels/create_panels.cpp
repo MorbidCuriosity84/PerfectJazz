@@ -20,6 +20,7 @@ void Panels::createPanels(Scene* _scene) {
 		leftPanel->addComponent<SpriteComponent>();
 				
 		auto HP = leftPanel->addComponent<HPComponent>(_scene, currentPlayer->_playerSettings.maxHP);
+		HP.get()->loadHP();
 		auto playerName = leftPanel->addComponent<TextComponent>("PLAYER 1");
 		auto score = leftPanel->addComponent<TextComponent>(to_string(currentPlayer->_playerSettings.score));
 

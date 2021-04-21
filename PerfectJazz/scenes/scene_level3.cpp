@@ -79,7 +79,6 @@ void Level3Scene::UnLoad() {
 }
 
 void Level3Scene::Update(const double& dt) {
-
 	Scene::Update(dt);
 }
 

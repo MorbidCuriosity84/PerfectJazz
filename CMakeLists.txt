@@ -51,6 +51,12 @@ target_link_libraries(lib_ecm PRIVATE lib_maths)
 
 #### Adding Res folder ####
 file(COPY res DESTINATION ${CMAKE_BINARY_DIR})
+
+add_custom_target(copy_resources ALL COMMAND ${CMAKE_COMMAND} 
+  -E copy_directory
+    "${PROJECT_SOURCE_DIR}/res"
+    ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/$<CONFIGURATION>/res
+)
 	
 	
 #### Perfect Jazz Files ####
@@ -67,9 +73,19 @@ source_group("components" FILES ${CMPNTS})
 source_group("resources" FILES ${RESOURCE_FILES})
 source_group("enemies" FILES ${ENEMIES})
 source_group("player" FILES ${PLAYER})
+
+#target_include_directories(PerfectJazz SYSTEM PRIVATE ${SFML_INCS} ${B2D_INCS})
+target_link_libraries(PerfectJazz lib_engine)
+set(EXECUTABLES ${EXECUTABLES} PerfectJazz)
 source_group("settings" FILES ${SETTINGS})
 source_group("panels" FILES ${PANELS})
 source_group("background" FILES ${BACKGROUND})
 #target_include_directories(PerfectJazz SYSTEM PRIVATE ${SFML_INCS} ${B2D_INCS})
 target_link_libraries(PerfectJazz lib_engine)
 set(EXECUTABLES ${EXECUTABLES} PerfectJazz)
+add_dependencies(PerfectJazz copy_resources)
+
+set_target_properties(PerfectJazz 
+    PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY
+    ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/$(Configuration)
+)
