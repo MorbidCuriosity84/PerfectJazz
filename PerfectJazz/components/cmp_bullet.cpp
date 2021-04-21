@@ -1,4 +1,5 @@
 #include "cmp_bullet.h"
+#include "../movement/cmp_missile_movement.h"
 
 using namespace std;
 using namespace sf;
@@ -20,6 +21,10 @@ void BulletComponent::createBullet() {
 
 	h.get()->setVisible(false);
 	p->getBody()->SetUserData(h.get());
+
+	if (_settings.category == ENEMY_MISSILE) {
+		_parent->addComponent<MissileMovementComponent>(Vector2f(0.f, -150.f), true);
+	}
 }
 
 
