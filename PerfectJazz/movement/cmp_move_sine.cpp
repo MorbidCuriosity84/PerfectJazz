@@ -4,6 +4,7 @@ void SineMovementComponent::update(double dt)
 {
 	_accumulation += dt * _multiplier;
 	float rotation = sin(_accumulation) * _maxAngle;		
+	_parent->setRotation(rotation);
 	_parent->setPosition(Vector2f(_parent->getPosition().x + rotation, _parent->getPosition().y));
 }
 
