@@ -12,6 +12,8 @@ public:
 	void update(double dt) override;
 	void render() override;
 
+	std::shared_ptr<PhysicsComponent> parentPhysics;
+
 	void setVelocity(sf::Vector2f vel);
 	sf::Vector2f getVelocity() const;
 
