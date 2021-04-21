@@ -3,6 +3,9 @@
 #include "../components/cmp_sprite.h"
 #include "../components/cmp_weapon.h"
 #include "../components/cmp_bullet.h"
+#include "../components/cmp_physics.h"
+#include "../components/cmp_damage.h"
+#include "../components/cmp_hp.h"
 #include "../game.h"
 #include "../settings/enemy_settings.h"
 #include "../settings/weapon_settings.h"
@@ -19,6 +22,11 @@ protected:
 	bulletSettings _bulletSettings;
 
 public:
+	std::shared_ptr<SpriteComponent> spriteCMP;
+	std::shared_ptr<DamageComponent> damageCMP;
+	std::shared_ptr<HPComponent> hpCMP;
+	std::shared_ptr<PhysicsComponent> physicsCMP;
+	std::shared_ptr<WeaponComponent> weaponCMP;
 	void Load(int index);
 	void render() override {};
 	void update(double dt);
