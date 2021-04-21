@@ -3,6 +3,7 @@
 #include "../components/cmp_sprite.h"
 #include "../components/cmp_enemy_physics.h"
 #include "../movement/cmp_movement.h"
+#include "../movement/cmp_move_sine.h"
 
 using namespace std;
 using namespace sf;
@@ -22,7 +23,7 @@ void EnemyComponent::Load(int index) {
 	auto phys = _parent->addComponent<EnemyPhysicsComponent>(s->getSprite().getGlobalBounds().getSize());
 	phys.get()->setCategory(_enemySettings.category);
 
-	auto h = _parent->addComponent<HPComponent>(_enemySettings.scene, _enemySettings.hp);
+	auto h = _parent->addComponent<HPComponent>(_enemySettings.scene, _enemySettings.hp);	
 	h->loadHP();
 	h.get()->setVisible(_enemySettings.hpVisible);
 	h->setSpriteColour(Color::Red);
@@ -31,6 +32,7 @@ void EnemyComponent::Load(int index) {
 
 	phys.get()->getBody()->SetUserData(h.get());
 
+	_parent->addComponent<SineMovementComponent>(Vector2f(0.f,-50.f), 15.f);
 }
 
 void EnemyComponent::update(double dt) {

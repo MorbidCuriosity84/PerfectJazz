@@ -69,6 +69,14 @@ void PlayerPhysicsComponent::update(double dt) {
 	v.y = copysign(min(abs(v.y), _maxVelocity.y), v.y);
 	setVelocity(v);
 
+	const auto ppos = _parent->getPosition();
+	if (ppos.x > gameWidth || ppos.x < 0) {
+		_parent->setForDelete();
+	}
+	if (ppos.y > gameHeight) {
+		_parent->setForDelete();
+	}
+
 	PhysicsComponent::update(dt);
 }
 
@@ -87,3 +95,4 @@ PlayerPhysicsComponent::PlayerPhysicsComponent(Entity* p,
 std::string PlayerPhysicsComponent::GetDirection() {
 	return _direction;
 }
+
