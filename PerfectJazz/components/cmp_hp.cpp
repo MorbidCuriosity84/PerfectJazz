@@ -6,6 +6,7 @@
 #include "cmp_damage.h"
 #include "../game.h"
 #include <iostream>
+#include "cmp_physics.h"
 
 using namespace std;
 Texture hpBarTexture;
@@ -124,6 +125,10 @@ void HPComponent::update(double dt) {
 		setHP(0);
 		if (_dynamic) {
 			_parent->setForDelete();
+			if (_parent == player.get()) {
+				auto phys = _parent->GetCompatibleComponent<PhysicsComponent>()[0];
+				phys.get()->~PhysicsComponent();
+			}
 		}
 	}
 }
