@@ -31,7 +31,7 @@ void Panels::createPanels(Scene* _scene) {
 		auto row = (round)(leftView.getSize().y / 30);
 		auto col = (round)(leftView.getSize().x / 10);
 		playerText->setFontSize(50u);
-		playerText->setPosition(Vector2f((round)(leftView.getSize().x / 2 - playerText->getGlobalBounds().getSize().x / 2), row * 1 - row / 2));
+		playerText->setPosition(Vector2f((round)(leftView.getSize().x / 2 - playerText->getGlobalBounds().getSize().x / 2), (round)(row * 1 - row / 2)));
 
 		//Player score
 		score->setPosition(Vector2f(col * 1, row * 4));
@@ -52,11 +52,11 @@ void Panels::createPanels(Scene* _scene) {
 		hp->setDynamic(false);
 		hp->setScale(Vector2f(4.f, 3.f));
 
-		spr[1]->getSprite().setPosition(Vector2f(leftView.getSize().x / 2 - spr[2]->getSprite().getGlobalBounds().width / 2, row * 3));
-		spr[2]->getSprite().setPosition(Vector2f(leftView.getSize().x / 2 - spr[2]->getSprite().getGlobalBounds().width / 2, row * 3));
+		spr[1]->getSprite().setPosition(Vector2f((round)(leftView.getSize().x / 2 - spr[2]->getSprite().getGlobalBounds().width / 2), row * 3));
+		spr[2]->getSprite().setPosition(Vector2f((round)(leftView.getSize().x / 2 - spr[2]->getSprite().getGlobalBounds().width / 2), row * 3));
 		hpText->setText(to_string(currentPlayer->_playerSettings.hp) + "/" + to_string(currentPlayer->_playerSettings.maxHP));
 		hpText->setFontSize(34u);
-		hpText->setPosition(Vector2f((round)((spr[1]->getSprite().getPosition().x + spr[1]->getSprite().getGlobalBounds().width / 2 - hpText->getGlobalBounds().width / 2)), spr[1]->getSprite().getPosition().y - hpText->getGlobalBounds().height / 2));
+		hpText->setPosition(Vector2f((round)(spr[1]->getSprite().getPosition().x + spr[1]->getSprite().getGlobalBounds().width / 2 - hpText->getGlobalBounds().width / 2), (round)(spr[1]->getSprite().getPosition().y - hpText->getGlobalBounds().height / 2)));
 	}
 
 	//Right Panel
@@ -85,7 +85,7 @@ void Panels::update(double dt) {
 		score->setText("Score: " + to_string(currentPlayer->_playerSettings.score));
 		coins->setText("Coins: " + to_string(currentPlayer->_playerSettings.shopPoints));
 		hpText->setText(to_string(currentPlayerHP->getHP()) + "/" + to_string(currentPlayer->_playerSettings.maxHP));
-		hpText->setPosition(Vector2f((round)((spr[1]->getSprite().getPosition().x + spr[1]->getSprite().getGlobalBounds().width / 2 - hpText->getGlobalBounds().width / 2)), spr[1]->getSprite().getPosition().y - hpText->getGlobalBounds().height / 2));
+		hpText->setPosition(Vector2f((round)((spr[1]->getSprite().getPosition().x + spr[1]->getSprite().getGlobalBounds().width / 2 - hpText->getGlobalBounds().width / 2)), (round)(spr[1]->getSprite().getPosition().y - hpText->getGlobalBounds().height / 2)));
 
 		timer = 0;
 

@@ -104,21 +104,20 @@ void HPComponent::update(double dt) {
 	auto comp = _parent->GetCompatibleComponent<TextComponent>();
 	auto spr = _parent->GetCompatibleComponent<SpriteComponent>();
 
-	if (_dynamic) {
-		auto pos = spr[0]->getSprite().getPosition();
-		comp[0]->setText(std::to_string(_hp));
-
-		spr[1]->getSprite().setPosition(Vector2f((round)(pos.x - spr[1]->getSprite().getTextureRect().width / 2), (round)(pos.y - spr[0]->getSprite().getTextureRect().height / 2 - spr[1]->getSprite().getTextureRect().height)));
-		spr[2]->getSprite().setPosition(Vector2f((round)(pos.x - spr[1]->getSprite().getTextureRect().width / 2), (round)(pos.y - spr[0]->getSprite().getTextureRect().height / 2 - spr[1]->getSprite().getTextureRect().height)));
-		comp[0]->setPosition(Vector2f((round)(pos.x - comp[0]->getLocalBounds().width / 2), (round)(spr[1]->getSprite().getPosition().y - spr[1]->getSprite().getTextureRect().height + comp[0]->getGlobalBounds().height / 2)));
-	}
-
 	overHPBarRec.left = hpBarTexture.getSize().x * 0;
 	overHPBarRec.top = hpBarTexture.getSize().y / 2;
 	overHPBarRec.width = hpBarTexture.getSize().x * ((float)_hp / (float)_maxHp);
 	overHPBarRec.height = hpBarTexture.getSize().y;
 	spr[2]->getSprite().setTextureRect(overHPBarRec);
 
+	if (_dynamic) {
+		auto pos = spr[0]->getSprite().getPosition();
+
+		spr[1]->getSprite().setPosition(Vector2f((round)(pos.x - spr[1]->getSprite().getTextureRect().width / 2), (round)(pos.y - spr[0]->getSprite().getTextureRect().height / 2 - spr[1]->getSprite().getTextureRect().height)));
+		spr[2]->getSprite().setPosition(Vector2f((round)(pos.x - spr[1]->getSprite().getTextureRect().width / 2), (round)(pos.y - spr[0]->getSprite().getTextureRect().height / 2 - spr[1]->getSprite().getTextureRect().height)));
+		comp[0]->setPosition(Vector2f((round)(pos.x - (round)(comp[0]->getLocalBounds().width / 2)), (round)(pos.y - spr[0]->getSprite().getTextureRect().height / 2 - spr[1]->getSprite().getTextureRect().height) - comp[0]->getGlobalBounds().height + (spr[1]->getSprite().getTextureRect().height / 2 - comp[0]->getGlobalBounds().height)));
+		comp[0]->setText(std::to_string(_hp));
+	}
 
 	if (_hp <= 0) {
 		setHP(0);
