@@ -7,7 +7,7 @@ using namespace sf;
 void BulletComponent::createBullet() {
 	_bulletTextHelper.spriteTexture.get()->loadFromFile(_bulletTextHelper.spriteFilename);
 	_bulletSprite = _parent->addComponent<SpriteComponent>();
-	_bulletSprite->loadTexture(_bulletTextHelper, _settings.spriteScale, _settings.angle);
+	_bulletSprite->loadTexture(_bulletTextHelper, _settings.spriteScale, _settings.angle);	
 	auto d = _parent->addComponent<DamageComponent>(_settings.damage);
 	auto p = _parent->addComponent<PhysicsComponent>(true, _bulletSprite.get()->getSprite().getLocalBounds().getSize());
 	auto h = _parent->addComponent<HPComponent>(_settings.scene, 100);
@@ -15,11 +15,11 @@ void BulletComponent::createBullet() {
 
 	p->getBody()->SetBullet(true);
 	p->setSensor(true);
-	p->setVelocity(_settings.velocity * _settings.direction);
-	p->setCategory(_settings.category);
-
+	p->setVelocity(_settings.velocity * _settings.direction );
+	p->setVelocity(Vector2f(p->getVelocity().x - _parent->getRotation(), p->getVelocity().y));
+	p->setCategory(_settings.category);	
 	h.get()->setVisible(false);
-	p->getBody()->SetUserData(h.get());
+	p->getBody()->SetUserData(h.get());	
 
 	if (_settings.category == ENEMY_MISSILE) {
 		_parent->addComponent<MissileMovementComponent>(Vector2f(0.f, -150.f), true);
@@ -47,7 +47,9 @@ void BulletComponent::update(double dt) {
 	}
 
 	_bulletSprite->getSprite().setTextureRect(*_bulletTextHelper.spriteRectangle.get());
-	_bulletSprite->getSprite().setPosition(_parent->getPosition());
+	_bulletSprite->getSprite().setPosition(_parent->getPosition());		
+	auto p = _parent->GetCompatibleComponent<PhysicsComponent>()[0];
+	_bulletSprite->getSprite().setRotation(90.f - p->getVelocity().x);
 
 	auto hp = _parent->GetCompatibleComponent<HPComponent>()[0];
 	if (hp->getHP() <= 0) {

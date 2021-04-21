@@ -34,7 +34,7 @@ void SpriteComponent::isFollowingParent(bool b) {
 void SpriteComponent::update(double dt) {
 	if (_following) {
 		_sprite->setPosition(_parent->getPosition());
-		//_sprite->setRotation(_parent->getRotation());
+		_sprite->setRotation(_parent->getRotation() );
 	}
 }
 

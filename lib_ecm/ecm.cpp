@@ -67,7 +67,8 @@ bool Entity::isVisible() const { return _visible; }
 
 void Entity::setVisible(bool _visible) { Entity::_visible = _visible; }
 
-Component::Component(Entity* const p) : _parent(p), _fordeletion(false), _isAlive(true), _isVisible(true) {}
+Component::Component(Entity* const p) : _parent(p), _fordeletion(false), _isAlive(true), _isVisible(true) {    
+}
 
 Entity::~Entity() {
   // Components can inter-depend on each other, so deleting them may take
