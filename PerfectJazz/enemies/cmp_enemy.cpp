@@ -1,5 +1,6 @@
 #include "cmp_enemy.h"
 #include "../components/cmp_enemy_physics.h"
+#include "../movement/cmp_movement.h"
 
 using namespace std;
 
@@ -22,6 +23,8 @@ void EnemyComponent::Load(int index) {
 
 	phys.get()->getBody()->SetUserData(h.get());
 	h->loadHP();
+
+	_parent->addComponent<MovementComponent>(Vector2f(0.f,-50.f));
 }
 
 void EnemyComponent::update(double dt) {
