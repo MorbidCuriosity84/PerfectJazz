@@ -1,12 +1,10 @@
 #include "cmp_hp.h"
 #include <system_renderer.h>
 #include <system_resources.h>
-#include "cmp_sprite.h"
 #include "cmp_text.h"
-#include "cmp_bullet.h"
-#include "cmp_player_physics.h"
+#include "cmp_sprite.h"
+#include "cmp_damage.h"
 #include "../game.h"
-#include "../scenes/scene_menu.h"
 #include <iostream>
 
 using namespace std;
@@ -16,33 +14,32 @@ sf::IntRect overHPBarRec;
 
 void HPComponent::loadHP() {
 	auto underHPBar = _parent->addComponent<SpriteComponent>();
+	underHPBar->isFollowingParent(false);
 	auto overHPBar = _parent->addComponent<SpriteComponent>();
+	overHPBar->isFollowingParent(false);
 	auto t = _parent->addComponent<TextComponent>(std::to_string(_hp));
 
 	hpBarTexture.loadFromFile("res/img/others/hp_bar.png");
 
-	hpBarRec.left = (floor)(hpBarTexture.getSize().x * 0);
-	hpBarRec.top = (floor)(hpBarTexture.getSize().y / 2 * 0);
-	hpBarRec.width = (floor)(hpBarTexture.getSize().x);
-	hpBarRec.height = (floor)(hpBarTexture.getSize().y / 2);
+	hpBarRec.left = (round)(hpBarTexture.getSize().x * 0);
+	hpBarRec.top = (round)(hpBarTexture.getSize().y / 2 * 0);
+	hpBarRec.width = (round)(hpBarTexture.getSize().x);
+	hpBarRec.height = (round)(hpBarTexture.getSize().y / 2);
 
-	overHPBarRec.left = (floor)(hpBarTexture.getSize().x * 0);
-	overHPBarRec.top = (floor)(hpBarTexture.getSize().y / 2);
-	overHPBarRec.width = (floor)(hpBarTexture.getSize().x);
-	overHPBarRec.height = (floor)(hpBarTexture.getSize().y / 2);
+	overHPBarRec.left = (round)(hpBarTexture.getSize().x * 0);
+	overHPBarRec.top = (round)(hpBarTexture.getSize().y / 2);
+	overHPBarRec.width = (round)(hpBarTexture.getSize().x);
+	overHPBarRec.height = (round)(hpBarTexture.getSize().y / 2);
 
 	underHPBar->getSprite().setTexture(hpBarTexture);
 	underHPBar->getSprite().setTextureRect(hpBarRec);
-	//underHPBar->getSprite().setPosition(_parent->getPosition());
 	overHPBar->getSprite().setTexture(hpBarTexture);
 	overHPBar->getSprite().setTextureRect(overHPBarRec);
-	//overHPBar->getSprite().setPosition(_parent->getPosition());
-	t->setFontSize(12u);
+	t->setFontSize(16u);
 }
 
 HPComponent::HPComponent(Entity* const p, Scene* scene, const int& hp)
-	: Component(p), _hp(hp), _scene(scene), _visible(true), _maxHp(hp), _dynamic(true) {	
-	//loadHP();
+	: Component(p), _hp(hp), _scene(scene), _visible(true), _maxHp(hp), _dynamic(true) {
 }
 
 void HPComponent::handleContact(b2Contact* contact) {
@@ -76,6 +73,10 @@ void HPComponent::setDynamic(bool b) {
 	_dynamic = b;
 }
 
+bool HPComponent::isDynamic() {
+	return _dynamic;
+}
+
 sf::Vector2f HPComponent::getPosition() {
 	auto pos = _parent->getPosition();
 	return pos;
@@ -103,21 +104,13 @@ void HPComponent::update(double dt) {
 	auto comp = _parent->GetCompatibleComponent<TextComponent>();
 	auto spr = _parent->GetCompatibleComponent<SpriteComponent>();
 
-
-	auto entitySpriteBounds = spr[0]->getSprite().getTextureRect().getSize();
-	auto hpSpriteBounds = spr[1]->getSprite().getTextureRect().getSize();
-	auto textBounds = comp[0]->getLocalBounds();
-
-	auto pos = spr[0]->getSprite().getPosition();
-
 	if (_dynamic) {
+		auto pos = spr[0]->getSprite().getPosition();
 		comp[0]->setText(std::to_string(_hp));
-		comp[0]->setOrigin(Vector2f((floor)((textBounds.width - hpSpriteBounds.x) / 2), (textBounds.height + (entitySpriteBounds.y * 1.2) / 2)));
-		spr[1]->getSprite().setOrigin(Vector2f((floor)((hpSpriteBounds.x + entitySpriteBounds.x) / 2), (textBounds.height + (entitySpriteBounds.y * 1.2) / 2)));
-		spr[2]->getSprite().setOrigin(Vector2f((floor)((hpSpriteBounds.x + entitySpriteBounds.x) / 2), (textBounds.height + (entitySpriteBounds.y * 1.2) / 2)));
-		comp[0]->setPosition(pos);
-		spr[1]->getSprite().setPosition(pos);
-		spr[2]->getSprite().setPosition(pos);
+
+		spr[1]->getSprite().setPosition(Vector2f((round)(pos.x - spr[1]->getSprite().getTextureRect().width / 2), (round)(pos.y - spr[0]->getSprite().getTextureRect().height / 2 - spr[1]->getSprite().getTextureRect().height)));
+		spr[2]->getSprite().setPosition(Vector2f((round)(pos.x - spr[1]->getSprite().getTextureRect().width / 2), (round)(pos.y - spr[0]->getSprite().getTextureRect().height / 2 - spr[1]->getSprite().getTextureRect().height)));
+		comp[0]->setPosition(Vector2f((round)(pos.x - comp[0]->getLocalBounds().width / 2), (round)(spr[1]->getSprite().getPosition().y - spr[1]->getSprite().getTextureRect().height + comp[0]->getGlobalBounds().height / 2)));
 	}
 
 	overHPBarRec.left = hpBarTexture.getSize().x * 0;
@@ -128,13 +121,24 @@ void HPComponent::update(double dt) {
 
 
 	if (_hp <= 0) {
-		_parent->setForDelete();
+		setHP(0);
+		if (_dynamic) {
+			_parent->setForDelete();
+		}
 	}
 }
 
+void HPComponent::setSpriteColour(sf::Color c) {
+	auto spr = _parent->GetCompatibleComponent<SpriteComponent>();
+	spr[2]->getSprite().setColor(c);
+}
+
+void HPComponent::setTextColour(sf::Color c) {
+	auto comp = _parent->GetCompatibleComponent<TextComponent>();
+	comp[0]->_text.setColor(c);
+}
 void HPComponent::render() {
 	if (_visible) {
 		Renderer::queue(&_hpText, _parent->getView());
 	}
 }
-

@@ -12,7 +12,7 @@ sf::Clock timer;
 sf::Clock bTimer;
 
 void PlayerComponent::Load() {
-	_parent->setPosition(Vector2f(mainView.getSize().x / 2, mainView.getSize().y - 100.f));
+	_parent->setPosition((Vector2f((round)(mainView.getSize().x / 2), mainView.getSize().y - 100.f)));
 	_parent->addComponent<DamageComponent>(_playerSettings.damage);
 	_parent->addComponent<WeaponComponent>(_weaponSettings, _bulletSettings, _bulletTextureHelper);
 	_parent->addTag("player");
@@ -62,7 +62,10 @@ void PlayerComponent::update(double dt) {
 		}
 		pSprite[0]->getSprite().setTextureRect(*_playerTextureHelper.spriteRectangle.get());
 	}
+	pSprite[0]->getSprite().setPosition(_parent->getPosition());
+
 	_playerSettings.score++;
+	_playerSettings.shopPoints++;
 }
 
 PlayerComponent::PlayerComponent(Entity* p, textureSettings playerTextureHelper, textureSettings bulletTextureHelper, playerSettings playerSettings, weaponSettings weaponSettings, bulletSettings bulletSettings)
