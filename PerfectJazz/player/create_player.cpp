@@ -1,8 +1,5 @@
 #include "create_player.h"
 #include "cmp_player.h"
-#include <LevelSystem.h>
-#include "../game.h"
-#include "../settings/player_settings.h"
 
 using namespace std;
 using namespace sf;
@@ -15,8 +12,7 @@ bulletSettings _playerBulletSettings;
 shared_ptr<Entity> player;
 
 void Player::createPlayer(Scene* _scene) {
-	auto p = _scene->makeEntity();
-	player = p;
+	player = _scene->makeEntity();
 	player->setView(mainView);
 
 	_playerSettings = PlayerSettings::LoadSettings(PLAYER1, _scene);

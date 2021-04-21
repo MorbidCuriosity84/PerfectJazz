@@ -7,6 +7,7 @@
 #include "../panels/create_panels.h"
 #include "../background/create_background.h"
 #include "../game.h"
+#include "../components/cmp_player_physics.h"
 
 
 using namespace std;
