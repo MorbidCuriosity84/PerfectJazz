@@ -11,13 +11,12 @@ protected:
   std::shared_ptr<sf::Texture> _texture;
 public:
   SpriteComponent() = delete;
-
   explicit SpriteComponent(Entity* p);
-  void update(double dt) override;
+  virtual void update(double dt) override;
   void render() override;
-
   sf::Sprite& getSprite() const;
-
+  void isFollowingParent(bool b);
+  bool _following;
   void loadTexture(textureSettings texHelper, sf::Vector2f scale, float angle);
   void setTexure(std::shared_ptr<sf::Texture> tex);
 };

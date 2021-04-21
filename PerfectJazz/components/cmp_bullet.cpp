@@ -43,6 +43,7 @@ void BulletComponent::update(double dt) {
 	}
 
 	_bulletSprite->getSprite().setTextureRect(*_bulletTextHelper.spriteRectangle.get());
+	_bulletSprite->getSprite().setPosition(_parent->getPosition());
 }
 
 BulletComponent::BulletComponent(Entity* p, bulletSettings settings, textureSettings bulletTexHelper)
