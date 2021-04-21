@@ -8,18 +8,18 @@ void BulletComponent::createBullet() {
 	_bulletTextHelper.spriteTexture.get()->loadFromFile(_bulletTextHelper.spriteFilename);
 	_bulletSprite = _parent->addComponent<SpriteComponent>();
 	_bulletSprite->loadTexture(_bulletTextHelper, _settings.spriteScale, _settings.angle);	
-	auto d = _parent->addComponent<DamageComponent>(_settings.damage);
-	auto p = _parent->addComponent<PhysicsComponent>(true, _bulletSprite.get()->getSprite().getLocalBounds().getSize());
-	auto h = _parent->addComponent<HPComponent>(_settings.scene, 100);
-	h.get()->loadHP();
+	damageCMP = _parent->addComponent<DamageComponent>(_settings.damage);
+	physicsCMP = _parent->addComponent<PhysicsComponent>(true, _bulletSprite.get()->getSprite().getLocalBounds().getSize());
+	hpCMP = _parent->addComponent<HPComponent>(_settings.scene, 100);
+	hpCMP.get()->loadHP();
 
-	p->getBody()->SetBullet(true);
-	p->setSensor(true);
-	p->setVelocity(_settings.velocity * _settings.direction );
-	p->setVelocity(Vector2f(p->getVelocity().x - _parent->getRotation(), p->getVelocity().y));
-	p->setCategory(_settings.category);	
-	h.get()->setVisible(false);
-	p->getBody()->SetUserData(h.get());	
+	physicsCMP->getBody()->SetBullet(true);
+	physicsCMP->setSensor(true);
+	physicsCMP->setVelocity(_settings.velocity * _settings.direction );
+	physicsCMP->setVelocity(Vector2f(physicsCMP->getVelocity().x - _parent->getRotation(), physicsCMP->getVelocity().y));
+	physicsCMP->setCategory(_settings.category);
+	hpCMP.get()->setVisible(false);
+	physicsCMP->getBody()->SetUserData(hpCMP.get());
 
 	if (_settings.category == ENEMY_MISSILE) {
 		_parent->addComponent<MissileMovementComponent>(Vector2f(0.f, -150.f), true);
@@ -47,12 +47,10 @@ void BulletComponent::update(double dt) {
 	}
 
 	_bulletSprite->getSprite().setTextureRect(*_bulletTextHelper.spriteRectangle.get());
-	_bulletSprite->getSprite().setPosition(_parent->getPosition());		
-	auto p = _parent->GetCompatibleComponent<PhysicsComponent>()[0];
-	_bulletSprite->getSprite().setRotation(90.f - p->getVelocity().x);
-
-	auto hp = _parent->GetCompatibleComponent<HPComponent>()[0];
-	if (hp->getHP() <= 0) {
+	_bulletSprite->getSprite().setPosition(_parent->getPosition());			
+	_bulletSprite->getSprite().setRotation(90.f - physicsCMP->getVelocity().x);
+	
+	if (hpCMP->getHP() <= 0) {
 		_parent->setForDelete();
 	}
 

@@ -13,15 +13,15 @@ using namespace sf;
 
 void PlayerComponent::Load() {
 	player->setPosition((Vector2f((round)(mainView.getSize().x / 2), mainView.getSize().y - 100.f)));
-	player->addComponent<DamageComponent>(_playerSettings.damage);
-	player->addComponent<WeaponComponent>(_weaponSettings, _bulletSettings, _bulletTextureHelper);
-	player->addTag("enemies");
+	damageCMP = player->addComponent<DamageComponent>(_playerSettings.damage);
+	weaponCMP = player->addComponent<WeaponComponent>(_weaponSettings, _bulletSettings, _bulletTextureHelper);
+	player->addTag("player");
 	_playerTextureHelper.spriteTexture.get()->loadFromFile(_playerTextureHelper.spriteFilename);
 
-	auto s = player->addComponent<SpriteComponent>();
-	s.get()->loadTexture(_playerTextureHelper, _playerSettings.scale, _playerSettings.angle);
-	auto phys = player->addComponent<PlayerPhysicsComponent>(s->getSprite().getGlobalBounds().getSize());
-	phys.get()->setCategory(_playerSettings.category);
+	spriteCMP = player->addComponent<SpriteComponent>();
+	spriteCMP.get()->loadTexture(_playerTextureHelper, _playerSettings.scale, _playerSettings.angle);
+	physicsCMP = player->addComponent<PlayerPhysicsComponent>(spriteCMP->getSprite().getGlobalBounds().getSize());
+	physicsCMP.get()->setCategory(_playerSettings.category);
 
 	auto h = player->addComponent<HPComponent>(_playerSettings.scene, _playerSettings.hp);
 	h->loadHP();
@@ -65,8 +65,8 @@ void PlayerComponent::update(double dt) {
 	}
 
 	if (player->isAlive()) {
-		auto pPhysics = player->GetCompatibleComponent<PlayerPhysicsComponent>();
-		auto pSprite = player->GetCompatibleComponent<SpriteComponent>();
+		//auto pPhysics = static_cast<PlayerPhysicsComponent>(*physicsCMP);
+		//auto pSprite = player->GetCompatibleComponent<SpriteComponent>();
 
 		if (_playerTextureHelper.spriteTimer > 0.1f) {
 
@@ -75,33 +75,33 @@ void PlayerComponent::update(double dt) {
 			else { _playerTextureHelper.spriteRectangle.get()->top = _playerTextureHelper.spriteTexture.get()->getSize().y / _playerTextureHelper.spriteRows; }
 
 			//Check if it's loaded the right sprite for the movement
-			if (pPhysics[0]->GetDirection() == "right") {
+			if (physicsCMP->GetDirection() == "right") {
 				if (_playerTextureHelper.spriteTimer > 0.2f) {
 					_playerTextureHelper.spriteRectangle.get()->left = (_playerTextureHelper.spriteTexture.get()->getSize().x / _playerTextureHelper.spriteCols) * 4;
 				}
 				else { _playerTextureHelper.spriteRectangle.get()->left = (_playerTextureHelper.spriteTexture.get()->getSize().x / _playerTextureHelper.spriteCols) * 3; }
 			}
-			if (pPhysics[0]->GetDirection() == "left") {
+			if (physicsCMP->GetDirection() == "left") {
 				if (_playerTextureHelper.spriteTimer > 0.2f) {
 					_playerTextureHelper.spriteRectangle.get()->left = (_playerTextureHelper.spriteTexture.get()->getSize().x / _playerTextureHelper.spriteCols) * 0;
 				}
 				else { _playerTextureHelper.spriteRectangle.get()->left = (_playerTextureHelper.spriteTexture.get()->getSize().x / _playerTextureHelper.spriteCols) * 1; }
 			}
-			if (pPhysics[0]->GetDirection() == "none") {
+			if (physicsCMP->GetDirection() == "none") {
 				_playerTextureHelper.spriteRectangle.get()->left = (_playerTextureHelper.spriteTexture.get()->getSize().x / _playerTextureHelper.spriteCols) * 2;
 				_playerTextureHelper.spriteTimer = 0;
 			}
-			pSprite[0]->getSprite().setTextureRect(*_playerTextureHelper.spriteRectangle.get());
+			spriteCMP->getSprite().setTextureRect(*_playerTextureHelper.spriteRectangle.get());
 		}
-		pSprite[0]->getSprite().setPosition(player->getPosition());
+		spriteCMP->getSprite().setPosition(player->getPosition());
 
 		_playerSettings.score++;
 		_playerSettings.shopPoints++;
 
-		auto hp = player->GetCompatibleComponent<HPComponent>()[0];
+		//auto hp = player->GetCompatibleComponent<HPComponent>()[0];
 
-		if (hp->getHP() <= 0) {
-			hp->setHP(0);
+		if (hpCMP->getHP() <= 0) {
+			hpCMP->setHP(0);
 			setPlayerAlive(false);
 			_playerSettings.lifes--;
 
@@ -112,10 +112,10 @@ void PlayerComponent::update(double dt) {
 	}
 }
 
-void PlayerComponent::setPlayerAlive(bool b) {
-	auto phy = player->GetCompatibleComponent<PhysicsComponent>()[0];
-	phy->impulse(Vector2f(0.f, 0.f));
-	phy->setVelocity(Vector2f(0.f, 0.f));
+void PlayerComponent::setPlayerAlive(bool b) {	
+	physicsCMP->getBody()->SetActive(b);
+	physicsCMP->impulse(Vector2f(0.f, 0.f));
+	physicsCMP->setVelocity(Vector2f(0.f, 0.f));
 	player->setVisible(b);
 	player->setAlive(b);
 	phy->getBody()->SetActive(b);
@@ -135,5 +135,5 @@ void PlayerComponent::GameOver() {
 }
 
 PlayerComponent::PlayerComponent(Entity* p, textureSettings playerTextureHelper, textureSettings bulletTextureHelper, playerSettings playerSettings, weaponSettings weaponSettings, bulletSettings bulletSettings)
-	: Component(p), _playerTextureHelper(playerTextureHelper), _bulletTextureHelper(bulletTextureHelper), _playerSettings(playerSettings), _weaponSettings(weaponSettings), _bulletSettings(bulletSettings), _gracePeriod(false), _gracePeriodTimer(0), _visibilityTimer(0) {
+	: Component(p), _playerTextureHelper(playerTextureHelper), _bulletTextureHelper(bulletTextureHelper), _playerSettings(playerSettings), _weaponSettings(weaponSettings), _bulletSettings(bulletSettings), _playerAlive(true) {
 }

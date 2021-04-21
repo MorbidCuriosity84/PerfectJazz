@@ -6,9 +6,16 @@
 #include <Box2D/Dynamics/Contacts/b2Contact.h>
 #include "ecm.h"
 #include "engine.h"
+#include "../components/cmp_sprite.h"
+#include "../components/cmp_text.h"
 
 class HPComponent : public Component {
 public:
+	std::shared_ptr<SpriteComponent> parentSpriteCMP;
+	std::shared_ptr<SpriteComponent> underHPBar;
+	std::shared_ptr<SpriteComponent> overHPBar;
+	std::shared_ptr<TextComponent> textCMP;			
+
 	virtual void update(double dt) override;
 	void setSpriteColour(sf::Color c);
 	void setTextColour(sf::Color c);

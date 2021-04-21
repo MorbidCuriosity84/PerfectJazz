@@ -4,6 +4,10 @@
 #include "../components/cmp_sprite.h"
 #include "../components/cmp_weapon.h"
 #include "../components/cmp_bullet.h"
+#include "../components/cmp_player_physics.h"
+#include "../components/cmp_physics.h"
+#include "../components/cmp_damage.h"
+#include "../components/cmp_hp.h"
 #include "../game.h"
 #include "../settings/player_settings.h"
 using namespace sf;
@@ -26,6 +30,11 @@ public:
 	void setPlayerAlive(bool b);
 	void GameOver();
 	playerSettings _playerSettings;
+	std::shared_ptr<SpriteComponent> spriteCMP;
+	std::shared_ptr<DamageComponent> damageCMP;
+	std::shared_ptr<HPComponent> hpCMP;
+	std::shared_ptr<PlayerPhysicsComponent> physicsCMP;
+	std::shared_ptr<WeaponComponent> weaponCMP;
 
 	PlayerComponent() = delete;
 	explicit PlayerComponent(Entity* p, textureSettings playerTextureHelper, textureSettings bulletTextureHelper, playerSettings playerSettings, weaponSettings weaponSettings, bulletSettings bulletSettings);
