@@ -26,12 +26,13 @@ void Panels::createPanels(Scene* _scene) {
 		auto playerText = leftPanel->addComponent<TextComponent>("PLAYER 1");
 		auto score = leftPanel->addComponent<TextComponent>("Score: " + to_string(currentPlayer->_playerSettings.score));
 		auto coins = leftPanel->addComponent<TextComponent>("Coins: " + to_string(currentPlayer->_playerSettings.shopPoints));
+		auto lifes = leftPanel->addComponent<TextComponent>("Lifes: " + to_string(currentPlayer->_playerSettings.lifes));
 
 		//Player name
 		auto row = (round)(leftView.getSize().y / 30);
 		auto col = (round)(leftView.getSize().x / 10);
 		playerText->setFontSize(50u);
-		playerText->setPosition(Vector2f((round)(leftView.getSize().x / 2 - playerText->getGlobalBounds().getSize().x / 2), row * 1 - row / 2));
+		playerText->setPosition(Vector2f((round)(leftView.getSize().x / 2 - playerText->getGlobalBounds().getSize().x / 2), (round)(row * 1 - row / 2)));
 
 		//Player score
 		score->setPosition(Vector2f(col * 1, row * 4));
@@ -40,6 +41,10 @@ void Panels::createPanels(Scene* _scene) {
 		//Player coins
 		coins->setPosition(Vector2f(col * 2, row * 5));
 		coins->setFontSize(40u);
+
+		//Player lifes
+		lifes->setPosition(Vector2f(col * 2, row * 6));
+		lifes->setFontSize(40u);
 
 		//Player HP
 		auto hpText = leftPanel->GetCompatibleComponent<TextComponent>()[0];
@@ -52,11 +57,11 @@ void Panels::createPanels(Scene* _scene) {
 		hp->setDynamic(false);
 		hp->setScale(Vector2f(4.f, 3.f));
 
-		spr[1]->getSprite().setPosition(Vector2f(leftView.getSize().x / 2 - spr[2]->getSprite().getGlobalBounds().width / 2, row * 3));
-		spr[2]->getSprite().setPosition(Vector2f(leftView.getSize().x / 2 - spr[2]->getSprite().getGlobalBounds().width / 2, row * 3));
+		spr[1]->getSprite().setPosition(Vector2f((round)(leftView.getSize().x / 2 - spr[2]->getSprite().getGlobalBounds().width / 2), row * 3));
+		spr[2]->getSprite().setPosition(Vector2f((round)(leftView.getSize().x / 2 - spr[2]->getSprite().getGlobalBounds().width / 2), row * 3));
 		hpText->setText(to_string(currentPlayer->_playerSettings.hp) + "/" + to_string(currentPlayer->_playerSettings.maxHP));
 		hpText->setFontSize(34u);
-		hpText->setPosition(Vector2f((round)((spr[1]->getSprite().getPosition().x + spr[1]->getSprite().getGlobalBounds().width / 2 - hpText->getGlobalBounds().width / 2)), spr[1]->getSprite().getPosition().y - hpText->getGlobalBounds().height / 2));
+		hpText->setPosition(Vector2f((round)(spr[1]->getSprite().getPosition().x + spr[1]->getSprite().getGlobalBounds().width / 2 - hpText->getGlobalBounds().width / 2), (round)(spr[1]->getSprite().getPosition().y - hpText->getGlobalBounds().height / 2)));
 	}
 
 	//Right Panel
@@ -78,6 +83,7 @@ void Panels::update(double dt) {
 		auto hpText = leftPanel->GetCompatibleComponent<TextComponent>()[0];
 		auto score = leftPanel->GetCompatibleComponent<TextComponent>()[2];
 		auto coins = leftPanel->GetCompatibleComponent<TextComponent>()[3];
+		auto lifes = leftPanel->GetCompatibleComponent<TextComponent>()[4];
 		auto hp = leftPanel->GetCompatibleComponent<HPComponent>()[0];
 		auto spr = leftPanel->GetCompatibleComponent<SpriteComponent>();
 
@@ -85,10 +91,11 @@ void Panels::update(double dt) {
 		score->setText("Score: " + to_string(currentPlayer->_playerSettings.score));
 		coins->setText("Coins: " + to_string(currentPlayer->_playerSettings.shopPoints));
 		hpText->setText(to_string(currentPlayerHP->getHP()) + "/" + to_string(currentPlayer->_playerSettings.maxHP));
-		hpText->setPosition(Vector2f((round)((spr[1]->getSprite().getPosition().x + spr[1]->getSprite().getGlobalBounds().width / 2 - hpText->getGlobalBounds().width / 2)), spr[1]->getSprite().getPosition().y - hpText->getGlobalBounds().height / 2));
+		hpText->setPosition(Vector2f((round)((spr[1]->getSprite().getPosition().x + spr[1]->getSprite().getGlobalBounds().width / 2 - hpText->getGlobalBounds().width / 2)), (round)(spr[1]->getSprite().getPosition().y - hpText->getGlobalBounds().height / 2)));
+
+		lifes->setText("Lifes: " + to_string(currentPlayer->_playerSettings.lifes));
 
 		timer = 0;
-
 	}
 }
 

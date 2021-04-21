@@ -3,11 +3,14 @@
 
 void MissileMovementComponent::update(double dt)
 {
-	if (_seeking) {		
-		if (_parent->getPosition().y - player.get()->getPosition().y < 0) {
-			_velocity.x = 2 * (player.get()->getPosition().x - _parent->getPosition().x);			
-			_parentPhysics.get()->setVelocity(_velocity);
-		}		
+	if (_seeking) {
+
+		if (player != NULL && player->isAlive()) {
+			_velocity.x = player.get()->getPosition().x - _parent->getPosition().x;
+		}
+
+		auto phys = _parent->GetCompatibleComponent<PhysicsComponent>()[0];
+		phys.get()->setVelocity(_velocity);
 	}
 	else {
 

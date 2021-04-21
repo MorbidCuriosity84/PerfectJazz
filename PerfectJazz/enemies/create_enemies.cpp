@@ -1,9 +1,6 @@
 #include <LevelSystem.h>
 #include "create_enemies.h"
 #include "cmp_enemy.h"
-#include "ecm.h"
-#include "../game.h"
-#include "../components/cmp_sprite.h"
 
 using namespace std;
 using namespace sf;
