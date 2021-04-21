@@ -15,6 +15,11 @@ public:
 	void render() override {}
 	void createBullet();
 
+	std::shared_ptr<SpriteComponent> spriteCMP;
+	std::shared_ptr<DamageComponent> damageCMP;
+	std::shared_ptr<HPComponent> hpCMP;
+	std::shared_ptr<PhysicsComponent> physicsCMP;	
+
 	explicit BulletComponent(Entity* p, bulletSettings settings, textureSettings bulletTexHelper);
 	BulletComponent() = delete;
 };
