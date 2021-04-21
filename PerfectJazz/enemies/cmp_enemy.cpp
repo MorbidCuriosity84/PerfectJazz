@@ -1,8 +1,11 @@
 #include "cmp_enemy.h"
+#include "ecm.h"
+#include "../components/cmp_sprite.h"
 #include "../components/cmp_enemy_physics.h"
 #include "../movement/cmp_movement.h"
 
 using namespace std;
+using namespace sf;
 
 void EnemyComponent::Load(int index) {
 	vector<Vector2ul> tile = ls::findTiles(_enemySettings.tile);
@@ -19,8 +22,11 @@ void EnemyComponent::Load(int index) {
 	phys.get()->setCategory(_enemySettings.category);
 
 	auto h = _parent->addComponent<HPComponent>(_enemySettings.scene, _enemySettings.hp);
+	h->loadHP();
 	h.get()->setVisible(_enemySettings.hpVisible);
-
+	h->setSpriteColour(Color::Red);
+	h->setTextColour(Color::White);
+	h->setScale(Vector2f(1.f, 0.8f));
 	phys.get()->getBody()->SetUserData(h.get());
 	h->loadHP();
 
@@ -30,22 +36,25 @@ void EnemyComponent::Load(int index) {
 void EnemyComponent::update(double dt) {
 	auto s = _parent->GetCompatibleComponent<SpriteComponent>();
 
-	_enemyTextureHelper.spriteTimer += dt / 2;
+	_enemyTextureHelper.spriteTimer += dt;
 
-	if (_enemyTextureHelper.spriteTimer < 0.5) {
+	if (_enemyTextureHelper.spriteTimer < 0.05) {
 		_enemyTextureHelper.spriteRectangle.get()->left = (_enemyTextureHelper.spriteTexture.get()->getSize().x / 2) * 0;
 	}
-	if (_enemyTextureHelper.spriteTimer >= 0.5 && _enemyTextureHelper.spriteTimer < 1) {
+	if (_enemyTextureHelper.spriteTimer >= 0.1 && _enemyTextureHelper.spriteTimer < 0.15) {
 		_enemyTextureHelper.spriteRectangle.get()->left = (_enemyTextureHelper.spriteTexture.get()->getSize().x / 2) * 1;
 	}
-	if (_enemyTextureHelper.spriteTimer > 1) {
+	if (_enemyTextureHelper.spriteTimer > 0.2) {
 		_enemyTextureHelper.spriteTimer = 0.0;
 	}
 	s[0]->getSprite().setTextureRect(*_enemyTextureHelper.spriteRectangle.get());
+	s[0]->getSprite().setPosition(_parent->getPosition());
 }
 
 EnemyComponent::EnemyComponent(Entity* p, textureSettings enemyTextureHelper, textureSettings bulletTextureHelper, enemySettings enemySettings, weaponSettings weaponSettings, bulletSettings bulletSettings)
-	: Component(p), _enemyTextureHelper(enemyTextureHelper), _bulletTextureHelper(bulletTextureHelper), _enemySettings(enemySettings), _weaponSettings(weaponSettings), _bulletSettings(bulletSettings){ }
+	: Component(p), _enemyTextureHelper(enemyTextureHelper), _bulletTextureHelper(bulletTextureHelper), _enemySettings(enemySettings), _weaponSettings(weaponSettings), _bulletSettings(bulletSettings) {
+}
+
 
 
 

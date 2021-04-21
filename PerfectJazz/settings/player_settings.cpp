@@ -10,7 +10,7 @@ playerSettings PlayerSettings::LoadSettings(_playerType type, Scene* scene) {
 	case PLAYER1:
 	{
 		currentPlayerSettings.damage = 300;
-		currentPlayerSettings.hp = 10000;
+		currentPlayerSettings.hp = 999;
 		currentPlayerSettings.maxHP = currentPlayerSettings.hp;
 		currentPlayerSettings.scene = scene;
 		currentPlayerSettings.restitution = 0.4f;
