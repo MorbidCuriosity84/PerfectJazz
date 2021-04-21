@@ -6,6 +6,7 @@
 #include "cmp_damage.h"
 #include "../game.h"
 #include <iostream>
+#include "cmp_physics.h"
 
 using namespace std;
 Texture hpBarTexture;
@@ -117,13 +118,6 @@ void HPComponent::update(double dt) {
 		spr[2]->getSprite().setPosition(Vector2f((round)(pos.x - spr[1]->getSprite().getTextureRect().width / 2), (round)(pos.y - spr[0]->getSprite().getTextureRect().height / 2 - spr[1]->getSprite().getTextureRect().height)));
 		comp[0]->setPosition(Vector2f((round)(pos.x - (round)(comp[0]->getLocalBounds().width / 2)), (round)(pos.y - spr[0]->getSprite().getTextureRect().height / 2 - spr[1]->getSprite().getTextureRect().height) - comp[0]->getGlobalBounds().height + (spr[1]->getSprite().getTextureRect().height / 2 - comp[0]->getGlobalBounds().height)));
 		comp[0]->setText(std::to_string(_hp));
-	}
-
-	if (_hp <= 0) {
-		setHP(0);
-		if (_dynamic) {
-			_parent->setForDelete();
-		}
 	}
 }
 

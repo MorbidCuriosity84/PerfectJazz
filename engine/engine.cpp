@@ -17,6 +17,8 @@ using namespace std;
 Scene* Engine::_activeScene = nullptr;
 std::string Engine::_gameName;
 
+float deathTimer;
+
 static bool loading = false;
 static float loadingspinner = 0.f;
 static float loadingTime;
@@ -139,14 +141,27 @@ void Engine::ChangeScene(Scene* s) {
 
 	if (!s->isLoaded()) {
 		cout << "Eng: Entering Loading Screen\n";
-		loadingTime = 0;
+		loadingTime = 0.f;
 		_activeScene->LoadAsync();
 		loading = true;
 	}
 }
 
 
-void Scene::Update(const double& dt) { ents.update(dt); Panels::update(dt); }
+void Scene::Update(const double& dt) { 
+	ents.update(dt); 
+	Panels::update(dt);
+
+	auto p = player->GetCompatibleComponent<PlayerComponent>()[0];
+
+	if (!player->isAlive() && p->_playerSettings.lifes > 0) {
+		deathTimer += dt;
+		if (deathTimer > 2) {
+			p.get()->revive();
+			deathTimer = 0;
+		}
+	}
+}
 
 void Scene::Render() { ents.render(); }
 

@@ -7,7 +7,7 @@ void WeaponComponent::fire() {
 	auto pS = _parent->GetCompatibleComponent<SpriteComponent>();
 	bullet->setView(_parent->getView());
 	bullet->setPosition({ _parent->getPosition().x, _parent->getPosition().y + (pS[0]->getSprite().getTextureRect().height/2 * _wSettings.direction) });
-
+	bullet->addTag("Bullet");
 	auto wepSpriteTexture = make_shared<sf::Texture>();
 	auto wepSpriteRectangle = make_shared<sf::IntRect>();
 	bullet->addComponent<BulletComponent>(_bSettings, _bulletTextureHelper);

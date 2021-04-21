@@ -26,6 +26,7 @@ void Panels::createPanels(Scene* _scene) {
 		auto playerText = leftPanel->addComponent<TextComponent>("PLAYER 1");
 		auto score = leftPanel->addComponent<TextComponent>("Score: " + to_string(currentPlayer->_playerSettings.score));
 		auto coins = leftPanel->addComponent<TextComponent>("Coins: " + to_string(currentPlayer->_playerSettings.shopPoints));
+		auto lifes = leftPanel->addComponent<TextComponent>("Lifes: " + to_string(currentPlayer->_playerSettings.lifes));
 
 		//Player name
 		auto row = (round)(leftView.getSize().y / 30);
@@ -40,6 +41,10 @@ void Panels::createPanels(Scene* _scene) {
 		//Player coins
 		coins->setPosition(Vector2f(col * 2, row * 5));
 		coins->setFontSize(40u);
+
+		//Player lifes
+		lifes->setPosition(Vector2f(col * 2, row * 6));
+		lifes->setFontSize(40u);
 
 		//Player HP
 		auto hpText = leftPanel->GetCompatibleComponent<TextComponent>()[0];
@@ -78,6 +83,7 @@ void Panels::update(double dt) {
 		auto hpText = leftPanel->GetCompatibleComponent<TextComponent>()[0];
 		auto score = leftPanel->GetCompatibleComponent<TextComponent>()[2];
 		auto coins = leftPanel->GetCompatibleComponent<TextComponent>()[3];
+		auto lifes = leftPanel->GetCompatibleComponent<TextComponent>()[4];
 		auto hp = leftPanel->GetCompatibleComponent<HPComponent>()[0];
 		auto spr = leftPanel->GetCompatibleComponent<SpriteComponent>();
 
@@ -87,8 +93,9 @@ void Panels::update(double dt) {
 		hpText->setText(to_string(currentPlayerHP->getHP()) + "/" + to_string(currentPlayer->_playerSettings.maxHP));
 		hpText->setPosition(Vector2f((round)((spr[1]->getSprite().getPosition().x + spr[1]->getSprite().getGlobalBounds().width / 2 - hpText->getGlobalBounds().width / 2)), (round)(spr[1]->getSprite().getPosition().y - hpText->getGlobalBounds().height / 2)));
 
-		timer = 0;
+		lifes->setText("Lifes: " + to_string(currentPlayer->_playerSettings.lifes));
 
+		timer = 0;
 	}
 }
 

@@ -13,6 +13,7 @@ void EnemyComponent::Load(int index) {
 	_parent->setPosition(Vector2f(ls::getTilePosition(tile[index]).x, ls::getTilePosition(tile[index]).y - 460.f));
 	_parent->addComponent<DamageComponent>(_enemySettings.damage);
 	_parent->addComponent<WeaponComponent>(_weaponSettings, _bulletSettings, _bulletTextureHelper);
+	//_parent->addComponent<MovementComponent>(Vector2f(0.f, -50.f));
 	_parent->addTag("enemies");
 	_enemyTextureHelper.spriteTexture.get()->loadFromFile(_enemyTextureHelper.spriteFilename);
 
@@ -27,10 +28,9 @@ void EnemyComponent::Load(int index) {
 	h->setSpriteColour(Color::Red);
 	h->setTextColour(Color::White);
 	h->setScale(Vector2f(1.f, 0.8f));
-	phys.get()->getBody()->SetUserData(h.get());
-	h->loadHP();
 
-	_parent->addComponent<MovementComponent>(Vector2f(0.f,-50.f));
+	phys.get()->getBody()->SetUserData(h.get());
+
 }
 
 void EnemyComponent::update(double dt) {
@@ -49,6 +49,11 @@ void EnemyComponent::update(double dt) {
 	}
 	s[0]->getSprite().setTextureRect(*_enemyTextureHelper.spriteRectangle.get());
 	s[0]->getSprite().setPosition(_parent->getPosition());
+
+	auto hp = _parent->GetCompatibleComponent<HPComponent>()[0];
+	if (hp->getHP() <= 0) {
+		_parent->setForDelete();
+	}
 }
 
 EnemyComponent::EnemyComponent(Entity* p, textureSettings enemyTextureHelper, textureSettings bulletTextureHelper, enemySettings enemySettings, weaponSettings weaponSettings, bulletSettings bulletSettings)

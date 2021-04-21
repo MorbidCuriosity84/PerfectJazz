@@ -5,7 +5,6 @@ using namespace std;
 using namespace sf;
 
 void BulletComponent::createBullet() {
-	//CARLOS - I just noticed that it doesnt matter what position we get the sprite here, it matters the parent position only)
 	_bulletTextHelper.spriteTexture.get()->loadFromFile(_bulletTextHelper.spriteFilename);
 	_bulletSprite = _parent->addComponent<SpriteComponent>();
 	_bulletSprite->loadTexture(_bulletTextHelper, _settings.spriteScale, _settings.angle);
@@ -49,6 +48,20 @@ void BulletComponent::update(double dt) {
 
 	_bulletSprite->getSprite().setTextureRect(*_bulletTextHelper.spriteRectangle.get());
 	_bulletSprite->getSprite().setPosition(_parent->getPosition());
+
+	auto hp = _parent->GetCompatibleComponent<HPComponent>()[0];
+	if (hp->getHP() <= 0) {
+		_parent->setForDelete();
+	}
+
+	if (_parent->getPosition().y > _parent->getView().getSize().y ||
+		_parent->getPosition().y < 0 ||
+		_parent->getPosition().x > _parent->getView().getSize().x ||
+		_parent->getPosition().x < 0) {
+		_parent->setForDelete();
+	}
+
+
 }
 
 BulletComponent::BulletComponent(Entity* p, bulletSettings settings, textureSettings bulletTexHelper)
