@@ -1,5 +1,6 @@
 #pragma once
 #include "ecm.h"
+#include "../components/cmp_physics.h"
 
 using namespace sf;
 using namespace std;
