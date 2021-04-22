@@ -4,6 +4,9 @@ using namespace std;
 using namespace sf;
 
 void PlayerComponent::Load() {
+	// CARLOS TO-DO fix player movement when increased. It feels too crazy
+	// TO-DO try to find a solution where I can share a PlayerComponent for this 
+	auto playerCMP = player->GetCompatibleComponent<PlayerComponent>()[0];
 	player->setPosition((Vector2f((round)(mainView.getSize().x / 2), mainView.getSize().y - 100.f)));
 	damageCMP = player->addComponent<DamageComponent>(_playerSettings.damage);
 	weaponCMP = player->addComponent<WeaponComponent>(_weaponSettings, _bulletSettings, _bulletTextureHelper);
@@ -12,7 +15,7 @@ void PlayerComponent::Load() {
 
 	spriteCMP = player->addComponent<SpriteComponent>();
 	spriteCMP.get()->loadTexture(_playerTextureHelper, _playerSettings.scale, _playerSettings.angle);
-	physicsCMP = player->addComponent<PlayerPhysicsComponent>(spriteCMP->getSprite().getGlobalBounds().getSize());
+	physicsCMP = player->addComponent<PlayerPhysicsComponent>(spriteCMP->getSprite().getGlobalBounds().getSize(), _playerSettings.flySpeed);
 	physicsCMP.get()->setCategory(_playerSettings.category);
 
 	hpCMP = player->addComponent<HPComponent>(_playerSettings.scene, _playerSettings.hp);
@@ -92,6 +95,7 @@ void PlayerComponent::update(double dt) {
 		if (hpCMP->getHP() <= 0) {
 			hpCMP->setHP(0);
 			setPlayerAlive(false);
+
 			_playerSettings.lifes--;
 
 			if (_playerSettings.lifes <= 0) {
@@ -103,8 +107,12 @@ void PlayerComponent::update(double dt) {
 }
 
 void PlayerComponent::setPlayerAlive(bool b) {
-	physicsCMP->impulse(Vector2f(0.f, 0.f));
-	physicsCMP->setVelocity(Vector2f(0.f, 0.f));
+
+	if (!b) {
+		physicsCMP->impulse(Vector2f(0.f, 0.f));
+		physicsCMP->setVelocity(Vector2f(0.f, 0.f));
+	}
+
 	player->setVisible(b);
 	player->setAlive(b);
 	physicsCMP->getBody()->SetActive(b);
@@ -113,8 +121,45 @@ void PlayerComponent::setPlayerAlive(bool b) {
 	_visibilityTimer = 0;
 }
 
-
+void PlayerComponent::setFlySpeed(int speed) { physicsCMP->setFlySpeed(speed); }
+int PlayerComponent::getFlySpeedUpdateState() { return _flySpeedUpdateState; }
+int PlayerComponent::getDamageUpdateState() { return _damageUpdateState; }
+int PlayerComponent::getFireRateUpdateState() { return _fireRateUpdateState; }
+int PlayerComponent::getBulletNumberUpdateState() { return _bulletNumberUpdateState; }
+int PlayerComponent::getPlayerLifes() { return _playerSettings.lifes; }
+void PlayerComponent::setPlayerLifes(int life) {
+	if (life <= _playerSettings.maxLifes) {
+		_playerSettings.lifes = life;
+	}
+}
+void PlayerComponent::setFlySpeedUpdateState(int state) {
+	if (state < _maxUpdate) {
+		_flySpeedUpdateState = state;
+		auto playerCMP = player->GetCompatibleComponent<PlayerComponent>()[0];
+		physicsCMP->setFlySpeed(playerCMP->_playerSettings.flySpeed * (02.f));
+	}
+}
+void PlayerComponent::setDamageUpdateState(int state) {
+	if (state < _maxUpdate) {
+		_damageUpdateState = state;
+	}
+}
+void PlayerComponent::setFireRateUpdateState(int state) {
+	if (state < _maxUpdate) {
+		_fireRateUpdateState = state;
+	}
+}
+void PlayerComponent::setBulletNumberUpdateState(int state) {
+	if (state < _maxUpdate) {
+		_bulletNumberUpdateState = state;
+	}
+}
+void PlayerComponent::setMaxUpdate(int max) { _maxUpdate = max; }
+int PlayerComponent::getMaxUpdate() { return _maxUpdate; }
+void PlayerComponent::setMaxLifes(int max) { _playerSettings.maxLifes = max; }
+int PlayerComponent::getMaxLifes() { return _playerSettings.maxLifes; }
 
 PlayerComponent::PlayerComponent(Entity* p, textureSettings playerTextureHelper, textureSettings bulletTextureHelper, playerSettings playerSettings, weaponSettings weaponSettings, bulletSettings bulletSettings)
-	: Component(p), _playerTextureHelper(playerTextureHelper), _bulletTextureHelper(bulletTextureHelper), _playerSettings(playerSettings), _weaponSettings(weaponSettings), _bulletSettings(bulletSettings), _gracePeriod(false), _gracePeriodTimer(0), _visibilityTimer(0) {
+	: Component(p), _playerTextureHelper(playerTextureHelper), _bulletTextureHelper(bulletTextureHelper), _playerSettings(playerSettings), _weaponSettings(weaponSettings), _bulletSettings(bulletSettings), _gracePeriod(false), _gracePeriodTimer(0),
+	_visibilityTimer(0), _bulletNumberUpdateState(1), _damageUpdateState(1), _fireRateUpdateState(1), _flySpeedUpdateState(1), _maxUpdate(5) {
 }

@@ -13,19 +13,19 @@ void PlayerPhysicsComponent::update(double dt) {
 	{
 		if (pos.x <= 15.f) {
 			setVelocity(Vector2f(0.f, getVelocity().y));
-			impulse({ (float)(dt * _groundspeed), 0 });
+			impulse({ (float)(dt * _flySpeed), 0 });
 		}
 		if (pos.x >= mainView.getSize().x - 15.f) {
 			setVelocity(Vector2f(0.f, getVelocity().y));
-			impulse({ -(float)(dt * _groundspeed), 0 });
+			impulse({ -(float)(dt * _flySpeed), 0 });
 		}
 		if (pos.y <= 20.f) {
 			setVelocity(Vector2f(getVelocity().x, 0.f));
-			impulse({ 0, (float)(dt * _groundspeed) });
+			impulse({ 0, (float)(dt * _flySpeed) });
 		}
 		if (pos.y >= mainView.getSize().y - 20.f) {
 			setVelocity(Vector2f(getVelocity().x, 0.f));
-			impulse({ 0, -(float)(dt * _groundspeed) });
+			impulse({ 0, -(float)(dt * _flySpeed) });
 		}
 	}
 
@@ -38,12 +38,12 @@ void PlayerPhysicsComponent::update(double dt) {
 			// Moving Either Left or Right
 			if (Keyboard::isKeyPressed(Keyboard::Right)) {
 				if (getVelocity().x < _maxVelocity.x)
-					impulse({ (float)(dt * _groundspeed), 0 });
+					impulse({ (float)(dt * _flySpeed), 0 });
 					_direction = "right";
 			}
 			else {
 				if (getVelocity().x > -_maxVelocity.x)
-					impulse({ -(float)(dt * _groundspeed), 0 });
+					impulse({ -(float)(dt * _flySpeed), 0 });
 					_direction = "left";
 
 			}
@@ -54,11 +54,11 @@ void PlayerPhysicsComponent::update(double dt) {
 			// Moving Either Up or Down
 			if (Keyboard::isKeyPressed(Keyboard::Up)) {
 				if (getVelocity().y < _maxVelocity.y)
-					impulse({ 0, -(float)(dt * _groundspeed) });
+					impulse({ 0, -(float)(dt * _flySpeed) });
 			}
 			else {
 				if (getVelocity().y > -_maxVelocity.y)
-					impulse({ 0, (float)(dt * _groundspeed) });
+					impulse({ 0, (float)(dt * _flySpeed) });
 			}
 		}
 	}
@@ -81,11 +81,11 @@ void PlayerPhysicsComponent::update(double dt) {
 }
 
 PlayerPhysicsComponent::PlayerPhysicsComponent(Entity* p,
-	const Vector2f& size)
+	const Vector2f& size, int flySpeed)
 	: PhysicsComponent(p, true, size) {
 	_size = sv2_to_bv2(size, true);
 	_maxVelocity = Vector2f(200.f, 200.f);
-	_groundspeed = 30.f;
+	_flySpeed = flySpeed;
 	_body->SetSleepingAllowed(false);
 	_body->SetFixedRotation(true);
 	//Bullet items have higher-res collision detection
@@ -94,5 +94,9 @@ PlayerPhysicsComponent::PlayerPhysicsComponent(Entity* p,
 
 std::string PlayerPhysicsComponent::GetDirection() {
 	return _direction;
+}
+
+void PlayerPhysicsComponent::setFlySpeed(int speed) {
+	_flySpeed = speed;
 }
 

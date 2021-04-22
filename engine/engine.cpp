@@ -4,13 +4,16 @@
 #include "system_renderer.h"
 #include "system_resources.h"
 #include <SFML/Graphics.hpp>
-#include "../lib_tile_level_loader/LevelSystem.h"
-#include "../PerfectJazz/components/cmp_sprite.h"
-#include "../PerfectJazz/components/cmp_enemy_physics.h"
 #include <future>
 #include <iostream>
 #include <stdexcept>
+#include "../lib_tile_level_loader/LevelSystem.h"
+#include "../PerfectJazz/components/cmp_sprite.h"
+#include "../PerfectJazz/components/cmp_text.h"
+#include "../PerfectJazz/components/cmp_enemy_physics.h"
 #include "../PerfectJazz/panels/create_panels.h"
+#include "../PerfectJazz/player/create_player.h"
+
 
 using namespace sf;
 using namespace std;
@@ -24,7 +27,6 @@ static bool loading = false;
 static float loadingspinner = 0.f;
 static float loadingTime;
 static RenderWindow* _window;
-Panels panel;
 
 void Loading_update(float dt, const Scene* const scn) {
 	//  cout << "Eng: Loading Screen\n";
@@ -167,9 +169,8 @@ void Scene::Update(const double& dt) {
 		GameOver();
 		isDead = true;
 	}
-
-	ents.update(dt);
 	Panels::update(dt);
+	ents.update(dt);
 }
 
 void Scene::GameOver() {

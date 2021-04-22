@@ -24,7 +24,6 @@ void Background::createBackground(Scene* _scene) {
 
 	}
 
-	//CARLOS NEED TO FIX THIS
 	//Load over background sprites
 	{
 		for (int i = 0; i < 2; i++) {
