@@ -17,6 +17,13 @@ sf::View leftView;
 sf::View rightView;
 sf::View mainView;
 
+//static shared_ptr<SpriteComponent> spriteCMP;
+//static shared_ptr<HPComponent> hpCMP;
+//static shared_ptr<TextComponent> playerTxtCMP;
+//static shared_ptr<TextComponent> scoreTxtCMP;
+//static shared_ptr<TextComponent> coinsTxtCMP;
+//static shared_ptr<TextComponent> lifesTxtCMP;
+
 void Level3Scene::Load() {
 	cout << " Scene 3 Load" << endl;
 

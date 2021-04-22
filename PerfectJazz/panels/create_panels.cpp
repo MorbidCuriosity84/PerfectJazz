@@ -1,25 +1,24 @@
 #include "create_panels.h"
 #include "../player/cmp_player.h"
-#include "../components/cmp_text.h"
-#include "../components/cmp_hp.h"
-#include "../components/cmp_sprite.h"
+
 
 double timer;
 using namespace std;
 using namespace sf;
 
 shared_ptr<Entity> leftPanel;
-shared_ptr<SpriteComponent> spriteCMP;
-shared_ptr<HPComponent> hpCMP;
-shared_ptr<TextComponent> playerTxtCMP;
-shared_ptr<TextComponent> scoreTxtCMP;
-shared_ptr<TextComponent> coinsTxtCMP;
-shared_ptr<TextComponent> lifesTxtCMP;
 
+static shared_ptr<SpriteComponent> spriteCMP;
+static shared_ptr<HPComponent> hpCMP;
+static shared_ptr<TextComponent> playerTxtCMP;
+static shared_ptr<TextComponent> scoreTxtCMP;
+static shared_ptr<TextComponent> coinsTxtCMP;
+static shared_ptr<TextComponent> lifesTxtCMP;
 
 void Panels::createPanels(Scene* _scene) {
 
 	auto playerCMP = player->GetCompatibleComponent<PlayerComponent>()[0];
+	
 	//Left Panel
 	{
 		leftPanel = _scene->makeEntity();
@@ -28,7 +27,8 @@ void Panels::createPanels(Scene* _scene) {
 		leftPanel->addComponent<SpriteComponent>();
 
 		hpCMP = leftPanel->addComponent<HPComponent>(_scene, playerCMP->_playerSettings.maxHP);
-		hpCMP->loadHP();
+		hpCMP->loadHP();		
+		
 		playerTxtCMP = leftPanel->addComponent<TextComponent>("PLAYER 1");
 		scoreTxtCMP = leftPanel->addComponent<TextComponent>("Score: " + to_string(playerCMP->_playerSettings.score));
 		coinsTxtCMP = leftPanel->addComponent<TextComponent>("Coins: " + to_string(playerCMP->_playerSettings.shopPoints));
@@ -101,3 +101,5 @@ void Panels::update(double dt) {
 
 void Panels::render() {
 }
+
+Panels::Panels() {}

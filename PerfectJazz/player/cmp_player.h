@@ -9,6 +9,7 @@
 #include "../components/cmp_damage.h"
 #include "../components/cmp_hp.h"
 #include "../settings/player_settings.h"
+#include "../settings/collision_helper.h"
 
 using namespace sf;
 

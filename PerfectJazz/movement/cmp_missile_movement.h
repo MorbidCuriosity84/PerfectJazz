@@ -16,8 +16,7 @@ public:
 	void update(double dt) override;	
 
 	void setSeeking(bool b);
-	bool getSeeking() const;
-	Entity* MissileMovementComponent::getParent();
+	bool getSeeking() const;	
 	void setPhysics(std::shared_ptr<PhysicsComponent> phys);
 	std::shared_ptr<PhysicsComponent> getPhysics() const;
 

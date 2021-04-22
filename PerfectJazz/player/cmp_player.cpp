@@ -1,5 +1,5 @@
 #include "cmp_player.h"
-#include "../settings/collision_helper.h"
+
 
 using namespace std;
 using namespace sf;
