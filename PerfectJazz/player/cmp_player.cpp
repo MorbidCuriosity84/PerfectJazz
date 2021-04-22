@@ -1,12 +1,4 @@
 #include "cmp_player.h"
-#include <thread>
-#include "ecm.h"
-#include <future>
-#include <fstream>
-#include <iostream>
-#include "../components/cmp_sprite.h"
-#include "../components/cmp_player_physics.h"
-#include "../components/cmp_text.h"
 
 using namespace std;
 using namespace sf;
@@ -23,24 +15,22 @@ void PlayerComponent::Load() {
 	physicsCMP = player->addComponent<PlayerPhysicsComponent>(spriteCMP->getSprite().getGlobalBounds().getSize());
 	physicsCMP.get()->setCategory(_playerSettings.category);
 
-	auto h = player->addComponent<HPComponent>(_playerSettings.scene, _playerSettings.hp);
-	h->loadHP();
-	h.get()->setVisible(_playerSettings.hpVisible);
-	h->setSpriteColour(Color::Red);
-	h->setTextColour(Color::White);
-	h->setScale(Vector2f(1.f, 0.8f));
-	phys.get()->getBody()->SetUserData(h.get());
+	hpCMP = player->addComponent<HPComponent>(_playerSettings.scene, _playerSettings.hp);
+	hpCMP->loadHP();
+	hpCMP.get()->setVisible(_playerSettings.hpVisible);
+	hpCMP->setSpriteColour(Color::Red);
+	hpCMP->setTextColour(Color::White);
+	hpCMP->setScale(Vector2f(1.f, 0.8f));
+	physicsCMP.get()->getBody()->SetUserData(hpCMP.get());
 }
 
 void PlayerComponent::revive() {
 
-	auto phy = player->GetCompatibleComponent<PlayerPhysicsComponent>()[0];
-	phy->teleport((Vector2f((round)(mainView.getSize().x / 2), mainView.getSize().y - 100.f)));
-	auto hp = player->GetCompatibleComponent<HPComponent>()[0];
+	physicsCMP->teleport((Vector2f((round)(mainView.getSize().x / 2), mainView.getSize().y - 100.f)));
 	setPlayerAlive(true);
 	_gracePeriod = true;
-	phy->setCategory(NO_COLLIDE);
-	hp->setHP(_playerSettings.maxHP);
+	physicsCMP->setCategory(NO_COLLIDE);
+	hpCMP->setHP(_playerSettings.maxHP);
 }
 
 void PlayerComponent::update(double dt) {
@@ -57,8 +47,7 @@ void PlayerComponent::update(double dt) {
 		}
 
 		if (_gracePeriodTimer >= 3) {
-			auto phy = player->GetCompatibleComponent<PhysicsComponent>()[0];
-			phy->setCategory(PLAYER_BODY);
+			physicsCMP->setCategory(PLAYER_BODY);
 			_gracePeriod = false;
 			setPlayerAlive(true);
 		}
@@ -106,34 +95,26 @@ void PlayerComponent::update(double dt) {
 			_playerSettings.lifes--;
 
 			if (_playerSettings.lifes <= 0) {
-				GameOver();
+				_gracePeriod = false;
+				setPlayerAlive(false);
 			}
 		}
 	}
 }
 
-void PlayerComponent::setPlayerAlive(bool b) {	
-	physicsCMP->getBody()->SetActive(b);
+void PlayerComponent::setPlayerAlive(bool b) {
 	physicsCMP->impulse(Vector2f(0.f, 0.f));
 	physicsCMP->setVelocity(Vector2f(0.f, 0.f));
 	player->setVisible(b);
 	player->setAlive(b);
-	phy->getBody()->SetActive(b);
+	physicsCMP->getBody()->SetActive(b);
 
 	_gracePeriodTimer = 0;
 	_visibilityTimer = 0;
 }
 
-void PlayerComponent::GameOver() {
-	player->setAlive(true);
-	auto t = player->addComponent<TextComponent>("GAME OVER");
-	t->setFontSize(220u);
-	t->_text.setColor(Color::White);
-	t->_text.setOutlineColor(Color::White);
-	t->_text.setOutlineThickness(2);
-	t->setOrigin(Vector2f(100.f, 100.f));
-}
+
 
 PlayerComponent::PlayerComponent(Entity* p, textureSettings playerTextureHelper, textureSettings bulletTextureHelper, playerSettings playerSettings, weaponSettings weaponSettings, bulletSettings bulletSettings)
-	: Component(p), _playerTextureHelper(playerTextureHelper), _bulletTextureHelper(bulletTextureHelper), _playerSettings(playerSettings), _weaponSettings(weaponSettings), _bulletSettings(bulletSettings), _playerAlive(true) {
+	: Component(p), _playerTextureHelper(playerTextureHelper), _bulletTextureHelper(bulletTextureHelper), _playerSettings(playerSettings), _weaponSettings(weaponSettings), _bulletSettings(bulletSettings), _gracePeriod(false), _gracePeriodTimer(0), _visibilityTimer(0) {
 }

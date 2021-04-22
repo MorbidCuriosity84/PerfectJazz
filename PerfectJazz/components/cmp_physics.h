@@ -16,11 +16,8 @@ public:
 
   b2Fixture* const getFixture() const;
   b2Body* getBody();
-  bool isTouching(const PhysicsComponent& pc) const;
-  bool isTouching(const PhysicsComponent& pc, b2Contact const* bc) const;
   std::vector<const b2Contact*> getTouching() const;
   const sf::Vector2f getVelocity() const;
-  void setRestitution(float r);
   void setFriction(float r);
   void setMass(float m);
   void update(double dt) override;
