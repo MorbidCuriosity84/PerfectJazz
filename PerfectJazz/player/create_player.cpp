@@ -1,5 +1,4 @@
 #include "create_player.h"
-#include "cmp_player.h"
 
 using namespace std;
 using namespace sf;

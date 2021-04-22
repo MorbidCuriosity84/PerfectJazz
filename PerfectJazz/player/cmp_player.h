@@ -8,8 +8,8 @@
 #include "../components/cmp_physics.h"
 #include "../components/cmp_damage.h"
 #include "../components/cmp_hp.h"
-#include "../game.h"
 #include "../settings/player_settings.h"
+
 using namespace sf;
 
 class PlayerComponent : public Component {
@@ -18,7 +18,9 @@ protected:
 	textureSettings _bulletTextureHelper;
 	weaponSettings _weaponSettings;
 	bulletSettings _bulletSettings;
-	bool _playerAlive;
+	bool _gracePeriod;
+	float _gracePeriodTimer;
+	float _visibilityTimer;
 
 public:
 	void Load();
@@ -26,8 +28,6 @@ public:
 	void render() override {};
 	void update(double dt);
 	void setPlayerAlive(bool b);
-	bool isAlive();
-	void setAlive(bool b);
 	playerSettings _playerSettings;
 	std::shared_ptr<SpriteComponent> spriteCMP;
 	std::shared_ptr<DamageComponent> damageCMP;

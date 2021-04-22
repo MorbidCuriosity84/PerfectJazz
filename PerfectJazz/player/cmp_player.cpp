@@ -1,11 +1,4 @@
 #include "cmp_player.h"
-#include <thread>
-#include "ecm.h"
-#include <future>
-#include <fstream>
-#include <iostream>
-#include "../components/cmp_sprite.h"
-#include "../components/cmp_player_physics.h"
 
 using namespace std;
 using namespace sf;
@@ -28,23 +21,37 @@ void PlayerComponent::Load() {
 	hpCMP->setSpriteColour(Color::Red);
 	hpCMP->setTextColour(Color::White);
 	hpCMP->setScale(Vector2f(1.f, 0.8f));
-
 	physicsCMP.get()->getBody()->SetUserData(hpCMP.get());
 }
 
 void PlayerComponent::revive() {
-	
-	physicsCMP->teleport((Vector2f((round)(mainView.getSize().x / 2), mainView.getSize().y - 100.f)));	
-	setPlayerAlive(true);
-	player->setAlive(true);
-	hpCMP->setHP(_playerSettings.maxHP);
 
+	physicsCMP->teleport((Vector2f((round)(mainView.getSize().x / 2), mainView.getSize().y - 100.f)));
+	setPlayerAlive(true);
+	_gracePeriod = true;
+	physicsCMP->setCategory(NO_COLLIDE);
+	hpCMP->setHP(_playerSettings.maxHP);
 }
 
 void PlayerComponent::update(double dt) {
 
 	_playerTextureHelper.spriteTimer += dt;
 
+	if (_gracePeriod) {
+		_gracePeriodTimer += dt;
+
+		if (_gracePeriodTimer < 3.f) {
+			_visibilityTimer += dt;
+			if (_visibilityTimer >= 0.1f && _visibilityTimer < 0.2f) { player->setVisible(false); }
+			if (_visibilityTimer >= 0.2f) { player->setVisible(true); _visibilityTimer = 0; }
+		}
+
+		if (_gracePeriodTimer >= 3) {
+			physicsCMP->setCategory(PLAYER_BODY);
+			_gracePeriod = false;
+			setPlayerAlive(true);
+		}
+	}
 
 	if (player->isAlive()) {
 		//auto pPhysics = static_cast<PlayerPhysicsComponent>(*physicsCMP);
@@ -86,19 +93,28 @@ void PlayerComponent::update(double dt) {
 			hpCMP->setHP(0);
 			setPlayerAlive(false);
 			_playerSettings.lifes--;
+
+			if (_playerSettings.lifes <= 0) {
+				_gracePeriod = false;
+				setPlayerAlive(false);
+			}
 		}
 	}
 }
 
-void PlayerComponent::setPlayerAlive(bool b) {	
-	physicsCMP->getBody()->SetActive(b);
+void PlayerComponent::setPlayerAlive(bool b) {
 	physicsCMP->impulse(Vector2f(0.f, 0.f));
 	physicsCMP->setVelocity(Vector2f(0.f, 0.f));
 	player->setVisible(b);
 	player->setAlive(b);
-	_playerAlive = b;
+	physicsCMP->getBody()->SetActive(b);
+
+	_gracePeriodTimer = 0;
+	_visibilityTimer = 0;
 }
 
+
+
 PlayerComponent::PlayerComponent(Entity* p, textureSettings playerTextureHelper, textureSettings bulletTextureHelper, playerSettings playerSettings, weaponSettings weaponSettings, bulletSettings bulletSettings)
-	: Component(p), _playerTextureHelper(playerTextureHelper), _bulletTextureHelper(bulletTextureHelper), _playerSettings(playerSettings), _weaponSettings(weaponSettings), _bulletSettings(bulletSettings), _playerAlive(true) {
+	: Component(p), _playerTextureHelper(playerTextureHelper), _bulletTextureHelper(bulletTextureHelper), _playerSettings(playerSettings), _weaponSettings(weaponSettings), _bulletSettings(bulletSettings), _gracePeriod(false), _gracePeriodTimer(0), _visibilityTimer(0) {
 }
