@@ -14,16 +14,17 @@ static struct playerSettings {
 	float friction;
 	float angle;
 	int lifes;
+	int maxLifes;
 	int score;
 	int shopPoints;
 	Scene* scene;
 	_entityCategory category;
-	sf::Vector2f velocity;
+	float flySpeed;
 	sf::Vector2f scale;
 
 	playerSettings() {};
-	playerSettings(int _damage, int _hp, Scene* _scene, float _restitution, float _friction, float _lifes, int _score, int _shopPoints, sf::Vector2f _velocity, _entityCategory _category, bool _hpVisible, sf::Vector2f _scale, float _angle)
-		: damage(_damage), hp(_hp), scene(_scene), restitution(_restitution), friction(_friction), lifes(_lifes), score(_score), shopPoints(_shopPoints), velocity(_velocity), category(_category), hpVisible(_hpVisible), scale(_scale), angle(_angle) {
+	playerSettings(int _damage, int _hp, Scene* _scene, float _restitution, float _friction, int _lifes, int _maxLifes, int _score, int _shopPoints, float _flySpeed, _entityCategory _category, bool _hpVisible, sf::Vector2f _scale, float _angle)
+		: damage(_damage), hp(_hp), scene(_scene), restitution(_restitution), friction(_friction), lifes(_lifes), maxLifes(_maxLifes), score(_score), shopPoints(_shopPoints), flySpeed(_flySpeed), category(_category), hpVisible(_hpVisible), scale(_scale), angle(_angle) {
 	}
 };
 

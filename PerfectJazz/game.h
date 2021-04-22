@@ -82,6 +82,12 @@ enum _backgroundType {
     FOREST,
     FOREST_OVER,
 };
+
+enum _miscType {
+    PLAYER_LIFE,
+    PLAYER_UPDATE_COUNTER,
+};
+
 enum _settingType {
     PLAYER,
     ENEMY,
