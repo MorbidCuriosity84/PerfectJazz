@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <SFML/Graphics/RenderWindow.hpp>
+#include "../PerfectJazz/components/cmp_text.h"
 #include "ecm.h"
 #include <future>
 #include <maths.h>
@@ -14,10 +15,12 @@ public:
 	virtual void LoadAsync();
 	virtual void UnLoad();
 	virtual void Update(const double& dt);
+	void GameOver();
 	virtual void Render();
 	bool isLoaded() const;
 	std::shared_ptr<Entity> makeEntity();
 	EntityManager ents;
+	std::shared_ptr<TextComponent> txtCMP;
 
 protected:
 	void setLoaded(bool);
