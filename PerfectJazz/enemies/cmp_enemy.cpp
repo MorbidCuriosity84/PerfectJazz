@@ -30,8 +30,6 @@ void EnemyComponent::Load(int index) {
 	hpCMP->setTextColour(Color::White);
 	hpCMP->setScale(Vector2f(1.f, 0.8f));
 
-	physicsCMP->getBody()->SetUserData(hpCMP.get());
-
 	//_parent->addComponent<SineMovementComponent>(Vector2f(0.f,-50.f), 15.f);
 }
 
@@ -56,8 +54,16 @@ void EnemyComponent::update(double dt) {
 	}
 }
 
-EnemyComponent::EnemyComponent(Entity* p, textureSettings enemyTextureHelper, textureSettings bulletTextureHelper, enemySettings enemySettings, weaponSettings weaponSettings, bulletSettings bulletSettings)
-	: Component(p), _enemyTextureHelper(enemyTextureHelper), _bulletTextureHelper(bulletTextureHelper), _enemySettings(enemySettings), _weaponSettings(weaponSettings), _bulletSettings(bulletSettings) {
+EnemyComponent::EnemyComponent(Entity* p, textureSettings enemyTextureHelper, textureSettings bulletTextureHelper, enemySettings enemySettings, weaponSettings weaponSettings, bulletSettings bulletSettings, int index)
+	: Component(p), _enemyTextureHelper(enemyTextureHelper), _bulletTextureHelper(bulletTextureHelper), _enemySettings(enemySettings), _weaponSettings(weaponSettings), _bulletSettings(bulletSettings) 
+{
+	Load(index);
+	en_colHelp.damageCMP = damageCMP.get();
+	en_colHelp.hpCMP = hpCMP.get();
+	en_colHelp.isMissile = false;
+	en_colHelp.missileCMP = nullptr;
+
+	physicsCMP->getBody()->SetUserData(&en_colHelp);
 }
 
 

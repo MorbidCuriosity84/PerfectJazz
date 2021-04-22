@@ -22,7 +22,7 @@ struct enemySettings {
 	Scene* scene;
 	_entityCategory category;
 	sf::Vector2f velocity;
-	sf::Vector2f scale;
+	sf::Vector2f scale;	
 
 	enemySettings() {};
 	enemySettings(ls::Tile _tile, int _damage, int _hp, Scene* _scene, float _restitution, float _friction, sf::Vector2f _velocity, _entityCategory _category, bool _hpVisible, sf::Vector2f _scale, float _angle)

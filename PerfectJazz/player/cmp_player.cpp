@@ -6,7 +6,7 @@ using namespace sf;
 void PlayerComponent::Load() {
 	// CARLOS TO-DO fix player movement when increased. It feels too crazy
 	// TO-DO try to find a solution where I can share a PlayerComponent for this 
-	auto playerCMP = player->GetCompatibleComponent<PlayerComponent>()[0];
+	
 	player->setPosition((Vector2f((round)(mainView.getSize().x / 2), mainView.getSize().y - 100.f)));
 	damageCMP = player->addComponent<DamageComponent>(_playerSettings.damage);
 	weaponCMP = player->addComponent<WeaponComponent>(_weaponSettings, _bulletSettings, _bulletTextureHelper);
@@ -24,7 +24,6 @@ void PlayerComponent::Load() {
 	hpCMP->setSpriteColour(Color::Red);
 	hpCMP->setTextColour(Color::White);
 	hpCMP->setScale(Vector2f(1.f, 0.8f));
-	physicsCMP.get()->getBody()->SetUserData(hpCMP.get());
 }
 
 void PlayerComponent::revive() {
@@ -160,6 +159,13 @@ void PlayerComponent::setMaxLifes(int max) { _playerSettings.maxLifes = max; }
 int PlayerComponent::getMaxLifes() { return _playerSettings.maxLifes; }
 
 PlayerComponent::PlayerComponent(Entity* p, textureSettings playerTextureHelper, textureSettings bulletTextureHelper, playerSettings playerSettings, weaponSettings weaponSettings, bulletSettings bulletSettings)
-	: Component(p), _playerTextureHelper(playerTextureHelper), _bulletTextureHelper(bulletTextureHelper), _playerSettings(playerSettings), _weaponSettings(weaponSettings), _bulletSettings(bulletSettings), _gracePeriod(false), _gracePeriodTimer(0),
-	_visibilityTimer(0), _bulletNumberUpdateState(1), _damageUpdateState(1), _fireRateUpdateState(1), _flySpeedUpdateState(1), _maxUpdate(5) {
+	: Component(p), _playerTextureHelper(playerTextureHelper), _bulletTextureHelper(bulletTextureHelper), _playerSettings(playerSettings), _weaponSettings(weaponSettings), _bulletSettings(bulletSettings), _gracePeriod(false), _gracePeriodTimer(0), _visibilityTimer(0) 
+{
+	Load();
+	colHelp.damageCMP = damageCMP.get();
+	colHelp.hpCMP = hpCMP.get();
+	colHelp.isMissile = false;
+	colHelp.missileCMP = nullptr;
+
+	physicsCMP->getBody()->SetUserData(&colHelp);
 }
