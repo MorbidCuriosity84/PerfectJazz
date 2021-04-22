@@ -9,11 +9,17 @@ using namespace std;
 using namespace sf;
 
 shared_ptr<Entity> leftPanel;
+shared_ptr<SpriteComponent> spriteCMP;
+shared_ptr<HPComponent> hpCMP;
+shared_ptr<TextComponent> playerTxtCMP;
+shared_ptr<TextComponent> scoreTxtCMP;
+shared_ptr<TextComponent> coinsTxtCMP;
+shared_ptr<TextComponent> lifesTxtCMP;
+
 
 void Panels::createPanels(Scene* _scene) {
 
-
-	auto currentPlayer = player->GetCompatibleComponent<PlayerComponent>()[0];
+	auto playerCMP = player->GetCompatibleComponent<PlayerComponent>()[0];
 	//Left Panel
 	{
 		leftPanel = _scene->makeEntity();
@@ -21,47 +27,48 @@ void Panels::createPanels(Scene* _scene) {
 		//CARLOS - I had to add this sprite before so the HPComponent updates properly
 		leftPanel->addComponent<SpriteComponent>();
 
-		auto hp = leftPanel->addComponent<HPComponent>(_scene, currentPlayer->_playerSettings.maxHP);
-		hp->loadHP();
-		auto playerText = leftPanel->addComponent<TextComponent>("PLAYER 1");
-		auto score = leftPanel->addComponent<TextComponent>("Score: " + to_string(currentPlayer->_playerSettings.score));
-		auto coins = leftPanel->addComponent<TextComponent>("Coins: " + to_string(currentPlayer->_playerSettings.shopPoints));
-		auto lifes = leftPanel->addComponent<TextComponent>("Lifes: " + to_string(currentPlayer->_playerSettings.lifes));
+		hpCMP = leftPanel->addComponent<HPComponent>(_scene, playerCMP->_playerSettings.maxHP);
+		hpCMP->loadHP();
+		playerTxtCMP = leftPanel->addComponent<TextComponent>("PLAYER 1");
+		scoreTxtCMP = leftPanel->addComponent<TextComponent>("Score: " + to_string(playerCMP->_playerSettings.score));
+		coinsTxtCMP = leftPanel->addComponent<TextComponent>("Coins: " + to_string(playerCMP->_playerSettings.shopPoints));
+		lifesTxtCMP = leftPanel->addComponent<TextComponent>("Lifes: " + to_string(playerCMP->_playerSettings.lifes));
 
 		//Player name
 		auto row = (round)(leftView.getSize().y / 30);
 		auto col = (round)(leftView.getSize().x / 10);
-		playerText->setFontSize(50u);
-		playerText->setPosition(Vector2f((round)(leftView.getSize().x / 2 - playerText->getGlobalBounds().getSize().x / 2), (round)(row * 1 - row / 2)));
+		playerTxtCMP->setFontSize(50u);
+		sf::FloatRect textRect = playerTxtCMP->getLocalBounds();
+		playerTxtCMP->setOrigin(Vector2f((round)(textRect.left + textRect.width / 2.f), (round)(textRect.top + textRect.height / 2.f)));
+		playerTxtCMP->setPosition(Vector2f((round)(leftView.getSize().x / 2), (round)(row * 2)));
 
 		//Player score
-		score->setPosition(Vector2f(col * 1, row * 4));
-		score->setFontSize(40u);
+		scoreTxtCMP->setPosition(Vector2f(col * 1, row * 4));
+		scoreTxtCMP->setFontSize(40u);
 
 		//Player coins
-		coins->setPosition(Vector2f(col * 2, row * 5));
-		coins->setFontSize(40u);
+		coinsTxtCMP->setPosition(Vector2f(col * 2, row * 5));
+		coinsTxtCMP->setFontSize(40u);
 
 		//Player lifes
-		lifes->setPosition(Vector2f(col * 2, row * 6));
-		lifes->setFontSize(40u);
+		lifesTxtCMP->setPosition(Vector2f(col * 2, row * 6));
+		lifesTxtCMP->setFontSize(40u);
 
 		//Player HP
-		auto hpText = leftPanel->GetCompatibleComponent<TextComponent>()[0];
-		auto spr = leftPanel->GetCompatibleComponent<SpriteComponent>();
-		spr[1]->isFollowingParent(false);
-		spr[2]->isFollowingParent(false);
-		spr[1]->getSprite().setColor(Color::White);
-		spr[2]->getSprite().setColor(Color(205, 0, 0));
+		hpCMP->underHPBar->isFollowingParent(false);
+		hpCMP->overHPBar->isFollowingParent(false);
+		hpCMP->underHPBar->getSprite().setColor(Color::White);
+		hpCMP->overHPBar->getSprite().setColor(Color(205, 0, 0));
 
-		hp->setDynamic(false);
-		hp->setScale(Vector2f(4.f, 3.f));
+		hpCMP->setDynamic(false);
+		hpCMP->setScale(Vector2f(4.f, 3.f));
 
-		spr[1]->getSprite().setPosition(Vector2f((round)(leftView.getSize().x / 2 - spr[2]->getSprite().getGlobalBounds().width / 2), row * 3));
-		spr[2]->getSprite().setPosition(Vector2f((round)(leftView.getSize().x / 2 - spr[2]->getSprite().getGlobalBounds().width / 2), row * 3));
-		hpText->setText(to_string(currentPlayer->_playerSettings.hp) + "/" + to_string(currentPlayer->_playerSettings.maxHP));
-		hpText->setFontSize(34u);
-		hpText->setPosition(Vector2f((round)(spr[1]->getSprite().getPosition().x + spr[1]->getSprite().getGlobalBounds().width / 2 - hpText->getGlobalBounds().width / 2), (round)(spr[1]->getSprite().getPosition().y - hpText->getGlobalBounds().height / 2)));
+		hpCMP->underHPBar->getSprite().setPosition(Vector2f((round)(leftView.getSize().x / 2 - hpCMP->overHPBar->getSprite().getGlobalBounds().width / 2), row * 3));
+		hpCMP->overHPBar->getSprite().setPosition(Vector2f((round)(leftView.getSize().x / 2 - hpCMP->overHPBar->getSprite().getGlobalBounds().width / 2), row * 3));
+
+		hpCMP->textCMP->setText(to_string(playerCMP->_playerSettings.hp) + "/" + to_string(playerCMP->_playerSettings.maxHP));
+		hpCMP->textCMP->setFontSize(34u);
+		hpCMP->textCMP->setPosition(Vector2f((hpCMP->underHPBar->getSprite().getPosition().x + hpCMP->underHPBar->getSprite().getGlobalBounds().width / 2 - hpCMP->textCMP->getGlobalBounds().width / 2), (round)(hpCMP->underHPBar->getSprite().getPosition().y - hpCMP->textCMP->getGlobalBounds().height / 2)));
 	}
 
 	//Right Panel
@@ -71,29 +78,22 @@ void Panels::createPanels(Scene* _scene) {
 		//auto t2 = txt2->addComponent<TextComponent>("This is the right view");
 		//t2->setFontSize(18u);
 	}
-
 }
+
 void Panels::update(double dt) {
 	timer += dt;
 
 	if (timer > 0.1) {
 
-		auto currentPlayer = player->GetCompatibleComponent<PlayerComponent>()[0];
-		auto currentPlayerHP = player->GetCompatibleComponent<HPComponent>()[0];
-		auto hpText = leftPanel->GetCompatibleComponent<TextComponent>()[0];
-		auto score = leftPanel->GetCompatibleComponent<TextComponent>()[2];
-		auto coins = leftPanel->GetCompatibleComponent<TextComponent>()[3];
-		auto lifes = leftPanel->GetCompatibleComponent<TextComponent>()[4];
-		auto hp = leftPanel->GetCompatibleComponent<HPComponent>()[0];
-		auto spr = leftPanel->GetCompatibleComponent<SpriteComponent>();
+		auto playerCMP = player->GetCompatibleComponent<PlayerComponent>()[0];
 
-		hp->setHP(currentPlayerHP->getHP());
-		score->setText("Score: " + to_string(currentPlayer->_playerSettings.score));
-		coins->setText("Coins: " + to_string(currentPlayer->_playerSettings.shopPoints));
-		hpText->setText(to_string(currentPlayerHP->getHP()) + "/" + to_string(currentPlayer->_playerSettings.maxHP));
-		hpText->setPosition(Vector2f((round)((spr[1]->getSprite().getPosition().x + spr[1]->getSprite().getGlobalBounds().width / 2 - hpText->getGlobalBounds().width / 2)), (round)(spr[1]->getSprite().getPosition().y - hpText->getGlobalBounds().height / 2)));
+		hpCMP->setHP(playerCMP->hpCMP->getHP());
+		scoreTxtCMP->setText("Score: " + to_string(playerCMP->_playerSettings.score));
+		coinsTxtCMP	->setText("Coins: " + to_string(playerCMP->_playerSettings.shopPoints));
+		hpCMP->textCMP->setText(to_string(playerCMP->hpCMP->getHP()) + "/" + to_string(playerCMP->_playerSettings.maxHP));
+		hpCMP->textCMP->setPosition(Vector2f((round)((hpCMP->underHPBar->getSprite().getPosition().x + hpCMP->underHPBar->getSprite().getGlobalBounds().width / 2 - hpCMP->textCMP->getGlobalBounds().width / 2)), (round)(hpCMP->underHPBar->getSprite().getPosition().y - hpCMP->textCMP->getGlobalBounds().height / 2)));
 
-		lifes->setText("Lifes: " + to_string(currentPlayer->_playerSettings.lifes));
+		lifesTxtCMP->setText("Lifes: " + to_string(playerCMP->_playerSettings.lifes));
 
 		timer = 0;
 	}

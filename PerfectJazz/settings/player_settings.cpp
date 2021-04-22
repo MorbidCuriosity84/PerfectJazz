@@ -11,7 +11,7 @@ playerSettings PlayerSettings::LoadSettings(_playerType type, Scene* scene) {
 	{
 		currentPlayerSettings.damage = 10000;
 		currentPlayerSettings.hp = 400;
-		currentPlayerSettings.lifes = 3;
+		currentPlayerSettings.lifes = 1;
 		currentPlayerSettings.maxHP = currentPlayerSettings.hp;
 		currentPlayerSettings.scene = scene;
 		currentPlayerSettings.restitution = 0.4f;
