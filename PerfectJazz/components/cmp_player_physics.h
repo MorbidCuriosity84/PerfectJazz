@@ -5,12 +5,13 @@ class PlayerPhysicsComponent : public PhysicsComponent {
 protected:
 	b2Vec2 _size;
 	sf::Vector2f _maxVelocity;
-	float _groundspeed;
 	std::string _direction;
+	int _flySpeed;
 
 public:
 	void update(double dt) override;
 	std::string GetDirection();
-	explicit PlayerPhysicsComponent(Entity* p, const sf::Vector2f& size);
+	void setFlySpeed(int speed);
+	explicit PlayerPhysicsComponent(Entity* p, const sf::Vector2f& size, int flySpeed);
 	PlayerPhysicsComponent() = delete;
 };
