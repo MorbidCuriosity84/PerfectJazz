@@ -14,6 +14,7 @@ class Panels {
 public:
 	static void createPanels(Scene* _scene);
 	static void update(double dt);
+	static void setLifeSprites();
 	void render();
 
 	Panels();	
