@@ -32,7 +32,7 @@ void EnemyComponent::Load(int index) {
 
 	physicsCMP->getBody()->SetUserData(hpCMP.get());
 
-	_parent->addComponent<SineMovementComponent>(Vector2f(0.f,-50.f), 15.f);
+	//_parent->addComponent<SineMovementComponent>(Vector2f(0.f,-50.f), 15.f);
 }
 
 void EnemyComponent::update(double dt) {	

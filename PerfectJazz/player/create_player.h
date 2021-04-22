@@ -1,7 +1,8 @@
 #pragma once
 #include "engine.h"
+#include "cmp_player.h"
 
-class Player {
+static class Player {
 public:
 	static void createPlayer(Scene* _scene);
 };

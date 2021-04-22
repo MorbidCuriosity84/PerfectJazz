@@ -31,7 +31,7 @@ void Level3Scene::Load() {
 	rightView.setViewport(sf::FloatRect(0.8f, 0, 0.2f, 1.f));
 	//views.push_back(rightView);
 	//Create main view
-	sf::View tempMain(sf::FloatRect(0, 0, (floor)(Engine::getWindowSize().x / 1.66666), Engine::getWindowSize().y));
+	sf::View tempMain(sf::FloatRect(0, 0, (round)(Engine::getWindowSize().x / 1.66666), Engine::getWindowSize().y));
 	mainView = tempMain;
 
 	mainView.setViewport(sf::FloatRect(0.2f, 0, 0.6f, 1.f));
