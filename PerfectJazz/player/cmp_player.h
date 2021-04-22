@@ -18,6 +18,7 @@ protected:
 	textureSettings _bulletTextureHelper;
 	weaponSettings _weaponSettings;
 	bulletSettings _bulletSettings;
+	collisionHelper colHelp;
 	bool _gracePeriod;
 	float _gracePeriodTimer;
 	float _visibilityTimer;

@@ -12,7 +12,7 @@ struct bulletSettings {
 	float direction;
 	Scene* scene;
 	sf::Vector2f velocity;
-	sf::Vector2f spriteScale;
+	sf::Vector2f spriteScale;	
 
 	bulletSettings() {};
 	bulletSettings(float _lifeTime, int _damage, int _hp, float _angle, float _direction, Scene* _scene, sf::Vector2f _velocity, sf::Vector2f _spriteScale, _entityCategory _category)

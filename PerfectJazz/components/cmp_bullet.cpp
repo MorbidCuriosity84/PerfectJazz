@@ -1,8 +1,10 @@
 #include "cmp_bullet.h"
 #include "../movement/cmp_missile_movement.h"
 
+
 using namespace std;
 using namespace sf;
+
 
 void BulletComponent::createBullet() {
 	_bulletTextHelper.spriteTexture.get()->loadFromFile(_bulletTextHelper.spriteFilename);
@@ -19,11 +21,7 @@ void BulletComponent::createBullet() {
 	physicsCMP->setVelocity(Vector2f(physicsCMP->getVelocity().x - _parent->getRotation(), physicsCMP->getVelocity().y));
 	physicsCMP->setCategory(_settings.category);
 	hpCMP.get()->setVisible(false);
-	physicsCMP->getBody()->SetUserData(hpCMP.get());
-
-	if (_settings.category == ENEMY_MISSILE) {
-		_parent->addComponent<MissileMovementComponent>(Vector2f(0.f, -150.f), true);
-	}
+			
 }
 
 
@@ -65,6 +63,27 @@ void BulletComponent::update(double dt) {
 }
 
 BulletComponent::BulletComponent(Entity* p, bulletSettings settings, textureSettings bulletTexHelper)
-	: Component(p), _settings(settings), _bulletTextHelper(bulletTexHelper) {
+	: Component(p), _settings(settings), _bulletTextHelper(bulletTexHelper) 
+{
 	createBullet();
+	bul_colHelp.damageCMP = damageCMP.get();
+	bul_colHelp.hpCMP = hpCMP.get();
+	bul_colHelp.isMissile = false;
+	bul_colHelp.missileCMP = nullptr;
+	if (_settings.category == (ENEMY_MISSILE || FRIENDLY_MISSILE))
+	{
+		bul_colHelp.isMissile = true;
+	}
+	else {
+		bul_colHelp.isMissile = false;
+	}
+	//colHelp.isMissile = (_settings.category == (ENEMY_MISSILE || FRIENDLY_MISSILE) ? true : false);
+
+	if (_settings.category == ENEMY_MISSILE) {
+		bul_colHelp.missileCMP = _parent->addComponent<MissileMovementComponent>(Vector2f(0.f, -150.f), false).get();
+		bul_colHelp.isMissile = true;
+		_parent->addTag("missile");
+	}
+	physicsCMP->getBody()->SetUserData(&bul_colHelp);	
+
 }

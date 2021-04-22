@@ -16,6 +16,7 @@ bulletSettings BulletSettings::LoadSettings(_bulletType type, Scene* scene) {
 		settings.direction = -1.f;
 		settings.velocity = Vector2f(0.f, 100.f);
 		settings.spriteScale = Vector2f(1.f, 1.f);
+		
 
 		break;
 	}
@@ -41,7 +42,7 @@ bulletSettings BulletSettings::LoadSettings(_bulletType type, Scene* scene) {
 		settings.lifetime = 10.f;
 		settings.scene = scene;
 		settings.angle = 90.f;
-		settings.category = ENEMY_BULLET;
+		settings.category = ENEMY_MISSILE;
 		settings.direction = -1.f;
 		settings.velocity = Vector2f(0.f, 200.f);
 		settings.spriteScale = Vector2f(3.f, 3.f);

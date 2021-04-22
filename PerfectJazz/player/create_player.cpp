@@ -26,5 +26,5 @@ void Player::createPlayer(Scene* _scene) {
 	_playerBulletTextureHelper = TextureHelpingSettings::LoadSettings(TYPE1, _scene);
 
 	auto loadPlayer = player->addComponent<PlayerComponent>(_playerSpriteTextureHelper, _playerBulletTextureHelper, _playerSettings, _playerWeaponSettings, _playerBulletSettings);
-	loadPlayer->Load();
+	//loadPlayer->Load();
 }

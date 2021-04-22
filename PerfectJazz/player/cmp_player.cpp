@@ -1,4 +1,5 @@
 #include "cmp_player.h"
+#include "../settings/collision_helper.h"
 
 using namespace std;
 using namespace sf;
@@ -6,7 +7,7 @@ using namespace sf;
 void PlayerComponent::Load() {
 	player->setPosition((Vector2f((round)(mainView.getSize().x / 2), mainView.getSize().y - 100.f)));
 	damageCMP = player->addComponent<DamageComponent>(_playerSettings.damage);
-	weaponCMP = player->addComponent<WeaponComponent>(_weaponSettings, _bulletSettings, _bulletTextureHelper);
+	//weaponCMP = player->addComponent<WeaponComponent>(_weaponSettings, _bulletSettings, _bulletTextureHelper);
 	player->addTag("player");
 	_playerTextureHelper.spriteTexture.get()->loadFromFile(_playerTextureHelper.spriteFilename);
 
@@ -21,7 +22,7 @@ void PlayerComponent::Load() {
 	hpCMP->setSpriteColour(Color::Red);
 	hpCMP->setTextColour(Color::White);
 	hpCMP->setScale(Vector2f(1.f, 0.8f));
-	physicsCMP.get()->getBody()->SetUserData(hpCMP.get());
+		
 }
 
 void PlayerComponent::revive() {
@@ -116,5 +117,13 @@ void PlayerComponent::setPlayerAlive(bool b) {
 
 
 PlayerComponent::PlayerComponent(Entity* p, textureSettings playerTextureHelper, textureSettings bulletTextureHelper, playerSettings playerSettings, weaponSettings weaponSettings, bulletSettings bulletSettings)
-	: Component(p), _playerTextureHelper(playerTextureHelper), _bulletTextureHelper(bulletTextureHelper), _playerSettings(playerSettings), _weaponSettings(weaponSettings), _bulletSettings(bulletSettings), _gracePeriod(false), _gracePeriodTimer(0), _visibilityTimer(0) {
+	: Component(p), _playerTextureHelper(playerTextureHelper), _bulletTextureHelper(bulletTextureHelper), _playerSettings(playerSettings), _weaponSettings(weaponSettings), _bulletSettings(bulletSettings), _gracePeriod(false), _gracePeriodTimer(0), _visibilityTimer(0) 
+{
+	Load();
+	colHelp.damageCMP = damageCMP.get();
+	colHelp.hpCMP = hpCMP.get();
+	colHelp.isMissile = false;
+	colHelp.missileCMP = nullptr;
+
+	physicsCMP->getBody()->SetUserData(&colHelp);
 }

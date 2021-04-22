@@ -88,11 +88,11 @@ void PhysicsComponent::setCategory(_entityCategory cat)
     switch (cat) {
     case PLAYER_BODY:
         filter.categoryBits = PLAYER_BODY; //belongs to player group
-        filter.maskBits = ENEMY_BODY | ENEMY_BULLET | ENEMY_MISSILE; //only collides with enemy group
+        filter.maskBits = ENEMY_BODY | ENEMY_BULLET | ENEMY_MISSILE | ENEMY_MISSILE_RADAR; //only collides with enemy group
         break;
     case ENEMY_BODY:
         filter.categoryBits = ENEMY_BODY;
-        filter.maskBits = PLAYER_BODY | ENEMY_BODY | FRIENDLY_BULLET | FRIENDLY_MISSILE;
+        filter.maskBits = PLAYER_BODY | ENEMY_BODY | FRIENDLY_BULLET | FRIENDLY_MISSILE | FRIENDLY_MISSILE_RADAR;
         break;
     case ENEMY_BULLET:
         filter.categoryBits = ENEMY_BULLET; 
@@ -109,6 +109,14 @@ void PhysicsComponent::setCategory(_entityCategory cat)
     case FRIENDLY_MISSILE:
         filter.categoryBits = FRIENDLY_MISSILE;
         filter.maskBits = ENEMY_BODY | ENEMY_BULLET | ENEMY_MISSILE;
+        break;
+    case FRIENDLY_MISSILE_RADAR:
+        filter.categoryBits = FRIENDLY_MISSILE_RADAR;
+        filter.maskBits = ENEMY_BODY;
+        break;
+    case ENEMY_MISSILE_RADAR:
+        filter.categoryBits = ENEMY_MISSILE_RADAR;
+        filter.maskBits = PLAYER_BODY;
         break;
     case NO_COLLIDE:        
         filter.groupIndex = -1;
