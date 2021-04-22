@@ -2,11 +2,12 @@
 #include <iostream>
 #include <thread>
 #include <LevelSystem.h>
-#include "../game.h"
-#include "../player/cmp_player.h"
+#include "../enemies/create_enemies.h"
+#include "../player/create_player.h"
 #include "../panels/create_panels.h"
 #include "../background/create_background.h"
-#include "../enemies/create_enemies.h"
+#include "../game.h"
+#include "../components/cmp_player_physics.h"
 
 
 using namespace std;
@@ -16,12 +17,6 @@ sf::View leftView;
 sf::View rightView;
 sf::View mainView;
 
-//static shared_ptr<SpriteComponent> spriteCMP;
-//static shared_ptr<HPComponent> hpCMP;
-//static shared_ptr<TextComponent> playerTxtCMP;
-//static shared_ptr<TextComponent> scoreTxtCMP;
-//static shared_ptr<TextComponent> coinsTxtCMP;
-//static shared_ptr<TextComponent> lifesTxtCMP;
 
 void Level3Scene::Load() {
 	cout << " Scene 3 Load" << endl;

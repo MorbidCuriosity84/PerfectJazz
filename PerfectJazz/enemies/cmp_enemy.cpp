@@ -4,12 +4,9 @@
 #include "../components/cmp_enemy_physics.h"
 #include "../movement/cmp_movement.h"
 #include "../movement/cmp_move_sine.h"
-#include "../settings/collision_helper.h"
 
 using namespace std;
 using namespace sf;
-
-collisionHelper en_colHelp;
 
 void EnemyComponent::Load(int index) {
 	vector<Vector2ul> tile = ls::findTiles(_enemySettings.tile);

@@ -1,16 +1,15 @@
 #include "cmp_player.h"
 
-
 using namespace std;
 using namespace sf;
 
 void PlayerComponent::Load() {
 	// CARLOS TO-DO fix player movement when increased. It feels too crazy
 	// TO-DO try to find a solution where I can share a PlayerComponent for this 
-	auto playerCMP = player->GetCompatibleComponent<PlayerComponent>()[0];
+	
 	player->setPosition((Vector2f((round)(mainView.getSize().x / 2), mainView.getSize().y - 100.f)));
 	damageCMP = player->addComponent<DamageComponent>(_playerSettings.damage);
-	//weaponCMP = player->addComponent<WeaponComponent>(_weaponSettings, _bulletSettings, _bulletTextureHelper);
+	weaponCMP = player->addComponent<WeaponComponent>(_weaponSettings, _bulletSettings, _bulletTextureHelper);
 	player->addTag("player");
 	_playerTextureHelper.spriteTexture.get()->loadFromFile(_playerTextureHelper.spriteFilename);
 
@@ -25,7 +24,6 @@ void PlayerComponent::Load() {
 	hpCMP->setSpriteColour(Color::Red);
 	hpCMP->setTextColour(Color::White);
 	hpCMP->setScale(Vector2f(1.f, 0.8f));
-		
 }
 
 void PlayerComponent::revive() {

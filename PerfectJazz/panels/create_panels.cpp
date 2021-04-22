@@ -31,17 +31,10 @@ Texture playerLifeTexture;
 sf::IntRect playerLifeRec;
 int currentLifes;
 
-static shared_ptr<SpriteComponent> spriteCMP;
-static shared_ptr<HPComponent> hpCMP;
-static shared_ptr<TextComponent> playerTxtCMP;
-static shared_ptr<TextComponent> scoreTxtCMP;
-static shared_ptr<TextComponent> coinsTxtCMP;
-static shared_ptr<TextComponent> lifesTxtCMP;
 
 void Panels::createPanels(Scene* _scene) {
 
 	auto playerCMP = player->GetCompatibleComponent<PlayerComponent>()[0];
-	
 	//Left Panel
 	{
 		leftPanel = _scene->makeEntity();
@@ -51,8 +44,7 @@ void Panels::createPanels(Scene* _scene) {
 		//TO-DO: add title
 		auto title = playerLifeSpriteCMP1 = leftPanel->addComponent<SpriteComponent>();
 		hpCMP = leftPanel->addComponent<HPComponent>(_scene, playerCMP->_playerSettings.maxHP);
-		hpCMP->loadHP();		
-		
+		hpCMP->loadHP();
 		playerTxtCMP = leftPanel->addComponent<TextComponent>("PLAYER 1");
 		scoreTxtCMP = leftPanel->addComponent<TextComponent>("Score: " + to_string(playerCMP->_playerSettings.score));
 		coinsTxtCMP = leftPanel->addComponent<TextComponent>("Coins: " + to_string(playerCMP->_playerSettings.shopPoints));
@@ -199,5 +191,3 @@ void Panels::update(double dt) {
 
 void Panels::render() {
 }
-
-Panels::Panels() {}

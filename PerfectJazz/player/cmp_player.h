@@ -14,11 +14,6 @@ using namespace std;
 
 class PlayerComponent : public Component {
 protected:
-	textureSettings _playerTextureHelper;
-	textureSettings _bulletTextureHelper;
-	weaponSettings _weaponSettings;
-	bulletSettings _bulletSettings;
-	collisionHelper colHelp;
 	bool _gracePeriod;
 	float _gracePeriodTimer;
 	float _visibilityTimer;
@@ -60,6 +55,7 @@ public:
 	std::shared_ptr<PlayerPhysicsComponent> physicsCMP;
 	std::shared_ptr<WeaponComponent> weaponCMP;
 	playerSettings _playerSettings;
+	collisionHelper colHelp;
 
 	explicit PlayerComponent(Entity* p, textureSettings playerTextureHelper, textureSettings bulletTextureHelper, playerSettings playerSettings, weaponSettings weaponSettings, bulletSettings bulletSettings);
 };
