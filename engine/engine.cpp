@@ -18,11 +18,13 @@ Scene* Engine::_activeScene = nullptr;
 std::string Engine::_gameName;
 
 float deathTimer;
+bool isDead;
 
 static bool loading = false;
 static float loadingspinner = 0.f;
 static float loadingTime;
 static RenderWindow* _window;
+Panels panel;
 
 void Loading_update(float dt, const Scene* const scn) {
 	//  cout << "Eng: Loading Screen\n";
@@ -144,22 +146,45 @@ void Engine::ChangeScene(Scene* s) {
 		loadingTime = 0.f;
 		_activeScene->LoadAsync();
 		loading = true;
+		deathTimer = 0;
+		isDead = false;
 	}
 }
 
-
-void Scene::Update(const double& dt) { 
-	ents.update(dt); 
-	Panels::update(dt);
-
+void Scene::Update(const double& dt) {
 	auto p = player->GetCompatibleComponent<PlayerComponent>()[0];
 
 	if (!player->isAlive() && p->_playerSettings.lifes > 0) {
 		deathTimer += dt;
 		if (deathTimer > 2) {
-			p.get()->revive();
 			deathTimer = 0;
+			p.get()->revive();
 		}
+	}
+
+	//Here only load GameOver once, then keep updating the scene as normal
+	if (!isDead && p->_playerSettings.lifes <= 0) {
+		GameOver();
+		isDead = true;
+	}
+
+	ents.update(dt);
+	Panels::update(dt);
+}
+
+void Scene::GameOver() {
+	//CARLOS - Text will draw over the sprites, then, because it wont be updated again, it will be drawn under the sprites
+	if (!isDead) {
+		auto ent = player->scene->makeEntity();
+		ent->setView(mainView);
+		auto t = ent->addComponent<TextComponent>("GAME OVER");
+		t->setFontSize(220u);
+		t->_text.setColor(Color::White);
+		t->_text.setOutlineColor(Color::White);
+		t->_text.setOutlineThickness(2);
+		sf::FloatRect textRect = t->getLocalBounds();
+		t->setOrigin(Vector2f((round)(textRect.left + textRect.width / 2.f), (round)(textRect.top + textRect.height / 2.f)));
+		t->setPosition(Vector2f((round)(mainView.getSize().x / 2), (round)(mainView.getSize().y / 2)));		
 	}
 }
 
