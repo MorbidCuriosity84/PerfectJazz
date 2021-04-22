@@ -17,8 +17,8 @@ public:
 
 	void setSeeking(bool b);
 	bool getSeeking() const;
-	void setPhysics(std::vector<PhysicsComponent> phys);
-	std::vector<PhysicsComponent> getPhysics() const;
+	void setPhysics(std::shared_ptr<PhysicsComponent> phys);
+	std::shared_ptr<PhysicsComponent> getPhysics() const;
 
 	MissileMovementComponent(Entity* p, sf::Vector2f vel, bool seek);
 };

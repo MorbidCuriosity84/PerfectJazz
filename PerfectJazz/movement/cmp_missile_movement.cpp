@@ -9,8 +9,8 @@ void MissileMovementComponent::update(double dt)
 			_velocity.x = player.get()->getPosition().x - _parent->getPosition().x;
 		}
 
-		auto phys = _parent->GetCompatibleComponent<PhysicsComponent>()[0];
-		phys.get()->setVelocity(_velocity);
+		//parentPhysics = _parent->GetCompatibleComponent<PhysicsComponent>()[0];
+		parentPhysics.get()->setVelocity(_velocity);
 	}
 	else {
 
@@ -37,7 +37,7 @@ MissileMovementComponent::MissileMovementComponent(Entity* p, sf::Vector2f vel, 
 	circleShape.m_radius = 8;
 	missileRadar.shape = &circleShape;
 	missileRadar.isSensor = true;
-	//missileRadar.filter.categoryBits = RADAR_SENSOR;
-	//missileRadar.filter.maskBits = ENEMY_AIRCRAFT;//radar only collides with aircraft
+	missileRadar.filter.categoryBits = ENEMY_MISSILE_RADAR;
+	missileRadar.filter.maskBits = PLAYER_BODY;
 	_parentPhysics.get()->getBody()->CreateFixture(&missileRadar);
 }
