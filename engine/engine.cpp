@@ -159,8 +159,8 @@ void Scene::Update(const double& dt) {
 	if (!player->isAlive() && p->_playerSettings.lifes > 0) {
 		deathTimer += dt;
 		if (deathTimer > 2) {
-			deathTimer = 0;
 			p.get()->revive();
+			deathTimer = 0;
 		}
 	}
 
