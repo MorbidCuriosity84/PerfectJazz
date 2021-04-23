@@ -12,5 +12,7 @@ public:
 	static void createPanels(Scene* _scene);
 	static void update(double dt);
 	static void setLifeSprites();
+	static void createUpgradeSprites();
+	static void setUpgradesSprites(string type, int counter);
 	void render();
 };

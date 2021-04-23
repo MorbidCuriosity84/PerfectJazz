@@ -7,10 +7,11 @@ weaponSettings WeaponSettings::LoadSettings(_weaponType type, Scene* scene) {
 	switch (type) {
 	case GUN:
 	{
-		settings.damage = 100;
 		settings.fireTime = 1.5f;
-		settings.fireTimer = 1.5f;
-		settings.numBullets = 1;
+		settings.fireTimer = settings.fireTime;
+		settings.firerateUpgradeCount = 0;
+		settings.numBulletsUpgradeCount = 2.f;
+		settings.numBullets = settings.numBulletsUpgradeCount;
 		settings.scene = scene;
 		settings.direction = 1.f;
 		break;

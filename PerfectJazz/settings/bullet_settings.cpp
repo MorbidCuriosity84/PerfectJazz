@@ -8,6 +8,7 @@ bulletSettings BulletSettings::LoadSettings(_bulletType type, Scene* scene) {
 	case TYPE1:
 	{
 		settings.damage = 100;
+		settings.damageUpgradeCount = 0;
 		settings.hp = 100;
 		settings.lifetime = 10.f;
 		settings.scene = scene;
@@ -16,14 +17,13 @@ bulletSettings BulletSettings::LoadSettings(_bulletType type, Scene* scene) {
 		settings.direction = -1.f;
 		settings.velocity = Vector2f(0.f, 100.f);
 		settings.spriteScale = Vector2f(1.f, 1.f);
-		
-
 		break;
 	}
 
 	case TYPE2:
 	{
 		settings.damage = 100;
+		settings.damageUpgradeCount = 0;
 		settings.hp = 100;
 		settings.lifetime = 10.f;
 		settings.scene = scene;
@@ -32,12 +32,12 @@ bulletSettings BulletSettings::LoadSettings(_bulletType type, Scene* scene) {
 		settings.direction = -1.f;
 		settings.velocity = Vector2f(0.f, 200.f);
 		settings.spriteScale = Vector2f(1.f, 1.f);
-
 		break;
 	}
 	case TYPE3:
 	{
 		settings.damage = 300;
+		settings.damageUpgradeCount = 0;
 		settings.hp = 100;
 		settings.lifetime = 10.f;
 		settings.scene = scene;
