@@ -61,8 +61,6 @@ void BulletComponent::update(double dt) {
 		_parent->getPosition().x < 0) {
 		_parent->setForDelete();
 	}
-
-
 }
 
 BulletComponent::BulletComponent(Entity* p, bulletSettings settings, textureSettings bulletTexHelper)

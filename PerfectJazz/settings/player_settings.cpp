@@ -17,13 +17,14 @@ playerSettings PlayerSettings::LoadSettings(_playerType type, Scene* scene) {
 		currentPlayerSettings.scene = scene;
 		currentPlayerSettings.restitution = 0.4f;
 		currentPlayerSettings.friction = 0.005f;
-		currentPlayerSettings.flySpeed = 20.f;
+		currentPlayerSettings.flySpeed = 130.f;
+		currentPlayerSettings.flySpeedUpgradeCount = 3;
 		currentPlayerSettings.category = PLAYER_BODY;
 		currentPlayerSettings.hpVisible = false;
 		currentPlayerSettings.scale = { 1.f,1.f };
 		currentPlayerSettings.angle = 0;
-		currentPlayerSettings.score = 100;
-		currentPlayerSettings.shopPoints = 0;		
+		currentPlayerSettings.score = 0;
+		currentPlayerSettings.shopPoints = 0;
 		break;
 	}
 
