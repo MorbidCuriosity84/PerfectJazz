@@ -19,7 +19,7 @@ enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
 		settings.category = ENEMY_BODY;
 		settings.hpVisible = true;
 		settings.scale = { 1.f,1.f };
-		settings.angle = 0;
+		settings.angle = 0;		
 		break;
 	}
 
@@ -35,7 +35,7 @@ enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
 		settings.category = ENEMY_BODY;
 		settings.hpVisible = true;
 		settings.scale = { 1.f,1.f };
-		settings.angle = 0;		
+		settings.angle = 0;				
 		break;
 	}
 	case COLONEL:
@@ -50,7 +50,7 @@ enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
 		settings.category = ENEMY_BODY;
 		settings.hpVisible = true;
 		settings.scale = { 1.f,1.f };
-		settings.angle = 0;
+		settings.angle = 0;		
 		break;
 	}
 	default:

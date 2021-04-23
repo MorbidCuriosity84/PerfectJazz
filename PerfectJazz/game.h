@@ -49,7 +49,10 @@ enum _entityCategory {
     ENEMY_BODY = 0x0010,
     FRIENDLY_MISSILE = 0x0020,
     ENEMY_MISSILE = 0x0040,
-    NO_COLLIDE = 0x0080,    
+    NO_COLLIDE = 0x0080,
+    ENEMY_MISSILE_RADAR = 0x0100,
+    FRIENDLY_MISSILE_RADAR = 0x0200,
+
 };
 
 enum _enemyType {

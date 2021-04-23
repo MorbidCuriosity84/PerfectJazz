@@ -7,6 +7,7 @@
 #include "../components/cmp_damage.h"
 #include "../components/cmp_hp.h"
 #include "../settings/player_settings.h"
+#include "../settings/collision_helper.h"
 
 using namespace sf;
 using namespace std;
@@ -54,6 +55,7 @@ public:
 	std::shared_ptr<PlayerPhysicsComponent> physicsCMP;
 	std::shared_ptr<WeaponComponent> weaponCMP;
 	playerSettings _playerSettings;
+	collisionHelper colHelp;
 
 	explicit PlayerComponent(Entity* p, textureSettings playerTextureHelper, textureSettings bulletTextureHelper, playerSettings playerSettings, weaponSettings weaponSettings, bulletSettings bulletSettings);
 };

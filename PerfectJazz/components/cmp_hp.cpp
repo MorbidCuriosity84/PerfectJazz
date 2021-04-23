@@ -5,6 +5,7 @@
 #include <iostream>
 #include "cmp_physics.h"
 #include "cmp_damage.h"
+#include "../settings/collision_helper.h"
 
 using namespace std;
 Texture hpBarTexture;
@@ -43,19 +44,17 @@ HPComponent::HPComponent(Entity* const p, Scene* scene, const int& hp)
 }
 
 void HPComponent::handleContact(b2Contact* contact) {
-	HPComponent* compOneHP = static_cast<HPComponent*>(contact->GetFixtureA()->GetBody()->GetUserData());
-	HPComponent* compTwoHP = static_cast<HPComponent*>(contact->GetFixtureB()->GetBody()->GetUserData());
-	shared_ptr<DamageComponent> d1 = compOneHP->_parent->GetCompatibleComponent<DamageComponent>()[0];
-	shared_ptr<DamageComponent> d2 = compTwoHP->_parent->GetCompatibleComponent<DamageComponent>()[0];
+	collisionHelper* compOneHP = static_cast<collisionHelper*>(contact->GetFixtureA()->GetBody()->GetUserData());
+	collisionHelper* compTwoHP = static_cast<collisionHelper*>(contact->GetFixtureB()->GetBody()->GetUserData());
 
-	//cout << "Component One health before collision = " << compOneHP->getHP() << endl;
-	//cout << "Damage applied = " << d2.get()->getDamage() << endl;
-	d2.get()->applyDamage(compOneHP);
-	//cout << "Component One health after collision = " << compOneHP->getHP() << endl;
-	//cout << "Damage applied = " << d1.get()->getDamage() << endl;
-	//cout << "Component Two health before collision = " << compTwoHP->getHP() << endl;
-	d1.get()->applyDamage(compTwoHP);
-	//cout << "Component Two health after collision = " << compTwoHP->getHP() << endl;
+	/*cout << "Component One health before collision = " << compOneHP->hpCMP->getHP() << endl;
+	cout << "Damage applied = " << compTwoHP->damageCMP->getDamage() << endl;*/
+	compTwoHP->damageCMP->applyDamage(compOneHP->hpCMP);
+	/*cout << "Component One health after collision = " << compOneHP->hpCMP->getHP() << endl;
+	cout << "Damage applied = " << compOneHP->damageCMP->getDamage() << endl;
+	cout << "Component Two health before collision = " << compTwoHP->hpCMP->getHP() << endl;*/
+	compOneHP->damageCMP->applyDamage(compTwoHP->hpCMP);
+	//cout << "Component Two health after collision = " << compTwoHP->hpCMP->getHP() << endl;
 }
 
 void HPComponent::setVisible(bool b) {

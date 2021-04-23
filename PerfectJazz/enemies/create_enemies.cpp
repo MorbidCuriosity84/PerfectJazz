@@ -30,8 +30,8 @@ void Enemies::createEnemies(std::string _waveFile, Scene* _scene) {
 			if (t == ls::SERGEANT) { setType(SERGEANT, _scene); index = sergeant_index++;}
 			if (t == ls::COLONEL) {	setType(COLONEL, _scene); index = colonel_index++;}
 
-			auto loadEnemy = en->addComponent<EnemyComponent>(_enemyTextureHelper, _bulletTextureHelper, _enemySettings, _weaponSettings, _bulletSettings);
-			loadEnemy->Load(index);
+			auto loadEnemy = en->addComponent<EnemyComponent>(_enemyTextureHelper, _bulletTextureHelper, _enemySettings, _weaponSettings, _bulletSettings, index);
+			//loadEnemy->Load(index);
 		}
 	}
 }
