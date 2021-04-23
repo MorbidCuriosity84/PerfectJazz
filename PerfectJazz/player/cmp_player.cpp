@@ -4,9 +4,7 @@ using namespace std;
 using namespace sf;
 
 void PlayerComponent::Load() {
-	// CARLOS TO-DO fix player movement when increased. It feels too crazy
-	// TO-DO try to find a solution where I can share a PlayerComponent for this 
-	
+
 	player->setPosition((Vector2f((round)(mainView.getSize().x / 2), mainView.getSize().y - 100.f)));
 	damageCMP = player->addComponent<DamageComponent>(_playerSettings.damage);
 	weaponCMP = player->addComponent<WeaponComponent>(_weaponSettings, _bulletSettings, _bulletTextureHelper);
@@ -15,7 +13,7 @@ void PlayerComponent::Load() {
 
 	spriteCMP = player->addComponent<SpriteComponent>();
 	spriteCMP.get()->loadTexture(_playerTextureHelper, _playerSettings.scale, _playerSettings.angle);
-	physicsCMP = player->addComponent<PlayerPhysicsComponent>(spriteCMP->getSprite().getGlobalBounds().getSize(), _playerSettings.flySpeed);
+	physicsCMP = player->addComponent<PlayerPhysicsComponent>(spriteCMP->getSprite().getGlobalBounds().getSize());
 	physicsCMP.get()->setCategory(_playerSettings.category);
 
 	hpCMP = player->addComponent<HPComponent>(_playerSettings.scene, _playerSettings.hp);
@@ -89,8 +87,6 @@ void PlayerComponent::update(double dt) {
 		_playerSettings.score++;
 		_playerSettings.shopPoints++;
 
-		//auto hp = player->GetCompatibleComponent<HPComponent>()[0];
-
 		if (hpCMP->getHP() <= 0) {
 			hpCMP->setHP(0);
 			setPlayerAlive(false);
@@ -120,46 +116,70 @@ void PlayerComponent::setPlayerAlive(bool b) {
 	_visibilityTimer = 0;
 }
 
-void PlayerComponent::setFlySpeed(int speed) { physicsCMP->setFlySpeed(speed); }
-int PlayerComponent::getFlySpeedUpdateState() { return _flySpeedUpdateState; }
-int PlayerComponent::getDamageUpdateState() { return _damageUpdateState; }
-int PlayerComponent::getFireRateUpdateState() { return _fireRateUpdateState; }
-int PlayerComponent::getBulletNumberUpdateState() { return _bulletNumberUpdateState; }
+void PlayerComponent::setFlySpeedUpgradeState(int state) {
+	if (state <= _maxUpdate) {
+		_playerSettings.flySpeedUpgradeCount = state;
+	}
+}
+int PlayerComponent::getFlySpeedUpgradeState() { return _playerSettings.flySpeedUpgradeCount; }
+
+int PlayerComponent::getDamageUpgradeState() { return weaponCMP->_bSettings.damageUpgradeCount; }
+void PlayerComponent::setDamageUpgradeState(int state) {
+	if (state <= _maxUpdate) {
+		if (state > weaponCMP->_bSettings.damageUpgradeCount) {
+			weaponCMP.get()->_bSettings.damage = weaponCMP->_bSettings.damage * (state * 0.2f);
+		}
+		if (state < weaponCMP->_bSettings.damageUpgradeCount) {
+			weaponCMP.get()->_bSettings.damage = weaponCMP->_bSettings.damage / (state * 0.2f);
+		}
+		weaponCMP->_bSettings.damageUpgradeCount = state;
+	}
+}
+
+int PlayerComponent::getFireRateUpgradeState() { return weaponCMP.get()->_wSettings.firerateUpgradeCount; }
+void PlayerComponent::setFireRateUpgradeState(int state) {
+	if (state <= _maxUpdate) {
+		if (state > weaponCMP->_wSettings.firerateUpgradeCount) {
+			weaponCMP.get()->_wSettings.fireTime = weaponCMP->_wSettings.fireTime * (state * 0.2f);
+			weaponCMP.get()->_wSettings.firerateUpgradeCount = state;
+		}
+		if (state < weaponCMP->_wSettings.firerateUpgradeCount) {
+			weaponCMP.get()->_wSettings.fireTime = weaponCMP->_wSettings.fireTime / (state * 0.2f);
+			weaponCMP.get()->_wSettings.firerateUpgradeCount = state;
+		}
+	}
+}
+
+int PlayerComponent::getBulletNumberUpgradeState() { return weaponCMP.get()->_wSettings.numBulletsUpgradeCount; }
+void PlayerComponent::setBulletNumberUpgradeState(int state) {
+	if (state <= _maxUpdate) {
+		if (state > weaponCMP->_wSettings.numBulletsUpgradeCount) {
+			weaponCMP.get()->_wSettings.numBullets = state;
+			weaponCMP.get()->_wSettings.numBulletsUpgradeCount = state;
+		}
+		if (state < weaponCMP->_wSettings.numBulletsUpgradeCount) {
+			weaponCMP.get()->_wSettings.numBullets = state;
+			weaponCMP.get()->_wSettings.numBulletsUpgradeCount = state;
+		}
+		weaponCMP.get()->_wSettings.numBulletsUpgradeCount = state;
+	}
+}
+
 int PlayerComponent::getPlayerLifes() { return _playerSettings.lifes; }
 void PlayerComponent::setPlayerLifes(int life) {
 	if (life <= _playerSettings.maxLifes) {
 		_playerSettings.lifes = life;
 	}
 }
-void PlayerComponent::setFlySpeedUpdateState(int state) {
-	if (state < _maxUpdate) {
-		_flySpeedUpdateState = state;
-		auto playerCMP = player->GetCompatibleComponent<PlayerComponent>()[0];
-		physicsCMP->setFlySpeed(playerCMP->_playerSettings.flySpeed * (02.f));
-	}
-}
-void PlayerComponent::setDamageUpdateState(int state) {
-	if (state < _maxUpdate) {
-		_damageUpdateState = state;
-	}
-}
-void PlayerComponent::setFireRateUpdateState(int state) {
-	if (state < _maxUpdate) {
-		_fireRateUpdateState = state;
-	}
-}
-void PlayerComponent::setBulletNumberUpdateState(int state) {
-	if (state < _maxUpdate) {
-		_bulletNumberUpdateState = state;
-	}
-}
+
 void PlayerComponent::setMaxUpdate(int max) { _maxUpdate = max; }
 int PlayerComponent::getMaxUpdate() { return _maxUpdate; }
+
 void PlayerComponent::setMaxLifes(int max) { _playerSettings.maxLifes = max; }
 int PlayerComponent::getMaxLifes() { return _playerSettings.maxLifes; }
 
 PlayerComponent::PlayerComponent(Entity* p, textureSettings playerTextureHelper, textureSettings bulletTextureHelper, playerSettings playerSettings, weaponSettings weaponSettings, bulletSettings bulletSettings)
-	: Component(p), _playerTextureHelper(playerTextureHelper), _bulletTextureHelper(bulletTextureHelper), _playerSettings(playerSettings), _weaponSettings(weaponSettings), _bulletSettings(bulletSettings), _gracePeriod(false), _gracePeriodTimer(0), _visibilityTimer(0) 
+	: Component(p), _playerTextureHelper(playerTextureHelper), _bulletTextureHelper(bulletTextureHelper), _playerSettings(playerSettings), _weaponSettings(weaponSettings), _bulletSettings(bulletSettings), _gracePeriod(false), _gracePeriodTimer(0), _visibilityTimer(0), _maxUpdate(5)
 {
 	Load();
 	colHelp.damageCMP = damageCMP.get();

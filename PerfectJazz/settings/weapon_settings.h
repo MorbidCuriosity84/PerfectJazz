@@ -6,13 +6,14 @@ struct weaponSettings {
 	Scene* scene;
 	double fireTime;
 	double fireTimer;
-	int damage;
 	int numBullets;
+	int firerateUpgradeCount;
+	int numBulletsUpgradeCount;
 	float direction;
 
 	weaponSettings() {}
-	weaponSettings(double _fireTime, int _numBullets, Scene* _scene, float _direction)
-		: fireTime(_fireTime), fireTimer(_fireTime), numBullets(_numBullets), scene(_scene), direction(_direction) {
+	weaponSettings(double _fireTime, int _numBullets, Scene* _scene, float _direction, int _firerateUpgradeCount, int _numBulletsUpgradeCount)
+		: fireTime(_fireTime), numBullets(_numBullets), scene(_scene), direction(_direction), firerateUpgradeCount(_firerateUpgradeCount), numBulletsUpgradeCount(_numBulletsUpgradeCount){
 	}
 };
 class WeaponSettings {

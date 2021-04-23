@@ -12,15 +12,15 @@ using namespace std;
 
 class WeaponComponent : public Component {
 protected:
-	weaponSettings _wSettings;
-	bulletSettings _bSettings;
 	textureSettings _bulletTextureHelper;
 public:
 	void update(double dt) override;
 	void render() override {};
-	void fire();
+	void fire();	
 	void setDamage(uint16_t damage);
 	uint16_t getDamage() const;
+	weaponSettings _wSettings;
+	bulletSettings _bSettings;
 	explicit WeaponComponent(Entity* p, weaponSettings settings, bulletSettings bSettings, textureSettings bTextureHelper);
 	WeaponComponent() = delete;
 };

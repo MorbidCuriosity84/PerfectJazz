@@ -17,33 +17,29 @@ protected:
 	bool _gracePeriod;
 	float _gracePeriodTimer;
 	float _visibilityTimer;
-	int _flySpeedUpdateState;
-	int _damageUpdateState;
-	int _fireRateUpdateState;
-	int _bulletNumberUpdateState;
 	int _maxUpdate;
 
 public:
 	PlayerComponent() = delete;
+	explicit PlayerComponent(Entity* p, textureSettings playerTextureHelper, textureSettings bulletTextureHelper, playerSettings playerSettings, weaponSettings weaponSettings, bulletSettings bulletSettings);
 	void Load();
 	void revive();
 	void render() override {};
 	void update(double dt);
 	void setPlayerAlive(bool b);
-	void setFlySpeed(int speed);
-	int getFlySpeedUpdateState();
-	int getDamageUpdateState();
-	int getFireRateUpdateState();
-	int getBulletNumberUpdateState();
-	int getPlayerLifes();
 	void setPlayerLifes(int life);
-	void setFlySpeedUpdateState(int state);
-	void setDamageUpdateState(int state);
-	void setFireRateUpdateState(int state);
-	void setBulletNumberUpdateState(int state);
+	void setFlySpeedUpgradeState(int state);
+	void setDamageUpgradeState(int state);
+	void setFireRateUpgradeState(int state);
+	void setBulletNumberUpgradeState(int state);
 	void setMaxUpdate(int max);
-	int getMaxUpdate();
 	void setMaxLifes(int max);
+	int getFlySpeedUpgradeState();
+	int getDamageUpgradeState();
+	int getFireRateUpgradeState();
+	int getBulletNumberUpgradeState();
+	int getPlayerLifes();
+	int getMaxUpdate();
 	int getMaxLifes();
 	textureSettings _playerTextureHelper;
 	textureSettings _bulletTextureHelper;
@@ -57,5 +53,4 @@ public:
 	playerSettings _playerSettings;
 	collisionHelper colHelp;
 
-	explicit PlayerComponent(Entity* p, textureSettings playerTextureHelper, textureSettings bulletTextureHelper, playerSettings playerSettings, weaponSettings weaponSettings, bulletSettings bulletSettings);
 };
