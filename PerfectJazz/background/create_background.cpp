@@ -41,7 +41,7 @@ void Background::createBackground(Scene* _scene) {
 			}
 			auto loadBackground = background->addComponent<BackgroundComponent>(_backgroundTextureHelper, _backgroundSettings);
 
-			loadBackground->Load(false);
+			loadBackground->Load(repeated);
 		}
 	}
 }

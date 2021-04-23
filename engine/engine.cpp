@@ -11,8 +11,8 @@
 #include "../PerfectJazz/components/cmp_sprite.h"
 #include "../PerfectJazz/components/cmp_text.h"
 #include "../PerfectJazz/components/cmp_enemy_physics.h"
-#include "../PerfectJazz/panels/create_panels.h"
-#include "../PerfectJazz/player/create_player.h"
+#include "../PerfectJazz/panels/creates_panels.h"
+#include "../PerfectJazz/player/creates_player.h"
 
 
 using namespace sf;

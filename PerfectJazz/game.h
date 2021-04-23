@@ -99,6 +99,15 @@ enum _settingType {
     BULLET,
 };
 
+enum _powerUps {
+    HP,
+    DAMAGE,
+    FIRERATE,
+    PLAYER_MOVEMENT,
+    BULLET_NUM,
+    COIN,
+};
+
 struct filterGetter {
     filterGetter() {}
 

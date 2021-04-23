@@ -189,3 +189,51 @@ textureSettings TextureHelpingSettings::LoadSettings(_backgroundType type, Scene
 	}
 	return settings;
 }
+
+textureSettings TextureHelpingSettings::LoadSettings(_powerUps type, Scene* scene) {
+
+	textureSettings settings;
+	auto powerupSpriteTexture = make_shared<sf::Texture>();
+	auto powerupSpriteRectangle = make_shared<sf::IntRect>();
+
+	settings.spriteRows = 1;
+	settings.spriteCols = 1;
+	settings.desiredRow = 0;
+	settings.desiredCol = 0;
+	settings.spriteTexture = powerupSpriteTexture;
+	settings.spriteRectangle = powerupSpriteRectangle;
+	settings.spriteTimer = 1.5;
+
+	switch (type) {
+	//case HP:
+	//{
+	//	settings.spriteFilename = "res/img/enemies/enemy1_900.png";
+	//	break;
+	//}
+
+	case DAMAGE:
+	{
+		settings.spriteFilename = "res/img/powerups/power.png";
+		break;
+	}
+	case BULLET_NUM:
+	{
+		settings.spriteFilename = "res/img/powerups/multi.png";
+		break;
+	}
+	case FIRERATE:
+	{
+		settings.spriteFilename = "res/img/powerups/speed.png";
+
+		break;
+	}
+	case PLAYER_MOVEMENT:
+	{
+		settings.spriteFilename = "res/img/powerups/player_speed.png";
+		break;
+	}
+	default:
+		break;
+	}
+	return settings;
+}
