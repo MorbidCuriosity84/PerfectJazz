@@ -6,33 +6,38 @@
 using namespace std;
 using namespace sf;
 using namespace Physics;
+double playerCMPTimer;
 
 void PlayerPhysicsComponent::update(double dt) {
 
 	const auto pos = _parent->getPosition();
 	auto playerCMP = _parent->GetCompatibleComponent<PlayerComponent>()[0];
-	auto _flySpeed = playerCMP->_playerSettings.flySpeed;
-	float multiplier = dt * _flySpeed * (0.1f * playerCMP->_playerSettings.flySpeedUpgradeCount);
+	float multiplier = dt * playerCMP->_playerSettings.flySpeed * (0.1f * playerCMP->_playerSettings.flySpeedUpgradeCount);
+	auto _flySpeed = playerCMP->_playerSettings.flySpeed + multiplier;
+
 	{
-		//The _flySpeed * 2 makes the player not to stick when it goes to a side, so it 
-		//can fly away easily
+		//CARLOS TO-DO fix movement. When the framerate is locked, the impulse feels different
+		//check the collision when diagonally on the borders
+
+		//The _flySpeed * 2 makes the player not to stick when it goes to a side, so it can fly away easily
 		if (pos.x < 0 + playerSpriteCMP->getSprite().getTextureRect().width / 2) {
-			setVelocity(Vector2f(0.f, getVelocity().y));
+			setVelocity(Vector2f(0.f, getVelocity().y * 0.98f));
 			impulse({ ((float)dt * _flySpeed * 2), 0 });
 		}
 		if (pos.x >= mainView.getSize().x - playerSpriteCMP->getSprite().getTextureRect().width / 2) {
-			setVelocity(Vector2f(0.f, getVelocity().y));
+			setVelocity(Vector2f(0.f, getVelocity().y * 0.98f));
 			impulse({ -((float)dt * _flySpeed * 2), 0 });
 		}
 		if (pos.y <= playerSpriteCMP->getSprite().getTextureRect().height / 2) {
-			setVelocity(Vector2f(getVelocity().x, 0.f));
+			setVelocity(Vector2f(getVelocity().x * 0.98f, 0.f));
 			impulse({ 0, (float)(dt * _flySpeed * 2) });
 		}
 		if (pos.y >= mainView.getSize().y - playerSpriteCMP->getSprite().getTextureRect().height / 2) {
-			setVelocity(Vector2f(getVelocity().x, 0.f));
+			setVelocity(Vector2f(getVelocity().x * 0.98f, 0.f));
 			impulse({ 0, -(float)(dt * _flySpeed * 2) });
 		}
 	}
+
 	//Player movement
 	{
 		_direction = "none";
@@ -42,14 +47,13 @@ void PlayerPhysicsComponent::update(double dt) {
 			// Moving Either Left or Right
 			if (Keyboard::isKeyPressed(Keyboard::Right)) {
 				if (getVelocity().x < _maxVelocity.x)
-					impulse({ (float)(dt * _flySpeed + multiplier), 0 });
+					impulse({ (float)(dt * _flySpeed), 0 });
 				_direction = "right";
 			}
 			else {
 				if (getVelocity().x > -_maxVelocity.x)
-					impulse({ -(float)(dt * _flySpeed + multiplier), 0 });
+					impulse({ -(float)(dt * _flySpeed), 0 });
 				_direction = "left";
-
 			}
 		}
 
@@ -58,11 +62,11 @@ void PlayerPhysicsComponent::update(double dt) {
 			// Moving Either Up or Down
 			if (Keyboard::isKeyPressed(Keyboard::Up)) {
 				if (getVelocity().y < _maxVelocity.y)
-					impulse({ 0, -(float)(dt * _flySpeed + multiplier) });
+					impulse({ 0, -(float)(dt * _flySpeed) });
 			}
 			else {
 				if (getVelocity().y > -_maxVelocity.y)
-					impulse({ 0, (float)(dt * _flySpeed + multiplier) });
+					impulse({ 0, (float)(dt * _flySpeed) });
 			}
 		}
 	}
@@ -72,13 +76,19 @@ void PlayerPhysicsComponent::update(double dt) {
 		teleport((Vector2f((round)(mainView.getSize().x / 2), mainView.getSize().y - 100.f)));
 	}
 
-	//dampen({ 0.994f, 0.992f });
+	playerCMPTimer = +dt;
+	if (playerCMPTimer > 0.01) {
+		// Damp velocity
+		dampen({ 0.95f, 0.95f });
 
-	// Clamp velocity.
-	auto v = getVelocity();
-	v.x = copysign(min(abs(v.x), _maxVelocity.x), v.x);
-	v.y = copysign(min(abs(v.y), _maxVelocity.y), v.y);
-	setVelocity(v);
+		// Clamp velocity
+		auto v = getVelocity();
+		v.x = copysign(min(abs(v.x), _maxVelocity.x), v.x);
+		v.y = copysign(min(abs(v.y), _maxVelocity.y), v.y);
+		setVelocity(v);
+
+		playerCMPTimer = 0.f;
+	}
 
 	PhysicsComponent::update(dt);
 }
@@ -92,6 +102,7 @@ PlayerPhysicsComponent::PlayerPhysicsComponent(Entity* p,
 	_body->SetFixedRotation(true);
 	//Bullet items have higher-res collision detection
 	_body->SetBullet(true);
+	playerCMPTimer = 0;
 	playerSpriteCMP = player->GetCompatibleComponent<SpriteComponent>()[0];
 }
 
