@@ -89,14 +89,13 @@ void PlayerComponent::update(double dt) {
 
 		if (hpCMP->getHP() <= 0) {
 			hpCMP->setHP(0);
+			_playerSettings.lifes--;
+			_gracePeriod = true;
+
+			if (_playerSettings.lifes <= 0) { _gracePeriod = false;	}
+
 			setPlayerAlive(false);
 
-			_playerSettings.lifes--;
-
-			if (_playerSettings.lifes <= 0) {
-				_gracePeriod = false;
-				setPlayerAlive(false);
-			}
 		}
 	}
 }

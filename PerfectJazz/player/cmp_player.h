@@ -52,5 +52,4 @@ public:
 	std::shared_ptr<WeaponComponent> weaponCMP;
 	playerSettings _playerSettings;
 	collisionHelper colHelp;
-
 };
