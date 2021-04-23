@@ -10,7 +10,7 @@ void BulletComponent::createBullet() {
 	_bulletTextHelper.spriteTexture.get()->loadFromFile(_bulletTextHelper.spriteFilename);
 	_bulletSprite = _parent->addComponent<SpriteComponent>();
 	_bulletSprite->loadTexture(_bulletTextHelper, _settings.spriteScale, _settings.angle);	
-	damageCMP = _parent->addComponent<DamageComponent>(_settings.damage);
+	damageCMP = _parent->addComponent<DamageComponent>(_settings.damage + (_settings.damage * 0.2 * _settings.damageUpgradeCount));
 	physicsCMP = _parent->addComponent<PhysicsComponent>(true, _bulletSprite.get()->getSprite().getLocalBounds().getSize());
 	hpCMP = _parent->addComponent<HPComponent>(_settings.scene, 100);
 	hpCMP.get()->loadHP();
@@ -58,8 +58,6 @@ void BulletComponent::update(double dt) {
 		_parent->getPosition().x < 0) {
 		_parent->setForDelete();
 	}
-
-
 }
 
 BulletComponent::BulletComponent(Entity* p, bulletSettings settings, textureSettings bulletTexHelper)
