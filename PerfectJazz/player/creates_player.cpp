@@ -1,4 +1,4 @@
-#include "create_player.h"
+#include "creates_player.h"
 
 using namespace std;
 using namespace sf;
@@ -23,6 +23,5 @@ void Player::createPlayer(Scene* _scene) {
 	_playerWeaponSettings.direction = -1.f;
 	_playerBulletTextureHelper = TextureHelpingSettings::LoadSettings(TYPE1, _scene);
 
-	auto loadPlayer = player->addComponent<PlayerComponent>(_playerSpriteTextureHelper, _playerBulletTextureHelper, _playerSettings, _playerWeaponSettings, _playerBulletSettings);
-	//loadPlayer->Load();
+	player->addComponent<PlayerComponent>(_playerSpriteTextureHelper, _playerBulletTextureHelper, _playerSettings, _playerWeaponSettings, _playerBulletSettings);
 }
