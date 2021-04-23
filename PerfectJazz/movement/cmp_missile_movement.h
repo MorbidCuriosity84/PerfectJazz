@@ -12,14 +12,15 @@ class MissileMovementComponent : public MovementComponent
 protected:
 	bool _seeking;
 	std::shared_ptr<PhysicsComponent> _parentPhysics;
+	_entityCategory cat;
 public:
 	void update(double dt) override;	
-
 	void setSeeking(bool b);
 	bool getSeeking() const;	
 	void setPhysics(std::shared_ptr<PhysicsComponent> phys);
+	void setCategory(_entityCategory cat);
 	std::shared_ptr<PhysicsComponent> getPhysics() const;
 
-	MissileMovementComponent(Entity* p, sf::Vector2f vel, bool seek);
+	MissileMovementComponent(Entity* p, sf::Vector2f vel, bool seek, _entityCategory cat);
 };
 
