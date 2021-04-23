@@ -7,26 +7,26 @@
 
 class PhysicsComponent : public Component {
 protected:
-  b2Body* _body;
-  const bool _dynamic;
-  b2Fixture* _fixture;
+	b2Body* _body;
+	const bool _dynamic;
+	b2Fixture* _fixture;
 
 public:
-  PhysicsComponent(Entity* p, bool dyn, const sf::Vector2f& size);
+	PhysicsComponent(Entity* p, bool dyn, const sf::Vector2f& size);
 
-  b2Fixture* const getFixture() const;
-  b2Body* getBody();
-  std::vector<const b2Contact*> getTouching() const;
-  const sf::Vector2f getVelocity() const;
-  void setFriction(float r);
-  void setMass(float m);
-  void update(double dt) override;
-  void render() override;
-  void impulse(const sf::Vector2f& i);
-  void dampen(const sf::Vector2f& s);
-  void setVelocity(const sf::Vector2f& v);
-  void teleport(const sf::Vector2f& v);
-  void setSensor(bool b);
-  void setCategory(_entityCategory cat);
-  ~PhysicsComponent() override;
+	b2Fixture* const getFixture() const;
+	b2Body* getBody();
+	std::vector<const b2Contact*> getTouching() const;
+	const sf::Vector2f getVelocity() const;
+	void setFriction(float r);
+	void setMass(float m);
+	void update(double dt) override;
+	void render() override;
+	void impulse(const sf::Vector2f& i);
+	void dampen(const sf::Vector2f& s);
+	void setVelocity(const sf::Vector2f& v);
+	void teleport(const sf::Vector2f& v);
+	void setSensor(bool b);
+	void setCategory(_entityCategory cat);
+	~PhysicsComponent() override;
 };

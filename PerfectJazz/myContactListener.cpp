@@ -15,11 +15,13 @@ void myContactListener::BeginContact(b2Contact* contact) {
     cout << contact->GetFixtureB()->GetFilterData().categoryBits << endl;
 
     if (helper2->isMissile){
+        cout << "Radar contact" << endl;
         helper2->missileCMP->setSeeking(true);        
         helper2->isMissile = false;
         return;
     }
     if (helper1->isMissile) {
+        cout << "Radar contact" << endl;
         helper1->missileCMP->setSeeking(true);        
         helper1->isMissile = false;
         return;

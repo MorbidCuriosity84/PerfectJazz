@@ -1,6 +1,7 @@
 #include "cmp_bullet.h"
 #include "../movement/cmp_missile_movement.h"
-
+#include "maths.h"
+#include <iostream>
 
 using namespace std;
 using namespace sf;
@@ -10,6 +11,7 @@ void BulletComponent::createBullet() {
 	_bulletTextHelper.spriteTexture.get()->loadFromFile(_bulletTextHelper.spriteFilename);
 	_bulletSprite = _parent->addComponent<SpriteComponent>();
 	_bulletSprite->loadTexture(_bulletTextHelper, _settings.spriteScale, _settings.angle);	
+	_bulletSprite.get()->getSprite().setRotation(_settings.angle);
 	damageCMP = _parent->addComponent<DamageComponent>(_settings.damage);
 	physicsCMP = _parent->addComponent<PhysicsComponent>(true, _bulletSprite.get()->getSprite().getLocalBounds().getSize());
 	hpCMP = _parent->addComponent<HPComponent>(_settings.scene, 100);
@@ -46,7 +48,8 @@ void BulletComponent::update(double dt) {
 
 	_bulletSprite->getSprite().setTextureRect(*_bulletTextHelper.spriteRectangle.get());
 	_bulletSprite->getSprite().setPosition(_parent->getPosition());			
-	_bulletSprite->getSprite().setRotation(90.f - physicsCMP->getVelocity().x);
+	Vector2f bul_pl_dif = _parent->getPosition() - player->getPosition();
+	_bulletSprite->getSprite().setRotation(90.f - bul_pl_dif.y / bul_pl_dif.x);
 	
 	if (hpCMP->getHP() <= 0) {
 		_parent->setForDelete();
@@ -70,17 +73,18 @@ BulletComponent::BulletComponent(Entity* p, bulletSettings settings, textureSett
 	bul_colHelp.hpCMP = hpCMP.get();
 	bul_colHelp.isMissile = false;
 	bul_colHelp.missileCMP = nullptr;
-	if (_settings.category == (ENEMY_MISSILE || FRIENDLY_MISSILE))
+	if (_settings.category == ENEMY_MISSILE || _settings.category == FRIENDLY_MISSILE)
 	{
-		bul_colHelp.isMissile = true;
+		bul_colHelp.isMissile = true;		
 	}
 	else {
-		bul_colHelp.isMissile = false;
+		bul_colHelp.isMissile = false;		
 	}
 	//colHelp.isMissile = (_settings.category == (ENEMY_MISSILE || FRIENDLY_MISSILE) ? true : false);
 
-	if (_settings.category == ENEMY_MISSILE) {
-		bul_colHelp.missileCMP = _parent->addComponent<MissileMovementComponent>(Vector2f(0.f, -150.f), false).get();
+	if (_settings.category == ENEMY_MISSILE || _settings.category == FRIENDLY_MISSILE)
+	{		
+		bul_colHelp.missileCMP = _parent->addComponent<MissileMovementComponent>(Vector2f(0.f, -150.f), false, _settings.category).get();		
 		bul_colHelp.isMissile = true;
 		_parent->addTag("missile");
 	}

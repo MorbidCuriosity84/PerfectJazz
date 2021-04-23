@@ -38,21 +38,22 @@ extern myContactListener mContLis;
 * player_body.filter.categorybits = ENEMY | ENEMY_MISSiLE | ENEMY_BULLET
 * 
 * This works because it essentially performs a bitwise AND to check the collision 
-* At least that's my understanding of it. Hopefully it works. There's a switch case of doom in the physics component
+* At least that's my understanding of it. Hopefully it works. There's a switch case of doom further down
 * that sets all of these values by switching on a category.
 */
 enum _entityCategory {
-    BOUNDARY = 0x0001,
-    PLAYER_BODY = 0x0002,
-    FRIENDLY_BULLET = 0x0004,
-    ENEMY_BULLET = 0x0008,
-    ENEMY_BODY = 0x0010,
-    FRIENDLY_MISSILE = 0x0020,
-    ENEMY_MISSILE = 0x0040,
-    NO_COLLIDE = 0x0080,
-    ENEMY_MISSILE_RADAR = 0x0100,
-    FRIENDLY_MISSILE_RADAR = 0x0200,
-
+    BOUNDARY = 0x0001, //1
+    PLAYER_BODY = 0x0002, //2
+    FRIENDLY_BULLET = 0x0004, //4
+    ENEMY_BULLET = 0x0008, //8
+    ENEMY_BODY = 0x0010, //16
+    FRIENDLY_MISSILE = 0x0020, //32
+    ENEMY_MISSILE = 0x0040, //64
+    NO_COLLIDE = 0x0080, //128
+    ENEMY_MISSILE_RADAR = 0x0100, //256
+    FRIENDLY_MISSILE_RADAR = 0x0200, //512
+    ENEMY_BODY_RADAR = 0x0400, //1024
+    PLAYER_BODY_RADAR = 0x0800, //2048
 };
 
 enum _enemyType {
@@ -96,4 +97,63 @@ enum _settingType {
     ENEMY,
     WEAPON,
     BULLET,
+};
+
+struct filterGetter {
+    filterGetter() {}
+
+    b2Filter getFilter(_entityCategory cat) 
+    {
+        b2Filter filter;
+
+        //Switch case of doom. This is where we *should* be able to define what collides with what
+        switch (cat) {
+        case PLAYER_BODY:
+            filter.categoryBits = PLAYER_BODY; //belongs to player group
+            filter.maskBits = ENEMY_BODY | ENEMY_BULLET | ENEMY_MISSILE | ENEMY_MISSILE_RADAR; //only collides with enemy group
+            break;
+        case ENEMY_BODY:
+            filter.categoryBits = ENEMY_BODY;
+            filter.maskBits = PLAYER_BODY | ENEMY_BODY | FRIENDLY_BULLET | FRIENDLY_MISSILE | FRIENDLY_MISSILE_RADAR;
+            break;
+        case ENEMY_BULLET:
+            filter.categoryBits = ENEMY_BULLET;
+            filter.maskBits = PLAYER_BODY | FRIENDLY_MISSILE;
+            break;
+        case ENEMY_MISSILE:
+            filter.categoryBits = ENEMY_MISSILE;
+            filter.maskBits = PLAYER_BODY | FRIENDLY_BULLET | FRIENDLY_MISSILE;
+            break;
+        case FRIENDLY_BULLET:
+            filter.categoryBits = FRIENDLY_BULLET;
+            filter.maskBits = ENEMY_BODY | ENEMY_MISSILE;
+            break;
+        case FRIENDLY_MISSILE:
+            filter.categoryBits = FRIENDLY_MISSILE;
+            filter.maskBits = ENEMY_BODY | ENEMY_BULLET | ENEMY_MISSILE;
+            break;
+        case FRIENDLY_MISSILE_RADAR:
+            filter.categoryBits = FRIENDLY_MISSILE_RADAR;
+            filter.maskBits = ENEMY_BODY;
+            break;
+        case ENEMY_MISSILE_RADAR:
+            filter.categoryBits = ENEMY_MISSILE_RADAR;
+            filter.maskBits = PLAYER_BODY;
+            break;
+        case PLAYER_BODY_RADAR:
+            filter.categoryBits = PLAYER_BODY_RADAR;
+            filter.maskBits = ENEMY_BODY;
+            break;
+        case ENEMY_BODY_RADAR:
+            filter.categoryBits = ENEMY_BODY_RADAR;
+            filter.maskBits = PLAYER_BODY;
+            break;
+        case NO_COLLIDE:
+            filter.groupIndex = -1;
+            break;
+        default:
+            break;
+        }
+        return filter;
+    }
 };
