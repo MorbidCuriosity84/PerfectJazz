@@ -14,22 +14,24 @@ void PlayerPhysicsComponent::update(double dt) {
 	auto _flySpeed = playerCMP->_playerSettings.flySpeed;
 	float multiplier = dt * _flySpeed * (0.1f * playerCMP->_playerSettings.flySpeedUpgradeCount);
 	{
-		//if (pos.x < 0 + playerSpriteCMP->getSprite().getTextureRect().width / 2) {
-		//	setVelocity(Vector2f(40.f, getVelocity().y));
-		//	impulse({ ((float)dt * _flySpeed * 3), 0 });
-		//}
-		//if (pos.x >= mainView.getSize().x - playerSpriteCMP->getSprite().getTextureRect().width / 2) {
-		//	//setVelocity(Vector2f(0.f, getVelocity().y));
-		//	impulse({ -((float)dt * _flySpeed + multiplier), 0 });
-		//}
-		//if (pos.y <= playerSpriteCMP->getSprite().getTextureRect().height / 2) {
-		//	//setVelocity(Vector2f(getVelocity().x, 0.f));
-		//	impulse({ 0, (float)(dt * _flySpeed + multiplier) });
-		//}
-		//if (pos.y >= mainView.getSize().y - playerSpriteCMP->getSprite().getTextureRect().height / 2) {
-		//	//setVelocity(Vector2f(getVelocity().x, 0.f));
-		//	impulse({ 0, -(float)(dt * _flySpeed + multiplier) });
-		//}
+		//The _flySpeed * 2 makes the player not to stick when it goes to a side, so it 
+		//can fly away easily
+		if (pos.x < 0 + playerSpriteCMP->getSprite().getTextureRect().width / 2) {
+			setVelocity(Vector2f(0.f, getVelocity().y));
+			impulse({ ((float)dt * _flySpeed * 2), 0 });
+		}
+		if (pos.x >= mainView.getSize().x - playerSpriteCMP->getSprite().getTextureRect().width / 2) {
+			setVelocity(Vector2f(0.f, getVelocity().y));
+			impulse({ -((float)dt * _flySpeed * 2), 0 });
+		}
+		if (pos.y <= playerSpriteCMP->getSprite().getTextureRect().height / 2) {
+			setVelocity(Vector2f(getVelocity().x, 0.f));
+			impulse({ 0, (float)(dt * _flySpeed * 2) });
+		}
+		if (pos.y >= mainView.getSize().y - playerSpriteCMP->getSprite().getTextureRect().height / 2) {
+			setVelocity(Vector2f(getVelocity().x, 0.f));
+			impulse({ 0, -(float)(dt * _flySpeed * 2) });
+		}
 	}
 	//Player movement
 	{
@@ -65,6 +67,11 @@ void PlayerPhysicsComponent::update(double dt) {
 		}
 	}
 
+	if ((pos.x > gameWidth || pos.x < 0 || pos.y > gameHeight || pos.y < 0)) {
+		playerCMP->setPlayerAlive(false);
+		teleport((Vector2f((round)(mainView.getSize().x / 2), mainView.getSize().y - 100.f)));
+	}
+
 	//dampen({ 0.994f, 0.992f });
 
 	// Clamp velocity.
@@ -72,12 +79,6 @@ void PlayerPhysicsComponent::update(double dt) {
 	v.x = copysign(min(abs(v.x), _maxVelocity.x), v.x);
 	v.y = copysign(min(abs(v.y), _maxVelocity.y), v.y);
 	setVelocity(v);
-	const auto ppos = _parent->getPosition();
-	if (ppos.x > gameWidth || ppos.x < 0 || ppos.y > gameHeight || ppos.y < 0) {
-		playerCMP->hpCMP->setHP(0);
-	}
-
-
 
 	PhysicsComponent::update(dt);
 }

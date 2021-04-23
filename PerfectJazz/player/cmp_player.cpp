@@ -26,10 +26,10 @@ void PlayerComponent::Load() {
 
 void PlayerComponent::revive() {
 
-	physicsCMP->teleport((Vector2f((round)(mainView.getSize().x / 2), mainView.getSize().y - 100.f)));
 	setPlayerAlive(true);
 	_gracePeriod = true;
 	physicsCMP->setCategory(NO_COLLIDE);
+	physicsCMP->teleport((Vector2f((round)(mainView.getSize().x / 2), mainView.getSize().y - 100.f)));
 	hpCMP->setHP(_playerSettings.maxHP);
 }
 
@@ -88,14 +88,8 @@ void PlayerComponent::update(double dt) {
 		_playerSettings.shopPoints++;
 
 		if (hpCMP->getHP() <= 0) {
-			hpCMP->setHP(0);
-			_playerSettings.lifes--;
-			_gracePeriod = true;
-
-			if (_playerSettings.lifes <= 0) { _gracePeriod = false;	}
-
 			setPlayerAlive(false);
-
+			if (_playerSettings.lifes <= 0) { _gracePeriod = false;	}
 		}
 	}
 }
@@ -103,16 +97,19 @@ void PlayerComponent::update(double dt) {
 void PlayerComponent::setPlayerAlive(bool b) {
 
 	if (!b) {
+		hpCMP->setHP(0);
+		_playerSettings.lifes--;
+		_gracePeriod = true;
 		physicsCMP->impulse(Vector2f(0.f, 0.f));
 		physicsCMP->setVelocity(Vector2f(0.f, 0.f));
+		_gracePeriodTimer = 0;
+		_visibilityTimer = 0;
 	}
 
 	player->setVisible(b);
 	player->setAlive(b);
 	physicsCMP->getBody()->SetActive(b);
 
-	_gracePeriodTimer = 0;
-	_visibilityTimer = 0;
 }
 
 void PlayerComponent::setFlySpeedUpgradeState(int state) {
