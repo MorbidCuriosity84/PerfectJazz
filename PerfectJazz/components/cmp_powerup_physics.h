@@ -8,8 +8,6 @@ protected:
 
 public:
 	void update(double dt) override;
-	void setVelocity(sf::Vector2f velocity);
-	sf::Vector2f getVelocity();
 	explicit PowerupPhysicsComponent(Entity* p, const sf::Vector2f& size);
 	PowerupPhysicsComponent() = delete;
 };

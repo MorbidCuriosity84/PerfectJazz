@@ -1,7 +1,6 @@
 #include "cmp_powerup.h"
 #include "../randomNumber.h"
-#include "../components/cmp_powerup_physics.h"
-
+#include "maths.h"
 
 using namespace std;
 using namespace sf;
@@ -12,17 +11,16 @@ void PowerupComponent::deployPowerup() {
 	powerupSpriteCMP = _parent->addComponent<SpriteComponent>();
 	powerupSpriteCMP.get()->loadTexture(_powerupTextureHelper, { 1.f, 1.f }, 0);
 	damageCMP = _parent->addComponent<DamageComponent>(1);
-	physicsCMP = _parent->addComponent<PowerupPhysicsComponent>(Vector2f(powerupSpriteCMP->getSprite().getLocalBounds().getSize()));
+	physicsCMP = _parent->addComponent<PhysicsComponent>(true, powerupSpriteCMP->getSprite().getLocalBounds().getSize());
 	
-	hpCMP = _parent->addComponent<HPComponent>(_scene, 1);
+	hpCMP = _parent->addComponent<HPComponent>(_powerupSettings.scene, 1);
 	hpCMP->loadHP();
 	hpCMP.get()->setVisible(false);
 
 	physicsCMP->getBody()->SetBullet(true);
 	physicsCMP->setSensor(true);
-	physicsCMP->setVelocity(Vector2f(0.f, 100.f));
-	physicsCMP->setCategory(POWERUP);
-
+	physicsCMP->setVelocity(_powerupSettings.velocity * _powerupSettings.direction);
+	physicsCMP->setCategory(ENEMY_BULLET);
 }
 
 void PowerupComponent::update(double dt) {
@@ -55,7 +53,7 @@ void PowerupComponent::update(double dt) {
 	if (_parent->getPosition().y > _parent->getView().getSize().y) { _parent->setForDelete(); }
 }
 
-PowerupComponent::PowerupComponent(Entity* p, textureSettings powerupTextureHelper, Scene* scene) : Component(p), _powerupTextureHelper(powerupTextureHelper) {
+PowerupComponent::PowerupComponent(Entity* p, textureSettings powerupTextureHelper, powerupSettings powerupSettings) : Component(p), _powerupTextureHelper(powerupTextureHelper), _powerupSettings(powerupSettings){
 	deployPowerup();
 	pow_colHelp.damageCMP = damageCMP.get();
 	pow_colHelp.hpCMP = hpCMP.get();
@@ -63,5 +61,5 @@ PowerupComponent::PowerupComponent(Entity* p, textureSettings powerupTextureHelp
 	pow_colHelp.isMissile = false;
 	pow_colHelp.missileCMP = nullptr;
 	_parent->addTag("powerup");
-	physicsCMP.get()->getBody()->SetUserData(&pow_colHelp);
+	physicsCMP->getBody()->SetUserData(&pow_colHelp);
 }
