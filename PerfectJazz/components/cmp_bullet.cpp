@@ -14,15 +14,16 @@ void BulletComponent::createBullet() {
 	_bulletSprite.get()->getSprite().setRotation(_settings.angle);
 	damageCMP = _parent->addComponent<DamageComponent>(_settings.damage + (_settings.damage * 0.2 * _settings.damageUpgradeCount));
 	physicsCMP = _parent->addComponent<PhysicsComponent>(true, _bulletSprite.get()->getSprite().getLocalBounds().getSize());
+	
 	hpCMP = _parent->addComponent<HPComponent>(_settings.scene, 100);
 	hpCMP.get()->loadHP();
+	hpCMP.get()->setVisible(false);
 
 	physicsCMP->getBody()->SetBullet(true);
 	physicsCMP->setSensor(true);
-	physicsCMP->setVelocity(_settings.velocity * _settings.direction);
-	physicsCMP->setVelocity(Vector2f(physicsCMP->getVelocity().x - _parent->getRotation(), physicsCMP->getVelocity().y));
+	Vector2f bulletVelocity =_settings.velocity * _settings.direction;
+	physicsCMP->setVelocity(Vector2f(bulletVelocity.x - _parent->getRotation(), bulletVelocity.y));
 	physicsCMP->setCategory(_settings.category);
-	hpCMP.get()->setVisible(false);
 }
 
 

@@ -13,7 +13,7 @@ void PlayerPhysicsComponent::update(double dt) {
 	const auto pos = _parent->getPosition();
 	auto playerCMP = _parent->GetCompatibleComponent<PlayerComponent>()[0];
 	float multiplier = dt * playerCMP->_playerSettings.flySpeed * (0.1f * playerCMP->_playerSettings.flySpeedUpgradeCount);
-	auto _flySpeed = playerCMP->_playerSettings.flySpeed + multiplier;
+	float _flySpeed = playerCMP->_playerSettings.flySpeed + multiplier;
 
 	{
 		//CARLOS TO-DO fix movement. When the framerate is locked, the impulse feels different

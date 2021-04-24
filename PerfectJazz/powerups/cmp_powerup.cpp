@@ -1,6 +1,6 @@
 #include "cmp_powerup.h"
 #include "../randomNumber.h"
-#include "../components/cmp_background_physics.h"
+#include "../components/cmp_powerup_physics.h"
 
 
 using namespace std;
@@ -11,10 +11,18 @@ void PowerupComponent::deployPowerup() {
 	_powerupTextureHelper.spriteTexture.get()->loadFromFile(_powerupTextureHelper.spriteFilename);
 	powerupSpriteCMP = _parent->addComponent<SpriteComponent>();
 	powerupSpriteCMP.get()->loadTexture(_powerupTextureHelper, { 1.f, 1.f }, 0);
-	auto p = _parent->addComponent<BackgroundPhysicsComponent>(Vector2f((float)powerupSpriteCMP->getSprite().getTexture()->getSize().x, (float)powerupSpriteCMP->getSprite().getTexture()->getSize().y));
-	p->setVelocity(Vector2f(0.f, 100.f));
-	p->setSensor(true);
-	p->setCategory(POWERUP);
+	damageCMP = _parent->addComponent<DamageComponent>(1);
+	physicsCMP = _parent->addComponent<PowerupPhysicsComponent>(Vector2f(powerupSpriteCMP->getSprite().getLocalBounds().getSize()));
+	
+	hpCMP = _parent->addComponent<HPComponent>(_scene, 1);
+	hpCMP->loadHP();
+	hpCMP.get()->setVisible(false);
+
+	physicsCMP->getBody()->SetBullet(true);
+	physicsCMP->setSensor(true);
+	physicsCMP->setVelocity(Vector2f(0.f, 100.f));
+	physicsCMP->setCategory(POWERUP);
+
 }
 
 void PowerupComponent::update(double dt) {
@@ -24,19 +32,19 @@ void PowerupComponent::update(double dt) {
 		if (_powerupTextureHelper.spriteTimer < 0.1) {
 			_powerupTextureHelper.spriteRectangle.get()->left = (_powerupTextureHelper.spriteTexture.get()->getSize().x / _powerupTextureHelper.spriteCols) * 0;
 		}
-		if (_powerupTextureHelper.spriteTimer >= 0.1 && _powerupTextureHelper.spriteTimer < 0.3) {
+		if (_powerupTextureHelper.spriteTimer >= 0.1 && _powerupTextureHelper.spriteTimer < 0.2) {
 			_powerupTextureHelper.spriteRectangle.get()->left = (_powerupTextureHelper.spriteTexture.get()->getSize().x / _powerupTextureHelper.spriteCols) * 1;
 		}
-		if (_powerupTextureHelper.spriteTimer >= 0.3 && _powerupTextureHelper.spriteTimer < 0.4) {
+		if (_powerupTextureHelper.spriteTimer >= 0.2 && _powerupTextureHelper.spriteTimer < 0.3) {
 			_powerupTextureHelper.spriteRectangle.get()->left = (_powerupTextureHelper.spriteTexture.get()->getSize().x / _powerupTextureHelper.spriteCols) * 2;
 		}
-		if (_powerupTextureHelper.spriteTimer >= 0.4 && _powerupTextureHelper.spriteTimer < 0.5) {
+		if (_powerupTextureHelper.spriteTimer >= 0.3 && _powerupTextureHelper.spriteTimer < 0.4) {
 			_powerupTextureHelper.spriteRectangle.get()->left = (_powerupTextureHelper.spriteTexture.get()->getSize().x / _powerupTextureHelper.spriteCols) * 3;
 		}
-		if (_powerupTextureHelper.spriteTimer >= 0.5 && _powerupTextureHelper.spriteTimer < 0.6) {
+		if (_powerupTextureHelper.spriteTimer >= 0.4 && _powerupTextureHelper.spriteTimer < 0.5) {
 			_powerupTextureHelper.spriteRectangle.get()->left = (_powerupTextureHelper.spriteTexture.get()->getSize().x / _powerupTextureHelper.spriteCols) * 4;
 		}
-		if (_powerupTextureHelper.spriteTimer >= 0.7) {
+		if (_powerupTextureHelper.spriteTimer >= 0.5) {
 			_powerupTextureHelper.spriteTimer = 0.0;
 		}
 
@@ -47,16 +55,13 @@ void PowerupComponent::update(double dt) {
 	if (_parent->getPosition().y > _parent->getView().getSize().y) { _parent->setForDelete(); }
 }
 
-PowerupComponent::PowerupComponent(Entity* p, textureSettings powerupTextureHelper) : Component(p), _powerupTextureHelper(powerupTextureHelper) {
+PowerupComponent::PowerupComponent(Entity* p, textureSettings powerupTextureHelper, Scene* scene) : Component(p), _powerupTextureHelper(powerupTextureHelper) {
 	deployPowerup();
-	auto phy = _parent->GetCompatibleComponent<BackgroundPhysicsComponent>()[0];
 	pow_colHelp.damageCMP = damageCMP.get();
 	pow_colHelp.hpCMP = hpCMP.get();
-	pow_colHelp.missileCMP = nullptr;
-	pow_colHelp.isMissile = false;
 	pow_colHelp.isPowerup = true;
+	pow_colHelp.isMissile = false;
+	pow_colHelp.missileCMP = nullptr;
 	_parent->addTag("powerup");
-	//pow_colHelp.powerupCMP = this;	
-	phy.get()->getBody()->SetUserData(&pow_colHelp);
-	
+	physicsCMP.get()->getBody()->SetUserData(&pow_colHelp);
 }
