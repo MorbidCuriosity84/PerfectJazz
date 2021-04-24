@@ -21,7 +21,6 @@ void Background::createBackground(Scene* _scene) {
 			if (i == 1) { repeated = true; };
 			loadBackground->Load(repeated);
 		}
-
 	}
 
 	//Load over background sprites

@@ -38,7 +38,6 @@ int currentFlySpeed;
 int row;
 int col;
 
-
 void Panels::createPanels(Scene* _scene) {
 
 	auto playerCMP = player->GetCompatibleComponent<PlayerComponent>()[0];
