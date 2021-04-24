@@ -31,7 +31,7 @@ MissileMovementComponent::MissileMovementComponent(Entity* p, sf::Vector2f vel, 
 	_parentPhysics = _parent->GetCompatibleComponent<PhysicsComponent>()[0];
 	b2FixtureDef missileRadar;
 	b2CircleShape circleShape;
-	circleShape.m_radius = 8;	
+	circleShape.m_radius = 64;	
 	missileRadar.shape = &circleShape;
 	missileRadar.isSensor = true;	
 	filterGetter fg;
