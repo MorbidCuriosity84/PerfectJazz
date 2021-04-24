@@ -14,7 +14,6 @@ class PowerupComponent : public Component{
 protected:
 	textureSettings _powerupTextureHelper;
 	std::shared_ptr<SpriteComponent> powerupSpriteCMP;
-	string _type;
 
 public:
 	void render() override {};
@@ -22,6 +21,6 @@ public:
 	void deployPowerup();
 
 	PowerupComponent() = delete;
-	explicit PowerupComponent(Entity* p, textureSettings powerupTextureHelper, string type);
+	explicit PowerupComponent(Entity* p, textureSettings powerupTextureHelper);
 };
 
