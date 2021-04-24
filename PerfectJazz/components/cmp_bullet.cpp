@@ -80,13 +80,6 @@ BulletComponent::BulletComponent(Entity* p, bulletSettings settings, textureSett
 	else {
 		bul_colHelp.isMissile = false;
 	}
-	//colHelp.isMissile = (_settings.category == (ENEMY_MISSILE || FRIENDLY_MISSILE) ? true : false);
-
-	/*if (_settings.category == ENEMY_MISSILE || _settings.category == FRIENDLY_MISSILE) 	{
-		bul_colHelp.missileCMP = _parent->addComponent<MissileMovementComponent>(Vector2f(0.f, -150.f), false, _settings.category).get();
-		bul_colHelp.isMissile = true;
-		_parent->addTag("missile");
-	}*/
 	physicsCMP->getBody()->SetUserData(&bul_colHelp);
 
 }
