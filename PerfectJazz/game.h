@@ -100,12 +100,12 @@ enum _settingType {
 };
 
 enum _powerUps {
-    HP,
-    DAMAGE,
-    FIRERATE,
-    PLAYER_MOVEMENT,
-    BULLET_NUM,
-    COIN,
+    HP_PWU,
+    DAMAGE_PWU,
+    FIRERATE_PWU,
+    PLAYER_MOVEMENT_PWU,
+    BULLET_NUM_PWU,
+    COIN_PWU,
 };
 
 struct filterGetter {
