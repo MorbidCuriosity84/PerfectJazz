@@ -7,7 +7,6 @@
 #include "../panels/creates_panels.h"
 #include "../powerups/creates_powerups.h"
 #include "../background/create_background.h"
-#include "../components/cmp_player_physics.h"
 #include "../game.h"
 
 

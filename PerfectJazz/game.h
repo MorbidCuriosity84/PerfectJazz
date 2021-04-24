@@ -100,11 +100,12 @@ enum _settingType {
     BULLET,
 };
 
-enum _powerUps {
+enum _powerUpsType {
     HP_PWU,
     DAMAGE_PWU,
     FIRERATE_PWU,
     PLAYER_MOVEMENT_PWU,
     BULLET_NUM_PWU,
     COIN_PWU,
+    ALL_POWERUPS,
 };
