@@ -47,6 +47,10 @@ void PowerupComponent::update(double dt) {
 		}
 
 		powerupSpriteCMP->getSprite().setTextureRect(*_powerupTextureHelper.spriteRectangle.get());
+
+		if (hpCMP->getHP() <= 0) {
+			physicsCMP->teleport(Vector2f(-500.f, -500.f));
+		}
 	}
 
 	// Delete powerup entity if offscreen

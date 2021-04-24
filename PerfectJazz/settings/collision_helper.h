@@ -13,7 +13,6 @@
 struct collisionHelper {
     HPComponent* hpCMP;
     DamageComponent* damageCMP;
-    //PowerupComponent* powerupCMP;
     MissileMovementComponent* missileCMP;
     bool isMissile;
     bool isPowerup;
