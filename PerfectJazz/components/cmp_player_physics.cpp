@@ -76,7 +76,7 @@ void PlayerPhysicsComponent::update(double dt) {
 		teleport((Vector2f((round)(mainView.getSize().x / 2), mainView.getSize().y - 100.f)));
 	}
 
-	playerCMPTimer = +dt;
+	playerCMPTimer += dt;
 	if (playerCMPTimer > 0.01) {
 		// Damp velocity
 		dampen({ 0.95f, 0.95f });

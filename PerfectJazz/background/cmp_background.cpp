@@ -9,7 +9,7 @@ void BackgroundComponent::Load(bool second) {
 
 	auto offset = (float)s->getSprite().getTexture()->getSize().y - mainView.getSize().y;
 
-	s->getSprite().setOrigin(Vector2f(_parent->getPosition().x/2, _parent->getPosition().y));
+	s->getSprite().setOrigin(Vector2f(_parent->getPosition().x / 2, _parent->getPosition().y));
 	s->getSprite().setColor(sf::Color(_backgroundSettings.opacity));
 
 	if (second) {
@@ -26,7 +26,7 @@ void BackgroundComponent::update(double dt) {
 		auto s = _parent->GetCompatibleComponent<SpriteComponent>();
 
 		if (s[0]->getSprite().getPosition().y > mainView.getSize().y + (_backgroundSettings.offset.y)) {
-			_parent->setPosition(Vector2f(_parent->getPosition().x, s[0]->getSprite().getPosition().y - s[0]->getSprite().getTexture()->getSize().y - (_backgroundSettings.offset.y*2)));
+			_parent->setPosition(Vector2f(_parent->getPosition().x, s[0]->getSprite().getPosition().y - s[0]->getSprite().getTexture()->getSize().y - (_backgroundSettings.offset.y * 2)));
 		}
 	}
 }

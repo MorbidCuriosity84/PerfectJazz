@@ -1,4 +1,4 @@
-#include "create_panels.h"
+#include "creates_panels.h"
 #include "../player/cmp_player.h"
 #include "../components/cmp_text.h"
 #include "../components/cmp_hp.h"
@@ -37,7 +37,6 @@ int currentFirerate;
 int currentFlySpeed;
 int row;
 int col;
-
 
 void Panels::createPanels(Scene* _scene) {
 

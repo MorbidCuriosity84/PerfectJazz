@@ -13,6 +13,7 @@ Level3Scene level3;
 unsigned int gameWidth = 1280;
 unsigned int gameHeight = 720;
 
+// The grid size will be 15x16 tiles
 int main() {
 	Engine::Start(gameWidth, gameHeight, "Perfect Jazz", &menu);
 }

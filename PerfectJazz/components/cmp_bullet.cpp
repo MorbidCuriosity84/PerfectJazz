@@ -45,7 +45,6 @@ void BulletComponent::update(double dt) {
 		_bulletTextHelper.spriteTimer = 0.0;
 	}
 
-
 	_bulletSprite->getSprite().setTextureRect(*_bulletTextHelper.spriteRectangle.get());
 	_bulletSprite->getSprite().setPosition(_parent->getPosition());			
 	
@@ -53,7 +52,6 @@ void BulletComponent::update(double dt) {
 		Vector2f bul_pl_dif = _parent->getPosition() - player->getPosition();
 		_bulletSprite->getSprite().setRotation(_bulletSprite->getSprite().getRotation() - atan(bul_pl_dif.x / bul_pl_dif.y));
 	}
-	
 	
 	if (hpCMP->getHP() <= 0) {
 		_parent->setForDelete();
