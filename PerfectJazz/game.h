@@ -54,6 +54,7 @@ enum _entityCategory {
     FRIENDLY_MISSILE_RADAR = 0x0200, //512
     ENEMY_BODY_RADAR = 0x0400, //1024
     PLAYER_BODY_RADAR = 0x0800, //2048
+    POWERUP = 0x1000, // 4096
 };
 
 enum _enemyType {
