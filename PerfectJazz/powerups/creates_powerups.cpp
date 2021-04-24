@@ -63,7 +63,7 @@ void Powerups::deployPowerups() {
 				for (int j = 0; j < 14; j++) {
 					auto en = _scene->makeEntity();
 					en->setView(mainView);
-					en->addComponent<PowerupComponent>(_powerupTextureHelper);
+					en->addComponent<PowerupComponent>(_powerupTextureHelper, _scene);
 					en->addTag(type);
 					if (j == 0) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 4) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i )); }
 					if (j == 1) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 5) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i )); }
@@ -85,7 +85,7 @@ void Powerups::deployPowerups() {
 				for (int j = 0; j < 9; j++) {
 					auto en = _scene->makeEntity();
 					en->setView(mainView);
-					en->addComponent<PowerupComponent>(_powerupTextureHelper);
+					en->addComponent<PowerupComponent>(_powerupTextureHelper, _scene);
 					en->addTag(type);
 					if (j == 0) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 4) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
 					if (j == 1) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 7) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
@@ -103,7 +103,7 @@ void Powerups::deployPowerups() {
 				for (int j = 0; j < 12; j++) {
 					auto en = _scene->makeEntity();
 					en->setView(mainView);
-					en->addComponent<PowerupComponent>(_powerupTextureHelper);
+					en->addComponent<PowerupComponent>(_powerupTextureHelper, _scene);
 					en->addTag(type);
 					if (j == 0) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 4) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
 					if (j == 1) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 5) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
@@ -123,7 +123,7 @@ void Powerups::deployPowerups() {
 				for (int j = 0; j < 10; j++) {
 					auto en = _scene->makeEntity();
 					en->setView(mainView);
-					en->addComponent<PowerupComponent>(_powerupTextureHelper);
+					en->addComponent<PowerupComponent>(_powerupTextureHelper, _scene);
 					en->addTag(type);
 					if (j == 0) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 4) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
 					if (j == 1) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 7) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
@@ -142,7 +142,7 @@ void Powerups::deployPowerups() {
 				for (int j = 0; j < 12; j++) {
 					auto en = _scene->makeEntity();
 					en->setView(mainView);
-					en->addComponent<PowerupComponent>(_powerupTextureHelper);
+					en->addComponent<PowerupComponent>(_powerupTextureHelper, _scene);
 					en->addTag(type);
 					if (j == 0) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 4) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
 					if (j == 1) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 5) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
@@ -165,14 +165,12 @@ void Powerups::deployPowerups() {
 	else {
 		auto en = _scene->makeEntity();
 		en->setView(mainView);
-		en->addComponent<PowerupComponent>(_powerupTextureHelper);
+		en->addComponent<PowerupComponent>(_powerupTextureHelper, _scene);
 		//Set the powerup ent in the right column, cencetered withing the tile
 		en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * choosenColumn) + ((mainView.getSize().x / 32) / 2), mainView.getSize().x / 32));
 		en->addTag(type);
 	}
 }
-
-
 
 void Powerups::createPowerups(Scene* scene) {
 	_scene = scene;
@@ -182,7 +180,7 @@ void Powerups::createPowerups(Scene* scene) {
 void Powerups::update(double dt) {
 	_timer += dt;
 
-	if (_timer > 4) {
+	if (_timer > 2) {
 		deployPowerups();
 		_timer = 0.f;
 	}

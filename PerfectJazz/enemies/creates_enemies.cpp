@@ -37,7 +37,6 @@ void Enemies::createEnemies(std::string _waveFile, Scene* _scene) {
 
 void Enemies::setType(_enemyType type, Scene* _scene) {
 
-
 	switch (type) {
 	case AIRMAN:
 	{
