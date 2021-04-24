@@ -14,10 +14,12 @@ struct collisionHelper {
     HPComponent* hpCMP;
     DamageComponent* damageCMP;
     MissileMovementComponent* missileCMP;
+    //PowerupComponent* powerupCMP;
     bool isMissile;
+    bool isPowerup;
 
-    collisionHelper() : isMissile(false)
+    collisionHelper() : isMissile(false), isPowerup(false), hpCMP(nullptr), damageCMP(nullptr), missileCMP(nullptr)
     {
         
-    };
+    }
 };

@@ -31,15 +31,16 @@ MissileMovementComponent::MissileMovementComponent(Entity* p, sf::Vector2f vel, 
 	_parentPhysics = _parent->GetCompatibleComponent<PhysicsComponent>()[0];
 	b2FixtureDef missileRadar;
 	b2CircleShape circleShape;
-	circleShape.m_radius = 8;	
+	circleShape.m_radius = 64;	
 	missileRadar.shape = &circleShape;
 	missileRadar.isSensor = true;	
-	filterGetter fg;
 	if (cat == ENEMY_MISSILE) {
-		missileRadar.filter = fg.getFilter(ENEMY_MISSILE_RADAR);
+		missileRadar.filter.categoryBits = ENEMY_MISSILE_RADAR;
+		missileRadar.filter.maskBits = PLAYER_BODY;
 	}
 	else {
-		missileRadar.filter = fg.getFilter(FRIENDLY_MISSILE_RADAR);
+		missileRadar.filter.categoryBits = FRIENDLY_MISSILE_RADAR;
+		missileRadar.filter.maskBits = ENEMY_BODY;
 	}
 	
 	_parentPhysics.get()->getBody()->CreateFixture(&missileRadar);	
