@@ -1,4 +1,5 @@
 #pragma once
+
 #include <SFML/Graphics.hpp>
 #include "../components/cmp_sprite.h"
 #include "../components/cmp_weapon.h"

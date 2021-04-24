@@ -21,7 +21,6 @@ void Background::createBackground(Scene* _scene) {
 			if (i == 1) { repeated = true; };
 			loadBackground->Load(repeated);
 		}
-
 	}
 
 	//Load over background sprites
@@ -41,7 +40,7 @@ void Background::createBackground(Scene* _scene) {
 			}
 			auto loadBackground = background->addComponent<BackgroundComponent>(_backgroundTextureHelper, _backgroundSettings);
 
-			loadBackground->Load(false);
+			loadBackground->Load(repeated);
 		}
 	}
 }

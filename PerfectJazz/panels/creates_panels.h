@@ -5,7 +5,7 @@
 #include "../components/cmp_hp.h"
 #include "../player/cmp_player.h"
 #include "../game.h"
-#include "../player/create_player.h"
+#include "../player/creates_player.h"
 
 class Panels {
 public:

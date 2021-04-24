@@ -11,8 +11,9 @@
 #include "../PerfectJazz/components/cmp_sprite.h"
 #include "../PerfectJazz/components/cmp_text.h"
 #include "../PerfectJazz/components/cmp_enemy_physics.h"
-#include "../PerfectJazz/panels/create_panels.h"
-#include "../PerfectJazz/player/create_player.h"
+#include "../PerfectJazz/panels/creates_panels.h"
+#include "../PerfectJazz/player/creates_player.h"
+#include "../PerfectJazz/powerups/creates_powerups.h"
 
 
 using namespace sf;
@@ -96,7 +97,7 @@ void Engine::Start(unsigned int width, unsigned int height,
 	const std::string& gameName, Scene* scn) {
 	RenderWindow window(VideoMode(width, height), gameName);
 	//Limits the framerate
-	window.setFramerateLimit(60);
+	//window.setFramerateLimit(60);
 	_gameName = gameName;
 	_window = &window;
 	Renderer::initialise(window);
@@ -172,6 +173,7 @@ void Scene::Update(const double& dt) {
 		isDead = true;
 	}
 	Panels::update(dt);
+	Powerups::update(dt);
 	ents.update(dt);
 }
 
