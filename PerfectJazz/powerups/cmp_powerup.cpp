@@ -13,6 +13,8 @@ void PowerupComponent::deployPowerup() {
 	powerupSpriteCMP.get()->loadTexture(_powerupTextureHelper, { 1.f, 1.f }, 0);
 	auto p = _parent->addComponent<BackgroundPhysicsComponent>(Vector2f((float)powerupSpriteCMP->getSprite().getTexture()->getSize().x, (float)powerupSpriteCMP->getSprite().getTexture()->getSize().y));
 	p->setVelocity(Vector2f(0.f, 100.f));
+	p->setSensor(true);
+	p->setCategory(POWERUP);
 }
 
 void PowerupComponent::update(double dt) {
@@ -53,6 +55,8 @@ PowerupComponent::PowerupComponent(Entity* p, textureSettings powerupTextureHelp
 	pow_colHelp.missileCMP = nullptr;
 	pow_colHelp.isMissile = false;
 	pow_colHelp.isPowerup = true;
-	//pow_colHelp.powerupCMP = this;
+	_parent->addTag("powerup");
+	//pow_colHelp.powerupCMP = this;	
 	phy.get()->getBody()->SetUserData(&pow_colHelp);
+	
 }
