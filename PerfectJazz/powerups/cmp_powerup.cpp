@@ -2,6 +2,7 @@
 #include "../randomNumber.h"
 #include "../components/cmp_background_physics.h"
 
+
 using namespace std;
 using namespace sf;
 
@@ -46,4 +47,12 @@ void PowerupComponent::update(double dt) {
 
 PowerupComponent::PowerupComponent(Entity* p, textureSettings powerupTextureHelper) : Component(p), _powerupTextureHelper(powerupTextureHelper) {
 	deployPowerup();
+	auto phy = _parent->GetCompatibleComponent<BackgroundPhysicsComponent>()[0];
+	pow_colHelp.damageCMP = damageCMP.get();
+	pow_colHelp.hpCMP = hpCMP.get();
+	pow_colHelp.missileCMP = nullptr;
+	pow_colHelp.isMissile = false;
+	pow_colHelp.isPowerup = true;
+	//pow_colHelp.powerupCMP = this;
+	phy.get()->getBody()->SetUserData(&pow_colHelp);
 }

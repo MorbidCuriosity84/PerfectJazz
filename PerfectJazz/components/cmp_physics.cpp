@@ -121,7 +121,7 @@ void PhysicsComponent::setCategory(_entityCategory cat)
         break;
     case ENEMY_BODY_RADAR:
         filter.categoryBits = ENEMY_BODY_RADAR;
-        filter.maskBits = PLAYER_BODY;
+        filter.maskBits = PLAYER_BODY | FRIENDLY_MISSILE;
         break;
     case NO_COLLIDE:
         filter.groupIndex = -1;
