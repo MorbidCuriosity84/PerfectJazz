@@ -1,8 +1,5 @@
 #pragma once
 #include "ecm.h"
-#include <SFML/Graphics/Shape.hpp>
-#include <SFML/Graphics/Sprite.hpp>
-#include <SFML/Graphics/Texture.hpp>
 #include "../game.h"
 /*
 * @param std::string _filename, uint16_t _spriteRows, uint16_t _spriteCols, uint16_t _desiredRow, uint16_t _desiredCol, std::shared_ptr<sf::Texture> _texture, std::shared_ptr<sf::IntRect> _rect, double _timer
