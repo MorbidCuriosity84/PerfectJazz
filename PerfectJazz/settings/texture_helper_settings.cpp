@@ -205,11 +205,11 @@ textureSettings TextureHelpingSettings::LoadSettings(_powerUpsType type, Scene* 
 	settings.spriteTimer = 0;
 
 	switch (type) {
-	//case HP_PWU:
-	//{
-	//	settings.spriteFilename = "res/img/enemies/enemy1_900.png";
-	//	break;
-	//}
+	case HP_PWU:
+	{
+		settings.spriteFilename = "res/img/powerups/potion.png";
+		break;
+	}
 
 	case DAMAGE_PWU:
 	{

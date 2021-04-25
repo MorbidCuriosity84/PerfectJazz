@@ -60,7 +60,7 @@ void Panels::createPanels(Scene* _scene) {
 
 		//Adding components
 		playerLifeSpriteCMP = leftPanel->addComponent<SpriteComponent>();
-		hpCMP = leftPanel->addComponent<HPComponent>(_scene, playerCMP->_playerSettings.maxHP);
+		hpCMP = leftPanel->addComponent<HPComponent>(_scene, playerCMP->_playerSettings.hp, playerCMP->_playerSettings.maxHP);
 		hpCMP->loadHP();
 		playerTxtCMP = leftPanel->addComponent<TextComponent>("PLAYER 1");
 		scoreTxtCMP = leftPanel->addComponent<TextComponent>("Score: " + to_string(playerCMP->_playerSettings.score));
@@ -195,7 +195,7 @@ void Panels::setUpgradesSprites(string type, int counter) {
 		coinsTxtCMP->setText("Coins: " + to_string(playerCMP->_playerSettings.shopPoints));
 	};	
 	if (type == "hp") {
-		hpCMP->setHP(playerCMP->hpCMP->getHP());
+		hpCMP->setHP(counter);
 		hpCMP->textCMP->setText(to_string(playerCMP->hpCMP->getHP()) + "/" + to_string(playerCMP->_playerSettings.maxHP));
 		hpCMP->textCMP->setPosition(Vector2f((round)((hpCMP->underHPBar->getSprite().getPosition().x + hpCMP->underHPBar->getSprite().getGlobalBounds().width / 2 - hpCMP->textCMP->getGlobalBounds().width / 2)), (round)(hpCMP->underHPBar->getSprite().getPosition().y - hpCMP->textCMP->getGlobalBounds().height / 2)));
 	};
@@ -211,17 +211,17 @@ void Panels::update(double dt) {
 
 		if (currentLifes != playerCMP->_playerSettings.lifes) { setLifeSprites(); }
 
-		if (currentBulletDamage != playerCMP->_bulletSettings.damageUpgradeCount) {
-			setUpgradesSprites("damage", playerCMP->_bulletSettings.damageUpgradeCount);
+		if (currentBulletDamage != playerCMP->weaponCMP->_bSettings.damageUpgradeCount) {
+			setUpgradesSprites("damage", playerCMP->weaponCMP->_bSettings.damageUpgradeCount);
 		}
 		if (currentFlySpeed != playerCMP->_playerSettings.flySpeedUpgradeCount) {
 			setUpgradesSprites("flySpeed", playerCMP->_playerSettings.flySpeedUpgradeCount);
 		}
-		if (currentFirerate != playerCMP->_weaponSettings.firerateUpgradeCount) {
-			setUpgradesSprites("firerate", playerCMP->_weaponSettings.firerateUpgradeCount);
+		if (currentFirerate != playerCMP->weaponCMP->_wSettings.firerateUpgradeCount) {
+			setUpgradesSprites("firerate", playerCMP->weaponCMP->_wSettings.firerateUpgradeCount);
 		}
-		if (currentBulletSpread != playerCMP->_weaponSettings.numBulletsUpgradeCount) {
-			setUpgradesSprites("bullets", playerCMP->_weaponSettings.numBulletsUpgradeCount);
+		if (currentBulletSpread != playerCMP->weaponCMP->_wSettings.numBulletsUpgradeCount) {
+			setUpgradesSprites("bullets", playerCMP->weaponCMP->_wSettings.numBulletsUpgradeCount);
 		}
 		if (currentScore != playerCMP->_playerSettings.score) {
 			setUpgradesSprites("score", playerCMP->_playerSettings.score);

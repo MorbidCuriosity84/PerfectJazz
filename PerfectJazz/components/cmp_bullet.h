@@ -8,7 +8,6 @@
 
 class BulletComponent : public Component {
 protected:
-	shared_ptr<SpriteComponent> _bulletSprite;
 	textureSettings _bulletTextHelper;
 	bulletSettings _settings;
 	collisionHelper bul_colHelp;

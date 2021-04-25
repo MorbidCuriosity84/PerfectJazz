@@ -18,7 +18,7 @@ void WeaponComponent::update(double dt) {
 	_wSettings.fireTimer -= dt;
 	if (_wSettings.fireTimer <= 0.f) {
 		fire();
-		_wSettings.fireTimer = _wSettings.fireTime - (_wSettings.fireTime * 0.15 * (double)_wSettings.firerateUpgradeCount);
+		_wSettings.fireTimer = _wSettings.fireTime - (_wSettings.fireTime * 0.15 * _wSettings.firerateUpgradeCount);
 	}
 }
 
