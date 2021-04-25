@@ -32,5 +32,4 @@ public:
 	static textureSettings LoadSettings(_bulletType type, Scene* scene);
 	static textureSettings LoadSettings(_backgroundType type, Scene* scene);
 	static textureSettings LoadSettings(_powerUpsType type, Scene* scene);
-
 };

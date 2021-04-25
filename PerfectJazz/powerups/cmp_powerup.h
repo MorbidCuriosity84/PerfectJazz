@@ -16,6 +16,8 @@ protected:
 
 public:
 	void update(double dt) override;
+	void powerupAction();
+
 	void render() override {};
 	void deployPowerup();
 

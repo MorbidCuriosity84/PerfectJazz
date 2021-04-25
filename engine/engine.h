@@ -20,7 +20,6 @@ public:
 	bool isLoaded() const;
 	std::shared_ptr<Entity> makeEntity();
 	EntityManager ents;
-	std::shared_ptr<TextComponent> txtCMP;
 
 protected:
 	void setLoaded(bool);
