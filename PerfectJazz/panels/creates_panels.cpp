@@ -43,7 +43,7 @@ int col;
 
 void Panels::createPanels(Scene* _scene) {
 
-	auto playerCMP = player->GetCompatibleComponent<PlayerComponent>()[0];
+	playerCMP = player->GetCompatibleComponent<PlayerComponent>()[0];
 	//Left Panel
 	{	//Setting up initial values
 		currentScore = -1;
@@ -131,7 +131,6 @@ void Panels::createPanels(Scene* _scene) {
 
 void Panels::setLifeSprites() {
 
-	auto playerCMP = player->GetCompatibleComponent<PlayerComponent>()[0];
 	auto lifes = playerCMP->getPlayerLifes();
 
 	if (lifes > 0) {
@@ -162,8 +161,6 @@ void Panels::createUpgradeSprites() {
 }
 
 void Panels::setUpgradesSprites(string type, int counter) {
-
-	auto playerCMP = player->GetCompatibleComponent<PlayerComponent>()[0];
 
 	upgradeCounterRec.left = (round)(upgradeCounterTexture.getSize().x * 0);
 	upgradeCounterRec.top = (round)(upgradeCounterTexture.getSize().y * 0);
@@ -207,8 +204,6 @@ void Panels::update(double dt) {
 
 	if (timer > 0.1) {
 
-		auto playerCMP = player->GetCompatibleComponent<PlayerComponent>()[0];
-
 		if (currentLifes != playerCMP->_playerSettings.lifes) { setLifeSprites(); }
 
 		if (currentBulletDamage != playerCMP->weaponCMP->_bSettings.damageUpgradeCount) {
@@ -236,5 +231,8 @@ void Panels::update(double dt) {
 	}
 }
 
-void Panels::render() {
+void Panels::render() {}
+
+Panels::~Panels() { 
+	playerCMP.reset();
 }
