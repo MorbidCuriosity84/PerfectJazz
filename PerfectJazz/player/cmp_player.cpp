@@ -1,70 +1,152 @@
 #include "cmp_player.h"
-#include "../game.h"
-#include "../components/cmp_sprite.h"
-#include "../components/cmp_player_physics.h"
-#include "../components/cmp_hp.h"
-#include "../components/cmp_damage.h"
-#include "../components/cmp_weapon.h"
-
 
 using namespace std;
-sf::Clock timer;
-sf::Clock bTimer;
+using namespace sf;
 
 void PlayerComponent::Load() {
-	_parent->setPosition(Vector2f(mainView.getSize().x / 2, mainView.getSize().y - 100.f));
-	_parent->addComponent<DamageComponent>(_playerSettings.damage);
-	_parent->addComponent<WeaponComponent>(_weaponSettings, _bulletSettings, _bulletTextureHelper);
-	_parent->addTag("player");
+
+	player->setPosition((Vector2f((round)(mainView.getSize().x / 2), mainView.getSize().y - 100.f)));
+	damageCMP = player->addComponent<DamageComponent>(_playerSettings.damage);
+	weaponCMP = player->addComponent<WeaponComponent>(_weaponSettings, _bulletSettings, _bulletTextureHelper);
+	player->addTag("player");
 	_playerTextureHelper.spriteTexture.get()->loadFromFile(_playerTextureHelper.spriteFilename);
 
-	auto s = _parent->addComponent<SpriteComponent>();
-	s.get()->loadTexture(_playerTextureHelper, _playerSettings.scale, _playerSettings.angle);
-	auto phys = _parent->addComponent<PlayerPhysicsComponent>(s->getSprite().getGlobalBounds().getSize());
-	phys.get()->setCategory(_playerSettings.category);
+	spriteCMP = player->addComponent<SpriteComponent>();
+	spriteCMP.get()->loadTexture(_playerTextureHelper, _playerSettings.scale, _playerSettings.angle);
+	physicsCMP = player->addComponent<PlayerPhysicsComponent>(spriteCMP->getSprite().getGlobalBounds().getSize());
+	physicsCMP.get()->setCategory(_playerSettings.category);
 
-	auto h = _parent->addComponent<HPComponent>(_playerSettings.scene, _playerSettings.hp);
-	h.get()->loadHP();
-	h.get()->setVisible(_playerSettings.hpVisible);
+	hpCMP = player->addComponent<HPComponent>(_playerSettings.scene, _playerSettings.hp, _playerSettings.maxHP);
+	hpCMP->loadHP();
+	hpCMP.get()->setVisible(_playerSettings.hpVisible);
+	hpCMP->setSpriteColour(Color::Red);
+	hpCMP->setTextColour(Color::White);
+	hpCMP->setScale(Vector2f(1.f, 0.8f));
+}
 
-	phys.get()->getBody()->SetUserData(h.get());
+void PlayerComponent::revive() {
 
-	timer.restart();
+	setPlayerAlive(true);
+	_gracePeriod = true;
+	physicsCMP->setCategory(NO_COLLIDE);
+	physicsCMP->teleport((Vector2f((round)(mainView.getSize().x / 2), mainView.getSize().y - 100.f)));
+	hpCMP->setHP(_playerSettings.maxHP);
 }
 
 void PlayerComponent::update(double dt) {
 
-	auto pPhysics = _parent->GetCompatibleComponent<PlayerPhysicsComponent>();
-	auto pSprite = _parent->GetCompatibleComponent<SpriteComponent>();
+	_playerTextureHelper.spriteTimer += dt;
 
-	if (timer.getElapsedTime().asSeconds() > 0.1f) {
+	if (_gracePeriod) {
+		_gracePeriodTimer += dt;
 
-		//Check if the loaded sprite is the bottom, if so, load the top. And viceversa
-		if (_playerTextureHelper.spriteRectangle.get()->top == _playerTextureHelper.spriteTexture.get()->getSize().y / 2) { _playerTextureHelper.spriteRectangle.get()->top = 0; }
-		else { _playerTextureHelper.spriteRectangle.get()->top = _playerTextureHelper.spriteTexture.get()->getSize().y / _playerTextureHelper.spriteRows; }
+		if (_gracePeriodTimer < 3.f) {
+			_visibilityTimer += dt;
+			if (_visibilityTimer >= 0.1f && _visibilityTimer < 0.2f) { player->setVisible(false); }
+			if (_visibilityTimer >= 0.2f) { player->setVisible(true); _visibilityTimer = 0; }
+		}
 
-		//Check if it's loaded the right sprite for the movement
-		if (pPhysics[0]->GetDirection() == "right") {
-			if (timer.getElapsedTime().asSeconds() > 0.2f) {
-				_playerTextureHelper.spriteRectangle.get()->left = (_playerTextureHelper.spriteTexture.get()->getSize().x / _playerTextureHelper.spriteCols) * 4;
-			}
-			else { _playerTextureHelper.spriteRectangle.get()->left = (_playerTextureHelper.spriteTexture.get()->getSize().x / _playerTextureHelper.spriteCols) * 3; }
+		if (_gracePeriodTimer >= 3) {
+			physicsCMP->setCategory(PLAYER_BODY);
+			_gracePeriod = false;
+			setPlayerAlive(true);
 		}
-		if (pPhysics[0]->GetDirection() == "left") {
-			if (timer.getElapsedTime().asSeconds() > 0.2f) {
-				_playerTextureHelper.spriteRectangle.get()->left = (_playerTextureHelper.spriteTexture.get()->getSize().x / _playerTextureHelper.spriteCols) * 0;
-			}
-			else { _playerTextureHelper.spriteRectangle.get()->left = (_playerTextureHelper.spriteTexture.get()->getSize().x / _playerTextureHelper.spriteCols) * 1; }
-		}
-		if (pPhysics[0]->GetDirection() == "none") {
-			_playerTextureHelper.spriteRectangle.get()->left = (_playerTextureHelper.spriteTexture.get()->getSize().x / _playerTextureHelper.spriteCols) * 2;
-			timer.restart();
-		}
-		pSprite[0]->getSprite().setTextureRect(*_playerTextureHelper.spriteRectangle.get());
 	}
-	_playerSettings.score++;
+
+	if (player->isAlive()) {
+		//auto pPhysics = static_cast<PlayerPhysicsComponent>(*physicsCMP);
+		//auto pSprite = player->GetCompatibleComponent<SpriteComponent>();
+
+		if (_playerTextureHelper.spriteTimer > 0.1f) {
+
+			//Check if the loaded sprite is the bottom, if so, load the top. And viceversa
+			if (_playerTextureHelper.spriteRectangle.get()->top == _playerTextureHelper.spriteTexture.get()->getSize().y / 2) { _playerTextureHelper.spriteRectangle.get()->top = 0; }
+			else { _playerTextureHelper.spriteRectangle.get()->top = _playerTextureHelper.spriteTexture.get()->getSize().y / _playerTextureHelper.spriteRows; }
+
+			//Check if it's loaded the right sprite for the movement
+			if (physicsCMP->GetDirection() == "right") {
+				if (_playerTextureHelper.spriteTimer > 0.2f) {
+					_playerTextureHelper.spriteRectangle.get()->left = (_playerTextureHelper.spriteTexture.get()->getSize().x / _playerTextureHelper.spriteCols) * 4;
+				}
+				else { _playerTextureHelper.spriteRectangle.get()->left = (_playerTextureHelper.spriteTexture.get()->getSize().x / _playerTextureHelper.spriteCols) * 3; }
+			}
+			if (physicsCMP->GetDirection() == "left") {
+				if (_playerTextureHelper.spriteTimer > 0.2f) {
+					_playerTextureHelper.spriteRectangle.get()->left = (_playerTextureHelper.spriteTexture.get()->getSize().x / _playerTextureHelper.spriteCols) * 0;
+				}
+				else { _playerTextureHelper.spriteRectangle.get()->left = (_playerTextureHelper.spriteTexture.get()->getSize().x / _playerTextureHelper.spriteCols) * 1; }
+			}
+			if (physicsCMP->GetDirection() == "none") {
+				_playerTextureHelper.spriteRectangle.get()->left = (_playerTextureHelper.spriteTexture.get()->getSize().x / _playerTextureHelper.spriteCols) * 2;
+				_playerTextureHelper.spriteTimer = 0;
+			}
+			spriteCMP->getSprite().setTextureRect(*_playerTextureHelper.spriteRectangle.get());
+		}
+		spriteCMP->getSprite().setPosition(player->getPosition());
+
+		if (hpCMP->getHP() <= 0) {
+			setPlayerAlive(false);
+			if (_playerSettings.lifes <= 0) { _gracePeriod = false; }
+		}
+	}
 }
 
+void PlayerComponent::setPlayerAlive(bool b) {
+
+	if (!b) {
+		hpCMP->setHP(0);
+		_playerSettings.lifes--;
+		_gracePeriod = true;
+		physicsCMP->impulse(Vector2f(0.f, 0.f));
+		physicsCMP->setVelocity(Vector2f(0.f, 0.f));
+		_gracePeriodTimer = 0;
+		_visibilityTimer = 0;
+	}
+
+	player->setVisible(b);
+	player->setAlive(b);
+	physicsCMP->getBody()->SetActive(b);
+
+}
+
+void PlayerComponent::setFlySpeedUpgradeState(int state) {
+	if (state <= _maxUpdate) { _playerSettings.flySpeedUpgradeCount = state; }
+}
+int PlayerComponent::getFlySpeedUpgradeState() { return _playerSettings.flySpeedUpgradeCount; }
+
+int PlayerComponent::getDamageUpgradeState() { return weaponCMP->_bSettings.damageUpgradeCount; }
+void PlayerComponent::setDamageUpgradeState(int state) {
+	if (state <= _maxUpdate) { weaponCMP->_bSettings.damageUpgradeCount = state; }
+}
+
+int PlayerComponent::getFireRateUpgradeState() { return weaponCMP->_wSettings.firerateUpgradeCount; }
+void PlayerComponent::setFireRateUpgradeState(int state) {
+	if (state <= _maxUpdate) { weaponCMP->_wSettings.firerateUpgradeCount = state; }
+}
+
+int PlayerComponent::getBulletNumberUpgradeState() { return weaponCMP->_wSettings.numBulletsUpgradeCount; }
+void PlayerComponent::setBulletNumberUpgradeState(int state) {
+	if (state <= _maxUpdate) { weaponCMP->_wSettings.numBullets = state; weaponCMP->_wSettings.numBulletsUpgradeCount = state; }
+}
+
+int PlayerComponent::getPlayerLifes() { return _playerSettings.lifes; }
+void PlayerComponent::setPlayerLifes(int life) {
+	if (life <= _playerSettings.maxLifes) { _playerSettings.lifes = life; }
+}
+
+void PlayerComponent::setMaxUpdate(int max) { _maxUpdate = max; }
+int PlayerComponent::getMaxUpdate() { return _maxUpdate; }
+
+void PlayerComponent::setMaxLifes(int max) { _playerSettings.maxLifes = max; }
+int PlayerComponent::getMaxLifes() { return _playerSettings.maxLifes; }
+
 PlayerComponent::PlayerComponent(Entity* p, textureSettings playerTextureHelper, textureSettings bulletTextureHelper, playerSettings playerSettings, weaponSettings weaponSettings, bulletSettings bulletSettings)
-	: Component(p), _playerTextureHelper(playerTextureHelper), _bulletTextureHelper(bulletTextureHelper), _playerSettings(playerSettings), _weaponSettings(weaponSettings), _bulletSettings(bulletSettings) {
+	: Component(p), _playerTextureHelper(playerTextureHelper), _bulletTextureHelper(bulletTextureHelper), _playerSettings(playerSettings), _weaponSettings(weaponSettings), _bulletSettings(bulletSettings), _gracePeriod(false), _gracePeriodTimer(0), _visibilityTimer(0), _maxUpdate(5) {
+	Load();
+	colHelp.damageCMP = damageCMP.get();
+	colHelp.hpCMP = hpCMP.get();
+	colHelp.isMissile = false;
+	colHelp.missileCMP = nullptr;
+
+	physicsCMP->getBody()->SetUserData(&colHelp);
 }

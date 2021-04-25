@@ -2,9 +2,10 @@
 #include <iostream>
 #include <thread>
 #include <LevelSystem.h>
-#include "../enemies/create_enemies.h"
-#include "../player/create_player.h"
-#include "../panels/create_panels.h"
+#include "../enemies/creates_enemies.h"
+#include "../player/creates_player.h"
+#include "../panels/creates_panels.h"
+#include "../powerups/creates_powerups.h"
 #include "../background/create_background.h"
 #include "../game.h"
 
@@ -15,6 +16,7 @@ using namespace sf;
 sf::View leftView;
 sf::View rightView;
 sf::View mainView;
+
 
 void Level3Scene::Load() {
 	cout << " Scene 3 Load" << endl;
@@ -30,7 +32,7 @@ void Level3Scene::Load() {
 	rightView.setViewport(sf::FloatRect(0.8f, 0, 0.2f, 1.f));
 	//views.push_back(rightView);
 	//Create main view
-	sf::View tempMain(sf::FloatRect(0, 0, (floor)(Engine::getWindowSize().x / 1.66666), Engine::getWindowSize().y));
+	sf::View tempMain(sf::FloatRect(0, 0, (round)(Engine::getWindowSize().x / 1.66666), Engine::getWindowSize().y));
 	mainView = tempMain;
 
 	mainView.setViewport(sf::FloatRect(0.2f, 0, 0.6f, 1.f));
@@ -40,7 +42,7 @@ void Level3Scene::Load() {
 
 	//Create background	
 	{
-		Background::createBackground(dynamic_cast<Scene*>(&level3));	
+		Background::createBackground(dynamic_cast<Scene*>(&level3));
 	}
 
 	//Create player
@@ -56,6 +58,11 @@ void Level3Scene::Load() {
 	//Create text for left and right boxes
 	{
 		Panels::createPanels(dynamic_cast<Scene*>(&level3));
+	}
+
+	//Create powerups
+	{
+		Powerups::createPowerups(dynamic_cast<Scene*>(&level3));
 	}
 
 	//std::this_thread::sleep_for(std::chrono::milliseconds(1000));

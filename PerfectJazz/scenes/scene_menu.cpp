@@ -3,6 +3,7 @@
 #include "../components/cmp_text.h"
 #include <SFML/Window/Keyboard.hpp>
 #include <iostream>
+
 using namespace std;
 using namespace sf;
 
@@ -14,6 +15,8 @@ void MenuScene::Load() {
     auto txt = makeEntity();
     txt->setView(mainView);
     auto t = txt->addComponent<TextComponent>("Perfect Jazz v0.003\nPress 1 for Level 1\nPress 2 for Level 2\nPress 3 for Level 3");
+    t->setFontSize(80u);
+    t->setPosition(Vector2f((round)(Engine::getWindowSize().x / 2 - t->getLocalBounds().width / 2), (round)(Engine::getWindowSize().y / 2 - t->getLocalBounds().height)));
     setLoaded(true);
 }
 

@@ -1,4 +1,5 @@
 #pragma once
+#include "scenes/scene_title.h"
 #include "scenes/scene_level1.h"
 #include "scenes/scene_level2.h"
 #include "scenes/scene_level3.h"
@@ -9,6 +10,7 @@
 using namespace std;
 
 extern MenuScene menu;
+extern TitleScene title;
 extern Level1Scene level1;
 extern Level2Scene level2;
 extern Level3Scene level3;
@@ -38,18 +40,23 @@ extern myContactListener mContLis;
 * player_body.filter.categorybits = ENEMY | ENEMY_MISSiLE | ENEMY_BULLET
 * 
 * This works because it essentially performs a bitwise AND to check the collision 
-* At least that's my understanding of it. Hopefully it works. There's a switch case of doom in the physics component
+* At least that's my understanding of it. Hopefully it works. There's a switch case of doom further down
 * that sets all of these values by switching on a category.
 */
 enum _entityCategory {
-    BOUNDARY = 0x0001,
-    PLAYER_BODY = 0x0002,
-    FRIENDLY_BULLET = 0x0004,
-    ENEMY_BULLET = 0x0008,
-    ENEMY_BODY = 0x0010,
-    FRIENDLY_MISSILE = 0x0020,
-    ENEMY_MISSILE = 0x0040,
-    NO_COLLIDE = 0x0080,    
+    BOUNDARY = 0x0001, //1
+    PLAYER_BODY = 0x0002, //2
+    FRIENDLY_BULLET = 0x0004, //4
+    ENEMY_BULLET = 0x0008, //8
+    ENEMY_BODY = 0x0010, //16
+    FRIENDLY_MISSILE = 0x0020, //32
+    ENEMY_MISSILE = 0x0040, //64
+    NO_COLLIDE = 0x0080, //128
+    ENEMY_MISSILE_RADAR = 0x0100, //256
+    FRIENDLY_MISSILE_RADAR = 0x0200, //512
+    ENEMY_BODY_RADAR = 0x0400, //1024
+    PLAYER_BODY_RADAR = 0x0800, //2048
+    POWERUP = 0x1000, // 4096
 };
 
 enum _enemyType {
@@ -82,9 +89,25 @@ enum _backgroundType {
     FOREST,
     FOREST_OVER,
 };
+
+enum _miscType {
+    PLAYER_LIFE,
+    PLAYER_UPDATE_COUNTER,
+};
+
 enum _settingType {
     PLAYER,
     ENEMY,
     WEAPON,
     BULLET,
+};
+
+enum _powerUpsType {
+    HP_PWU,
+    DAMAGE_PWU,
+    FIRERATE_PWU,
+    PLAYER_MOVEMENT_PWU,
+    BULLET_NUM_PWU,
+    COIN_PWU,
+    ALL_POWERUPS,
 };

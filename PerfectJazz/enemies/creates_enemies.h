@@ -1,8 +1,7 @@
 #pragma once
 #include "engine.h"
-#include "cmp_enemy.h"
-#include "../components/cmp_sprite.h"
 #include "../game.h"
+
 
 class Enemies {
 public:

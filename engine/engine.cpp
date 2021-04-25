@@ -4,23 +4,30 @@
 #include "system_renderer.h"
 #include "system_resources.h"
 #include <SFML/Graphics.hpp>
-#include "../lib_tile_level_loader/LevelSystem.h"
-#include "../PerfectJazz/components/cmp_sprite.h"
-#include "../PerfectJazz/components/cmp_enemy_physics.h"
 #include <future>
 #include <iostream>
 #include <stdexcept>
-#include "../PerfectJazz/panels/create_panels.h"
+#include "../lib_tile_level_loader/LevelSystem.h"
+#include "../PerfectJazz/components/cmp_text.h"
+#include "../PerfectJazz/components/cmp_enemy_physics.h"
+#include "../PerfectJazz/panels/creates_panels.h"
+#include "../PerfectJazz/player/cmp_player.h"
+#include "../PerfectJazz/powerups/creates_powerups.h"
+
 
 using namespace sf;
 using namespace std;
 Scene* Engine::_activeScene = nullptr;
 std::string Engine::_gameName;
 
+float deathTimer;
+bool isDead;
+
 static bool loading = false;
 static float loadingspinner = 0.f;
 static float loadingTime;
 static RenderWindow* _window;
+static Panels panels;
 
 void Loading_update(float dt, const Scene* const scn) {
 	//  cout << "Eng: Loading Screen\n";
@@ -89,6 +96,8 @@ void Engine::Render(RenderWindow& window) {
 void Engine::Start(unsigned int width, unsigned int height,
 	const std::string& gameName, Scene* scn) {
 	RenderWindow window(VideoMode(width, height), gameName);
+	//Limits the framerate
+	window.setFramerateLimit(60);
 	_gameName = gameName;
 	_window = &window;
 	Renderer::initialise(window);
@@ -139,14 +148,50 @@ void Engine::ChangeScene(Scene* s) {
 
 	if (!s->isLoaded()) {
 		cout << "Eng: Entering Loading Screen\n";
-		loadingTime = 0;
+		loadingTime = 0.f;
 		_activeScene->LoadAsync();
 		loading = true;
+		deathTimer = 0;
+		isDead = false;
 	}
 }
 
+void Scene::Update(const double& dt) {
+	auto playerCMP = player->GetCompatibleComponent<PlayerComponent>()[0];
 
-void Scene::Update(const double& dt) { ents.update(dt); Panels::update(dt); }
+	if (!player->isAlive() && playerCMP->_playerSettings.lifes > 0) {
+		deathTimer += dt;
+		if (deathTimer > 2) {
+			playerCMP.get()->revive();
+			deathTimer = 0;
+		}
+	}
+
+	//Here only load GameOver once, then keep updating the scene as normal
+	if (!isDead && playerCMP->_playerSettings.lifes <= 0) {
+		GameOver();
+		isDead = true;
+	}
+	Panels::update(dt);
+	Powerups::update(dt);
+	ents.update(dt);
+}
+
+void Scene::GameOver() {
+	//CARLOS - Text will draw over the sprites, then, because it wont be updated again, it will be drawn under the sprites
+	if (!isDead) {
+		auto ent = player->scene->makeEntity();
+		ent->setView(mainView);
+		auto t = ent->addComponent<TextComponent>("GAME OVER");
+		t->setFontSize(220u);
+		t->_text.setColor(Color::White);
+		t->_text.setOutlineColor(Color::White);
+		t->_text.setOutlineThickness(2);
+		sf::FloatRect textRect = t->getLocalBounds();
+		t->setOrigin(Vector2f((round)(textRect.left + textRect.width / 2.f), (round)(textRect.top + textRect.height / 2.f)));
+		t->setPosition(Vector2f((round)(mainView.getSize().x / 2), (round)(mainView.getSize().y / 2)));
+	}
+}
 
 void Scene::Render() { ents.render(); }
 
@@ -173,6 +218,7 @@ void Scene::setLoaded(bool b) {
 }
 
 void Scene::UnLoad() {
+	panels.~Panels();
 	ents.list.clear();
 	setLoaded(false);
 }
