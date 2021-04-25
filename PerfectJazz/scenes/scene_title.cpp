@@ -33,13 +33,14 @@ void TitleScene::Load() {
 }
 
 void TitleScene::Update(const double& dt) {
-	// cout << "Menu Update "<<dt<<"\n";
-	if (sf::Keyboard::isKeyPressed(Keyboard::Enter)) { Engine::ChangeScene(&menu); }
+	timer += dt;
+	if (timer <= 0.5f) { txtCMP->setVisible(true); }
+	if (timer > 0.5f && timer <= 1.f) { txtCMP->setVisible(false); }
+	if (timer > 1.f){ timer = 0; }
 
-	timer = +dt;
-	//if (timer <= 0.5f) { textCMP->setVisible(true); }
-	//if (timer > 0.5f && timer <= 1.f) { textCMP->setVisible(false); }
-	//if (timer > 1.f){ timer = 0; }
+	if (sf::Keyboard::isKeyPressed(Keyboard::Enter)) {
+		Engine::ChangeScene(&menu);
+	}
 }
 
 void TitleScene::UnLoad() {

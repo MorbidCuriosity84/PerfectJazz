@@ -189,7 +189,7 @@ void Scene::GameOver() {
 		t->_text.setOutlineThickness(2);
 		sf::FloatRect textRect = t->getLocalBounds();
 		t->setOrigin(Vector2f((round)(textRect.left + textRect.width / 2.f), (round)(textRect.top + textRect.height / 2.f)));
-		t->setPosition(Vector2f((round)(mainView.getSize().x / 2), (round)(mainView.getSize().y / 2)));		
+		t->setPosition(Vector2f((round)(mainView.getSize().x / 2), (round)(mainView.getSize().y / 2)));
 	}
 }
 
