@@ -9,6 +9,7 @@
 #include "../background/create_background.h"
 #include "../game.h"
 #include "../entityPool.h"
+#include <system_physics.h>
 
 
 using namespace std;
@@ -38,15 +39,13 @@ void Level3Scene::Load() {
 
 	mainView.setViewport(sf::FloatRect(0.2f, 0, 0.6f, 1.f));
 
-	//views.push_back(mainView);	
-
-	EntityPool::init(&level3);
+	//views.push_back(mainView);		
 
 	//Create background	
 	{
 		Background::createBackground(dynamic_cast<Scene*>(&level3));
 	}
-
+	EntityPool::init(&level3);
 	//Create player
 	{
 		Player::createPlayer(dynamic_cast<Scene*>(&level3));
@@ -84,11 +83,12 @@ void Level3Scene::UnLoad() {
 	}
 	enemyBullets.clear();
 	player.reset();
-	for (auto en : EntityPool::pool) {
-		en->~Entity();
-		//en.reset();
-	}
-	EntityPool::pool->reset();	
+	if (!Physics::GetWorld()->IsLocked()) {
+		for (auto en : EntityPool::pool) {
+			en->~Entity();
+			//en.reset();
+		}
+	}	
 	
 	Scene::UnLoad();
 }

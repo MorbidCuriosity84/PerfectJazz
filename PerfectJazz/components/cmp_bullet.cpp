@@ -8,9 +8,9 @@ using namespace sf;
 
 
 void BulletComponent::createBullet() {
-	_bulletTextHelper.spriteTexture.get()->loadFromFile(_bulletTextHelper.spriteFilename);
+	_bulletTextHelper.spriteTexture->loadFromFile(_bulletTextHelper.spriteFilename);
 	spriteCMP = _parent->addComponent<SpriteComponent>();
-	spriteCMP->loadTexture(_bulletTextHelper, _settings.spriteScale, _settings.angle);	
+	spriteCMP.get()->loadTexture(_bulletTextHelper, _settings.spriteScale, _settings.angle);	
 	spriteCMP.get()->getSprite().setRotation(_settings.angle);
 	damageCMP = _parent->addComponent<DamageComponent>(_settings.damage + (_settings.damage * 0.2 * _settings.damageUpgradeCount));
 	physicsCMP = _parent->addComponent<PhysicsComponent>(true, spriteCMP.get()->getSprite().getLocalBounds().getSize());
@@ -55,14 +55,16 @@ void BulletComponent::update(double dt) {
 	}
 	
 	if (hpCMP->getHP() <= 0) {
-		_parent->setForDelete();
+		_parent->setAlive(false);
+		_parent->setVisible(false);
 	}
 
 	if (_parent->getPosition().y > _parent->getView().getSize().y ||
 		_parent->getPosition().y < 0 ||
 		_parent->getPosition().x > _parent->getView().getSize().x ||
 		_parent->getPosition().x < 0) {
-		_parent->setForDelete();
+		_parent->setAlive(false);
+		_parent->setVisible(false);
 	}
 }
 
