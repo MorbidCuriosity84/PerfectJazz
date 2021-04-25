@@ -14,13 +14,6 @@ void myContactListener::BeginContact(b2Contact* contact) {
 	cout << contact->GetFixtureA()->GetFilterData().categoryBits << endl;
 	cout << contact->GetFixtureB()->GetFilterData().categoryBits << endl;
 
-	if (helper1->isPowerup) {
-		cout << "powerup collision" << endl;
-	}
-	if (helper2->isPowerup) {
-		cout << "powerup collision" << endl;
-	}
-
 	if (helper2->isMissile) {
 		cout << "Radar contact" << endl;
 		helper2->missileCMP->setSeeking(true);

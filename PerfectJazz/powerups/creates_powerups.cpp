@@ -15,12 +15,12 @@ void Powerups::deployPowerups() {
 	std::string type;
 	//probabilities for the powerups. Each power up has a chance to be randomly picked
 	std::discrete_distribution<> powerupsWeights({
-		0,    // Damage % chance
-		0,  // Bullet Num % chance
-		0,  // Firerate % chance
-		0,    // Player Mov % chance
-		0,	  // Coin % chance
-		100 });// Extra % chance
+		20,    // Damage % chance       1,  
+		20,    // Bullet Num % chance   0.3,
+		20,    // Firerate % chance	   0.7,
+		20,    // Player Mov % chance 0.7,
+		20,    // Coin % chance		   97,	
+		0.2 });// Extra % chance	   0.2 
 	int choosenPowerup = RandomNumber::generateRandomNumber(powerupsWeights);
 
 	//probabilities for the columns. Each columns has a chance to be randomly picked
@@ -58,6 +58,8 @@ void Powerups::deployPowerups() {
 	//if Extra
 	if (choosenPowerup == 5) { _powerupTextureHelper = TextureHelpingSettings::LoadSettings(COIN_PWU, _scene);  type = "coin_pwu"; }
 
+	_powerupSettings = PowerupSettings::LoadSettings(ALL_POWERUPS, _scene);
+
 	if (choosenPowerup == 5) {
 		for (int i = 0; i < 5; i++) {
 			if (i == 0) {
@@ -80,10 +82,8 @@ void Powerups::deployPowerups() {
 					if (j == 12) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 25) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
 					if (j == 13) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 26) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
 
-					_powerupSettings = PowerupSettings::LoadSettings(ALL_POWERUPS, _scene);
 					en->addComponent<PowerupComponent>(_powerupTextureHelper, _powerupSettings);
 					en->addTag(type);
-
 				}
 			}
 			if (i == 1) {
@@ -101,7 +101,6 @@ void Powerups::deployPowerups() {
 					if (j == 7) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 22) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
 					if (j == 8) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 27) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
 
-					_powerupSettings = PowerupSettings::LoadSettings(ALL_POWERUPS, _scene);
 					en->addComponent<PowerupComponent>(_powerupTextureHelper, _powerupSettings);
 					en->addTag(type);
 				}
@@ -143,7 +142,7 @@ void Powerups::deployPowerups() {
 					if (j == 7) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 19) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
 					if (j == 8) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 22) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
 					if (j == 9) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 24) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-
+					
 					en->addComponent<PowerupComponent>(_powerupTextureHelper, _powerupSettings);
 					en->addTag(type);
 				}
@@ -177,11 +176,10 @@ void Powerups::deployPowerups() {
 	else {
 		auto en = _scene->makeEntity();
 		en->setView(mainView);
-		en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * choosenColumn) + ((mainView.getSize().x / 32) / 2), mainView.getSize().x / 32));
+		en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * choosenColumn) + ((mainView.getSize().x / 32) / 2), 0 - mainView.getSize().x / 32));
 
 		en->addComponent<PowerupComponent>(_powerupTextureHelper, _powerupSettings);
 		en->addTag(type);
-		//Set the powerup ent in the right column, cencetered withing the tile
 	}
 }
 
@@ -193,7 +191,7 @@ void Powerups::createPowerups(Scene* scene) {
 void Powerups::update(double dt) {
 	_timer += dt;
 
-	if (_timer > 2) {
+	if (_timer > 0.5) {
 		deployPowerups();
 		_timer = 0.f;
 	}
