@@ -6,6 +6,7 @@
 #include "scenes/scene_menu.h"
 #include "ecm.h"
 #include "myContactListener.h"
+#include "pools/entityPool.h"
 
 using namespace std;
 

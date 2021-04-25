@@ -136,6 +136,22 @@ void PhysicsComponent::setCategory(_entityCategory cat)
     _fixture->SetFilterData(filter);
 }
 
+void PhysicsComponent::createBodyFixture(const sf::Vector2f size)
+{
+    // Create the fixture shape
+    b2PolygonShape Shape;
+    // SetAsBox box takes HALF-Widths!
+    Shape.SetAsBox(sv2_to_bv2(size).x * 0.5f, sv2_to_bv2(size).y * 0.5f);
+    b2FixtureDef FixtureDef;
+    // Fixture properties
+    // FixtureDef.density = _dynamic ? 10.f : 0.f;
+    FixtureDef.friction = _dynamic ? 0.1f : 0.8f;
+    FixtureDef.restitution = .2;
+    FixtureDef.shape = &Shape;
+    // Add to body
+    _fixture = _body->CreateFixture(&FixtureDef);
+}
+
 const sf::Vector2f PhysicsComponent::getVelocity() const {
     return bv2_to_sv2(_body->GetLinearVelocity(), true);
 }

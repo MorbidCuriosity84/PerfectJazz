@@ -27,5 +27,6 @@ public:
 	void teleport(const sf::Vector2f& v);
 	void setSensor(bool b);
 	void setCategory(_entityCategory cat);
+	void createBodyFixture(const sf::Vector2f size);
 	~PhysicsComponent() override;
 };

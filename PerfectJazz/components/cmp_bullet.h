@@ -8,10 +8,12 @@
 
 class BulletComponent : public Component {
 protected:
+
+	//shared_ptr<SpriteComponent> _bulletSprite;
 	textureSettings _bulletTextHelper;
-	bulletSettings _settings;
-	collisionHelper bul_colHelp;
+	bulletSettings _settings;	
 public:
+	collisionHelper bul_colHelp;
 	void update(double dt) override;
 	void render() override {}
 	void createBullet();
@@ -20,6 +22,11 @@ public:
 	std::shared_ptr<DamageComponent> damageCMP;
 	std::shared_ptr<HPComponent> hpCMP;
 	std::shared_ptr<PhysicsComponent> physicsCMP;	
+
+	void setBulletSprite(shared_ptr<SpriteComponent> sprite);
+	void setTextureSettings(textureSettings textSettings);
+	void setBulletSettings(bulletSettings bulSettings);
+	void setCollisionHelper(collisionHelper helper);
 
 	explicit BulletComponent(Entity* p, bulletSettings settings, textureSettings bulletTexHelper);
 	BulletComponent() = delete;

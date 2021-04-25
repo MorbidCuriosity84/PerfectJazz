@@ -9,5 +9,7 @@ public:
 	static void deployPowerups();
 	static void createPowerups(Scene* _scene);
 	static void update(double dt);
+protected:
+	static collisionHelper _pow_colHelp;
 };
 

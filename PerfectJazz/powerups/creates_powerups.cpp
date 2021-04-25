@@ -178,10 +178,11 @@ void Powerups::deployPowerups() {
 	else {
 		auto en = _scene->makeEntity();
 		en->setView(mainView);
-		en->setPosition(Vector2f((round)(mainView.getSize().x / 16 * choosenColumn) + (round)((mainView.getSize().x / 16) / 2), 0 - mainView.getSize().x / 32));
 
+		en->setPosition(Vector2f((round)(mainView.getSize().x / 16 * choosenColumn) + (round)((mainView.getSize().x / 16) / 2), 0 - mainView.getSize().x / 32));
 		en->addComponent<PowerupComponent>(_powerupTextureHelper, _powerupSettings);
 		en->addTag(type);
+		//Set the powerup ent in the right column, cencetered withing the tile
 	}
 }
 
@@ -194,6 +195,7 @@ void Powerups::update(double dt) {
 	_timer += dt;
 
 	if (_timer > 0.5) {
+
 		deployPowerups();
 		_timer = 0.f;
 	}

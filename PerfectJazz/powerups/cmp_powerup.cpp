@@ -4,6 +4,7 @@
 #include "../game.h"
 #include "../player/cmp_player.h"
 
+
 using namespace std;
 using namespace sf;
 
@@ -12,6 +13,7 @@ void PowerupComponent::deployPowerup() {
 	_powerupTextureHelper.spriteTexture.get()->loadFromFile(_powerupTextureHelper.spriteFilename);
 	powerupSpriteCMP = _parent->addComponent<SpriteComponent>();
 	powerupSpriteCMP.get()->loadTexture(_powerupTextureHelper, { 1.f, 1.f }, 0);
+
 	damageCMP = _parent->addComponent<DamageComponent>(_powerupSettings.damage);
 	physicsCMP = _parent->addComponent<PhysicsComponent>(true, powerupSpriteCMP->getSprite().getLocalBounds().getSize());
 	
@@ -49,6 +51,10 @@ void PowerupComponent::update(double dt) {
 		}
 
 		powerupSpriteCMP->getSprite().setTextureRect(*_powerupTextureHelper.spriteRectangle.get());
+
+		if (hpCMP->getHP() <= 0) {
+			physicsCMP->teleport(Vector2f(-500.f, -500.f));
+		}
 	}
 
 	if (hpCMP->getHP() <= 0) {

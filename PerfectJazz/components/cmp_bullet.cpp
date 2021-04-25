@@ -14,8 +14,8 @@ void BulletComponent::createBullet() {
 	spriteCMP.get()->getSprite().setRotation(_settings.angle);
 	damageCMP = _parent->addComponent<DamageComponent>(_settings.damage + (_settings.damage * 0.2 * _settings.damageUpgradeCount));
 	physicsCMP = _parent->addComponent<PhysicsComponent>(true, spriteCMP.get()->getSprite().getLocalBounds().getSize());
-	
 	hpCMP = _parent->addComponent<HPComponent>(_settings.scene, 100, 100);
+
 	hpCMP.get()->loadHP();
 	hpCMP.get()->setVisible(false);
 
@@ -45,15 +45,14 @@ void BulletComponent::update(double dt) {
 	if (_bulletTextHelper.spriteTimer >= 0.6) {
 		_bulletTextHelper.spriteTimer = 0.0;
 	}
-
 	spriteCMP->getSprite().setTextureRect(*_bulletTextHelper.spriteRectangle.get());
 	spriteCMP->getSprite().setPosition(_parent->getPosition());
-	
+
 	if (_parent->getTags().size() > 1) {
 		Vector2f bul_pl_dif = _parent->getPosition() - player->getPosition();
 		spriteCMP->getSprite().setRotation(spriteCMP->getSprite().getRotation() - atan(bul_pl_dif.x / bul_pl_dif.y));
 	}
-	
+
 	if (hpCMP->getHP() <= 0) {
 		_parent->setForDelete();
 	}
@@ -73,9 +72,9 @@ BulletComponent::BulletComponent(Entity* p, bulletSettings settings, textureSett
 	bul_colHelp.hpCMP = hpCMP.get();
 	bul_colHelp.isMissile = false;
 	bul_colHelp.missileCMP = nullptr;
-	if (_settings.category == ENEMY_MISSILE || _settings.category == FRIENDLY_MISSILE) 	{
+	if (_settings.category == ENEMY_MISSILE || _settings.category == FRIENDLY_MISSILE) {
 		bul_colHelp.isMissile = true;
-		bul_colHelp.missileCMP = _parent->addComponent<MissileMovementComponent>(Vector2f(0.f, -150.f), false, _settings.category).get();		
+		bul_colHelp.missileCMP = _parent->addComponent<MissileMovementComponent>(Vector2f(0.f, -150.f), false, _settings.category).get();
 		_parent->addTag("missile");
 	}
 	else {

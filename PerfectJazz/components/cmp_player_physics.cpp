@@ -12,6 +12,7 @@ void PlayerPhysicsComponent::update(double dt) {
 
 	const auto pos = _parent->getPosition();
 	auto playerCMP = _parent->GetCompatibleComponent<PlayerComponent>()[0];
+
 	float multiplier = playerCMP->_playerSettings.flySpeed * 0.1f * playerCMP->_playerSettings.flySpeedUpgradeCount;
 	float _flySpeed = playerCMP->_playerSettings.flySpeed + multiplier;
 
