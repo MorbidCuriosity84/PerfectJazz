@@ -12,7 +12,7 @@ void PlayerPhysicsComponent::update(double dt) {
 
 	const auto pos = _parent->getPosition();
 	auto playerCMP = _parent->GetCompatibleComponent<PlayerComponent>()[0];
-	float multiplier = dt * playerCMP->_playerSettings.flySpeed * (0.1f * playerCMP->_playerSettings.flySpeedUpgradeCount);
+	float multiplier = playerCMP->_playerSettings.flySpeed * 0.1f * playerCMP->_playerSettings.flySpeedUpgradeCount;
 	float _flySpeed = playerCMP->_playerSettings.flySpeed + multiplier;
 
 	{
@@ -97,7 +97,7 @@ PlayerPhysicsComponent::PlayerPhysicsComponent(Entity* p,
 	const Vector2f& size)
 	: PhysicsComponent(p, true, size) {
 	_size = sv2_to_bv2(size, true);
-	_maxVelocity = Vector2f(300.f, 300.f);
+	_maxVelocity = Vector2f(500.f, 5300.f);
 	_body->SetSleepingAllowed(false);
 	_body->SetFixedRotation(true);
 	//Bullet items have higher-res collision detection

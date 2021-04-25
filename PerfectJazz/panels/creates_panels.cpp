@@ -35,6 +35,9 @@ int currentBulletSpread;
 int currentBulletDamage;
 int currentFirerate;
 int currentFlySpeed;
+int currentScore;
+int currentCoins;
+int currentHP;
 int row;
 int col;
 
@@ -42,7 +45,16 @@ void Panels::createPanels(Scene* _scene) {
 
 	auto playerCMP = player->GetCompatibleComponent<PlayerComponent>()[0];
 	//Left Panel
-	{
+	{	//Setting up initial values
+		currentScore = -1;
+		currentHP = -1;
+		currentCoins = -1;
+		currentLifes = -1;
+		currentBulletSpread = -1;
+		currentBulletDamage = -1;
+		currentFirerate = -1;
+		currentFlySpeed = -1;
+
 		leftPanel = _scene->makeEntity();
 		leftPanel->setView(leftView);
 
@@ -110,7 +122,7 @@ void Panels::createPanels(Scene* _scene) {
 		hpCMP->textCMP->setText(to_string(playerCMP->_playerSettings.hp) + "/" + to_string(playerCMP->_playerSettings.maxHP));
 		hpCMP->textCMP->setFontSize(34u);
 		hpCMP->textCMP->setPosition(Vector2f((hpCMP->underHPBar->getSprite().getPosition().x + hpCMP->underHPBar->getSprite().getGlobalBounds().width / 2 - hpCMP->textCMP->getGlobalBounds().width / 2), (round)(hpCMP->underHPBar->getSprite().getPosition().y - hpCMP->textCMP->getGlobalBounds().height / 2)));
-	}
+			}
 
 	//Right Panel
 	{
@@ -122,10 +134,10 @@ void Panels::setLifeSprites() {
 	auto playerCMP = player->GetCompatibleComponent<PlayerComponent>()[0];
 	auto lifes = playerCMP->getPlayerLifes();
 
-	if (lifes >= 0) {
-		playerLifeRec.left = (round)(playerLifeTexture.getSize().x / 5);
+	if (lifes > 0) {
+		playerLifeRec.left = (round)(playerLifeTexture.getSize().x * 0);
 		playerLifeRec.top = (round)(playerLifeTexture.getSize().y * 0);
-		playerLifeRec.width = (round)(playerLifeTexture.getSize().x / 5) * (lifes);
+		playerLifeRec.width = (round)(playerLifeTexture.getSize().x / 5 * lifes);
 		playerLifeRec.height = (round)(playerLifeTexture.getSize().y);
 		playerLifeSpriteCMP->getSprite().setTextureRect(playerLifeRec);
 	}
@@ -140,7 +152,7 @@ void Panels::createUpgradeSprites() {
 		upgradeBulletsSpriteCMP->getSprite().setTexture(upgradeCounterTexture);
 		upgradeBulletsSpriteCMP->getSprite().setColor(Color::Red);
 
-		upgradeBulletsSpriteCMP->getSprite().setPosition(Vector2f((round)(col * 5), (round)(row * (10 + i)) - (round)(upgradeBulletsSpriteCMP->getSprite().getTextureRect().height/2)));
+		upgradeBulletsSpriteCMP->getSprite().setPosition(Vector2f((round)(col * 5), (round)(row * (10 + i)) - (round)(upgradeBulletsSpriteCMP->getSprite().getTextureRect().height / 2)));
 		upgradeBulletsSpriteCMP->getSprite().setTextureRect(upgradeCounterRec);
 
 		if (i == 1) { upgradeFlyeSpeedSpriteCMP = upgradeBulletsSpriteCMP; };
@@ -153,9 +165,9 @@ void Panels::setUpgradesSprites(string type, int counter) {
 
 	auto playerCMP = player->GetCompatibleComponent<PlayerComponent>()[0];
 
-	upgradeCounterRec.left = (round)(upgradeCounterTexture.getSize().x / 5);
+	upgradeCounterRec.left = (round)(upgradeCounterTexture.getSize().x * 0);
 	upgradeCounterRec.top = (round)(upgradeCounterTexture.getSize().y * 0);
-	upgradeCounterRec.width = (round)((upgradeCounterTexture.getSize().x / 5) * (counter));
+	upgradeCounterRec.width = (round)((upgradeCounterTexture.getSize().x / 5) * counter);
 	upgradeCounterRec.height = (round)(upgradeCounterTexture.getSize().y);
 
 	if (type == "damage") {
@@ -174,6 +186,19 @@ void Panels::setUpgradesSprites(string type, int counter) {
 		currentBulletSpread = counter;
 		upgradeBulletsSpriteCMP->getSprite().setTextureRect(upgradeCounterRec);
 	};
+	if (type == "score") {
+		currentScore = counter;
+		scoreTxtCMP->setText("Score: " + to_string(playerCMP->_playerSettings.score));
+	};
+	if (type == "coin") {
+		currentCoins = counter;
+		coinsTxtCMP->setText("Coins: " + to_string(playerCMP->_playerSettings.shopPoints));
+	};	
+	if (type == "hp") {
+		hpCMP->setHP(playerCMP->hpCMP->getHP());
+		hpCMP->textCMP->setText(to_string(playerCMP->hpCMP->getHP()) + "/" + to_string(playerCMP->_playerSettings.maxHP));
+		hpCMP->textCMP->setPosition(Vector2f((round)((hpCMP->underHPBar->getSprite().getPosition().x + hpCMP->underHPBar->getSprite().getGlobalBounds().width / 2 - hpCMP->textCMP->getGlobalBounds().width / 2)), (round)(hpCMP->underHPBar->getSprite().getPosition().y - hpCMP->textCMP->getGlobalBounds().height / 2)));
+	};
 }
 
 
@@ -183,13 +208,6 @@ void Panels::update(double dt) {
 	if (timer > 0.1) {
 
 		auto playerCMP = player->GetCompatibleComponent<PlayerComponent>()[0];
-
-		hpCMP->setHP(playerCMP->hpCMP->getHP());
-		hpCMP->textCMP->setText(to_string(playerCMP->hpCMP->getHP()) + "/" + to_string(playerCMP->_playerSettings.maxHP));
-		hpCMP->textCMP->setPosition(Vector2f((round)((hpCMP->underHPBar->getSprite().getPosition().x + hpCMP->underHPBar->getSprite().getGlobalBounds().width / 2 - hpCMP->textCMP->getGlobalBounds().width / 2)), (round)(hpCMP->underHPBar->getSprite().getPosition().y - hpCMP->textCMP->getGlobalBounds().height / 2)));
-
-		scoreTxtCMP->setText("Score: " + to_string(playerCMP->_playerSettings.score));
-		coinsTxtCMP->setText("Coins: " + to_string(playerCMP->_playerSettings.shopPoints));
 
 		if (currentLifes != playerCMP->_playerSettings.lifes) { setLifeSprites(); }
 
@@ -204,6 +222,15 @@ void Panels::update(double dt) {
 		}
 		if (currentBulletSpread != playerCMP->_weaponSettings.numBulletsUpgradeCount) {
 			setUpgradesSprites("bullets", playerCMP->_weaponSettings.numBulletsUpgradeCount);
+		}
+		if (currentScore != playerCMP->_playerSettings.score) {
+			setUpgradesSprites("score", playerCMP->_playerSettings.score);
+		}
+		if (currentCoins != playerCMP->_playerSettings.shopPoints) {
+			setUpgradesSprites("coin", playerCMP->_playerSettings.shopPoints);
+		}
+		if (currentHP != playerCMP->hpCMP->getHP()) {
+			setUpgradesSprites("hp", playerCMP->hpCMP->getHP());
 		}
 		timer = 0;
 	}

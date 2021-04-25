@@ -86,7 +86,12 @@ void HPComponent::setPosition(sf::Vector2f position) {
 }
 
 bool HPComponent::isVisible() const { return _visible; }
-void HPComponent::setHP(int hp_value) { _hp = hp_value; }
+void HPComponent::setHP(int hp_value) { 
+	_hp = hp_value;
+	if (_hp > _maxHp) {
+		_hp = _maxHp;
+	}
+}
 int HPComponent::getHP() { return _hp; }
 
 void HPComponent::setScale(sf::Vector2f scale) {
