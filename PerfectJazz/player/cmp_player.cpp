@@ -16,7 +16,7 @@ void PlayerComponent::Load() {
 	physicsCMP = player->addComponent<PlayerPhysicsComponent>(spriteCMP->getSprite().getGlobalBounds().getSize());
 	physicsCMP.get()->setCategory(_playerSettings.category);
 
-	hpCMP = player->addComponent<HPComponent>(_playerSettings.scene, _playerSettings.hp);
+	hpCMP = player->addComponent<HPComponent>(_playerSettings.scene, _playerSettings.hp, _playerSettings.maxHP);
 	hpCMP->loadHP();
 	hpCMP.get()->setVisible(_playerSettings.hpVisible);
 	hpCMP->setSpriteColour(Color::Red);
@@ -114,21 +114,19 @@ void PlayerComponent::setFlySpeedUpgradeState(int state) {
 }
 int PlayerComponent::getFlySpeedUpgradeState() { return _playerSettings.flySpeedUpgradeCount; }
 
-int PlayerComponent::getDamageUpgradeState() { return _bulletSettings.damageUpgradeCount; }
+int PlayerComponent::getDamageUpgradeState() { return weaponCMP->_bSettings.damageUpgradeCount; }
 void PlayerComponent::setDamageUpgradeState(int state) {
-	if (state <= _maxUpdate) { _bulletSettings.damageUpgradeCount = state; }
+	if (state <= _maxUpdate) { weaponCMP->_bSettings.damageUpgradeCount = state; }
 }
 
-int PlayerComponent::getFireRateUpgradeState() { return _weaponSettings.firerateUpgradeCount; }
+int PlayerComponent::getFireRateUpgradeState() { return weaponCMP->_wSettings.firerateUpgradeCount; }
 void PlayerComponent::setFireRateUpgradeState(int state) {
-	if (state <= _maxUpdate) { _weaponSettings.firerateUpgradeCount = state; }
+	if (state <= _maxUpdate) { weaponCMP->_wSettings.firerateUpgradeCount = state; }
 }
 
-int PlayerComponent::getBulletNumberUpgradeState() { return _weaponSettings.numBulletsUpgradeCount; }
+int PlayerComponent::getBulletNumberUpgradeState() { return weaponCMP->_wSettings.numBulletsUpgradeCount; }
 void PlayerComponent::setBulletNumberUpgradeState(int state) {
-	if (state <= _maxUpdate) {
-		_weaponSettings.numBullets = state; _weaponSettings.numBulletsUpgradeCount = state;
-	}
+	if (state <= _maxUpdate) { weaponCMP->_wSettings.numBullets = state; weaponCMP->_wSettings.numBulletsUpgradeCount = state; }
 }
 
 int PlayerComponent::getPlayerLifes() { return _playerSettings.lifes; }

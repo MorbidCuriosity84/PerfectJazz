@@ -38,8 +38,8 @@ void HPComponent::loadHP() {
 	textCMP->setFontSize(16u);
 }
 
-HPComponent::HPComponent(Entity* const p, Scene* scene, const int& hp)
-	: Component(p), _hp(hp), _scene(scene), _visible(true), _maxHp(hp), _dynamic(true) {
+HPComponent::HPComponent(Entity* const p, Scene* scene, const int hp, const int maxhp)
+	: Component(p), _hp(hp), _scene(scene), _visible(true), _maxHp(maxhp), _dynamic(true) {
 	parentSpriteCMP = _parent->GetCompatibleComponent<SpriteComponent>()[0];	
 }
 

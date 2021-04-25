@@ -15,7 +15,7 @@ void PowerupComponent::deployPowerup() {
 	damageCMP = _parent->addComponent<DamageComponent>(_powerupSettings.damage);
 	physicsCMP = _parent->addComponent<PhysicsComponent>(true, powerupSpriteCMP->getSprite().getLocalBounds().getSize());
 	
-	hpCMP = _parent->addComponent<HPComponent>(_powerupSettings.scene, 1);
+	hpCMP = _parent->addComponent<HPComponent>(_powerupSettings.scene, 1, 1);
 	hpCMP->loadHP();
 	hpCMP.get()->setVisible(false);
 
@@ -70,22 +70,22 @@ void PowerupComponent::powerupAction() {
 		playerCMP->hpCMP->setHP(current + maxHP/8);
 	}
 	if (_parent->getTags().find("damage_pwu") != _parent->getTags().end()) {
-		cout << "before: " << playerCMP->damageCMP->getDamage() << ": damage upgrade" << endl;
+		cout << "before: " << playerCMP->weaponCMP->_bSettings.damageUpgradeCount << ": damage upgrade" << endl;
 		int current = playerCMP->getDamageUpgradeState();
 		playerCMP->setDamageUpgradeState(current + 1);
-		cout << "after: " << playerCMP->_bulletSettings.damageUpgradeCount << ": damage upgrade " << endl;
+		cout << "after: " << playerCMP->weaponCMP->_bSettings.damageUpgradeCount << ": damage upgrade " << endl;
 	}
 	if (_parent->getTags().find("firerate_pwu") != _parent->getTags().end()) {
-		cout << "before: " << playerCMP->_weaponSettings.firerateUpgradeCount << ": firetime upgrade" << endl;
+		cout << "before: " << playerCMP->weaponCMP->_wSettings.firerateUpgradeCount << ": firetime upgrade" << endl;
 		int current = playerCMP->getFireRateUpgradeState();
 		playerCMP->setFireRateUpgradeState(current + 1);
-		cout << "after: " << playerCMP->_weaponSettings.firerateUpgradeCount << ": firetime upgrade" << endl;
+		cout << "after: " << playerCMP->weaponCMP->_wSettings.firerateUpgradeCount << ": firetime upgrade" << endl;
 	}
 	if (_parent->getTags().find("bullet_num_pwu") != _parent->getTags().end()) {
-		cout << "before: " << playerCMP->_weaponSettings.numBulletsUpgradeCount << ": bullet num upgrade" << endl;
+		cout << "before: " << playerCMP->weaponCMP->_wSettings.numBulletsUpgradeCount << ": bullet num upgrade" << endl;
 		int current = playerCMP->getBulletNumberUpgradeState();
 		playerCMP->setBulletNumberUpgradeState(current + 1);
-		cout << "after: " << playerCMP->_weaponSettings.numBulletsUpgradeCount << ": bullet num upgrade" << endl;
+		cout << "after: " << playerCMP->weaponCMP->_wSettings.numBulletsUpgradeCount << ": bullet num upgrade" << endl;
 	}
 	if (_parent->getTags().find("player_movement_pwu") != _parent->getTags().end()) {
 		cout << "before: " << playerCMP->_playerSettings.flySpeed << ": fly speed - ";
