@@ -31,7 +31,7 @@ public:
 	void setVisible(bool b);
 	void setDynamic(bool b);
 	bool isDynamic();
-	explicit HPComponent(Entity* p, Scene* scene, const int hp, const int maxhp);
+	explicit HPComponent(Entity* p, Scene* scene, const int& hp);
 	HPComponent() = delete;
 protected:
 	int _hp;

@@ -11,6 +11,7 @@ public:
 	void render() override;
 	void setFontSize(double size);
 	double getFontSize();
+	~TextComponent() override = default;
 	void setText(const std::string& str);
 	void setPosition(sf::Vector2f position);
 	sf::FloatRect getLocalBounds();
@@ -20,7 +21,6 @@ public:
 	sf::Vector2f getPosition();
 	sf::Text _text;
 	void setFontSize(unsigned int size);
-	~TextComponent() override = default;
 
 protected:
 	std::shared_ptr<sf::Font> _font;

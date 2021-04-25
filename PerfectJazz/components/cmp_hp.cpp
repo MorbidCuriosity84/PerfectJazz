@@ -38,8 +38,8 @@ void HPComponent::loadHP() {
 	textCMP->setFontSize(16u);
 }
 
-HPComponent::HPComponent(Entity* const p, Scene* scene, const int hp, const int maxhp)
-	: Component(p), _hp(hp), _scene(scene), _visible(true), _maxHp(maxhp), _dynamic(true) {
+HPComponent::HPComponent(Entity* const p, Scene* scene, const int& hp)
+	: Component(p), _hp(hp), _scene(scene), _visible(true), _maxHp(hp), _dynamic(true) {
 	parentSpriteCMP = _parent->GetCompatibleComponent<SpriteComponent>()[0];	
 }
 
@@ -86,12 +86,7 @@ void HPComponent::setPosition(sf::Vector2f position) {
 }
 
 bool HPComponent::isVisible() const { return _visible; }
-void HPComponent::setHP(int hp_value) { 
-	_hp = hp_value;
-	if (_hp > _maxHp) {
-		_hp = _maxHp;
-	}
-}
+void HPComponent::setHP(int hp_value) { _hp = hp_value; }
 int HPComponent::getHP() { return _hp; }
 
 void HPComponent::setScale(sf::Vector2f scale) {

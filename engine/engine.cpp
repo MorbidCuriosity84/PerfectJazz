@@ -8,10 +8,11 @@
 #include <iostream>
 #include <stdexcept>
 #include "../lib_tile_level_loader/LevelSystem.h"
+#include "../PerfectJazz/components/cmp_sprite.h"
 #include "../PerfectJazz/components/cmp_text.h"
 #include "../PerfectJazz/components/cmp_enemy_physics.h"
 #include "../PerfectJazz/panels/creates_panels.h"
-#include "../PerfectJazz/player/cmp_player.h"
+#include "../PerfectJazz/player/creates_player.h"
 #include "../PerfectJazz/powerups/creates_powerups.h"
 
 
@@ -27,7 +28,6 @@ static bool loading = false;
 static float loadingspinner = 0.f;
 static float loadingTime;
 static RenderWindow* _window;
-static Panels panels;
 
 void Loading_update(float dt, const Scene* const scn) {
 	//  cout << "Eng: Loading Screen\n";
@@ -157,18 +157,18 @@ void Engine::ChangeScene(Scene* s) {
 }
 
 void Scene::Update(const double& dt) {
-	auto playerCMP = player->GetCompatibleComponent<PlayerComponent>()[0];
+	auto p = player->GetCompatibleComponent<PlayerComponent>()[0];
 
-	if (!player->isAlive() && playerCMP->_playerSettings.lifes > 0) {
+	if (!player->isAlive() && p->_playerSettings.lifes > 0) {
 		deathTimer += dt;
 		if (deathTimer > 2) {
-			playerCMP.get()->revive();
+			p.get()->revive();
 			deathTimer = 0;
 		}
 	}
 
 	//Here only load GameOver once, then keep updating the scene as normal
-	if (!isDead && playerCMP->_playerSettings.lifes <= 0) {
+	if (!isDead && p->_playerSettings.lifes <= 0) {
 		GameOver();
 		isDead = true;
 	}
@@ -189,7 +189,7 @@ void Scene::GameOver() {
 		t->_text.setOutlineThickness(2);
 		sf::FloatRect textRect = t->getLocalBounds();
 		t->setOrigin(Vector2f((round)(textRect.left + textRect.width / 2.f), (round)(textRect.top + textRect.height / 2.f)));
-		t->setPosition(Vector2f((round)(mainView.getSize().x / 2), (round)(mainView.getSize().y / 2)));
+		t->setPosition(Vector2f((round)(mainView.getSize().x / 2), (round)(mainView.getSize().y / 2)));		
 	}
 }
 
@@ -218,7 +218,6 @@ void Scene::setLoaded(bool b) {
 }
 
 void Scene::UnLoad() {
-	panels.~Panels();
 	ents.list.clear();
 	setLoaded(false);
 }

@@ -10,7 +10,7 @@ powerupSettings PowerupSettings::LoadSettings(_powerUpsType type, Scene* scene) 
 		settings.damage = 0;
 		settings.damageUpgradeCount = 0;
 		settings.hp = 1;
-		settings.lifetime = 100.f;
+		settings.lifetime = 10.f;
 		settings.scene = scene;
 		settings.angle = 0.f;
 		settings.category = POWERUP;

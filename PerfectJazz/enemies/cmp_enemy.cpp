@@ -23,7 +23,7 @@ void EnemyComponent::Load(int index) {
 	physicsCMP = _parent->addComponent<EnemyPhysicsComponent>(spriteCMP->getSprite().getGlobalBounds().getSize());
 	physicsCMP.get()->setCategory(_enemySettings.category);
 
-	hpCMP = _parent->addComponent<HPComponent>(_enemySettings.scene, _enemySettings.hp, _enemySettings.hp);	
+	hpCMP = _parent->addComponent<HPComponent>(_enemySettings.scene, _enemySettings.hp);	
 	hpCMP->loadHP();
 	hpCMP.get()->setVisible(_enemySettings.hpVisible);
 	hpCMP->setSpriteColour(Color::Red);

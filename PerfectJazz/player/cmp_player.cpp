@@ -16,7 +16,7 @@ void PlayerComponent::Load() {
 	physicsCMP = player->addComponent<PlayerPhysicsComponent>(spriteCMP->getSprite().getGlobalBounds().getSize());
 	physicsCMP.get()->setCategory(_playerSettings.category);
 
-	hpCMP = player->addComponent<HPComponent>(_playerSettings.scene, _playerSettings.hp, _playerSettings.maxHP);
+	hpCMP = player->addComponent<HPComponent>(_playerSettings.scene, _playerSettings.hp);
 	hpCMP->loadHP();
 	hpCMP.get()->setVisible(_playerSettings.hpVisible);
 	hpCMP->setSpriteColour(Color::Red);
@@ -84,9 +84,12 @@ void PlayerComponent::update(double dt) {
 		}
 		spriteCMP->getSprite().setPosition(player->getPosition());
 
+		_playerSettings.score++;
+		_playerSettings.shopPoints++;
+
 		if (hpCMP->getHP() <= 0) {
 			setPlayerAlive(false);
-			if (_playerSettings.lifes <= 0) { _gracePeriod = false; }
+			if (_playerSettings.lifes <= 0) { _gracePeriod = false;	}
 		}
 	}
 }
@@ -110,28 +113,59 @@ void PlayerComponent::setPlayerAlive(bool b) {
 }
 
 void PlayerComponent::setFlySpeedUpgradeState(int state) {
-	if (state <= _maxUpdate) { _playerSettings.flySpeedUpgradeCount = state; }
+	if (state <= _maxUpdate) {
+		_playerSettings.flySpeedUpgradeCount = state;
+	}
 }
 int PlayerComponent::getFlySpeedUpgradeState() { return _playerSettings.flySpeedUpgradeCount; }
 
 int PlayerComponent::getDamageUpgradeState() { return weaponCMP->_bSettings.damageUpgradeCount; }
 void PlayerComponent::setDamageUpgradeState(int state) {
-	if (state <= _maxUpdate) { weaponCMP->_bSettings.damageUpgradeCount = state; }
+	if (state <= _maxUpdate) {
+		if (state > weaponCMP->_bSettings.damageUpgradeCount) {
+			weaponCMP.get()->_bSettings.damage = weaponCMP->_bSettings.damage * (state * 0.2f);
+		}
+		if (state < weaponCMP->_bSettings.damageUpgradeCount) {
+			weaponCMP.get()->_bSettings.damage = weaponCMP->_bSettings.damage / (state * 0.2f);
+		}
+		weaponCMP->_bSettings.damageUpgradeCount = state;
+	}
 }
 
-int PlayerComponent::getFireRateUpgradeState() { return weaponCMP->_wSettings.firerateUpgradeCount; }
+int PlayerComponent::getFireRateUpgradeState() { return weaponCMP.get()->_wSettings.firerateUpgradeCount; }
 void PlayerComponent::setFireRateUpgradeState(int state) {
-	if (state <= _maxUpdate) { weaponCMP->_wSettings.firerateUpgradeCount = state; }
+	if (state <= _maxUpdate) {
+		if (state > weaponCMP->_wSettings.firerateUpgradeCount) {
+			weaponCMP.get()->_wSettings.fireTime = weaponCMP->_wSettings.fireTime * (state * 0.2f);
+			weaponCMP.get()->_wSettings.firerateUpgradeCount = state;
+		}
+		if (state < weaponCMP->_wSettings.firerateUpgradeCount) {
+			weaponCMP.get()->_wSettings.fireTime = weaponCMP->_wSettings.fireTime / (state * 0.2f);
+			weaponCMP.get()->_wSettings.firerateUpgradeCount = state;
+		}
+	}
 }
 
-int PlayerComponent::getBulletNumberUpgradeState() { return weaponCMP->_wSettings.numBulletsUpgradeCount; }
+int PlayerComponent::getBulletNumberUpgradeState() { return weaponCMP.get()->_wSettings.numBulletsUpgradeCount; }
 void PlayerComponent::setBulletNumberUpgradeState(int state) {
-	if (state <= _maxUpdate) { weaponCMP->_wSettings.numBullets = state; weaponCMP->_wSettings.numBulletsUpgradeCount = state; }
+	if (state <= _maxUpdate) {
+		if (state > weaponCMP->_wSettings.numBulletsUpgradeCount) {
+			weaponCMP.get()->_wSettings.numBullets = state;
+			weaponCMP.get()->_wSettings.numBulletsUpgradeCount = state;
+		}
+		if (state < weaponCMP->_wSettings.numBulletsUpgradeCount) {
+			weaponCMP.get()->_wSettings.numBullets = state;
+			weaponCMP.get()->_wSettings.numBulletsUpgradeCount = state;
+		}
+		weaponCMP.get()->_wSettings.numBulletsUpgradeCount = state;
+	}
 }
 
 int PlayerComponent::getPlayerLifes() { return _playerSettings.lifes; }
 void PlayerComponent::setPlayerLifes(int life) {
-	if (life <= _playerSettings.maxLifes) { _playerSettings.lifes = life; }
+	if (life <= _playerSettings.maxLifes) {
+		_playerSettings.lifes = life;
+	}
 }
 
 void PlayerComponent::setMaxUpdate(int max) { _maxUpdate = max; }
@@ -141,7 +175,8 @@ void PlayerComponent::setMaxLifes(int max) { _playerSettings.maxLifes = max; }
 int PlayerComponent::getMaxLifes() { return _playerSettings.maxLifes; }
 
 PlayerComponent::PlayerComponent(Entity* p, textureSettings playerTextureHelper, textureSettings bulletTextureHelper, playerSettings playerSettings, weaponSettings weaponSettings, bulletSettings bulletSettings)
-	: Component(p), _playerTextureHelper(playerTextureHelper), _bulletTextureHelper(bulletTextureHelper), _playerSettings(playerSettings), _weaponSettings(weaponSettings), _bulletSettings(bulletSettings), _gracePeriod(false), _gracePeriodTimer(0), _visibilityTimer(0), _maxUpdate(5) {
+	: Component(p), _playerTextureHelper(playerTextureHelper), _bulletTextureHelper(bulletTextureHelper), _playerSettings(playerSettings), _weaponSettings(weaponSettings), _bulletSettings(bulletSettings), _gracePeriod(false), _gracePeriodTimer(0), _visibilityTimer(0), _maxUpdate(5)
+{
 	Load();
 	colHelp.damageCMP = damageCMP.get();
 	colHelp.hpCMP = hpCMP.get();
