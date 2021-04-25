@@ -5,6 +5,7 @@
 #include "scenes/scene_menu.h"
 #include "ecm.h"
 #include "myContactListener.h"
+#include "pools/entityPool.h"
 
 using namespace std;
 
@@ -100,70 +101,12 @@ enum _settingType {
     BULLET,
 };
 
-enum _powerUps {
+enum _powerUpsType {
     HP_PWU,
     DAMAGE_PWU,
     FIRERATE_PWU,
     PLAYER_MOVEMENT_PWU,
     BULLET_NUM_PWU,
     COIN_PWU,
-};
-
-struct filterGetter {
-    filterGetter() {}
-
-    b2Filter getFilter(_entityCategory cat) 
-    {
-        b2Filter filter;
-
-        //Switch case of doom. This is where we *should* be able to define what collides with what
-        switch (cat) {
-        case PLAYER_BODY:
-            filter.categoryBits = PLAYER_BODY; //belongs to player group
-            filter.maskBits = ENEMY_BODY | ENEMY_BULLET | ENEMY_MISSILE | ENEMY_MISSILE_RADAR; //only collides with enemy group
-            break;
-        case ENEMY_BODY:
-            filter.categoryBits = ENEMY_BODY;
-            filter.maskBits = PLAYER_BODY | ENEMY_BODY | FRIENDLY_BULLET | FRIENDLY_MISSILE | FRIENDLY_MISSILE_RADAR;
-            break;
-        case ENEMY_BULLET:
-            filter.categoryBits = ENEMY_BULLET;
-            filter.maskBits = PLAYER_BODY | FRIENDLY_MISSILE;
-            break;
-        case ENEMY_MISSILE:
-            filter.categoryBits = ENEMY_MISSILE;
-            filter.maskBits = PLAYER_BODY | FRIENDLY_BULLET | FRIENDLY_MISSILE;
-            break;
-        case FRIENDLY_BULLET:
-            filter.categoryBits = FRIENDLY_BULLET;
-            filter.maskBits = ENEMY_BODY | ENEMY_MISSILE;
-            break;
-        case FRIENDLY_MISSILE:
-            filter.categoryBits = FRIENDLY_MISSILE;
-            filter.maskBits = ENEMY_BODY | ENEMY_BULLET | ENEMY_MISSILE;
-            break;
-        case FRIENDLY_MISSILE_RADAR:
-            filter.categoryBits = FRIENDLY_MISSILE_RADAR;
-            filter.maskBits = ENEMY_BODY;
-            break;
-        case ENEMY_MISSILE_RADAR:
-            filter.categoryBits = ENEMY_MISSILE_RADAR;
-            filter.maskBits = PLAYER_BODY;
-            break;
-        case PLAYER_BODY_RADAR:
-            filter.categoryBits = PLAYER_BODY_RADAR;
-            filter.maskBits = ENEMY_BODY;
-            break;
-        case ENEMY_BODY_RADAR:
-            filter.categoryBits = ENEMY_BODY_RADAR;
-            filter.maskBits = PLAYER_BODY;
-            break;
-        case NO_COLLIDE:
-            filter.groupIndex = -1;
-            break;
-        default:
-            break;
-        }
-        return filter;
-    }
+    ALL_POWERUPS,
 };

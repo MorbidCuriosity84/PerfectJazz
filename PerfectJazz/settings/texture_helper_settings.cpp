@@ -190,7 +190,7 @@ textureSettings TextureHelpingSettings::LoadSettings(_backgroundType type, Scene
 	return settings;
 }
 
-textureSettings TextureHelpingSettings::LoadSettings(_powerUps type, Scene* scene) {
+textureSettings TextureHelpingSettings::LoadSettings(_powerUpsType type, Scene* scene) {
 
 	textureSettings settings;
 	auto powerupSpriteTexture = make_shared<sf::Texture>();

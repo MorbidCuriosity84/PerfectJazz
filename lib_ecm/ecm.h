@@ -66,6 +66,7 @@ public:
   const std::set<std::string>& getTags() const;
   Scene* const scene;    
   Entity(Scene* const s);
+  Entity();
 
   virtual ~Entity();
 

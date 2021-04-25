@@ -2,26 +2,27 @@
 #include <iostream>
 #include <thread>
 #include <LevelSystem.h>
+#include "system_physics.h"
 #include "../enemies/creates_enemies.h"
 #include "../player/creates_player.h"
 #include "../panels/creates_panels.h"
 #include "../powerups/creates_powerups.h"
 #include "../background/create_background.h"
-#include "../components/cmp_player_physics.h"
 #include "../game.h"
 
 
 using namespace std;
 using namespace sf;
+using namespace Physics;
 
 sf::View leftView;
 sf::View rightView;
 sf::View mainView;
 
-
 void Level3Scene::Load() {
 	cout << " Scene 3 Load" << endl;
 
+	EntityPool::init(this);
 	//Create left view
 	sf::View tempLeft(sf::FloatRect(0, 0, Engine::getWindowSize().x / 5, Engine::getWindowSize().y));
 	leftView = tempLeft;
@@ -83,6 +84,15 @@ void Level3Scene::UnLoad() {
 	}
 	enemyBullets.clear();
 	player.reset();
+	cout << Physics::GetWorld().get()->GetBodyCount() << endl;
+	if (!Physics::GetWorld().get()->IsLocked()) {
+		for (auto e : EntityPool::pool) {
+			e.reset();			
+		}
+		EntityPool::pool->reset();
+		EntityPool::poolPointer = NULL;				
+	}
+	cout << Physics::GetWorld().get()->GetBodyCount() << endl;
 	Scene::UnLoad();
 }
 

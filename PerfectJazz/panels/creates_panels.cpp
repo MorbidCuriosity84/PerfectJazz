@@ -123,7 +123,7 @@ void Panels::setLifeSprites() {
 	auto lifes = playerCMP->getPlayerLifes();
 
 	if (lifes >= 0) {
-		playerLifeRec.left = (round)(playerLifeTexture.getSize().x / 5);
+		playerLifeRec.left = (round)(playerLifeTexture.getSize().x * 0);
 		playerLifeRec.top = (round)(playerLifeTexture.getSize().y * 0);
 		playerLifeRec.width = (round)(playerLifeTexture.getSize().x / 5) * (lifes);
 		playerLifeRec.height = (round)(playerLifeTexture.getSize().y);

@@ -16,7 +16,6 @@ public:
 
 	b2Fixture* const getFixture() const;
 	b2Body* getBody();
-	std::vector<const b2Contact*> getTouching() const;
 	const sf::Vector2f getVelocity() const;
 	void setFriction(float r);
 	void setMass(float m);
@@ -28,5 +27,6 @@ public:
 	void teleport(const sf::Vector2f& v);
 	void setSensor(bool b);
 	void setCategory(_entityCategory cat);
+	void createBodyFixture(const sf::Vector2f size);
 	~PhysicsComponent() override;
 };
