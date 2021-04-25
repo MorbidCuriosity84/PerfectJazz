@@ -10,7 +10,7 @@ using namespace sf;
 void BulletComponent::createBullet() {
 	_bulletTextHelper.spriteTexture.get()->loadFromFile(_bulletTextHelper.spriteFilename);
 	spriteCMP = _parent->addComponent<SpriteComponent>();
-	spriteCMP->loadTexture(_bulletTextHelper, _settings.spriteScale, _settings.angle);
+	spriteCMP->loadTexture(_bulletTextHelper, _settings.spriteScale, _settings.angle);	
 	spriteCMP.get()->getSprite().setRotation(_settings.angle);
 	damageCMP = _parent->addComponent<DamageComponent>(_settings.damage + (_settings.damage * 0.2 * _settings.damageUpgradeCount));
 	physicsCMP = _parent->addComponent<PhysicsComponent>(true, spriteCMP.get()->getSprite().getLocalBounds().getSize());

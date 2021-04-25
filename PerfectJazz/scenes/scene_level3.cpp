@@ -8,6 +8,7 @@
 #include "../powerups/creates_powerups.h"
 #include "../background/create_background.h"
 #include "../game.h"
+#include "../entityPool.h"
 
 
 using namespace std;
@@ -39,6 +40,7 @@ void Level3Scene::Load() {
 
 	//views.push_back(mainView);	
 
+	EntityPool::init(&level3);
 
 	//Create background	
 	{
@@ -82,6 +84,12 @@ void Level3Scene::UnLoad() {
 	}
 	enemyBullets.clear();
 	player.reset();
+	for (auto en : EntityPool::pool) {
+		en->~Entity();
+		//en.reset();
+	}
+	EntityPool::pool->reset();	
+	
 	Scene::UnLoad();
 }
 

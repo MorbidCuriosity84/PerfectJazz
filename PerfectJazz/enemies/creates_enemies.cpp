@@ -13,26 +13,26 @@ bulletSettings _bulletSettings;
 
 void Enemies::createEnemies(std::string _waveFile, Scene* _scene) {
 
-	//ls::loadLevelFile("res/levels/" + _waveFile + ".txt", (round)(mainView.getSize().x / 15));
-	//auto ho = Engine::getWindowSize().y - (ls::getHeight() * mainView.getSize().y / 16);
-	//ls::setOffset(Vector2f(mainView.getSize().y / 16 /2, ho));
+	ls::loadLevelFile("res/levels/" + _waveFile + ".txt", (round)(mainView.getSize().x / 15));
+	auto ho = Engine::getWindowSize().y - (ls::getHeight() * mainView.getSize().y / 16);
+	ls::setOffset(Vector2f(mainView.getSize().y / 16 /2, ho));
 
-	//int index = 0, airman_index = 0, sergeant_index = 0, colonel_index = 0;
-	//for (size_t y = 0; y < ls::_height; ++y) {
-	//	for (size_t x = 0; x < ls::_width; ++x) {
-	//		ls::Tile t = ls::getTile({ x, y });
-	//		if (t == ls::EMPTY) {continue;}
+	int index = 0, airman_index = 0, sergeant_index = 0, colonel_index = 0;
+	for (size_t y = 0; y < ls::_height; ++y) {
+		for (size_t x = 0; x < ls::_width; ++x) {
+			ls::Tile t = ls::getTile({ x, y });
+			if (t == ls::EMPTY) {continue;}
 
-	//		auto en = _scene->makeEntity();
-	//		en->setView(mainView);
+			auto en = _scene->makeEntity();
+			en->setView(mainView);
 
-	//		if (t == ls::AIRMAN) { setType(AIRMAN, _scene); index = airman_index++; }
-	//		if (t == ls::SERGEANT) { setType(SERGEANT, _scene); index = sergeant_index++;}
-	//		if (t == ls::COLONEL) {	setType(COLONEL, _scene); index = colonel_index++;}
+			if (t == ls::AIRMAN) { setType(AIRMAN, _scene); index = airman_index++; }
+			if (t == ls::SERGEANT) { setType(SERGEANT, _scene); index = sergeant_index++;}
+			if (t == ls::COLONEL) {	setType(COLONEL, _scene); index = colonel_index++;}
 
-	//		en->addComponent<EnemyComponent>(_enemyTextureHelper, _bulletTextureHelper, _enemySettings, _weaponSettings, _bulletSettings, index);
-	//	}
-	//}
+			en->addComponent<EnemyComponent>(_enemyTextureHelper, _bulletTextureHelper, _enemySettings, _weaponSettings, _bulletSettings, index);
+		}
+	}
 }
 
 void Enemies::setType(_enemyType type, Scene* _scene) {
