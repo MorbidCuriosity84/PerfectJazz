@@ -8,6 +8,8 @@
 #include "../powerups/creates_powerups.h"
 #include "../background/create_background.h"
 #include "../game.h"
+#include "../pools/entityPool.h"
+#include <system_physics.h>
 
 
 using namespace std;
@@ -16,10 +18,17 @@ using namespace sf;
 sf::View leftView;
 sf::View rightView;
 sf::View mainView;
-
+sf::SoundBuffer sBuffs[256];
+sf::Sound sounds[256];
 
 void Level3Scene::Load() {
 	cout << " Scene 3 Load" << endl;
+
+	for (int sndInt = PLAYER_DIE_1; sndInt != PICKUP_4; sndInt++)
+	{		
+		sBuffs[sndInt].loadFromFile(soundFilenames[sndInt]);		
+		sounds[sndInt].setBuffer(sBuffs[sndInt]);
+	}
 
 	//Create left view
 	sf::View tempLeft(sf::FloatRect(0, 0, Engine::getWindowSize().x / 5, Engine::getWindowSize().y));
@@ -37,14 +46,13 @@ void Level3Scene::Load() {
 
 	mainView.setViewport(sf::FloatRect(0.2f, 0, 0.6f, 1.f));
 
-	//views.push_back(mainView);	
-
+	//views.push_back(mainView);		
 
 	//Create background	
 	{
 		Background::createBackground(dynamic_cast<Scene*>(&level3));
 	}
-
+	EntityPool::init(&level3);
 	//Create player
 	{
 		Player::createPlayer(dynamic_cast<Scene*>(&level3));
@@ -80,8 +88,9 @@ void Level3Scene::UnLoad() {
 	for (auto b : enemyBullets) {
 		b.reset();
 	}
-	enemyBullets.clear();
-	player.reset();
+	//enemyBullets.clear();
+	player.reset();	
+		
 	Scene::UnLoad();
 }
 

@@ -17,6 +17,11 @@ struct collisionHelper {
     bool isMissile;
     bool isPowerup;
 
+    void nullify() {
+        isMissile = false;
+        isPowerup = false;
+    }
+
     collisionHelper() : isMissile(false), isPowerup(false), hpCMP(nullptr), damageCMP(nullptr), missileCMP(nullptr)
     {
         

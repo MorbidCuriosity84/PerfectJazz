@@ -23,6 +23,8 @@ void PowerupComponent::deployPowerup() {
 	physicsCMP->setSensor(true);
 	physicsCMP->setVelocity(_powerupSettings.velocity * _powerupSettings.direction);
 	physicsCMP->setCategory(_powerupSettings.category);
+
+	sound = _powerupSettings.sound;
 }
 
 void PowerupComponent::update(double dt) {
@@ -53,6 +55,7 @@ void PowerupComponent::update(double dt) {
 
 	if (hpCMP->getHP() <= 0) {
 		powerupAction();
+		sounds[_powerupSettings.sound].play();
 	}
 
 	// Delete powerup entity if offscreen

@@ -2,15 +2,16 @@
 #include "../movement/cmp_missile_movement.h"
 #include "maths.h"
 #include <iostream>
+#include "cmp_sound.h"
 
 using namespace std;
 using namespace sf;
 
 
 void BulletComponent::createBullet() {
-	_bulletTextHelper.spriteTexture.get()->loadFromFile(_bulletTextHelper.spriteFilename);
+	_bulletTextHelper.spriteTexture->loadFromFile(_bulletTextHelper.spriteFilename);
 	spriteCMP = _parent->addComponent<SpriteComponent>();
-	spriteCMP->loadTexture(_bulletTextHelper, _settings.spriteScale, _settings.angle);
+	spriteCMP.get()->loadTexture(_bulletTextHelper, _settings.spriteScale, _settings.angle);	
 	spriteCMP.get()->getSprite().setRotation(_settings.angle);
 	damageCMP = _parent->addComponent<DamageComponent>(_settings.damage + (_settings.damage * 0.2 * _settings.damageUpgradeCount));
 	physicsCMP = _parent->addComponent<PhysicsComponent>(true, spriteCMP.get()->getSprite().getLocalBounds().getSize());
@@ -24,6 +25,8 @@ void BulletComponent::createBullet() {
 	Vector2f bulletVelocity =_settings.velocity * _settings.direction;
 	physicsCMP->setVelocity(Vector2f(bulletVelocity.x - _parent->getRotation(), bulletVelocity.y));
 	physicsCMP->setCategory(_settings.category);
+	
+	bulletImpactSound = _settings.sound;
 }
 
 
@@ -47,23 +50,24 @@ void BulletComponent::update(double dt) {
 	}
 
 	spriteCMP->getSprite().setTextureRect(*_bulletTextHelper.spriteRectangle.get());
-	spriteCMP->getSprite().setPosition(_parent->getPosition());
-	
-	if (_parent->getTags().size() > 1) {
-		Vector2f bul_pl_dif = _parent->getPosition() - player->getPosition();
-		spriteCMP->getSprite().setRotation(spriteCMP->getSprite().getRotation() - atan(bul_pl_dif.x / bul_pl_dif.y));
-	}
+	spriteCMP->getSprite().setPosition(_parent->getPosition());		
 	
 	if (hpCMP->getHP() <= 0) {
-		_parent->setForDelete();
-	}
-
+		_parent->setAlive(false);
+		_parent->setVisible(false);
+		physicsCMP->getBody()->SetActive(false);	
+		_parent->setPosition(Vector2f(-100.f, -100.f));
+	}	
 	if (_parent->getPosition().y > _parent->getView().getSize().y ||
 		_parent->getPosition().y < 0 ||
 		_parent->getPosition().x > _parent->getView().getSize().x ||
 		_parent->getPosition().x < 0) {
-		_parent->setForDelete();
+		_parent->setAlive(false);
+		_parent->setVisible(false);
+		physicsCMP->getBody()->SetActive(false);
+		_parent->setPosition(Vector2f(-100.f, -100.f));
 	}
+		
 }
 
 BulletComponent::BulletComponent(Entity* p, bulletSettings settings, textureSettings bulletTexHelper)

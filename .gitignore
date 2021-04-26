@@ -42,5 +42,9 @@
 *.out
 *.app
 
+# Sounds
+*.wav
+*.ogg
+
 # End of https://www.toptal.com/developers/gitignore/api/c++
 

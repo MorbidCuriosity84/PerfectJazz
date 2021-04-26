@@ -17,6 +17,7 @@ powerupSettings PowerupSettings::LoadSettings(_powerUpsType type, Scene* scene) 
 		settings.direction = -1.f;
 		settings.velocity = Vector2f(0.f, 100.f);
 		settings.spriteScale = Vector2f(1.f, 1.f);
+		settings.sound = PICKUP_4;
 		break;
 	}	
 	default:
