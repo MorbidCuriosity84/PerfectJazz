@@ -8,7 +8,7 @@
 #include "../powerups/creates_powerups.h"
 #include "../background/create_background.h"
 #include "../game.h"
-#include "../entityPool.h"
+#include "../pools/entityPool.h"
 #include <system_physics.h>
 
 
@@ -18,10 +18,17 @@ using namespace sf;
 sf::View leftView;
 sf::View rightView;
 sf::View mainView;
-
+sf::SoundBuffer sBuffs[256];
+sf::Sound sounds[256];
 
 void Level3Scene::Load() {
 	cout << " Scene 3 Load" << endl;
+
+	for (int sndInt = PLAYER_DIE_1; sndInt != PICKUP_4; sndInt++)
+	{		
+		sBuffs[sndInt].loadFromFile(soundFilenames[sndInt]);		
+		sounds[sndInt].setBuffer(sBuffs[sndInt]);
+	}
 
 	//Create left view
 	sf::View tempLeft(sf::FloatRect(0, 0, Engine::getWindowSize().x / 5, Engine::getWindowSize().y));

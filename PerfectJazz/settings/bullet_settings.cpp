@@ -17,7 +17,7 @@ bulletSettings BulletSettings::LoadSettings(_bulletType type, Scene* scene) {
 		settings.direction = -1.f;
 		settings.velocity = Vector2f(0.f, 100.f);
 		settings.spriteScale = Vector2f(1.f, 1.f);
-		settings.soundFile = "res/sounds/weapons/sfx_wpn_laser7.wav";
+		settings.sound = BULLET_FIRE_1;
 		break;
 	}
 
@@ -33,7 +33,7 @@ bulletSettings BulletSettings::LoadSettings(_bulletType type, Scene* scene) {
 		settings.direction = -1.f;
 		settings.velocity = Vector2f(0.f, 200.f);
 		settings.spriteScale = Vector2f(1.f, 1.f);
-		settings.soundFile = "res/sounds/weapons/sfx_wpn_laser9.wav";
+		settings.sound = BULLET_FIRE_2;
 		break;
 	}
 	case TYPE3:
@@ -48,7 +48,7 @@ bulletSettings BulletSettings::LoadSettings(_bulletType type, Scene* scene) {
 		settings.direction = -1.f;
 		settings.velocity = Vector2f(0.f, 200.f);
 		settings.spriteScale = Vector2f(3.f, 3.f);
-		settings.soundFile = "res/sounds/weapons/sfx_wpn_laser11.wav";
+		settings.sound = BULLET_FIRE_3;
 		break;
 	}
 	default:

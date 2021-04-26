@@ -6,6 +6,7 @@
 #include "scenes/scene_menu.h"
 #include "ecm.h"
 #include "myContactListener.h"
+#include "SFML/Audio.hpp"
 
 using namespace std;
 
@@ -24,7 +25,8 @@ extern unsigned int gameHeight;
 static vector<shared_ptr<Entity>> playerBullets;
 static vector<shared_ptr<Entity>> enemyBullets;
 extern myContactListener mContLis;
-
+extern sf::SoundBuffer sBuffs[256];
+extern sf::Sound sounds[256];
 
 /*
 * //I thought this would be a good way to specify a group that an entity belongs to 
@@ -57,6 +59,92 @@ enum _entityCategory {
     ENEMY_BODY_RADAR = 0x0400, //1024
     PLAYER_BODY_RADAR = 0x0800, //2048
     POWERUP = 0x1000, // 4096
+};
+
+
+//MARK this is to be used with the SOUNDS enum to get the relevant filename for the sound
+//this makes it just a case of looping through the array and loading the sound into a buffer 
+//that can then be accessed with the enum string
+static std::string soundFilenames[32] = {
+    "res/sounds/death/sfx_deathscream_human7.wav", //player die 1
+    "res/sounds/death/sfx_deathscream_human8.wav", //player die 2
+    "res/sounds/death/sfx_deathscream_human12.wav", //player die 3
+    "res/sounds/weapons/sfx_wpn_laser7.wav", //bullet fire 1
+    "res/sounds/weapons/sfx_wpn_laser9.wav", //bullet fire 2
+    "res/sounds/weapons/sfx_wpn_laser11.wav", //bullet fire 3
+    "res/sounds/weapons/sfx_wpn_cannon1.wav", //bullet fire 4
+    "res/sounds/weapons/sfx_wpn_machinegun_loop2.wav", //bullet fire 5
+    "res/sounds/weapons/sfx_wpn_missilelaunch.wav", //missile fire 1
+    "res/sounds/weapons/sfx_wpn_cannon2.wav", //missile fire 2
+    "res/sounds/weapons/sfx_wpn_cannon4.wav", //missile fire 3
+    "res/sounds/weapons/sfx_wpn_cannon6.wav", //missile fire 4
+    "res/sounds/impact/sfx_sounds_impact3.wav", //bullet impact 1
+    "res/sounds/impact/sfx_sounds_impact3.wav", //bullet impact 2
+    "res/sounds/impact/sfx_sounds_impact6.wav", //bullet impact 3
+    "res/sounds/impact/sfx_sounds_impact10.wav", //missile impact 1
+    "res/sounds/impact/sfx_sounds_impact11.wav", //missile impact 2
+    "res/sounds/impact/sfx_sounds_impact14.wav", //missile impact 3
+    "res/sounds/death/sfx_deathscream_alien3.wav", //enemy die 1
+    "res/sounds/death/sfx_deathscream_alien4.wav", //enemy die 2
+    "res/sounds/death/sfx_deathscream_alien5.wav", //enemy die 3
+    "res/sounds/death/sfx_deathscream_alien6.wav", //enemy die 4
+    "res/sounds/explosions/sfx_exp_short_soft11.wav", //explosion 1
+    "res/sounds/explosions/sfx_exp_short_soft12.wav", //explosion 2
+    "res/sounds/explosions/sfx_exp_medium4.wav", //explosion 3
+    "res/sounds/explosions/sfx_exp_medium11.wav", //explosion 4    
+    "res/sounds/explosions/sfx_exp_long4.wav", //explosion 5
+    "res/sounds/powerups/sfx_sounds_fanfare1.wav", //powerup 1
+    "res/sounds/powerups/sfx_sounds_fanfare2.wav", //powerup 2
+    "res/sounds/powerups/sfx_sounds_fanfare3.wav", //powerup 3 
+    "res/sounds/powerups/sfx_coin_double1.wav", //powerup 4 coins
+    "res/sounds/powerups/sfx_coin_double2.wav", //powerup 5 coins
+};
+
+enum SOUNDS {
+    PLAYER_DIE_1,
+    PLAYER_DIE_2,
+    PLAYER_DIE_3,
+    BULLET_FIRE_1,
+    BULLET_FIRE_2,
+    BULLET_FIRE_3,
+    BULLET_FIRE_4,
+    BULLET_FIRE_5,    
+    MISSILE_FIRE_1,
+    MISSILE_FIRE_2,
+    MISSILE_FIRE_3,
+    MISSILE_FIRE_4,    
+    BULLET_IMPACT_1,
+    BULLET_IMPACT_2,
+    BULLET_IMPACT_3,    
+    MISSILE_IMPACT_1,
+    MISSILE_IMPACT_2,
+    MISSILE_IMPACT_3,    
+    ENEMY_DIE_1,
+    ENEMY_DIE_2,
+    ENEMY_DIE_3,
+    ENEMY_DIE_4,
+    ENEMY_DIE_5,
+    EXPLOSION_1,
+    EXPLOSION_2,
+    EXPLOSION_3,
+    EXPLOSION_4,
+    EXPLOSION_5,
+    PICKUP_1,
+    PICKUP_2,
+    PICKUP_3,
+    PICKUP_4, 
+};
+
+enum MUSIC {
+    TITLE_SCREEN,
+    UPGRADE_MENU,
+    LEVEL_1,
+    LEVEL_2,
+    LEVEL_3,
+    LEVEL_4,
+    LEVEL_5,
+    BOSS_SPLASH,
+    BOSS_FIGHT,
 };
 
 enum _enemyType {

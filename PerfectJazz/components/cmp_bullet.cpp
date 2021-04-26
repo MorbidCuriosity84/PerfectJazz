@@ -25,9 +25,8 @@ void BulletComponent::createBullet() {
 	Vector2f bulletVelocity =_settings.velocity * _settings.direction;
 	physicsCMP->setVelocity(Vector2f(bulletVelocity.x - _parent->getRotation(), bulletVelocity.y));
 	physicsCMP->setCategory(_settings.category);
-
-	soundCMP = _parent->addComponent<SoundComponent>();	
-	soundCMP.get()->loadSound(_settings.soundFile);
+	
+	bulletImpactSound = _settings.sound;
 }
 
 
@@ -51,12 +50,7 @@ void BulletComponent::update(double dt) {
 	}
 
 	spriteCMP->getSprite().setTextureRect(*_bulletTextHelper.spriteRectangle.get());
-	spriteCMP->getSprite().setPosition(_parent->getPosition());
-	
-	if (_parent->getTags().size() > 1) {
-		Vector2f bul_pl_dif = _parent->getPosition() - player->getPosition();
-		spriteCMP->getSprite().setRotation(spriteCMP->getSprite().getRotation() - atan(bul_pl_dif.x / bul_pl_dif.y));
-	}
+	spriteCMP->getSprite().setPosition(_parent->getPosition());		
 	
 	if (hpCMP->getHP() <= 0) {
 		_parent->setAlive(false);
