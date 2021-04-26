@@ -57,15 +57,17 @@ void BulletComponent::update(double dt) {
 	if (hpCMP->getHP() <= 0) {
 		_parent->setAlive(false);
 		_parent->setVisible(false);
-	}
-
+		physicsCMP->getBody()->SetActive(false);		
+	}	
 	if (_parent->getPosition().y > _parent->getView().getSize().y ||
 		_parent->getPosition().y < 0 ||
 		_parent->getPosition().x > _parent->getView().getSize().x ||
 		_parent->getPosition().x < 0) {
 		_parent->setAlive(false);
 		_parent->setVisible(false);
+		physicsCMP->getBody()->SetActive(false);
 	}
+		
 }
 
 BulletComponent::BulletComponent(Entity* p, bulletSettings settings, textureSettings bulletTexHelper)

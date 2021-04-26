@@ -13,6 +13,7 @@
 #include "../PerfectJazz/panels/creates_panels.h"
 #include "../PerfectJazz/player/cmp_player.h"
 #include "../PerfectJazz/powerups/creates_powerups.h"
+#include "../PerfectJazz/entityPool.h"
 
 
 using namespace sf;
@@ -125,7 +126,7 @@ void Engine::Start(unsigned int width, unsigned int height,
 		_activeScene = nullptr;
 	}
 	window.close();
-	Physics::shutdown();
+	//Physics::shutdown();
 	Renderer::shutdown();
 }
 
@@ -219,7 +220,8 @@ void Scene::setLoaded(bool b) {
 
 void Scene::UnLoad() {
 	panels.~Panels();
-	ents.list.clear();
+	Physics::GetWorld().reset();
+	ents.list.clear();	
 	setLoaded(false);
 }
 

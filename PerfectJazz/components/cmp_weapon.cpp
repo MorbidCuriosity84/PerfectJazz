@@ -7,6 +7,7 @@ void WeaponComponent::fire() {
 	//auto bullet = _wSettings.scene->makeEntity();
 	auto pS = _parent->GetCompatibleComponent<SpriteComponent>();
 	auto bullet = EntityPool::pool[EntityPool::poolPointer++];
+	bullet->clearComponents();
 	bullet->setView(_parent->getView());
 	bullet->setPosition({ _parent->getPosition().x, _parent->getPosition().y + (pS[0]->getSprite().getTextureRect().height/2 * _wSettings.direction) });
 	bullet->setRotation(_parent->getRotation());
@@ -14,6 +15,7 @@ void WeaponComponent::fire() {
 	bullet->addComponent<BulletComponent>(_bSettings, _bulletTextureHelper);	
 	bullet->setView(_parent->getView());
 	bullet->setAlive(true);
+	bullet->setVisible(true);
 }
 
 void WeaponComponent::update(double dt) {

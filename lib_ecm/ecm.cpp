@@ -67,12 +67,31 @@ bool Entity::isVisible() const { return _visible; }
 
 void Entity::setVisible(bool _visible) { Entity::_visible = _visible; }
 
-Component::Component(Entity* const p) : _parent(p), _fordeletion(false), _isAlive(true), _isVisible(true) {}
-
-Entity::~Entity() {
-  // Components can inter-depend on each other, so deleting them may take
+void Entity::clearComponents()
+{
+    // Components can inter-depend on each other, so deleting them may take
   // multiple passes. We Keep deleting components until we can't delete any
   // more
+    int deli = 0;
+    while (deli != _components.size()) {
+        deli = _components.size();
+        _components.erase(
+            remove_if(_components.begin(), _components.end(),
+                [](auto& sp) { return (sp.use_count() <= 1); }),
+            _components.end());
+    }
+
+    if (_components.size() > 0) {
+        throw std::runtime_error(
+            "Can't delete entity, someone is grabbing a component!");
+    }
+    //_components.clear();
+}
+
+Component::Component(Entity* const p) : _parent(p), _fordeletion(false), _isAlive(true), _isVisible(true) {}
+
+Entity::~Entity() {  
+    
   int deli = 0;
   while (deli != _components.size()) {
     deli = _components.size();

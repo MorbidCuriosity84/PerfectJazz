@@ -81,15 +81,9 @@ void Level3Scene::UnLoad() {
 	for (auto b : enemyBullets) {
 		b.reset();
 	}
-	enemyBullets.clear();
-	player.reset();
-	if (!Physics::GetWorld()->IsLocked()) {
-		for (auto en : EntityPool::pool) {
-			en->~Entity();
-			//en.reset();
-		}
-	}	
-	
+	//enemyBullets.clear();
+	player.reset();	
+		
 	Scene::UnLoad();
 }
 
