@@ -17,5 +17,5 @@ protected:
 	double titleRow;
 	sf::IntRect _titleRect;
 	std::shared_ptr<sf::Texture> _titleText;
-
+	std::shared_ptr<TextComponent> txtCMP;
 };
