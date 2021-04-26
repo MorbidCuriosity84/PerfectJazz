@@ -12,10 +12,11 @@ void WeaponComponent::fire() {
 	bullet->setPosition({ _parent->getPosition().x, _parent->getPosition().y + (pS[0]->getSprite().getTextureRect().height/2 * _wSettings.direction) });
 	bullet->setRotation(_parent->getRotation());
 	bullet->addTag("Bullet");
-	bullet->addComponent<BulletComponent>(_bSettings, _bulletTextureHelper);	
+	auto bul = bullet->addComponent<BulletComponent>(_bSettings, _bulletTextureHelper);	
 	bullet->setView(_parent->getView());
 	bullet->setAlive(true);
 	bullet->setVisible(true);
+	bul->soundCMP->playSound();
 }
 
 void WeaponComponent::update(double dt) {

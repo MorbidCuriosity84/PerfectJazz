@@ -5,6 +5,7 @@
 #include "../game.h"
 #include <ecm.h>
 #include "../settings/collision_helper.h"
+#include "../components/cmp_sound.h"
 
 class BulletComponent : public Component {
 protected:
@@ -16,6 +17,7 @@ public:
 	void render() override {}
 	void createBullet();
 
+	std::shared_ptr<SoundComponent> soundCMP;
 	std::shared_ptr<SpriteComponent> spriteCMP;
 	std::shared_ptr<DamageComponent> damageCMP;
 	std::shared_ptr<HPComponent> hpCMP;

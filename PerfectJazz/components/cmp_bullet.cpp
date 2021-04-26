@@ -2,6 +2,7 @@
 #include "../movement/cmp_missile_movement.h"
 #include "maths.h"
 #include <iostream>
+#include "cmp_sound.h"
 
 using namespace std;
 using namespace sf;
@@ -24,6 +25,9 @@ void BulletComponent::createBullet() {
 	Vector2f bulletVelocity =_settings.velocity * _settings.direction;
 	physicsCMP->setVelocity(Vector2f(bulletVelocity.x - _parent->getRotation(), bulletVelocity.y));
 	physicsCMP->setCategory(_settings.category);
+
+	soundCMP = _parent->addComponent<SoundComponent>();	
+	soundCMP.get()->loadSound(_settings.soundFile);
 }
 
 
@@ -57,7 +61,8 @@ void BulletComponent::update(double dt) {
 	if (hpCMP->getHP() <= 0) {
 		_parent->setAlive(false);
 		_parent->setVisible(false);
-		physicsCMP->getBody()->SetActive(false);		
+		physicsCMP->getBody()->SetActive(false);	
+		_parent->setPosition(Vector2f(-100.f, -100.f));
 	}	
 	if (_parent->getPosition().y > _parent->getView().getSize().y ||
 		_parent->getPosition().y < 0 ||
@@ -66,6 +71,7 @@ void BulletComponent::update(double dt) {
 		_parent->setAlive(false);
 		_parent->setVisible(false);
 		physicsCMP->getBody()->SetActive(false);
+		_parent->setPosition(Vector2f(-100.f, -100.f));
 	}
 		
 }
