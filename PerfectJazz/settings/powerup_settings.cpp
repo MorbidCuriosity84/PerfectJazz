@@ -16,7 +16,7 @@ powerupSettings PowerupSettings::LoadSettings(_powerUpsType type, Scene* scene) 
 		settings.category = POWERUP;
 		settings.direction = -1.f;
 		settings.velocity = Vector2f(0.f, 100.f);
-		settings.spriteScale = Vector2f(1.f, 1.f);
+		settings.spriteScale = Vector2f(0.8f, .8f);
 		settings.sound = PICKUP_4;
 		break;
 	}	
@@ -30,7 +30,7 @@ powerupSettings PowerupSettings::LoadSettings(_powerUpsType type, Scene* scene) 
 		settings.category = POWERUP;
 		settings.direction = -1.f;
 		settings.velocity = Vector2f(0.f, 100.f);
-		settings.spriteScale = Vector2f(1.f, 1.f);
+		settings.spriteScale = Vector2f(0.8f, .8f);
 		settings.sound = PICKUP_1;
 		break;
 	case DAMAGE_PWU:
@@ -43,7 +43,7 @@ powerupSettings PowerupSettings::LoadSettings(_powerUpsType type, Scene* scene) 
 		settings.category = POWERUP;
 		settings.direction = -1.f;
 		settings.velocity = Vector2f(0.f, 100.f);
-		settings.spriteScale = Vector2f(1.f, 1.f);
+		settings.spriteScale = Vector2f(0.8f, .8f);
 		settings.sound = PICKUP_1;
 		break;
 	case FIRERATE_PWU:

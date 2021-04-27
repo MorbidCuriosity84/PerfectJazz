@@ -63,6 +63,7 @@ void Powerups::deployPowerups() {
 	_powerupSettings = PowerupSettings::LoadSettings(ALL_POWERUPS, _scene);
 
 	if (choosenPowerup == 6) {
+
 		for (int i = 0; i < 5; i++) {
 			if (i == 0) {
 				for (int j = 0; j < 14; j++) {
