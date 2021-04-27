@@ -2,7 +2,7 @@
 #include "entityPool.h"
 
 
-class BulletPool : public EntityPool<BulletPool>
+class BulletPool 
 {
 protected:
 
