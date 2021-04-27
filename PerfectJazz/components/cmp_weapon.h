@@ -21,6 +21,7 @@ public:
 	uint16_t getDamage() const;
 	weaponSettings _wSettings;
 	bulletSettings _bSettings;
+	float accumulation;
 	explicit WeaponComponent(Entity* p, weaponSettings settings, bulletSettings bSettings, textureSettings bTextureHelper);
 	WeaponComponent() = delete;
 };

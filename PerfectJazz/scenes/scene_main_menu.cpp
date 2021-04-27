@@ -3,6 +3,7 @@
 #include <SFML/Window/Keyboard.hpp>
 #include <iostream>
 #include "../components/cmp_sprite.h"
+#include "../components/cmp_sound.h"
 
 using namespace std;
 using namespace sf;
@@ -17,10 +18,10 @@ void MainMenu::Load() {
 	mainView.setViewport(sf::FloatRect(0, 0, 1.f, 1.f));
 	auto titleView = makeEntity();
 	titleView->setView(mainView);
-
+	
 	for (int i = 0; i < 2; i++) {
 		auto temp = titleView->addComponent<SpriteComponent>();
-		_titleShipTex = make_shared<sf::Texture>();
+		_titleShipTex = make_shared<sf::Texture>();		
 		auto rec = sf::IntRect();
 		_titleShipTex->loadFromFile("res/img/player/player_900.png");
 

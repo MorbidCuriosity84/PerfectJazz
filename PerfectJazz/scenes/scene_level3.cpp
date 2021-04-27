@@ -18,8 +18,9 @@ using namespace sf;
 sf::View leftView;
 sf::View rightView;
 sf::View mainView;
-sf::SoundBuffer sBuffs[256];
-sf::Sound sounds[256];
+sf::SoundBuffer sBuffs[128];
+sf::Sound sounds[128];
+
 const unsigned int soundsPerBuffer = 8;
 
 void Level3Scene::Load() {
@@ -28,7 +29,24 @@ void Level3Scene::Load() {
 	for (int sndInt = PLAYER_DIE_1; sndInt != PICKUP_5; sndInt++) 	{
 		sBuffs[sndInt].loadFromFile(soundFilenames[sndInt]);
 		sounds[sndInt].setBuffer(sBuffs[sndInt]);
+		sounds[sndInt].setVolume(25.f);
+		sounds[sndInt].setPitch(1.f);
 	}
+
+	//MARK This is temporary, once title screen is loaded then the array should be initialised
+	//then its just a case of calling the musicArray with the relevvant music enum
+	for (int i = 0; i < 8; i++) {
+		if (!musicArray[i].openFromFile(musicFiles[i])) {
+		}
+		else {
+			cout << "Loaded music " << musicFiles[i] << endl;
+		}
+	}
+
+	musicArray[MUSIC_LEVEL_3].setPosition(0, 1, 50);
+	musicArray[MUSIC_LEVEL_3].setVolume(25);
+	musicArray[MUSIC_LEVEL_3].setLoop(true);
+	musicArray[MUSIC_LEVEL_3].play();
 
 	//Create left view
 	sf::View tempLeft(sf::FloatRect(0, 0, Engine::getWindowSize().x / 5, Engine::getWindowSize().y));
