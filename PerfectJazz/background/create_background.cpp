@@ -34,7 +34,7 @@ void Background::createBackground(Scene* _scene) {
 			bool repeated = false;
 			if (i == 1) {
 				repeated = true;
-				_backgroundSettings.spriteScale = { 1.f, -1.f };
+				_backgroundSettings.spriteScale = { _backgroundSettings.spriteScale .x, _backgroundSettings.spriteScale.y *  -1.f };
 				_backgroundSettings.velocity = { 0, 80.f };
 				_backgroundSettings.opacity = { 255, 255, 255, 120 };
 			}

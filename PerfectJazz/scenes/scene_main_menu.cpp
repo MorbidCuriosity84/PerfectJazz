@@ -63,7 +63,7 @@ void MainMenu::Load() {
 void MainMenu::changeMenuText(std::vector<std::string> s, int index) {
 	for (int i = 0; i < index; i++) {
 
-		menuOption[i]->setFontSize(80u);
+		menuOption[i]->setFontSize(60u / windowScale.x);
 		menuOption[i]->_text.setString(s[i]);
 		menuOption[i]->_text.setColor(Color::White);
 		if (i == selectedIndex) { menuOption[i]->_text.setColor(Color::Red); }
@@ -97,7 +97,7 @@ void MainMenu::switchSceneText(_menuType scene) {
 		changeMenuText(s, 3);
 		changeBools(true, false, false, false);
 		break;
-	}	
+	}
 	case LEVEL_MENU: {
 		s.clear();
 		s.push_back("Solo");
@@ -124,10 +124,11 @@ void MainMenu::switchSceneText(_menuType scene) {
 		s.clear();
 		s.push_back("1024 x 576");
 		s.push_back("1280 x 720");
-		s.push_back("1920 x 1080");		
+		s.push_back("1920 x 1080");
 		s.push_back("Back");
 		changeMenuText(s, 4);
 		changeBools(false, false, false, true);
+
 		break;
 	}
 	default:
@@ -136,8 +137,14 @@ void MainMenu::switchSceneText(_menuType scene) {
 }
 
 void MainMenu::changeResolution(int type) {
-	cout << "You changed the resolution to type " << type << endl;
+	if (type == 1) { Engine::GetWindow().setSize(Vector2u(1024, 576)); windowScale = { 0.8f , 0.8f }; }
+	if (type == 2) { Engine::GetWindow().setSize(Vector2u(1280, 720)); windowScale = { 1.0f, 1.0f }; }
+	if (type == 3) { Engine::GetWindow().setSize(Vector2u(1920, 1080)); windowScale = { 1.5f, 1.5f }; }
+	auto desktop = sf::VideoMode::getDesktopMode();
+
+	Engine::GetWindow().setPosition(Vector2i(desktop.width / 2 - Engine::GetWindow().getSize().x / 2, desktop.height / 2 - Engine::GetWindow().getSize().y / 2));
 }
+
 
 void MainMenu::changeBools(bool _isMainMenuScreen, bool _isLevelMenuScreen, bool _isSettingsScreen, bool _isResolutionScreen) {
 	isMainMenuScreen = _isMainMenuScreen;
@@ -199,8 +206,13 @@ void MainMenu::Update(const double& dt) {
 				break;
 			default:
 				break;
-			}
+			}		
+		}	
+		if (sf::Keyboard::isKeyPressed(Keyboard::Escape)) {
+			if (isSettingsScreen) { switchSceneText(MAIN_MENU); }
+			else if (isResolutionScreen) { switchSceneText(SETTINGS_MENU); }
 		}
+
 
 		//Check if the loaded sprite is the bottom, if so, load the top. And viceversa
 		if (_titleShipLeftRect.top == _titleShipLeftRect.getSize().y / 1) { _titleShipLeftRect.top = 0; }

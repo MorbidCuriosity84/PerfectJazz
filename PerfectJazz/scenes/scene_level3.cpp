@@ -25,8 +25,7 @@ const unsigned int soundsPerBuffer = 8;
 void Level3Scene::Load() {
 	cout << " Scene 3 Load" << endl;
 
-	for (int sndInt = PLAYER_DIE_1; sndInt != PICKUP_5; sndInt++)
-	{		
+	for (int sndInt = PLAYER_DIE_1; sndInt != PICKUP_5; sndInt++) 	{
 		sBuffs[sndInt].loadFromFile(soundFilenames[sndInt]);
 		sounds[sndInt].setBuffer(sBuffs[sndInt]);
 	}
@@ -85,8 +84,8 @@ void Level3Scene::UnLoad() {
 		b.reset();
 	}
 	//enemyBullets.clear();
-	player.reset();	
-	for(auto e : EntityPool::pool){
+	player.reset();
+	for (auto e : EntityPool::pool) {
 		e->clearComponents();
 		e.reset();
 	}

@@ -12,13 +12,12 @@ TitleScene title;
 Level1Scene level1;
 Level2Scene level2;
 Level3Scene level3;
-//Vector2f windowScale = { 1.2f, 1.2f };
-Vector2f windowScale = { 1.f, 1.f };
-//Vector2f windowScale = { 0.8f, 0.8f };
-unsigned int gameWidth = (round)(1280 * windowScale.x);
-unsigned int gameHeight = (round)(720 * windowScale.y);
+Vector2f windowScale = { 1.0f, 1.0f };
+unsigned int gameHeight = (round)(720);
+unsigned int gameWidth = (round)(1280 );
+
 
 // The grid size will be 15x16 tiles
 int main() {
-	Engine::Start(gameWidth, gameHeight, "Perfect Jazz", &level3);
+	Engine::Start(gameWidth, gameHeight, "Perfect Jazz", &title);
 }
