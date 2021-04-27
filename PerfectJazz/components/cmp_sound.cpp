@@ -1,22 +1,26 @@
 #include "cmp_sound.h"
 
-SoundComponent::SoundComponent(Entity* p) : Component(p), sound(std::make_shared<sf::Sound>()), sBuffer(make_shared<sf::SoundBuffer>()) {}
+SoundComponent::SoundComponent(Entity* p) : Component(p), pitch(1.f), volume(25.f) {}
 
-void SoundComponent::playSound() const { sound->play(); }
-
-void SoundComponent::stopSound() const { sound->stop(); }
-
-void SoundComponent::loadSound(std::string filename)
-{
-	if (!sBuffer->loadFromFile(filename)) {
-		//error
-	}
-	sound->setBuffer(*sBuffer);
+void SoundComponent::playSound() {
+	sounds[soundIndexEnum].setPitch(pitch);
+	sounds[soundIndexEnum].play();
+	pitch += 0.15f;	
+	pitch = (pitch > 3.f ? pitch = 1.f : pitch);
+	sounds->setPitch( pitch );
 }
 
-std::shared_ptr<sf::Sound> SoundComponent::getSound() const { return sound; }
+void SoundComponent::stopSound()
+{
+}
 
-std::shared_ptr<sf::SoundBuffer> SoundComponent::getSoundBuffer() const { return sBuffer; }
+void SoundComponent::setPitch(float pitch)
+{
+}
+
+void SoundComponent::setVolume(float vol)
+{
+}
 
 MusicComponent::MusicComponent(Entity* p) : Component(p), music(std::make_shared<sf::Music>()) {}
 
@@ -30,4 +34,5 @@ void MusicComponent::loadMusic(std::string filename){
 }
 
 std::shared_ptr<sf::Music> MusicComponent::getSound() const { return music; }
+
 

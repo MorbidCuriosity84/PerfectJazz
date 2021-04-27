@@ -25,11 +25,14 @@ void BulletComponent::createBullet() {
 	physicsCMP->setSensor(true);
 	Vector2f bulletVelocity =_settings.velocity * _settings.direction;
 	physicsCMP->setVelocity(Vector2f(bulletVelocity.x - _parent->getRotation(), bulletVelocity.y));
-	physicsCMP->setCategory(_settings.category);		
+	physicsCMP->setCategory(_settings.category);	
+
+	bulletImpactSound = _settings.sound;
 }
 
 
 void BulletComponent::update(double dt) {
+	accumulation += dt;
 	_bulletTextHelper.spriteTimer += dt / 2;
 
 	if (_bulletTextHelper.spriteTimer < 0.1) {
@@ -56,6 +59,10 @@ void BulletComponent::update(double dt) {
 		_parent->setVisible(false);
 		physicsCMP->getBody()->SetActive(false);	
 		_parent->setPosition(Vector2f(-100.f, -100.f));
+		
+		sounds[_settings.sound].setPitch(1.f + sin(accumulation) * .025f);
+		sounds[bulletImpactSound].setVolume(35.f);
+		sounds[bulletImpactSound].play();
 	}	
 	if (_parent->getPosition().y > _parent->getView().getSize().y ||
 		_parent->getPosition().y < 0 ||
@@ -70,7 +77,7 @@ void BulletComponent::update(double dt) {
 }
 
 BulletComponent::BulletComponent(Entity* p, bulletSettings settings, textureSettings bulletTexHelper)
-	: Component(p), _settings(settings), _bulletTextHelper(bulletTexHelper) {
+	: Component(p), _settings(settings), _bulletTextHelper(bulletTexHelper), accumulation(0.f) {
 	createBullet();
 	bul_colHelp.damageCMP = damageCMP.get();
 	bul_colHelp.hpCMP = hpCMP.get();

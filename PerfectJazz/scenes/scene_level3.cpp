@@ -30,6 +30,7 @@ void Level3Scene::Load() {
 		sBuffs[sndInt].loadFromFile(soundFilenames[sndInt]);
 		sounds[sndInt].setBuffer(sBuffs[sndInt]);
 		sounds[sndInt].setVolume(25.f);
+		sounds[sndInt].setPitch(1.f);
 	}
 
 	//Create left view

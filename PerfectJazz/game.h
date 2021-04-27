@@ -28,8 +28,8 @@ extern unsigned int gameHeight;
 static vector<shared_ptr<Entity>> playerBullets;
 static vector<shared_ptr<Entity>> enemyBullets;
 extern myContactListener mContLis;
-extern sf::SoundBuffer sBuffs[128];
-extern sf::Sound sounds[128];
+extern sf::SoundBuffer sBuffs[256];
+extern sf::Sound sounds[256];
 extern sf::Music musicArray[8];
 
 
@@ -216,6 +216,9 @@ enum _powerUpsType {
     ALL_POWERUPS,
 };
 /*
+Enums are boring so if you looked all the way 
+down here you deserve a bonuse so here's a llama
+
 88 88
 88 88
 88 88

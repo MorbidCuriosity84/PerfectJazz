@@ -1,6 +1,7 @@
 #pragma once
 #include <ecm.h>
 #include <SFML/Audio.hpp>
+#include "../game.h"
 
 using namespace sf;
 using namespace std;
@@ -8,8 +9,9 @@ using namespace std;
 class SoundComponent : public Component
 {
 protected:
-	std::shared_ptr<sf::Sound> sound;
-	std::shared_ptr<sf::SoundBuffer> sBuffer;
+	SOUNDS soundIndexEnum;	
+	float pitch;
+	float volume;	
 public: 
 	SoundComponent() = delete;
 	explicit SoundComponent(Entity* p);
@@ -17,11 +19,11 @@ public:
 	void update(double dt) override {}
 	void render() override {} 
 
-	void playSound() const;
-	void stopSound() const;
-	void loadSound(std::string filename);
-	std::shared_ptr<sf::Sound> getSound() const;
-	std::shared_ptr<sf::SoundBuffer> getSoundBuffer() const;	
+	void playSound();
+	void stopSound();	
+
+	void setPitch(float pitch);
+	void setVolume(float vol);
 };
 
 class MusicComponent : public Component
