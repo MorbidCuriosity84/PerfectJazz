@@ -118,6 +118,7 @@ void HPComponent::update(double dt) {
 		underHPBar->getSprite().setPosition(Vector2f((round)(pos.x), (round)(pos.y - parentSpriteCMP->getSprite().getGlobalBounds().height / 2 - underHPBar->getSprite().getGlobalBounds().height/2)));
 		overHPBar->getSprite().setPosition(Vector2f((round)(pos.x), (round)(pos.y - parentSpriteCMP->getSprite().getGlobalBounds().height / 2 - underHPBar->getSprite().getGlobalBounds().height / 2)));
 		textCMP->setText(std::to_string(_hp));
+		textCMP->setOrigin(Vector2f((round)(textCMP->getGlobalBounds().width / 2), (round)(textCMP->getGlobalBounds().height / 2)));
 		textCMP->setPosition(Vector2f((round)(pos.x), (round)(overHPBar->getSprite().getPosition().y - textCMP->getLocalBounds().top)));
 	}
 }
