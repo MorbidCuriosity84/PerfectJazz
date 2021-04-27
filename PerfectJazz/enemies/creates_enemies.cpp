@@ -62,7 +62,7 @@ void Enemies::setType(_enemyType type, Scene* _scene) {
 	{
 		_enemySettings = EnemySettings::LoadSettings(COLONEL, _scene);
 		_enemyTextureHelper = TextureHelpingSettings::LoadSettings(COLONEL, _scene);
-		_weaponSettings = WeaponSettings::LoadSettings(GUN, _scene);
+		_weaponSettings = WeaponSettings::LoadSettings(ROCKET_LAUNCHER, _scene);
 		_bulletSettings = BulletSettings::LoadSettings(TYPE3, _scene);
 		_bulletTextureHelper = TextureHelpingSettings::LoadSettings(TYPE3, _scene);
 		break;
