@@ -17,6 +17,20 @@ void TitleScene::Load() {
 	auto titleView = makeEntity();
 	titleView->setView(mainView);
 
+	//load music
+	for (int i = 0; i < 8; i++) {
+		if (!musicArray[i].openFromFile(musicFiles[i])) {
+		}
+		else {
+			cout << "Loaded music " << musicFiles[i] << endl;
+		}
+	}
+
+	musicArray[MUSIC_TITLE_SCREEN].setPosition(0, 1, 50);	
+	musicArray[MUSIC_TITLE_SCREEN].setVolume(25);
+	musicArray[MUSIC_TITLE_SCREEN].setLoop(true);
+	musicArray[MUSIC_TITLE_SCREEN].play();
+
 	//Load background
 	auto backSprite = titleView->addComponent<SpriteComponent>();
 	auto backgroundTexture = make_shared<sf::Texture>();
@@ -52,7 +66,8 @@ void TitleScene::Load() {
 	timer = 0;
 	titleTimer = 0;
 	titleCol = 0;
-	titleRow = 0;
+	titleRow = 0;	
+	
 }
 
 void TitleScene::Update(const double& dt) {
