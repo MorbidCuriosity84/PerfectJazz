@@ -18,6 +18,7 @@ extern Level1Scene level1;
 extern Level2Scene level2;
 extern Level3Scene level3;
 extern Scene* mainScene;
+extern Vector2f windowScale;
 extern sf::View leftView;
 extern sf::View rightView;
 extern sf::View mainView;

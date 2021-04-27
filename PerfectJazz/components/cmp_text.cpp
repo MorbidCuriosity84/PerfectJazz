@@ -1,4 +1,5 @@
 #include "cmp_text.h"
+#include "../game.h"
 #include <system_renderer.h>
 #include <system_resources.h>
 
@@ -32,8 +33,8 @@ void TextComponent::setOrigin(sf::Vector2f origin) {_text.setOrigin(origin);}
 
 sf::Vector2f TextComponent::getOrigin() {return _text.getOrigin();}
 
-void TextComponent::setFontSize(double size) {_text.setCharacterSize(size);}
+void TextComponent::setFontSize(double size) {_text.setCharacterSize((round)(size * windowScale.x));}
 
 double TextComponent::getFontSize() {return _text.getCharacterSize();}
 
-void TextComponent::setFontSize(unsigned int size) {_text.setCharacterSize(size);}
+void TextComponent::setFontSize(unsigned int size) {_text.setCharacterSize((round)(size * windowScale.x));}
