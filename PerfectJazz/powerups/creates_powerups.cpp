@@ -47,20 +47,35 @@ void Powerups::deployPowerups() {
 	//cout << choosenColumn << ": colm" << endl;
 
 	//if Damage
-	if (choosenPowerup == 0) { _powerupTextureHelper = TextureHelpingSettings::LoadSettings(DAMAGE_PWU, _scene); type = "damage_pwu"; }
+	if (choosenPowerup == 0) {
+		_powerupTextureHelper = TextureHelpingSettings::LoadSettings(DAMAGE_PWU, _scene); type = "damage_pwu";
+		_powerupSettings = PowerupSettings::LoadSettings(DAMAGE_PWU, _scene);
+	}
 	//if Health
-	if (choosenPowerup == 1) { _powerupTextureHelper = TextureHelpingSettings::LoadSettings(HP_PWU, _scene); type = "hp_pwu"; }
+	if (choosenPowerup == 1) {
+		_powerupTextureHelper = TextureHelpingSettings::LoadSettings(HP_PWU, _scene); type = "hp_pwu";
+		_powerupSettings = PowerupSettings::LoadSettings(HP_PWU, _scene);
+	}
 	//if Bullet Num
-	if (choosenPowerup == 2) { _powerupTextureHelper = TextureHelpingSettings::LoadSettings(BULLET_NUM_PWU, _scene); type = "bullet_num_pwu"; }
+	if (choosenPowerup == 2) {
+		_powerupTextureHelper = TextureHelpingSettings::LoadSettings(BULLET_NUM_PWU, _scene); type = "bullet_num_pwu";
+		_powerupSettings = PowerupSettings::LoadSettings(BULLET_NUM_PWU, _scene);
+	}
 	//if Firerate
-	if (choosenPowerup == 3) { _powerupTextureHelper = TextureHelpingSettings::LoadSettings(FIRERATE_PWU, _scene); type = "firerate_pwu"; }
+	if (choosenPowerup == 3) {
+		_powerupTextureHelper = TextureHelpingSettings::LoadSettings(FIRERATE_PWU, _scene); type = "firerate_pwu";
+		_powerupSettings = PowerupSettings::LoadSettings(FIRERATE_PWU, _scene);
+	}
 	//if Player movement
-	if (choosenPowerup == 4) { _powerupTextureHelper = TextureHelpingSettings::LoadSettings(PLAYER_MOVEMENT_PWU, _scene); type = "player_movement_pwu"; }
+	if (choosenPowerup == 4) {
+		_powerupTextureHelper = TextureHelpingSettings::LoadSettings(PLAYER_MOVEMENT_PWU, _scene); type = "player_movement_pwu";
+		_powerupSettings = PowerupSettings::LoadSettings(PLAYER_MOVEMENT_PWU, _scene);
+	}
 	//if Coin or Extra
-	if (choosenPowerup == 5 || choosenPowerup == 6) { _powerupTextureHelper = TextureHelpingSettings::LoadSettings(COIN_PWU, _scene);  type = "coin_pwu"; }
-
-
-	_powerupSettings = PowerupSettings::LoadSettings(ALL_POWERUPS, _scene);
+	if (choosenPowerup == 5 || choosenPowerup == 6) {
+		_powerupTextureHelper = TextureHelpingSettings::LoadSettings(COIN_PWU, _scene);  type = "coin_pwu";
+		_powerupSettings = PowerupSettings::LoadSettings(COIN_PWU, _scene);
+	}
 
 	if (choosenPowerup == 6) {
 		for (int i = 0; i < 5; i++) {
@@ -83,6 +98,7 @@ void Powerups::deployPowerups() {
 					if (j == 11) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 24) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
 					if (j == 12) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 25) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
 					if (j == 13) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 26) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
+
 
 					en->addComponent<PowerupComponent>(_powerupTextureHelper, _powerupSettings);
 					en->addTag(type);
@@ -172,6 +188,8 @@ void Powerups::deployPowerups() {
 					en->addTag(type);
 				}
 			}
+
+			_powerupSettings = PowerupSettings::LoadSettings(ALL_POWERUPS, _scene);
 		}
 	}
 

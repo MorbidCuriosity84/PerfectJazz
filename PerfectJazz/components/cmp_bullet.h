@@ -12,6 +12,7 @@ protected:
 	textureSettings _bulletTextHelper;
 	bulletSettings _settings;
 	collisionHelper bul_colHelp;
+	float accumulation;
 public:
 	void update(double dt) override;
 	void render() override {}

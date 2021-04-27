@@ -1,3 +1,4 @@
+#include <math.h>
 #include "cmp_weapon.h"
 #include "cmp_bullet.h"
 #include "../pools/entityPool.h"
@@ -18,10 +19,14 @@ void WeaponComponent::fire() {
 	bullet->setView(_parent->getView());
 	bullet->setAlive(true);
 	bullet->setVisible(true);
-	sounds[_bSettings.sound].play();
+	
+	sounds[_wSettings.sound].setPitch(1.f + sin(accumulation) * .025f);
+	sounds[_wSettings.sound].setVolume(15.f);
+	sounds[_wSettings.sound].play();
 }
 
 void WeaponComponent::update(double dt) {
+	accumulation += dt;
 	_wSettings.fireTimer -= dt;
 	if (_wSettings.fireTimer <= 0.f) {
 		fire();
@@ -37,4 +42,4 @@ uint16_t WeaponComponent::getDamage() const {
 	return _bSettings.damage;
 }
 WeaponComponent::WeaponComponent(Entity* p, weaponSettings wSettings, bulletSettings bSettings, textureSettings bTextureHelper)
-	: Component(p), _wSettings(wSettings), _bSettings(bSettings), _bulletTextureHelper(bTextureHelper){ }
+	: Component(p), _wSettings(wSettings), _bSettings(bSettings), _bulletTextureHelper(bTextureHelper), accumulation(0.f) {}
