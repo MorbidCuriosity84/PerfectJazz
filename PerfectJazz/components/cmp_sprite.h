@@ -20,6 +20,7 @@ public:
   bool _following;
   void loadTexture(textureSettings texHelper, sf::Vector2f scale, float angle);
   void setTexure(std::shared_ptr<sf::Texture> tex);
+  ~SpriteComponent() override = default;
 };
 
 class ShapeComponent : public Component {
