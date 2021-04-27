@@ -5,8 +5,7 @@ std::shared_ptr<Entity> EntityPool::pool[256];
 
 using namespace sf;
 
-void EntityPool::init(Scene* s)
-{
+void EntityPool::init(Scene* s) {
     for (int i = 0; i < 256; i++) {
         auto bullet = s->makeEntity();
         bullet->setAlive(false);
@@ -14,11 +13,6 @@ void EntityPool::init(Scene* s)
         EntityPool::pool[i] = bullet;
     }
 }
-
-
-
-
-
 
 
 //template<typename T>

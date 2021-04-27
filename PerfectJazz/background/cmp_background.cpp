@@ -24,7 +24,7 @@ void BackgroundComponent::update(double dt) {
 	//Update background
 	{
 		if (_parent->getPosition().y >= mainView.getSize().y + spriteCMP->getSprite().getGlobalBounds().height/2 + _backgroundSettings.offset.y) {
-			_parent->setPosition(Vector2f(_parent->getPosition().x, (_parent->getPosition().y - spriteCMP->getSprite().getGlobalBounds().height * 2 - (floor)((_backgroundSettings.offset.y) * 2))));
+			_parent->setPosition(Vector2f(_parent->getPosition().x, (_parent->getPosition().y - spriteCMP->getSprite().getGlobalBounds().height * 2 - (floor)((_backgroundSettings.offset.y) * 2) + 1.f)));
 		}
 	}
 }

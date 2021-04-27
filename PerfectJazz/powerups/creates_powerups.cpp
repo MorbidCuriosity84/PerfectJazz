@@ -50,17 +50,17 @@ void Powerups::deployPowerups() {
 	//cout << choosenColumn << ": colm" << endl;
 
 	//if Damage
-	if (choosenPowerup == 0) {
+	if (choosenPowerup == 0) { 
 		_powerupTextureHelper = TextureHelpingSettings::LoadSettings(DAMAGE_PWU, _scene); type = "damage_pwu";
 		_powerupSettings = PowerupSettings::LoadSettings(DAMAGE_PWU, _scene);
 	}
 	//if Health
-	if (choosenPowerup == 1) {
+	if (choosenPowerup == 1) { 
 		_powerupTextureHelper = TextureHelpingSettings::LoadSettings(HP_PWU, _scene); type = "hp_pwu";
 		_powerupSettings = PowerupSettings::LoadSettings(HP_PWU, _scene);
 	}
 	//if Bullet Num
-	if (choosenPowerup == 2) {
+	if (choosenPowerup == 2) { 
 		_powerupTextureHelper = TextureHelpingSettings::LoadSettings(BULLET_NUM_PWU, _scene); type = "bullet_num_pwu";
 		_powerupSettings = PowerupSettings::LoadSettings(BULLET_NUM_PWU, _scene);
 	}
@@ -70,12 +70,12 @@ void Powerups::deployPowerups() {
 		_powerupSettings = PowerupSettings::LoadSettings(FIRERATE_PWU, _scene);
 	}
 	//if Player movement
-	if (choosenPowerup == 4) {
+	if (choosenPowerup == 4) { 
 		_powerupTextureHelper = TextureHelpingSettings::LoadSettings(PLAYER_MOVEMENT_PWU, _scene); type = "player_movement_pwu";
 		_powerupSettings = PowerupSettings::LoadSettings(PLAYER_MOVEMENT_PWU, _scene);
 	}
 	//if Coin or Extra
-	if (choosenPowerup == 5 || choosenPowerup == 6) {
+	if (choosenPowerup == 5 || choosenPowerup == 6) { 
 		_powerupTextureHelper = TextureHelpingSettings::LoadSettings(COIN_PWU, _scene);  type = "coin_pwu";
 		_powerupSettings = PowerupSettings::LoadSettings(COIN_PWU, _scene);
 	}
@@ -193,8 +193,7 @@ void Powerups::deployPowerups() {
 					en->addTag(type);
 				}
 			}
-
-			_powerupSettings = PowerupSettings::LoadSettings(ALL_POWERUPS, _scene);
+			_powerupSettings = PowerupSettings::LoadSettings(COIN_PWU, _scene);
 		}
 	}
 
