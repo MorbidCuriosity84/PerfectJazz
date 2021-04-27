@@ -20,5 +20,5 @@ unsigned int gameHeight = (round)(720 * windowScale.y);
 
 // The grid size will be 15x16 tiles
 int main() {
-	Engine::Start(gameWidth, gameHeight, "Perfect Jazz", &level3);
+	Engine::Start(gameWidth, gameHeight, "Perfect Jazz", &title);
 }

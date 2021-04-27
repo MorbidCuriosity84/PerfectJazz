@@ -28,8 +28,10 @@ extern unsigned int gameHeight;
 static vector<shared_ptr<Entity>> playerBullets;
 static vector<shared_ptr<Entity>> enemyBullets;
 extern myContactListener mContLis;
-extern sf::SoundBuffer sBuffs[256];
-extern sf::Sound sounds[256];
+extern sf::SoundBuffer sBuffs[128];
+extern sf::Sound sounds[128];
+extern sf::Music musicArray[8];
+
 
 /*
 * //I thought this would be a good way to specify a group that an entity belongs to 
@@ -138,16 +140,27 @@ enum SOUNDS {
     PICKUP_5,
 };
 
+static std::string musicFiles[8] = {
+    "res/sounds/music/01 sawsquarenoise Tittle Screen.ogg",
+    "res/sounds/music/Lets Rest.ogg",
+    "res/sounds/music/02 sawsquarenoise Stage 1.ogg",
+    "res/sounds/music/03 sawsquarenoise Stage 2.ogg",
+    "res/sounds/music/04 sawsquarenoise Stage 3.ogg",
+    "res/sounds/music/04 sawsquarenoise Stage 3.ogg",
+    "res/sounds/music/05 sawsquarenoise Boss Splash.ogg",
+    "res/sounds/music/06 sawsquarenoise Boss Theme.ogg",
+};
+
 enum MUSIC {
-    TITLE_SCREEN,
-    UPGRADE_MENU,
-    LEVEL_1,
-    LEVEL_2,
-    LEVEL_3,
-    LEVEL_4,
-    LEVEL_5,
-    BOSS_SPLASH,
-    BOSS_FIGHT,
+    MUSIC_TITLE_SCREEN,
+    MUSIC_UPGRADE_MENU,
+    MUSIC_LEVEL_1,
+    MUSIC_LEVEL_2,
+    MUSIC_LEVEL_3,
+    MUSIC_LEVEL_4,
+    MUSIC_LEVEL_5,
+    MUSIC_BOSS_SPLASH,
+    MUSIC_BOSS_FIGHT,
 };
 
 enum _enemyType {
@@ -202,3 +215,39 @@ enum _powerUpsType {
     COIN_PWU,
     ALL_POWERUPS,
 };
+/*
+88 88
+88 88
+88 88
+88 88 ,adPPYYba, 88,dPYba,,adPYba,  ,adPPYYba,
+88 88 ""     `Y8 88P'   "88"    "8a ""     `Y8
+88 88 ,adPPPPP88 88      88      88 ,adPPPPP88
+88 88 88,    ,88 88      88      88 88,    ,88
+88 88 `"8bbdP"Y8 88      88      88 `"8bbdP"Y8
+
+       ( \__//)
+       .'     )
+    __/b d  .  )
+   (_Y_`,     .)
+    `--'-,-'  )
+         (.  )
+         (   )
+        (   )
+       ( . )         .---.
+      (    )        (     )
+      (   . )      (  .    )
+      (      )    (      .  ),
+      ( .     `"'`  .       `)\
+       (      .              .)\
+       ((  .      .   (   .   )\\
+       ((       .    (        ) \\
+        ((     )     _( .   . )  \\
+        ( ( .   )"'"`(.(     )   ( ;
+        ( (    )      ( ( . )     \'
+         |~(  )        |~(  )
+         | ||~|        | ||~|
+    jgs  | || |        | || |
+        _| || |       _| || |
+       /___(| |      /___(| |
+          /___(         /___(
+*/

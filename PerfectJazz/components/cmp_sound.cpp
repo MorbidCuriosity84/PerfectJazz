@@ -18,20 +18,16 @@ std::shared_ptr<sf::Sound> SoundComponent::getSound() const { return sound; }
 
 std::shared_ptr<sf::SoundBuffer> SoundComponent::getSoundBuffer() const { return sBuffer; }
 
-MusicComponent::MusicComponent(Entity* p) : Component(p), sound(std::make_shared<sf::Sound>()), sBuffer(make_shared<sf::SoundBuffer>()) {}
+MusicComponent::MusicComponent(Entity* p) : Component(p), music(std::make_shared<sf::Music>()) {}
 
-void MusicComponent::playSound() const { sound->play(); }
+void MusicComponent::playMusic() const { music->play(); }
 
-void MusicComponent::stopSound() const { sound->stop(); }
+void MusicComponent::stopMusic() const { music->stop(); }
 
-void MusicComponent::loadSound(std::string filename){ 
+void MusicComponent::loadMusic(std::string filename){ 
 	
-	if (!sBuffer->loadFromFile(filename)) {
-		//error
-	}
-	sound->setBuffer(*sBuffer);
+	music->openFromFile(filename);	
 }
 
-std::shared_ptr<sf::Sound> MusicComponent::getSound() const { return sound; }
+std::shared_ptr<sf::Music> MusicComponent::getSound() const { return music; }
 
-std::shared_ptr<sf::SoundBuffer> MusicComponent::getSoundBuffer() const { return sBuffer; }

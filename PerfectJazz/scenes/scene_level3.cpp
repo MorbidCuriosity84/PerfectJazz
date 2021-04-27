@@ -18,8 +18,8 @@ using namespace sf;
 sf::View leftView;
 sf::View rightView;
 sf::View mainView;
-sf::SoundBuffer sBuffs[256];
-sf::Sound sounds[256];
+sf::SoundBuffer sBuffs[128];
+sf::Sound sounds[128];
 const unsigned int soundsPerBuffer = 8;
 
 void Level3Scene::Load() {
@@ -29,6 +29,7 @@ void Level3Scene::Load() {
 	{		
 		sBuffs[sndInt].loadFromFile(soundFilenames[sndInt]);
 		sounds[sndInt].setBuffer(sBuffs[sndInt]);
+		sounds[sndInt].setVolume(25.f);
 	}
 
 	//Create left view
