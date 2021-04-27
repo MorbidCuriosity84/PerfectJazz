@@ -96,7 +96,9 @@ void Engine::Render(RenderWindow& window) {
 
 void Engine::Start(unsigned int width, unsigned int height,
 	const std::string& gameName, Scene* scn) {
-	RenderWindow window(VideoMode(width, height), gameName);
+	RenderWindow window(VideoMode(width, height), gameName, sf::Style::None);
+	auto desktop = sf::VideoMode::getDesktopMode();
+	window.setPosition(Vector2i(desktop.width / 2 - window.getSize().x / 2, desktop.height / 2 - window.getSize().y / 2));
 	//Limits the framerate
 	window.setFramerateLimit(60);
 	_gameName = gameName;

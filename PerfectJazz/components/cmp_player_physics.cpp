@@ -16,9 +16,6 @@ void PlayerPhysicsComponent::update(double dt) {
 	float _flySpeed = playerCMP->_playerSettings.flySpeed + multiplier;
 
 	{
-		//CARLOS TO-DO fix movement. When the framerate is locked, the impulse feels different
-		//check the collision when diagonally on the borders
-
 		//The _flySpeed * 2 makes the player not to stick when it goes to a side, so it can fly away easily
 		if (pos.x < 0 + playerSpriteCMP->getSprite().getTextureRect().width / 2) {
 			setVelocity(Vector2f(0.f, getVelocity().y * 0.98f));
@@ -71,9 +68,9 @@ void PlayerPhysicsComponent::update(double dt) {
 		}
 	}
 
-	if ((pos.x > gameWidth || pos.x < 0 || pos.y > gameHeight || pos.y < 0)) {
+	if ((pos.x > mainView.getSize().x || pos.x < 0 || pos.y > mainView.getSize().y || pos.y < 0)) {
 		playerCMP->setPlayerAlive(false);
-		teleport((Vector2f((round)(mainView.getSize().x / 2), mainView.getSize().y - 100.f)));
+		teleport((Vector2f((round)(mainView.getSize().x / 2), mainView.getSize().y - mainView.getSize().y / 10)));
 	}
 
 	playerCMPTimer += dt;

@@ -5,7 +5,7 @@ using namespace sf;
 
 void PlayerComponent::Load() {
 
-	player->setPosition((Vector2f((round)(mainView.getSize().x / 2), mainView.getSize().y - 100.f)));
+	player->setPosition((Vector2f((round)(mainView.getSize().x / 2), mainView.getSize().y - mainView.getSize().y/6)));
 	damageCMP = player->addComponent<DamageComponent>(_playerSettings.damage);
 	weaponCMP = player->addComponent<WeaponComponent>(_weaponSettings, _bulletSettings, _bulletTextureHelper);
 	player->addTag("player");
@@ -29,7 +29,7 @@ void PlayerComponent::revive() {
 	setPlayerAlive(true);
 	_gracePeriod = true;
 	physicsCMP->setCategory(NO_COLLIDE);
-	physicsCMP->teleport((Vector2f((round)(mainView.getSize().x / 2), mainView.getSize().y - 100.f)));
+	physicsCMP->teleport((Vector2f((round)(mainView.getSize().x / 2), mainView.getSize().y - mainView.getSize().y / 6)));
 	hpCMP->setHP(_playerSettings.maxHP);
 }
 
@@ -54,8 +54,6 @@ void PlayerComponent::update(double dt) {
 	}
 
 	if (player->isAlive()) {
-		//auto pPhysics = static_cast<PlayerPhysicsComponent>(*physicsCMP);
-		//auto pSprite = player->GetCompatibleComponent<SpriteComponent>();
 
 		if (_playerTextureHelper.spriteTimer > 0.1f) {
 
