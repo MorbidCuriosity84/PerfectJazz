@@ -46,7 +46,7 @@ bulletSettings BulletSettings::LoadSettings(_bulletType type, Scene* scene) {
 		settings.angle = 90.f;
 		settings.category = ENEMY_MISSILE;
 		settings.direction = -1.f;
-		settings.velocity = Vector2f(0.f, 600.f);
+		settings.velocity = Vector2f(0.f, 150);
 		settings.spriteScale = Vector2f(3.f, 3.f);
 		settings.sound = EXPLOSION_3;
 		break;

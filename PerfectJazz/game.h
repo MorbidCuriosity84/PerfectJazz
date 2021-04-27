@@ -28,8 +28,8 @@ extern unsigned int gameHeight;
 static vector<shared_ptr<Entity>> playerBullets;
 static vector<shared_ptr<Entity>> enemyBullets;
 extern myContactListener mContLis;
-extern sf::SoundBuffer sBuffs[256];
-extern sf::Sound sounds[256];
+extern sf::SoundBuffer sBuffs[128];
+extern sf::Sound sounds[128];
 extern sf::Music musicArray[8];
 
 
@@ -105,6 +105,7 @@ static std::string soundFilenames[32] = {
     "res/sounds/powerups/sfx_coin_double2.wav", //powerup 5 coins
 };
 
+//Easy reference enum to index the sounds
 enum SOUNDS {
     PLAYER_DIE_1,
     PLAYER_DIE_2,
@@ -140,6 +141,7 @@ enum SOUNDS {
     PICKUP_5,
 };
 
+//Array of all sounds, access with the MUSIC enum
 static std::string musicFiles[8] = {
     "res/sounds/music/01 sawsquarenoise Tittle Screen.ogg",
     "res/sounds/music/Lets Rest.ogg",
@@ -151,6 +153,7 @@ static std::string musicFiles[8] = {
     "res/sounds/music/06 sawsquarenoise Boss Theme.ogg",
 };
 
+//Easy reference enum to index the music
 enum MUSIC {
     MUSIC_TITLE_SCREEN,
     MUSIC_UPGRADE_MENU,
