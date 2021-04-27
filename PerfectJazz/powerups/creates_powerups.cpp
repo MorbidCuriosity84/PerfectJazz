@@ -194,7 +194,7 @@ void Powerups::createPowerups(Scene* scene) {
 void Powerups::update(double dt) {
 	_timer += dt;
 
-	if (_timer > 0.5) {
+	if (_timer > 2) {
 		deployPowerups();
 		_timer = 0.f;
 	}

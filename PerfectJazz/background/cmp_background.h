@@ -15,6 +15,8 @@ protected:
 	textureSettings _backgroundTextureHelper;
 	textureSettings _overlayTextureHelper;
 	backgroundSettings _backgroundSettings;
+	std::shared_ptr<SpriteComponent> spriteCMP;
+
 public:
 	void Load(bool second);
 	void render() override {};

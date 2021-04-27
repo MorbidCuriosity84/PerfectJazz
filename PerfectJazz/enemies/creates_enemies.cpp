@@ -13,9 +13,10 @@ bulletSettings _bulletSettings;
 
 void Enemies::createEnemies(std::string _waveFile, Scene* _scene) {
 
-	ls::loadLevelFile("res/levels/" + _waveFile + ".txt", (round)(mainView.getSize().x / 15));
-	auto ho = Engine::getWindowSize().y - (ls::getHeight() * mainView.getSize().y / 16);
-	ls::setOffset(Vector2f(mainView.getSize().y / 16 /2, ho));
+	// CARLOS TO-DO windows resolution
+	ls::loadLevelFile("res/levels/" + _waveFile + ".txt", (round)((mainView.getSize().x / 15)));
+	auto ho = (round)(Engine::getWindowSize().y) - (round)((ls::getHeight() * mainView.getSize().y / 16));
+	ls::setOffset(Vector2f((mainView.getSize().y) / 32, ho));
 
 	int index = 0, airman_index = 0, sergeant_index = 0, colonel_index = 0;
 	for (size_t y = 0; y < ls::_height; ++y) {

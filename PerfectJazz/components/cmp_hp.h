@@ -41,5 +41,10 @@ protected:
 	Scene* _scene;
 	bool _visible;
 	bool _dynamic;
+	Vector2f spritePos;
+	Vector2f underhpPos;
+	Vector2f overhpPos;
+	sf::FloatRect underhpRect;
+	sf::FloatRect overhpRect;
 };
 

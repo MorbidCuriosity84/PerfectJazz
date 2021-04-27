@@ -7,8 +7,7 @@
 using namespace std;
 using namespace sf;
 
-std::shared_ptr<SpriteComponent> spriteCMP;
-std::shared_ptr<TextComponent> txtCMP;
+std::shared_ptr<SpriteComponent> titleSpriteCMP;
 
 void TitleScene::Load() {
 	cout << "Title load \n";
@@ -29,19 +28,19 @@ void TitleScene::Load() {
 
 
 	//Load title animation sprite sheet
-	spriteCMP = titleView->addComponent<SpriteComponent>();
+	titleSpriteCMP = titleView->addComponent<SpriteComponent>();
 	_titleText = make_shared<sf::Texture>();
 	_titleRect = sf::IntRect();
 	_titleText->loadFromFile("res/img/title/title_sprite.png");
-	spriteCMP->setTexure(_titleText);
+	titleSpriteCMP->setTexure(_titleText);
 	_titleRect.left = (round)(_titleText->getSize().x / 8 * 0);
 	_titleRect.top = (round)(_titleText->getSize().y / 5 * 0);
 	_titleRect.width = (round)(_titleText->getSize().x / 8);
 	_titleRect.height = (round)(_titleText->getSize().y / 5);
 
-	spriteCMP->getSprite().setTextureRect(_titleRect);
-	spriteCMP->getSprite().setOrigin(spriteCMP->getSprite().getGlobalBounds().width / 2, spriteCMP->getSprite().getGlobalBounds().height / 2);
-	spriteCMP->getSprite().setPosition(Vector2f(mainView.getSize().x / 2, mainView.getSize().y / 2));
+	titleSpriteCMP->getSprite().setTextureRect(_titleRect);
+	titleSpriteCMP->getSprite().setOrigin(titleSpriteCMP->getSprite().getGlobalBounds().width / 2, titleSpriteCMP->getSprite().getGlobalBounds().height / 2);
+	titleSpriteCMP->getSprite().setPosition(Vector2f(mainView.getSize().x / 2, mainView.getSize().y / 2));
 
 	//Load ENTER text
 	txtCMP = titleView->addComponent<TextComponent>("Press ENTER");
@@ -69,18 +68,18 @@ void TitleScene::Update(const double& dt) {
 		titleCol++;
 		if (titleCol >= 8) { titleCol = 0; titleTimer = 0; titleRow++; }
 
-		spriteCMP->getSprite().setTextureRect(_titleRect);
-
+		titleSpriteCMP->getSprite().setTextureRect(_titleRect);
 	}
 
 	if (sf::Keyboard::isKeyPressed(Keyboard::Enter)) {
-		Engine::ChangeScene(&menu);
+		Engine::ChangeScene(&mainMenuScene);
 	}
 }
 
 void TitleScene::UnLoad() {
 	cout << "Scene Title Unload" << endl;
-	spriteCMP.reset();
+	titleSpriteCMP->~SpriteComponent();
+	titleSpriteCMP.reset();
 	txtCMP.reset();
 	Scene::UnLoad();
 }

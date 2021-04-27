@@ -8,7 +8,6 @@ powerupSettings PowerupSettings::LoadSettings(_powerUpsType type, Scene* scene) 
 	case ALL_POWERUPS:
 	{
 		settings.damage = 0;
-		settings.damageUpgradeCount = 0;
 		settings.hp = 1;
 		settings.lifetime = 100.f;
 		settings.scene = scene;
