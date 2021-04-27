@@ -1,11 +1,21 @@
 #pragma once
+#include <queue>
+#include <SFML/Audio.hpp>
+#include "game.h"
 
-//using namespace sf;
-class sBuffer_Queue
+using namespace std;
+using namespace sf;
+
+//Holds a static array of ints that represents the current buffer being used
+class SoundQueue
 {
-protected:
-	
+protected:	
+	static int counts[32]; //keeps a pointer to the next available sound
 public:
+	SoundQueue() = default;
+	~SoundQueue() = default;
+	static sf::Sound getSound(SOUNDS sound);
+	static bool soundPlaying(SOUNDS sound);
 
 };
 

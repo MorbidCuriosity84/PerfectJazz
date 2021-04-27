@@ -20,13 +20,14 @@ sf::View rightView;
 sf::View mainView;
 sf::SoundBuffer sBuffs[256];
 sf::Sound sounds[256];
+const unsigned int soundsPerBuffer = 8;
 
 void Level3Scene::Load() {
 	cout << " Scene 3 Load" << endl;
 
-	for (int sndInt = PLAYER_DIE_1; sndInt != PICKUP_4; sndInt++)
+	for (int sndInt = PLAYER_DIE_1; sndInt != PICKUP_5; sndInt++)
 	{		
-		sBuffs[sndInt].loadFromFile(soundFilenames[sndInt]);		
+		sBuffs[sndInt].loadFromFile(soundFilenames[sndInt]);
 		sounds[sndInt].setBuffer(sBuffs[sndInt]);
 	}
 
@@ -90,7 +91,10 @@ void Level3Scene::UnLoad() {
 	}
 	//enemyBullets.clear();
 	player.reset();	
-		
+	for(auto e : EntityPool::pool){
+		e->clearComponents();
+		e.reset();
+	}
 	Scene::UnLoad();
 }
 

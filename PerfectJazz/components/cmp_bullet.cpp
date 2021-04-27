@@ -3,6 +3,7 @@
 #include "maths.h"
 #include <iostream>
 #include "cmp_sound.h"
+#include "../sound_Queue.h"
 
 using namespace std;
 using namespace sf;
@@ -24,9 +25,7 @@ void BulletComponent::createBullet() {
 	physicsCMP->setSensor(true);
 	Vector2f bulletVelocity =_settings.velocity * _settings.direction;
 	physicsCMP->setVelocity(Vector2f(bulletVelocity.x - _parent->getRotation(), bulletVelocity.y));
-	physicsCMP->setCategory(_settings.category);
-	
-	bulletImpactSound = _settings.sound;
+	physicsCMP->setCategory(_settings.category);		
 }
 
 

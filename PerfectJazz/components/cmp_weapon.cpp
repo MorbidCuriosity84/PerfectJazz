@@ -2,6 +2,7 @@
 #include "cmp_bullet.h"
 #include "../pools/entityPool.h"
 #include "../game.h"
+#include "../sound_Queue.h"
 
 
 void WeaponComponent::fire() {
@@ -17,7 +18,7 @@ void WeaponComponent::fire() {
 	bullet->setView(_parent->getView());
 	bullet->setAlive(true);
 	bullet->setVisible(true);
-	sounds[bul->bulletImpactSound].play();	
+	sounds[_bSettings.sound].play();
 }
 
 void WeaponComponent::update(double dt) {

@@ -122,8 +122,7 @@ enum SOUNDS {
     ENEMY_DIE_1,
     ENEMY_DIE_2,
     ENEMY_DIE_3,
-    ENEMY_DIE_4,
-    ENEMY_DIE_5,
+    ENEMY_DIE_4,    
     EXPLOSION_1,
     EXPLOSION_2,
     EXPLOSION_3,
@@ -133,6 +132,7 @@ enum SOUNDS {
     PICKUP_2,
     PICKUP_3,
     PICKUP_4, 
+    PICKUP_5,
 };
 
 enum MUSIC {
