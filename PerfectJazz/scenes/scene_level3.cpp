@@ -10,6 +10,7 @@
 #include "../game.h"
 #include "../pools/entityPool.h"
 #include <system_physics.h>
+#include "../pools/powerupPool.h"
 
 
 using namespace std;
@@ -48,6 +49,7 @@ void Level3Scene::Load() {
 	musicArray[MUSIC_LEVEL_3].setVolume(25);
 	musicArray[MUSIC_LEVEL_3].setLoop(true);
 	musicArray[MUSIC_LEVEL_3].play();
+	
 
 	//Create left view
 	sf::View tempLeft(sf::FloatRect(0, 0, Engine::getWindowSize().x / 5, Engine::getWindowSize().y));
@@ -62,9 +64,16 @@ void Level3Scene::Load() {
 	mainView = tempMain;
 	mainView.setViewport(sf::FloatRect(0.2f, 0, 0.6f, 1.f));
 
+	
+
 	//Create background	
 	{
 		Background::createBackground(dynamic_cast<Scene*>(&level3));
+	}
+	
+	PowerupPool::init(&level3);
+	{
+		Powerups::createPowerups(dynamic_cast<Scene*>(&level3));
 	}
 	EntityPool::init(&level3);
 	//Create player
@@ -83,9 +92,7 @@ void Level3Scene::Load() {
 	}
 
 	//Create powerups
-	{
-		Powerups::createPowerups(dynamic_cast<Scene*>(&level3));
-	}
+	
 
 	//std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	cout << " Scene 1 Load Done" << endl;
@@ -105,6 +112,10 @@ void Level3Scene::UnLoad() {
 	//enemyBullets.clear();
 	player.reset();	
 	for(auto e : EntityPool::pool){
+		e->clearComponents();
+		e.reset();
+	}
+	for (auto e : PowerupPool::pwp_pool) {
 		e->clearComponents();
 		e.reset();
 	}
