@@ -7,6 +7,7 @@
 #include "../components/cmp_physics.h"
 #include "../components/cmp_damage.h"
 #include "../settings/powerup_settings.h"
+#include "../components//cmp_sound.h"
 
 class PowerupComponent : public Component{
 protected:
@@ -20,6 +21,7 @@ public:
 	void render() override {};
 	void deployPowerup();
 
+	SOUNDS sound;
 	std::shared_ptr<SpriteComponent> powerupSpriteCMP;
 	std::shared_ptr<DamageComponent> damageCMP;
 	std::shared_ptr<HPComponent> hpCMP;

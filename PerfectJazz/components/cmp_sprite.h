@@ -11,6 +11,7 @@ protected:
   std::shared_ptr<sf::Texture> _texture;
 public:
   SpriteComponent() = delete;
+  ~SpriteComponent() override = default;
   explicit SpriteComponent(Entity* p);
   virtual void update(double dt) override;
   void render() override;

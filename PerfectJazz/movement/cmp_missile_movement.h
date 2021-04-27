@@ -12,6 +12,7 @@ class MissileMovementComponent : public MovementComponent
 protected:
 	bool _seeking;
 	std::shared_ptr<PhysicsComponent> _parentPhysics;
+	std::shared_ptr<SpriteComponent> _parentSprite;
 	_entityCategory cat;
 public:
 	void update(double dt) override;	
