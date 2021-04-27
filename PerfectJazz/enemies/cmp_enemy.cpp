@@ -11,15 +11,17 @@ using namespace sf;
 void EnemyComponent::Load(int index) {
 	vector<Vector2ul> tile = ls::findTiles(_enemySettings.tile);
 
-	_parent->setPosition(Vector2f(ls::getTilePosition(tile[index]).x, ls::getTilePosition(tile[index]).y - 460.f));
-	damageCMP = _parent->addComponent<DamageComponent>(_enemySettings.damage);
-	weaponCMP = _parent->addComponent<WeaponComponent>(_weaponSettings, _bulletSettings, _bulletTextureHelper);
+	_parent->setPosition(Vector2f(ls::getTilePosition(tile[index]).x, ls::getTilePosition(tile[index]).y - Engine::getWindowSize().y/1.5));
+
 	//_parent->addComponent<MovementComponent>(Vector2f(0.f, -50.f));
 	_parent->addTag("enemies");
 	_enemyTextureHelper.spriteTexture.get()->loadFromFile(_enemyTextureHelper.spriteFilename);
-
 	spriteCMP = _parent->addComponent<SpriteComponent>();
 	spriteCMP.get()->loadTexture(_enemyTextureHelper, _enemySettings.scale, _enemySettings.angle);
+
+	damageCMP = _parent->addComponent<DamageComponent>(_enemySettings.damage);
+	weaponCMP = _parent->addComponent<WeaponComponent>(_weaponSettings, _bulletSettings, _bulletTextureHelper);
+
 	physicsCMP = _parent->addComponent<EnemyPhysicsComponent>(spriteCMP->getSprite().getGlobalBounds().getSize());
 	physicsCMP.get()->setCategory(_enemySettings.category);
 
@@ -28,7 +30,6 @@ void EnemyComponent::Load(int index) {
 	hpCMP.get()->setVisible(_enemySettings.hpVisible);
 	hpCMP->setSpriteColour(Color::Red);
 	hpCMP->setTextColour(Color::White);
-	hpCMP->setScale(Vector2f(1.f, 0.8f));
 
 	//_parent->addComponent<SineMovementComponent>(Vector2f(0.f,-50.f), 15.f);
 }

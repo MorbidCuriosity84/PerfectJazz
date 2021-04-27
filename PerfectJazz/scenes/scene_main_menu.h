@@ -6,6 +6,7 @@ enum _menuType {
 	MAIN_MENU,
 	SETTINGS_MENU,
 	RESOLUTION_MENU,
+	LEVEL_MENU,
 };
 class MainMenu : public Scene {
 public:
@@ -29,6 +30,7 @@ protected:
 	std::shared_ptr<TextComponent> menuOption3;
 	std::shared_ptr<TextComponent> menuOption4;
 	bool isMainMenuScreen;
+	bool isLevelMenuScreen;
 	bool isSettingsScreen;
 	bool isResolutionScreen;
 	int selectedIndex;
@@ -36,7 +38,7 @@ protected:
 	std::vector<std::string> s;
 	void changeMenuText(std::vector<std::string> s, int index);
 	void alignSprite();
-	void changeBools(bool isMainMenuScreen, bool isSettingsScreen, bool isResolutionScreen);
+	void changeBools(bool isMainMenuScreen, bool isLevelMenuScreen, bool isSettingsScreen, bool isResolutionScreen);
 	void switchSceneText(_menuType scene);
 	void changeResolution(int type);
 };

@@ -35,19 +35,14 @@ void Level3Scene::Load() {
 	sf::View tempLeft(sf::FloatRect(0, 0, Engine::getWindowSize().x / 5, Engine::getWindowSize().y));
 	leftView = tempLeft;
 	leftView.setViewport(sf::FloatRect(0, 0, 0.2f, 1.f));
-	//views.push_back(leftView);
 	//Create right view
 	sf::View tempRight(sf::FloatRect(0, 0, Engine::getWindowSize().x / 5, Engine::getWindowSize().y));
 	rightView = tempRight;
 	rightView.setViewport(sf::FloatRect(0.8f, 0, 0.2f, 1.f));
-	//views.push_back(rightView);
 	//Create main view
 	sf::View tempMain(sf::FloatRect(0, 0, (round)(Engine::getWindowSize().x / 1.66666), Engine::getWindowSize().y));
 	mainView = tempMain;
-
 	mainView.setViewport(sf::FloatRect(0.2f, 0, 0.6f, 1.f));
-
-	//views.push_back(mainView);		
 
 	//Create background	
 	{

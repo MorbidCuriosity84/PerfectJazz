@@ -11,7 +11,7 @@ void PowerupComponent::deployPowerup() {
 	
 	_powerupTextureHelper.spriteTexture.get()->loadFromFile(_powerupTextureHelper.spriteFilename);
 	powerupSpriteCMP = _parent->addComponent<SpriteComponent>();
-	powerupSpriteCMP.get()->loadTexture(_powerupTextureHelper, { 1.f, 1.f }, 0);
+	powerupSpriteCMP.get()->loadTexture(_powerupTextureHelper, { _powerupSettings.spriteScale }, 0);
 	damageCMP = _parent->addComponent<DamageComponent>(_powerupSettings.damage);
 	physicsCMP = _parent->addComponent<PhysicsComponent>(true, powerupSpriteCMP->getSprite().getLocalBounds().getSize());
 	

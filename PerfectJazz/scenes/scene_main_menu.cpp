@@ -63,7 +63,7 @@ void MainMenu::Load() {
 void MainMenu::changeMenuText(std::vector<std::string> s, int index) {
 	for (int i = 0; i < index; i++) {
 
-		menuOption[i]->_text.setCharacterSize(80u);
+		menuOption[i]->setFontSize(80u);
 		menuOption[i]->_text.setString(s[i]);
 		menuOption[i]->_text.setColor(Color::White);
 		if (i == selectedIndex) { menuOption[i]->_text.setColor(Color::Red); }
@@ -95,7 +95,17 @@ void MainMenu::switchSceneText(_menuType scene) {
 		s.push_back("Exit");
 		if (selectedIndex >= s.size()) { selectedIndex--; }
 		changeMenuText(s, 3);
-		changeBools(true, false, false);
+		changeBools(true, false, false, false);
+		break;
+	}	
+	case LEVEL_MENU: {
+		s.clear();
+		s.push_back("Solo");
+		s.push_back("Infite run");
+		s.push_back("Back");
+		if (selectedIndex >= s.size()) { selectedIndex--; }
+		changeMenuText(s, 3);
+		changeBools(false, true, false, false);
 		break;
 	}
 	case SETTINGS_MENU: {
@@ -105,7 +115,7 @@ void MainMenu::switchSceneText(_menuType scene) {
 		s.push_back("Back");
 		if (selectedIndex >= s.size()) { selectedIndex--; }
 		changeMenuText(s, 3);
-		changeBools(false, true, false);
+		changeBools(false, false, true, false);
 		break;
 	}
 	case RESOLUTION_MENU: {
@@ -117,7 +127,7 @@ void MainMenu::switchSceneText(_menuType scene) {
 		s.push_back("1920 x 1080");		
 		s.push_back("Back");
 		changeMenuText(s, 4);
-		changeBools(false, false, true);
+		changeBools(false, false, false, true);
 		break;
 	}
 	default:
@@ -129,8 +139,9 @@ void MainMenu::changeResolution(int type) {
 	cout << "You changed the resolution to type " << type << endl;
 }
 
-void MainMenu::changeBools(bool _isMainMenuScreen, bool _isSettingsScreen, bool _isResolutionScreen) {
+void MainMenu::changeBools(bool _isMainMenuScreen, bool _isLevelMenuScreen, bool _isSettingsScreen, bool _isResolutionScreen) {
 	isMainMenuScreen = _isMainMenuScreen;
+	isLevelMenuScreen = _isLevelMenuScreen;
 	isSettingsScreen = _isSettingsScreen;
 	isResolutionScreen = _isResolutionScreen;
 }
@@ -167,16 +178,19 @@ void MainMenu::Update(const double& dt) {
 		if (sf::Keyboard::isKeyPressed(Keyboard::Enter)) {
 			switch (getPressedItem()) {
 			case 0:
-				if (isMainMenuScreen) { Engine::ChangeScene(&menuScene); break; };
+				if (isMainMenuScreen) { switchSceneText(LEVEL_MENU); break; };
+				if (isLevelMenuScreen) { cout << "Solo" << endl; Engine::ChangeScene(&level3);  break; };
 				if (isSettingsScreen) { switchSceneText(RESOLUTION_MENU); break; }
 				if (isResolutionScreen) { changeResolution(1); break; }
 				break;
 			case 1:
 				if (isMainMenuScreen) { switchSceneText(SETTINGS_MENU); break; }
+				if (isLevelMenuScreen) { cout << "Infinite" << endl; break; }
 				if (isResolutionScreen) { changeResolution(2); break; }
 				break;
 			case 2:
 				if (isMainMenuScreen) { Engine::GetWindow().close(); break; }
+				if (isLevelMenuScreen) { switchSceneText(MAIN_MENU); break; }
 				if (isSettingsScreen) { switchSceneText(MAIN_MENU); break; }
 				if (isResolutionScreen) { changeResolution(3); break; }
 				break;
