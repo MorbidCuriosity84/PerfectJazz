@@ -2,18 +2,26 @@
 #include "Box2D/Box2D.h"
 #include "math.h"
 #include <iostream>
+#include <SFML/Graphics/CircleShape.hpp>
 
 void MissileMovementComponent::update(double dt)
 {
 	if (_seeking) {
 
 		if (player != NULL && player->isAlive()) {
+
+			//This needs some work to make the impulse smoother
 			_velocity = normalize(player.get()->getPosition() - _parent->getPosition()) / (float)length(player.get()->getPosition() - _parent->getPosition()) * 45.f;
 			//_velocity.x = player.get()->getPosition().x - _parent->getPosition().x;
 		}
 		
 		Vector2f bul_pl_dif = _parent->getPosition() - player->getPosition();
 		bul_pl_dif = Vector2f(fabs(bul_pl_dif.x), fabs(bul_pl_dif.y));
+
+		//This is my attempt to keep the missile pointing at the target, it's not perfect, especially if the player moves from one 
+		//quadrant to the next (ie NE -> SE or SW -> NW as the missile starts rotating in the opposite direction than it had been.
+		//I'll have a think and see if i can come up with something better, maybe adding a vector will help, or using parent position
+		//vector maths and trig is always fun, apart from at 3am.
 		if (_parent->getPosition().y < player->getPosition().y) { // missile below 
 			if (_parent->getPosition().x > player->getPosition().x) {  //target to the left of weapon
 				_parentSprite->getSprite().setRotation(_parentSprite->getSprite().getRotation() - (180.f - atan(bul_pl_dif.x / bul_pl_dif.y)));
@@ -33,10 +41,7 @@ void MissileMovementComponent::update(double dt)
 
 		parentPhysics.get()->impulse(_velocity);
 		//parentPhysics.get()->setVelocity(_velocity);
-	}
-	else {
-
-	}
+	}	
 }
 
 void MissileMovementComponent::setSeeking(bool b) { _seeking = b; }
@@ -51,10 +56,13 @@ MissileMovementComponent::MissileMovementComponent(Entity* p, sf::Vector2f vel, 
 	_parentPhysics = _parent->GetCompatibleComponent<PhysicsComponent>()[0];
 	_parentSprite = _parent->GetCompatibleComponent<SpriteComponent>()[0];
 	b2FixtureDef missileRadar;
-	b2CircleShape circleShape;
+	b2CircleShape circleShape;	
 	circleShape.m_radius = 64;	
 	missileRadar.shape = &circleShape;
 	missileRadar.isSensor = true;	
+	/*auto shape = _parent->addComponent<ShapeComponent>();
+	shape->setShape<CircleShape>(64.f);
+	shape->getShape().setOrigin({ 64.f,64.f });*/
 	if (cat == ENEMY_MISSILE) {
 		missileRadar.filter.categoryBits = ENEMY_MISSILE_RADAR;
 		missileRadar.filter.maskBits = PLAYER_BODY;

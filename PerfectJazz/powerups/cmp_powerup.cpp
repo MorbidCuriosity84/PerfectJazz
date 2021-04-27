@@ -54,12 +54,29 @@ void PowerupComponent::update(double dt) {
 	}
 
 	if (hpCMP->getHP() <= 0) {
+		_parent->setAlive(false);
+		_parent->setVisible(false);
+		physicsCMP->getBody()->SetActive(false);
+		physicsCMP->getBody()->SetUserData(nullptr);
+		_parent->setPosition(Vector2f(-100.f, -100.f));
 		powerupAction();
 		sounds[_powerupSettings.sound].play();
 	}
+	if (_parent->getPosition().y > _parent->getView().getSize().y) {
+		_parent->setAlive(false);
+		_parent->setVisible(false);
+		physicsCMP->getBody()->SetActive(false);
+		physicsCMP->getBody()->SetUserData(nullptr);
+		_parent->setPosition(Vector2f(-100.f, -100.f));
+	}
 
-	// Delete powerup entity if offscreen
-	if (_parent->getPosition().y > _parent->getView().getSize().y) { physicsCMP->teleport(Vector2f(-500.f, -500.f)); }
+	//if (hpCMP->getHP() <= 0) {
+	//	powerupAction();
+	//	sounds[_powerupSettings.sound].play();
+	//}
+
+	//// Delete powerup entity if offscreen
+	//if (_parent->getPosition().y > _parent->getView().getSize().y) { physicsCMP->teleport(Vector2f(-500.f, -500.f)); }
 }
 
 void PowerupComponent::powerupAction() {

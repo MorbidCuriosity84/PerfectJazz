@@ -58,11 +58,14 @@ void BulletComponent::update(double dt) {
 		_parent->setAlive(false);
 		_parent->setVisible(false);
 		physicsCMP->getBody()->SetActive(false);	
+		physicsCMP->getBody()->SetUserData(nullptr);
 		_parent->setPosition(Vector2f(-100.f, -100.f));
 		
 		sounds[_settings.sound].setPitch(1.f + sin(accumulation) * .025f);
 		sounds[bulletImpactSound].setVolume(15.f);
 		sounds[bulletImpactSound].play();
+
+		
 	}	
 	if (_parent->getPosition().y > _parent->getView().getSize().y ||
 		_parent->getPosition().y < 0 ||
@@ -71,6 +74,7 @@ void BulletComponent::update(double dt) {
 		_parent->setAlive(false);
 		_parent->setVisible(false);
 		physicsCMP->getBody()->SetActive(false);
+		physicsCMP->getBody()->SetUserData(nullptr);
 		_parent->setPosition(Vector2f(-100.f, -100.f));
 	}
 		
