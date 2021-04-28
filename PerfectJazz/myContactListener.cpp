@@ -16,13 +16,11 @@ void myContactListener::BeginContact(b2Contact* contact) {
 
 	if (helper2->isMissile) {
 		cout << "Radar contact" << endl;
-		helper2->missileCMP->setSeeking(true);				
-		helper2->missileCMP->contactCount++;
+		helper2->missileCMP->setSeeking(true);						
 	}
 	if (helper1->isMissile) {
 		cout << "Radar contact" << endl;
-		helper1->missileCMP->setSeeking(true);				
-		helper1->missileCMP->contactCount++;
+		helper1->missileCMP->setSeeking(true);						
 	}
 
 	if(!(helper1->isMissile && helper2->isMissile)){
