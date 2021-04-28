@@ -9,7 +9,7 @@
 void WeaponComponent::fire() {
 	//auto bullet = _wSettings.scene->makeEntity();
 	auto pS = _parent->GetCompatibleComponent<SpriteComponent>();
-	auto bullet = EntityPool::pool[EntityPool::poolPointer++];
+	shared_ptr<Entity> bullet = EntityPool::pool[EntityPool::poolPointer++];
 	bullet->clearComponents();
 	bullet->setView(_parent->getView());
 	bullet->setPosition({ _parent->getPosition().x, _parent->getPosition().y + (pS[0]->getSprite().getTextureRect().height/2 * _wSettings.direction) });

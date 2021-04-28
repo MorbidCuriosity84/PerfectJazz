@@ -2,9 +2,12 @@
 #include "cmp_powerup.h"
 #include "../PerfectJazz/randomNumber.h"
 #include "../settings/texture_helper_settings.h"
+#include "../pools/powerupPool.h"
+#include <system_physics.h>
 
 using namespace std;
 using namespace sf;
+using namespace Physics;
 
 Scene* _scene;
 double _timer;
@@ -77,11 +80,13 @@ void Powerups::deployPowerups() {
 		_powerupSettings = PowerupSettings::LoadSettings(COIN_PWU, _scene);
 	}
 
+
+	
 	if (choosenPowerup == 6) {
 		for (int i = 0; i < 5; i++) {
 			if (i == 0) {
 				for (int j = 0; j < 14; j++) {
-					auto en = _scene->makeEntity();
+					shared_ptr<Entity> en = PowerupPool::pwp_pool[PowerupPool::pwp_poolPointer++];
 					en->setView(mainView);
 
 					if (j == 0) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 4) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
@@ -106,7 +111,7 @@ void Powerups::deployPowerups() {
 			}
 			if (i == 1) {
 				for (int j = 0; j < 9; j++) {
-					auto en = _scene->makeEntity();
+					shared_ptr<Entity> en = PowerupPool::pwp_pool[PowerupPool::pwp_poolPointer++];
 					en->setView(mainView);
 
 					if (j == 0) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 4) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
@@ -126,7 +131,7 @@ void Powerups::deployPowerups() {
 
 			if (i == 2) {
 				for (int j = 0; j < 12; j++) {
-					auto en = _scene->makeEntity();
+					shared_ptr<Entity> en = PowerupPool::pwp_pool[PowerupPool::pwp_poolPointer++];
 					en->setView(mainView);
 					if (j == 0) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 4) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
 					if (j == 1) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 5) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
@@ -147,7 +152,7 @@ void Powerups::deployPowerups() {
 			}
 			if (i == 3) {
 				for (int j = 0; j < 10; j++) {
-					auto en = _scene->makeEntity();
+					shared_ptr<Entity> en = PowerupPool::pwp_pool[PowerupPool::pwp_poolPointer++];
 					en->setView(mainView);
 
 					if (j == 0) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 4) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
@@ -168,7 +173,7 @@ void Powerups::deployPowerups() {
 
 			if (i == 4) {
 				for (int j = 0; j < 12; j++) {
-					auto en = _scene->makeEntity();
+					shared_ptr<Entity> en = PowerupPool::pwp_pool[PowerupPool::pwp_poolPointer++];
 					en->setView(mainView);
 
 					if (j == 0) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 4) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
@@ -193,12 +198,13 @@ void Powerups::deployPowerups() {
 	}
 
 	else {
-		auto en = _scene->makeEntity();
+		shared_ptr<Entity> en = PowerupPool::pwp_pool[PowerupPool::pwp_poolPointer++];
 		en->setView(mainView);
 		en->setPosition(Vector2f((round)(mainView.getSize().x / 16 * choosenColumn) + (round)((mainView.getSize().x / 16) / 2), 0 - mainView.getSize().x / 32));
 
 		en->addComponent<PowerupComponent>(_powerupTextureHelper, _powerupSettings);
 		en->addTag(type);
+		en->setAlive(true);
 	}
 }
 
