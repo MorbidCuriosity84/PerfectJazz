@@ -94,6 +94,7 @@ void Level3Scene::Load() {
 	
 
 
+
 	//std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	cout << " Scene 1 Load Done" << endl;
 	setLoaded(true);
