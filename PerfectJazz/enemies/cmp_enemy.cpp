@@ -4,6 +4,7 @@
 #include "../components/cmp_enemy_physics.h"
 #include "../movement/cmp_movement.h"
 #include "../movement/cmp_move_sine.h"
+#include "levelManager.h"
 
 using namespace std;
 using namespace sf;
@@ -49,14 +50,36 @@ void EnemyComponent::update(double dt) {
 	}
 	spriteCMP->getSprite().setTextureRect(*_enemyTextureHelper.spriteRectangle.get());
 	spriteCMP->getSprite().setPosition(_parent->getPosition());
-	
+		
+	if (_parent->getPosition().y > _parent->getView().getSize().y ||
+		_parent->getPosition().y < 0 ||
+		_parent->getPosition().x > _parent->getView().getSize().x ||
+		_parent->getPosition().x < 0) {
+		_parent->setAlive(false);
+		_parent->setVisible(false);
+		physicsCMP->getBody()->SetActive(false);
+		physicsCMP->getBody()->SetUserData(nullptr);
+		_parent->setPosition(Vector2f(-100.f, -100.f));
+		LevelManager::enemyCount--;
+		cout << "Enemy count " << LevelManager::enemyCount << endl;
+	}
 	if (hpCMP->getHP() <= 0) {
-		_parent->setForDelete();
+		_parent->setAlive(false);
+		_parent->setVisible(false);
+		physicsCMP->getBody()->SetActive(false);
+		physicsCMP->getBody()->SetUserData(nullptr);
+		_parent->setPosition(Vector2f(-100.f, -100.f));
+
+		sounds[_enemySettings.sound].setPitch(1.f + sin(accumulation) * .025f);
+		sounds[_enemySettings.sound].setVolume(15.f);
+		sounds[_enemySettings.sound].play();
+		LevelManager::enemyCount--;
+		cout << "Enemy count " << LevelManager::enemyCount << endl;
 	}
 }
 
 EnemyComponent::EnemyComponent(Entity* p, textureSettings enemyTextureHelper, textureSettings bulletTextureHelper, enemySettings enemySettings, weaponSettings weaponSettings, bulletSettings bulletSettings, int index)
-	: Component(p), _enemyTextureHelper(enemyTextureHelper), _bulletTextureHelper(bulletTextureHelper), _enemySettings(enemySettings), _weaponSettings(weaponSettings), _bulletSettings(bulletSettings) 
+	: Component(p), _enemyTextureHelper(enemyTextureHelper), _bulletTextureHelper(bulletTextureHelper), _enemySettings(enemySettings), _weaponSettings(weaponSettings), _bulletSettings(bulletSettings), accumulation(0.f) 
 {
 	Load(index);
 	en_colHelp.damageCMP = damageCMP.get();

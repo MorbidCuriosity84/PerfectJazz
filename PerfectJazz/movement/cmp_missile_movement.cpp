@@ -3,6 +3,9 @@
 #include "math.h"
 #include <iostream>
 #include <SFML/Graphics/CircleShape.hpp>
+#include <system_physics.h>
+
+using namespace Physics;
 
 void MissileMovementComponent::update(double dt)
 {
@@ -52,17 +55,18 @@ void MissileMovementComponent::setPhysics(shared_ptr<PhysicsComponent> phys) { _
 
 shared_ptr<PhysicsComponent> MissileMovementComponent::getPhysics() const { return _parentPhysics; }
 
-MissileMovementComponent::MissileMovementComponent(Entity* p, sf::Vector2f vel, bool seek, _entityCategory cat) : MovementComponent(p, vel), _seeking(seek), cat(cat) {	
+MissileMovementComponent::MissileMovementComponent(Entity* p, sf::Vector2f vel, bool seek, _entityCategory cat) : MovementComponent(p, vel), _seeking(seek), cat(cat), contactCount(0) {	
 	_parentPhysics = _parent->GetCompatibleComponent<PhysicsComponent>()[0];
 	_parentSprite = _parent->GetCompatibleComponent<SpriteComponent>()[0];
 	b2FixtureDef missileRadar;
 	b2CircleShape circleShape;	
-	circleShape.m_radius = 64;	
+	auto shape = _parent->addComponent<ShapeComponent>();
+	shape->setShape<CircleShape>(240.f);
+	shape->getShape().setOrigin({ 240.f,240.f });
+	shape->getShape().setFillColor(sf::Color(0, 0, 0, 45));
+	circleShape.m_radius = 8; 		
 	missileRadar.shape = &circleShape;
-	missileRadar.isSensor = true;	
-	/*auto shape = _parent->addComponent<ShapeComponent>();
-	shape->setShape<CircleShape>(64.f);
-	shape->getShape().setOrigin({ 64.f,64.f });*/
+	missileRadar.isSensor = true;		
 	if (cat == ENEMY_MISSILE) {
 		missileRadar.filter.categoryBits = ENEMY_MISSILE_RADAR;
 		missileRadar.filter.maskBits = PLAYER_BODY;
