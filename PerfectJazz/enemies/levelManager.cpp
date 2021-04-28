@@ -11,14 +11,7 @@ void LevelManager::loadLevel(int level)
 {
 	int i = 0;
 	for (char c : levels[level]) {
-		int idx = c - 48; //converts level character to int
-		/*ls::loadLevelFile(waveFilenames[idx], (round)((mainView.getSize().x / 15)));
-		size_t w = ls::getWidth();
-		size_t h = ls::getHeight();
-		for (int j = 0; j < w * h; j++) {
-			if (ls::getTile({ (j % w), (j / w) % w }) != LevelSystem::TILES::EMPTY) {				
-			}
-		}*/
+		int idx = c - 48; //converts level character to int		
 		LevelManager::waves.push(waveFilenames[i]);
 		i++;
 	}
@@ -28,8 +21,10 @@ void LevelManager::loadLevel(int level)
 void LevelManager::playLevel(Scene* s)
 {
 	if (enemyCount == 0) {
-		Enemies::createEnemies(waves.front(), s);
-		waves.pop();
+		if (!waves.empty()) {
+			Enemies::createEnemies(waves.front(), s);
+			waves.pop();
+		}		
 	}
 }
 

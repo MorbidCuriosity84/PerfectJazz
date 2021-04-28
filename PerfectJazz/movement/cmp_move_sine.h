@@ -9,11 +9,10 @@ class SineMovementComponent : public MovementComponent
 protected:
 	float _maxAngle;
 	double _accumulation;
-	float _multiplier;
-
+	float _multiplier;	
+	
 public:
-	void update(double dt) override;
-
+	void update(double dt) override;	
 	void setMaxAngle(float ang);
 	float getMaxAngle() const;
 	void setMultiplier(float multi);

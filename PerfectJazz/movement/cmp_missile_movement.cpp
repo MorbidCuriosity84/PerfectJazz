@@ -1,6 +1,6 @@
 #include "cmp_missile_movement.h"
 #include "Box2D/Box2D.h"
-#include "math.h"
+#include <cmath>
 #include <iostream>
 #include <SFML/Graphics/CircleShape.hpp>
 #include <system_physics.h>

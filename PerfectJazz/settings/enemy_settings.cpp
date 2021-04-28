@@ -14,7 +14,7 @@ enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
 		settings.scene = scene;
 		settings.restitution = 0.4f;
 		settings.friction = 0.005f;
-		settings.velocity = { 0.f,-300.f };
+		settings.velocity = { 0.f,-100.f };
 		settings.tile = ls::AIRMAN;
 		settings.category = ENEMY_BODY;
 		settings.hpVisible = true;
@@ -31,7 +31,7 @@ enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
 		settings.scene = scene;
 		settings.restitution = 0.4f;
 		settings.friction = 0.005f;
-		settings.velocity = { 0.f,-300.f };
+		settings.velocity = { 0.f,-100.f };
 		settings.tile = ls::SERGEANT;
 		settings.category = ENEMY_BODY;
 		settings.hpVisible = true;
@@ -47,7 +47,7 @@ enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
 		settings.scene = scene;
 		settings.restitution = 0.4f;
 		settings.friction = 0.005f;
-		settings.velocity = { 0.f,-300.f };
+		settings.velocity = { 0.f,-100.f };
 		settings.tile = ls::COLONEL;
 		settings.category = ENEMY_BODY;
 		settings.hpVisible = true;
