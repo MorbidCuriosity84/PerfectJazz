@@ -81,13 +81,13 @@ void Enemies::chooseMovement(ls::Tile tile, shared_ptr<Entity> en)
 {
 	switch (tile) {
 	case ls::AIRMAN:
-		en->addComponent<MovementComponent>(_enemySettings.velocity);
+		//en->addComponent<MovementComponent>(_enemySettings.velocity);
 		break;
 	case ls::SERGEANT:
-		en->addComponent<SineMovementComponent>(Vector2f(_enemySettings.velocity), 25.f);
+		//en->addComponent<SineMovementComponent>(Vector2f(_enemySettings.velocity), 25.f);
 		break;
 	case ls::COLONEL:
-		en->addComponent<MovementComponent>(_enemySettings.velocity);
+		//en->addComponent<MovementComponent>(_enemySettings.velocity);
 		break;
 	}
 }

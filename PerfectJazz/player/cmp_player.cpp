@@ -145,7 +145,7 @@ PlayerComponent::PlayerComponent(Entity* p, textureSettings playerTextureHelper,
 	Load();
 	colHelp.damageCMP = damageCMP.get();
 	colHelp.hpCMP = hpCMP.get();
-	colHelp.isMissile = false;
+	colHelp.isMissileRadar = false;
 	colHelp.missileCMP = nullptr;
 
 	physicsCMP->getBody()->SetUserData(&colHelp);

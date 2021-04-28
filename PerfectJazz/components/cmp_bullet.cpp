@@ -4,6 +4,7 @@
 #include <iostream>
 #include "cmp_sound.h"
 #include "../sound_Queue.h"
+#include "../movement/cmp_radar.h"
 
 using namespace std;
 using namespace sf;
@@ -85,16 +86,13 @@ BulletComponent::BulletComponent(Entity* p, bulletSettings settings, textureSett
 	createBullet();
 	bul_colHelp.damageCMP = damageCMP.get();
 	bul_colHelp.hpCMP = hpCMP.get();
-	bul_colHelp.isMissile = false;
+	bul_colHelp.isMissileRadar = false;
 	bul_colHelp.missileCMP = nullptr;
-	if (_settings.category == ENEMY_MISSILE || _settings.category == FRIENDLY_MISSILE) 	{
-		bul_colHelp.isMissile = true;
+	if (_settings.category == ENEMY_MISSILE || _settings.category == FRIENDLY_MISSILE) 	{		
 		bul_colHelp.missileCMP = p->addComponent<MissileMovementComponent>(Vector2f(0.f, -150.f), false, _settings.category).get();		
+		auto r =_parent->addComponent<RadarComponent>(8.f, _settings.category);
+		r->setRadarFixture();
 		p->addTag("missile");
 	}
-	else {
-		bul_colHelp.isMissile = false;
-	}
 	physicsCMP->getBody()->SetUserData(&bul_colHelp);
-
 }
