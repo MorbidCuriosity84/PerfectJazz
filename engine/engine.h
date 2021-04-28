@@ -21,7 +21,6 @@ public:
 	std::shared_ptr<Entity> makeEntity();
 	EntityManager ents;
 
-
 protected:
 	void setLoaded(bool);
 private:
@@ -39,6 +38,9 @@ public:
 	static sf::RenderWindow& GetWindow();
 	static sf::Vector2u getWindowSize();
 	static void setVsync(bool b);
+	static bool isGamePaused;
+	static bool isStaticScene;
+	static Scene* _pausedScene;
 
 private:
 	static Scene* _activeScene;

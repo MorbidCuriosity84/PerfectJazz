@@ -1,4 +1,5 @@
 #include "cmp_player.h"
+#include <SFML/Graphics/CircleShape.hpp>
 
 using namespace std;
 using namespace sf;
@@ -10,6 +11,7 @@ void PlayerComponent::Load() {
 	weaponCMP = player->addComponent<WeaponComponent>(_weaponSettings, _bulletSettings, _bulletTextureHelper);
 	player->addTag("player");
 	_playerTextureHelper.spriteTexture.get()->loadFromFile(_playerTextureHelper.spriteFilename);
+
 
 	spriteCMP = player->addComponent<SpriteComponent>();
 	spriteCMP.get()->loadTexture(_playerTextureHelper, _playerSettings.scale, _playerSettings.angle);

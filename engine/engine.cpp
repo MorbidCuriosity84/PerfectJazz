@@ -19,7 +19,10 @@
 using namespace sf;
 using namespace std;
 Scene* Engine::_activeScene = nullptr;
+Scene* Engine::_pausedScene = nullptr;
 std::string Engine::_gameName;
+bool Engine::isGamePaused;
+bool Engine::isStaticScene;
 
 float deathTimer;
 bool isDead;
@@ -78,8 +81,8 @@ void Engine::Update() {
 		Loading_update(dt, _activeScene);
 	}
 	else if (_activeScene != nullptr) {
-		Physics::update(dt);
 		_activeScene->Update(dt);
+		if (!isGamePaused) { Physics::update(dt); }
 	}
 }
 
@@ -103,6 +106,8 @@ void Engine::Start(unsigned int width, unsigned int height,
 	window.setFramerateLimit(60);
 	_gameName = gameName;
 	_window = &window;
+	isGamePaused = false;
+	isStaticScene = false;
 	Renderer::initialise(window);
 	Physics::initialise();
 	ChangeScene(scn);
@@ -119,7 +124,9 @@ void Engine::Start(unsigned int width, unsigned int height,
 		}
 
 		window.clear();
+
 		Update();
+
 		Render(window);
 		window.display();
 	}
@@ -127,6 +134,7 @@ void Engine::Start(unsigned int width, unsigned int height,
 		_activeScene->UnLoad();
 		_activeScene = nullptr;
 	}
+
 	window.close();
 	Physics::shutdown();
 	Renderer::shutdown();
@@ -142,11 +150,25 @@ void Engine::setVsync(bool b) { _window->setVerticalSyncEnabled(b); }
 
 void Engine::ChangeScene(Scene* s) {
 	cout << "Eng: changing scene: " << s << endl;
+
 	auto old = _activeScene;
+
+	if (isGamePaused) {
+		if (isStaticScene) {
+			_activeScene = _pausedScene;
+			musicArray[MUSIC_LEVEL_3].play();
+			isStaticScene = false;
+		}
+		else {
+			_pausedScene = _activeScene;
+			isStaticScene = true;
+		}
+	}
+
 	_activeScene = s;
 
-	if (old != nullptr) {
-		old->UnLoad(); // todo: Unload Async
+	if (old != nullptr && !Engine::isGamePaused) {
+		old->UnLoad();
 	}
 
 	if (!s->isLoaded()) {
@@ -160,24 +182,37 @@ void Engine::ChangeScene(Scene* s) {
 }
 
 void Scene::Update(const double& dt) {
-	auto playerCMP = player->GetCompatibleComponent<PlayerComponent>()[0];
 
-	if (!player->isAlive() && playerCMP->_playerSettings.lifes > 0) {
-		deathTimer += dt;
-		if (deathTimer > 2) {
-			playerCMP.get()->revive();
-			deathTimer = 0;
+	if (!Engine::isGamePaused) {
+		if (sf::Keyboard::isKeyPressed(Keyboard::Space)) {
+			Engine::isGamePaused = true;
+			musicArray[MUSIC_LEVEL_3].pause();
+			Engine::ChangeScene(&pauseMenu);
 		}
+
+
+		auto playerCMP = player->GetCompatibleComponent<PlayerComponent>()[0];
+
+		if (!player->isAlive() && playerCMP->_playerSettings.lifes > 0) {
+			deathTimer += dt;
+			if (deathTimer > 2) {
+				playerCMP.get()->revive();
+				deathTimer = 0;
+			}
+		}
+
+		//Here only load GameOver once, then keep updating the scene as normal
+		if (!isDead && playerCMP->_playerSettings.lifes <= 0) {
+			GameOver();
+			isDead = true;
+		}
+		Panels::update(dt);
+		Powerups::update(dt);
+		ents.update(dt);
 	}
 
-	//Here only load GameOver once, then keep updating the scene as normal
-	if (!isDead && playerCMP->_playerSettings.lifes <= 0) {
-		GameOver();
-		isDead = true;
-	}
-	Panels::update(dt);
-	Powerups::update(dt);
-	ents.update(dt);
+
+
 }
 
 void Scene::GameOver() {
@@ -223,7 +258,7 @@ void Scene::setLoaded(bool b) {
 void Scene::UnLoad() {
 	panels.~Panels();
 	Physics::GetWorld().reset();
-	ents.list.clear();	
+	ents.list.clear();
 	setLoaded(false);
 }
 

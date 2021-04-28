@@ -8,6 +8,7 @@ using namespace std;
 
 MenuScene menuScene;
 MainMenu mainMenuScene;
+PauseMenu pauseMenu;
 TitleScene title;
 Level1Scene level1;
 Level2Scene level2;
@@ -19,5 +20,5 @@ unsigned int gameWidth = (round)(1280 );
 
 // The grid size will be 15x16 tiles
 int main() {
-	Engine::Start(gameWidth, gameHeight, "Perfect Jazz", &title);
+	Engine::Start(gameWidth, gameHeight, "Perfect Jazz", &level3);
 }
