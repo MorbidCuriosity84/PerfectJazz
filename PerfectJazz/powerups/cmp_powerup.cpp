@@ -75,8 +75,8 @@ void PowerupComponent::update(double dt) {
 	//	sounds[_powerupSettings.sound].play();
 	//}
 
-	//// Delete powerup entity if offscreen
-	//if (_parent->getPosition().y > _parent->getView().getSize().y) { physicsCMP->teleport(Vector2f(-500.f, -500.f)); }
+	// Teleport powerup entity if offscreen
+	if (_parent->getPosition().y > _parent->getView().getSize().y) { physicsCMP->teleport(Vector2f(-500.f, -500.f)); }
 }
 
 void PowerupComponent::powerupAction() {

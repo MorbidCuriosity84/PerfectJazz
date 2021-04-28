@@ -79,8 +79,6 @@ void Powerups::deployPowerups() {
 		_powerupTextureHelper = TextureHelpingSettings::LoadSettings(COIN_PWU, _scene);  type = "coin_pwu";
 		_powerupSettings = PowerupSettings::LoadSettings(COIN_PWU, _scene);
 	}
-
-
 	
 	if (choosenPowerup == 6) {
 		for (int i = 0; i < 5; i++) {

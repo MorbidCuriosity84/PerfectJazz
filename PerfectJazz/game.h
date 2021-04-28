@@ -7,12 +7,14 @@
 #include "scenes/scene_level3.h"
 #include "scenes/scene_main_menu.h"
 #include "scenes/scene_menu.h"
+#include "scenes/scene_pause_menu.h"
 #include "SFML/Audio.hpp"
 
 using namespace std;
 
 extern MenuScene menuScene;
 extern MainMenu mainMenuScene;
+extern PauseMenu pauseMenu;
 extern TitleScene title;
 extern Level1Scene level1;
 extern Level2Scene level2;

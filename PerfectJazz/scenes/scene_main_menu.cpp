@@ -228,4 +228,5 @@ void MainMenu::Update(const double& dt) {
 	}
 }
 
-void MainMenu::UnLoad() {}
+void MainMenu::UnLoad() {
+}
