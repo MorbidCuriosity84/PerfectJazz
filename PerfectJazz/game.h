@@ -24,6 +24,7 @@ extern Vector2f windowScale;
 extern sf::View leftView;
 extern sf::View rightView;
 extern sf::View mainView;
+extern sf::View menuView;
 extern shared_ptr<Entity> player;
 extern unsigned int gameWidth;
 extern unsigned int gameHeight;

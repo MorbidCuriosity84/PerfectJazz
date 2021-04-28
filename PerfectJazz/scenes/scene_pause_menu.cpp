@@ -16,30 +16,32 @@ std::shared_ptr<SpriteComponent> shipSpriteLeft1;
 void PauseMenu::Load() {
 	cout << "Title load \n";
 	auto titleView = makeEntity();
-	titleView->setView(mainView);
+	titleView->setView(menuView);
 
 	for (int i = 0; i < 2; i++) {
 		auto temp = titleView->addComponent<SpriteComponent>();
 		_titleShipTex = make_shared<sf::Texture>();
 		auto rec = sf::IntRect();
-		_titleShipTex->loadFromFile("res/img/player/player_900.png");
+		_titleShipTex->loadFromFile("res/img/enemies/enemy1_900.png");
 
 		temp->setTexure(_titleShipTex);
-		rec.left = (round)(_titleShipTex->getSize().x / 5 * 2);
+		rec.left = (round)(_titleShipTex->getSize().x / 2 * 0);
 		rec.top = (round)(_titleShipTex->getSize().y / 2 * 0);
-		rec.width = (round)(_titleShipTex->getSize().x / 5);
-		rec.height = (round)(_titleShipTex->getSize().y / 2);
+		rec.width = (round)(_titleShipTex->getSize().x / 2);
+		rec.height = (round)(_titleShipTex->getSize().y / 1);
 		temp->getSprite().setTextureRect(rec);
 		temp->getSprite().setOrigin(rec.width / 2, rec.height / 2);
 		if (i == 0) {
 			shipSpriteRight1 = temp;
 			_titleShipRightRect = rec;
-			shipSpriteRight1->getSprite().setRotation(-90.f);
+			shipSpriteRight1->getSprite().setRotation(-270.f);
+			shipSpriteRight1->getSprite().setScale(Vector2f(1.2f, 1.2f));
 		}
 		if (i == 1) {
 			shipSpriteLeft1 = temp;
 			_titleShipLeftRect = rec;
-			shipSpriteLeft1->getSprite().setRotation(90.f);
+			shipSpriteLeft1->getSprite().setRotation(270.f);
+			shipSpriteLeft1->getSprite().setScale(Vector2f(1.2f, 1.2f));
 		}
 	}
 
@@ -68,7 +70,7 @@ void PauseMenu::changeMenuText(std::vector<std::string> s, int index) {
 
 		sf::FloatRect textRect = menuOption[i]->getLocalBounds();
 		menuOption[i]->setOrigin(Vector2f((round)(textRect.left + textRect.width / 2.f), (round)(textRect.top + textRect.height / 2.f)));
-		menuOption[i]->setPosition(Vector2f(mainView.getCenter().x, (round)(mainView.getSize().y / 3) + (mainView.getSize().y / 10 * i)));
+		menuOption[i]->setPosition(Vector2f(menuView.getCenter().x, (round)(menuView.getSize().y / 3) + (menuView.getSize().y / 10 * i)));
 	}
 
 	alignSprite();
@@ -111,15 +113,24 @@ void PauseMenu::Update(const double& dt) {
 		if (sf::Keyboard::isKeyPressed(Keyboard::Down)) { moveDown(); }
 		if (sf::Keyboard::isKeyPressed(Keyboard::Enter)) {
 			switch (getPressedItem()) {
-			case 0:				
-				Engine::ChangeScene(Engine::_pausedScene);
+			case 0:		
 				Engine::isGamePaused = false;
+				Engine::isMenu = false;
+				Engine::isPausedMenu = true;
+				Engine::ChangeScene(Engine::_lastScreen);
 				break;
 			case 1:
+				Engine::isPausedMenu = false;
+				Engine::isMenu = true;
+				Engine::isGamePaused = true;
+				Engine::_lastScreen->UnLoad();
 				Engine::ChangeScene(&mainMenuScene);
 				break;
 			case 2:
-				Engine::isGamePaused = false;
+				UnLoad();
+				Engine::isPausedMenu = false;
+				Engine::isMenu = false;
+				Engine::_lastScreen->UnLoad();
 				Engine::GetWindow().close();
 				break;
 			default:
@@ -127,21 +138,20 @@ void PauseMenu::Update(const double& dt) {
 			}
 		}
 
-		//Check if the loaded sprite is the bottom, if so, load the top. And viceversa
-		if (_titleShipLeftRect.top == _titleShipLeftRect.getSize().y / 1) { _titleShipLeftRect.top = 0; }
-		else { _titleShipLeftRect.top = _titleShipLeftRect.getSize().y / 1; }
-		shipSpriteLeft1->getSprite().setTextureRect(_titleShipLeftRect);
+		if (Engine::isMenu && Engine::isPausedMenu) {
+			//Check if the loaded sprite is the bottom, if so, load the top. And viceversa
+			if (_titleShipLeftRect.left == _titleShipLeftRect.getSize().y / 1) { _titleShipLeftRect.left = 0; }
+			else { _titleShipLeftRect.left = _titleShipLeftRect.getSize().y / 1; }
+			shipSpriteLeft1->getSprite().setTextureRect(_titleShipLeftRect);
 
-		if (_titleShipRightRect.top == _titleShipRightRect.getSize().y / 1) { _titleShipRightRect.top = 0; }
-		else { _titleShipRightRect.top = _titleShipRightRect.getSize().y / 1; }
-		shipSpriteRight1->getSprite().setTextureRect(_titleShipRightRect);
-
+			if (_titleShipRightRect.left == _titleShipRightRect.getSize().y / 1) { _titleShipRightRect.left = 0; }
+			else { _titleShipRightRect.left = _titleShipRightRect.getSize().y / 1; }
+			shipSpriteRight1->getSprite().setTextureRect(_titleShipRightRect);
+		}
 		timer = 0;
 	}
 }
 
 void PauseMenu::UnLoad() {
-	Engine::_pausedScene->UnLoad();
-	shipSpriteRight1.reset();
-	shipSpriteLeft1.reset();
+
 }
