@@ -247,4 +247,19 @@ void Panels::render() {}
 
 Panels::~Panels() { 
 	playerCMP.reset();
+	leftPanel.reset();
+	playerLifeSpriteCMP.reset();
+	upgradeDamageSpriteCMP.reset();
+	upgradeFlyeSpeedSpriteCMP.reset();
+	upgradeFirerateSpriteCMP.reset();
+	upgradeBulletsSpriteCMP.reset();
+	playerCMP.reset();
+	playerTxtCMP.reset();
+	scoreTxtCMP.reset();
+	coinsTxtCMP.reset();
+	playerSpeedTxtCMP.reset();
+	playerBulletPowerTxtCMP.reset();
+	playerFireRateTxtCMP.reset();
+	playerBulletNumberTxtCMP.reset();
+	hpCMP.reset();
 }

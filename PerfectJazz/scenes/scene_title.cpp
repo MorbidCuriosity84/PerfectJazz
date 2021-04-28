@@ -93,7 +93,6 @@ void TitleScene::Update(const double& dt) {
 
 void TitleScene::UnLoad() {
 	cout << "Scene Title Unload" << endl;
-	titleSpriteCMP->~SpriteComponent();
 	titleSpriteCMP.reset();
 	txtCMP.reset();
 	Scene::UnLoad();
