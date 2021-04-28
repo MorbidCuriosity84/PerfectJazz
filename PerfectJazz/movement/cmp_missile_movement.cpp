@@ -55,7 +55,7 @@ void MissileMovementComponent::setPhysics(shared_ptr<PhysicsComponent> phys) { _
 
 shared_ptr<PhysicsComponent> MissileMovementComponent::getPhysics() const { return _parentPhysics; }
 
-MissileMovementComponent::MissileMovementComponent(Entity* p, sf::Vector2f vel, bool seek, _entityCategory cat) : MovementComponent(p, vel), _seeking(seek), cat(cat), contactCount(0) {	
+MissileMovementComponent::MissileMovementComponent(Entity* p, sf::Vector2f vel, bool seek, _entityCategory cat) : MovementComponent(p, vel), _seeking(seek), cat(cat) {	
 	_parentPhysics = _parent->GetCompatibleComponent<PhysicsComponent>()[0];
 	_parentSprite = _parent->GetCompatibleComponent<SpriteComponent>()[0];
 	b2FixtureDef missileRadar;
