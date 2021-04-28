@@ -19,10 +19,11 @@
 using namespace sf;
 using namespace std;
 Scene* Engine::_activeScene = nullptr;
-Scene* Engine::_pausedScene = nullptr;
+Scene* Engine::_lastScreen = nullptr;
 std::string Engine::_gameName;
 bool Engine::isGamePaused;
-bool Engine::isStaticScene;
+bool Engine::isPausedMenu;
+bool Engine::isMenu;
 
 float deathTimer;
 bool isDead;
@@ -106,8 +107,9 @@ void Engine::Start(unsigned int width, unsigned int height,
 	window.setFramerateLimit(60);
 	_gameName = gameName;
 	_window = &window;
-	isGamePaused = false;
-	isStaticScene = false;
+	isGamePaused = true;
+	isMenu = true;
+	isPausedMenu = false;
 	Renderer::initialise(window);
 	Physics::initialise();
 	ChangeScene(scn);
@@ -120,6 +122,12 @@ void Engine::Start(unsigned int width, unsigned int height,
 			}
 		}
 		if (Keyboard::isKeyPressed(Keyboard::Escape)) {
+			isPausedMenu = false;
+			isMenu = false;
+			if (_lastScreen != nullptr) {
+				_lastScreen->UnLoad();
+			}
+
 			window.close();
 		}
 
@@ -151,23 +159,21 @@ void Engine::setVsync(bool b) { _window->setVerticalSyncEnabled(b); }
 void Engine::ChangeScene(Scene* s) {
 	cout << "Eng: changing scene: " << s << endl;
 
+	_lastScreen = _activeScene;
 	auto old = _activeScene;
 
-	if (isGamePaused) {
-		if (isStaticScene) {
-			_activeScene = _pausedScene;
-			musicArray[MUSIC_LEVEL_3].play();
-			isStaticScene = false;
-		}
-		else {
-			_pausedScene = _activeScene;
-			isStaticScene = true;
-		}
+	if (!isGamePaused) {
+		musicArray[MUSIC_LEVEL_3].play();
+	}
+
+	if (isGamePaused && !isPausedMenu && _lastScreen != nullptr) {
+		_lastScreen->UnLoad();
+		old = nullptr;
 	}
 
 	_activeScene = s;
 
-	if (old != nullptr && !Engine::isGamePaused) {
+	if (old != nullptr && !isGamePaused && !isPausedMenu) {
 		old->UnLoad();
 	}
 
@@ -186,11 +192,11 @@ void Scene::Update(const double& dt) {
 	if (!Engine::isGamePaused) {
 		if (sf::Keyboard::isKeyPressed(Keyboard::Space)) {
 			Engine::isGamePaused = true;
+			Engine::isMenu = true;
+			Engine::isPausedMenu = true;
 			musicArray[MUSIC_LEVEL_3].pause();
 			Engine::ChangeScene(&pauseMenu);
 		}
-
-
 		auto playerCMP = player->GetCompatibleComponent<PlayerComponent>()[0];
 
 		if (!player->isAlive() && playerCMP->_playerSettings.lifes > 0) {
@@ -200,7 +206,6 @@ void Scene::Update(const double& dt) {
 				deathTimer = 0;
 			}
 		}
-
 		//Here only load GameOver once, then keep updating the scene as normal
 		if (!isDead && playerCMP->_playerSettings.lifes <= 0) {
 			GameOver();
@@ -210,9 +215,6 @@ void Scene::Update(const double& dt) {
 		Powerups::update(dt);
 		ents.update(dt);
 	}
-
-
-
 }
 
 void Scene::GameOver() {

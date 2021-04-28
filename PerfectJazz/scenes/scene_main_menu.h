@@ -42,5 +42,3 @@ protected:
 	void switchSceneText(_menuType scene);
 	void changeResolution(int type);
 };
-
-

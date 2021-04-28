@@ -39,8 +39,9 @@ public:
 	static sf::Vector2u getWindowSize();
 	static void setVsync(bool b);
 	static bool isGamePaused;
-	static bool isStaticScene;
-	static Scene* _pausedScene;
+	static bool isMenu;
+	static bool isPausedMenu;
+	static Scene* _lastScreen;
 
 private:
 	static Scene* _activeScene;

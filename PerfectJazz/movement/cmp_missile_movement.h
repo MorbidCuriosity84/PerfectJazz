@@ -19,11 +19,10 @@ public:
 	void setSeeking(bool b);
 	bool getSeeking() const;	
 	void setPhysics(std::shared_ptr<PhysicsComponent> phys);
-	void setCategory(_entityCategory cat);
 	std::shared_ptr<PhysicsComponent> getPhysics() const;
 
-	int contactCount;
-
+	MissileMovementComponent() = delete;
+	~MissileMovementComponent() override = default;
 	MissileMovementComponent(Entity* p, sf::Vector2f vel, bool seek, _entityCategory cat);
 };
 
