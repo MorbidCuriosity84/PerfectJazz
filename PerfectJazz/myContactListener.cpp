@@ -17,10 +17,12 @@ void myContactListener::BeginContact(b2Contact* contact) {
 	if (helper2->isMissile) {
 		cout << "Radar contact" << endl;
 		helper2->missileCMP->setSeeking(true);				
+		helper2->missileCMP->contactCount++;
 	}
 	if (helper1->isMissile) {
 		cout << "Radar contact" << endl;
 		helper1->missileCMP->setSeeking(true);				
+		helper1->missileCMP->contactCount++;
 	}
 
 	if(!(helper1->isMissile && helper2->isMissile)){
@@ -34,12 +36,12 @@ void myContactListener::EndContact(b2Contact* contact) {
 	collisionHelper* helper1 = static_cast<collisionHelper*>(contact->GetFixtureA()->GetBody()->GetUserData()); //Fixture A collision helper
 	collisionHelper* helper2 = static_cast<collisionHelper*>(contact->GetFixtureB()->GetBody()->GetUserData()); //Fixture B collision helper
 
-	if (helper2->isMissile) {
+	/*if (helper2->isMissile) {
 		cout << "Radar end contact" << endl;
-		helper2->missileCMP->setSeeking(false);
+		helper2->missileCMP->contactCount > 1 ? helper2->missileCMP->setSeeking(false) : helper2->missileCMP->setSeeking(true);		
 	}
 	if (helper1->isMissile) {
-		cout << "Radar end contact" << endl;
-		helper1->missileCMP->setSeeking(false);
-	}
+		cout << "Radar end contact" << endl;		
+		helper1->missileCMP->contactCount > 1 ? helper2->missileCMP->setSeeking(false) : helper2->missileCMP->setSeeking(true);
+	}*/
 }

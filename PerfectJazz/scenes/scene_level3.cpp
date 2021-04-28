@@ -11,6 +11,8 @@
 #include "../pools/entityPool.h"
 #include <system_physics.h>
 #include "../pools/powerupPool.h"
+#include "../pools/enemyPool.h"
+#include "../enemies/levelManager.h"
 
 
 using namespace std;
@@ -69,8 +71,8 @@ void Level3Scene::Load() {
 	{
 		Background::createBackground(dynamic_cast<Scene*>(&level3));
 	}
-	
-	PowerupPool::init(&level3);
+	//Create powerups
+	PowerupPool::init(&level3); //initialised before other entities so they are on the bottom
 	{
 		Powerups::createPowerups(dynamic_cast<Scene*>(&level3));
 	}
@@ -79,19 +81,17 @@ void Level3Scene::Load() {
 	{
 		Player::createPlayer(dynamic_cast<Scene*>(&level3));
 	}
-
+	EnemyPool::init(&level3);
 	//Create Enemies
 	{
-		Enemies::createEnemies("wave1", dynamic_cast<Scene*>(&level3));
+		LevelManager::loadLevel(1);
+		//Enemies::createEnemies("wave1", dynamic_cast<Scene*>(&level3));
 	}
 
 	//Create text for left and right boxes
 	{
 		Panels::createPanels(dynamic_cast<Scene*>(&level3));
-	}
-
-	//Create powerups
-	
+	}		
 
 	//std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	cout << " Scene 1 Load Done" << endl;
@@ -118,10 +118,15 @@ void Level3Scene::UnLoad() {
 		e->clearComponents();
 		e.reset();
 	}
+	for (auto e : EnemyPool::en_pool) {
+		e->clearComponents();
+		e.reset();
+	}
 	Scene::UnLoad();
 }
 
 void Level3Scene::Update(const double& dt) {
+	LevelManager::update(&level3);
 	Scene::Update(dt);
 }
 

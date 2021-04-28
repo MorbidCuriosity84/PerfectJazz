@@ -22,6 +22,8 @@ public:
 	void setCategory(_entityCategory cat);
 	std::shared_ptr<PhysicsComponent> getPhysics() const;
 
+	int contactCount;
+
 	MissileMovementComponent(Entity* p, sf::Vector2f vel, bool seek, _entityCategory cat);
 };
 

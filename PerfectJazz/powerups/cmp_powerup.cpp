@@ -70,13 +70,6 @@ void PowerupComponent::update(double dt) {
 		_parent->setPosition(Vector2f(-100.f, -100.f));
 	}
 
-	//if (hpCMP->getHP() <= 0) {
-	//	powerupAction();
-	//	sounds[_powerupSettings.sound].play();
-	//}
-
-	//// Delete powerup entity if offscreen
-	//if (_parent->getPosition().y > _parent->getView().getSize().y) { physicsCMP->teleport(Vector2f(-500.f, -500.f)); }
 }
 
 void PowerupComponent::powerupAction() {

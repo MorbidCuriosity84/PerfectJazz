@@ -1,6 +1,8 @@
 #include <LevelSystem.h>
 #include "creates_enemies.h"
 #include "cmp_enemy.h"
+#include "../pools/enemyPool.h"
+#include "levelManager.h"
 
 using namespace std;
 using namespace sf;
@@ -24,7 +26,7 @@ void Enemies::createEnemies(std::string _waveFile, Scene* _scene) {
 			ls::Tile t = ls::getTile({ x, y });
 			if (t == ls::EMPTY) {continue;}
 
-			auto en = _scene->makeEntity();
+			auto en = EnemyPool::en_pool[EnemyPool::en_poolPointer++];
 			en->setView(mainView);
 
 			if (t == ls::AIRMAN) { setType(AIRMAN, _scene); index = airman_index++; }
@@ -32,8 +34,10 @@ void Enemies::createEnemies(std::string _waveFile, Scene* _scene) {
 			if (t == ls::COLONEL) {	setType(COLONEL, _scene); index = colonel_index++;}
 
 			en->addComponent<EnemyComponent>(_enemyTextureHelper, _bulletTextureHelper, _enemySettings, _weaponSettings, _bulletSettings, index);
+			en->setAlive(true);
+			LevelManager::enemyCount++;
 		}
-	}
+	}	
 }
 
 void Enemies::setType(_enemyType type, Scene* _scene) {
@@ -69,6 +73,13 @@ void Enemies::setType(_enemyType type, Scene* _scene) {
 	}
 	default:
 		break;
+	}
+}
+
+void Enemies::loadLevel(std::queue<std::string> waveFiles, Scene* s)
+{
+	while (!waveFiles.empty()) {
+
 	}
 }
 
