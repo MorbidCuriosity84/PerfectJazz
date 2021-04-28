@@ -14,7 +14,7 @@ using namespace sf;
 void EnemyComponent::Load(int index) {
 	vector<Vector2ul> tile = ls::findTiles(_enemySettings.tile);
 
-	_parent->setPosition(Vector2f(ls::getTilePosition(tile[index]).x, ls::getTilePosition(tile[index]).y - Engine::getWindowSize().y));
+	_parent->setPosition(Vector2f(ls::getTilePosition(tile[index]).x, ls::getTilePosition(tile[index]).y - Engine::getWindowSize().y/1.5));
 
 	//_parent->addComponent<MovementComponent>(Vector2f(0.f, -50.f));
 	_parent->addTag("enemies");
@@ -85,7 +85,7 @@ EnemyComponent::EnemyComponent(Entity* p, textureSettings enemyTextureHelper, te
 	Load(index);
 	en_colHelp.damageCMP = damageCMP.get();
 	en_colHelp.hpCMP = hpCMP.get();
-	en_colHelp.isMissile = false;
+	en_colHelp.isMissileRadar = false;
 	en_colHelp.missileCMP = nullptr;
 
 	physicsCMP->getBody()->SetUserData(&en_colHelp);

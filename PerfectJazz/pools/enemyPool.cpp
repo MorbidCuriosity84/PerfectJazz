@@ -1,11 +1,5 @@
 #include "enemyPool.h"
 
-/*
-* Yet another QD pool
-* Again ideally it would be a pool pattern
-* Again time is a factor
-*/
-
 unsigned char  EnemyPool::en_poolPointer;
 std::shared_ptr<Entity> EnemyPool::en_pool[256];
 
