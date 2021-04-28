@@ -29,6 +29,8 @@ public:
 	std::shared_ptr<HPComponent> hpCMP;
 	std::shared_ptr<PhysicsComponent> physicsCMP;
 	std::shared_ptr<WeaponComponent> weaponCMP;
+	SOUNDS sound;
+	float accumulation;
 	void Load(int index);
 	void render() override {};
 	void update(double dt);

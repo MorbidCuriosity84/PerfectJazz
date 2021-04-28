@@ -10,7 +10,7 @@ enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
 	case AIRMAN:
 	{
 		settings.damage = 100;
-		settings.hp = 1000;
+		settings.hp = 1;
 		settings.scene = scene;
 		settings.restitution = 0.4f;
 		settings.friction = 0.005f;
@@ -20,13 +20,14 @@ enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
 		settings.hpVisible = true;
 		settings.scale = { 1.f,1.f };
 		settings.angle = 0;		
+		settings.sound = ENEMY_DIE_1;
 		break;
 	}
 
 	case SERGEANT:
 	{
 		settings.damage = 200;
-		settings.hp = 2500;
+		settings.hp = 25;
 		settings.scene = scene;
 		settings.restitution = 0.4f;
 		settings.friction = 0.005f;
@@ -36,12 +37,13 @@ enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
 		settings.hpVisible = true;
 		settings.scale = { 1.f,1.f };
 		settings.angle = 0;				
+		settings.sound = ENEMY_DIE_2;
 		break;
 	}
 	case COLONEL:
 	{
 		settings.damage = 300;
-		settings.hp = 3500;
+		settings.hp = 35;
 		settings.scene = scene;
 		settings.restitution = 0.4f;
 		settings.friction = 0.005f;
@@ -51,6 +53,7 @@ enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
 		settings.hpVisible = true;
 		settings.scale = { 1.f,1.f };
 		settings.angle = 0;		
+		settings.sound = ENEMY_DIE_3;
 		break;
 	}
 	default:
