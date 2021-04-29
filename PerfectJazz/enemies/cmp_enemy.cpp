@@ -23,7 +23,7 @@ void EnemyComponent::Load(int index) {
 	spriteCMP.get()->loadTexture(_enemyTextureHelper, _enemySettings.scale, _enemySettings.angle);
 
 	damageCMP = _parent->addComponent<DamageComponent>(_enemySettings.damage);
-	_weaponSettings.fireTimer *= RandomNumber::generateUniformNumber(0, 1);
+	
 	weaponCMP = _parent->addComponent<WeaponComponent>(_weaponSettings, _bulletSettings, _bulletTextureHelper);	
 	physicsCMP = _parent->addComponent<EnemyPhysicsComponent>(spriteCMP->getSprite().getGlobalBounds().getSize());
 	physicsCMP.get()->setCategory(_enemySettings.category);
