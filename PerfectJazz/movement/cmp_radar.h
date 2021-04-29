@@ -6,6 +6,13 @@
 
 using namespace std;
 
+/*
+* Basic radar component used to make missile movement components trigger on radar contact
+* Can also be used to set enemies to kamikaze.
+* 
+* @param float radius - b2 radius (divide sfml pixels by 30) 
+* @param _entityCategory cat - category of missile it belongs to
+*/
 class RadarComponent : public Component
 {
 protected:
