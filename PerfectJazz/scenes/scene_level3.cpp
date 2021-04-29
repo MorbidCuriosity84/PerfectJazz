@@ -124,15 +124,9 @@ void Level3Scene::UnLoad() {
 }
 
 void Level3Scene::Update(const double& dt) {
-<<<<<<< Updated upstream
-	LevelManager::update(&level3);	
-=======
 	if (sf::Keyboard::isKeyPressed(Keyboard::Num1)) {
 		Engine::ChangeScene(&upgradeMenu);
 	}
-
-	LevelManager::update(&level3);
->>>>>>> Stashed changes
 	Scene::Update(dt);
 }
 
