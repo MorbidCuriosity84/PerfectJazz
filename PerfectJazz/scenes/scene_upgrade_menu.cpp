@@ -130,7 +130,7 @@ void UpgradeMenu::Load() {
 	exitText->setFontSize(60u);
 	exitText->_text.setString("LEAVE SHOP");
 	exitText->setOrigin(Vector2f((round)(exitText->getLocalBounds().left + exitText->getLocalBounds().width / 2), (round)(exitText->getLocalBounds().height / 2 - exitText->_text.getLocalBounds().height)));
-	exitText->setPosition(Vector2f((round)(menuView.getSize().x / 2), row * 17));
+	exitText->setPosition(Vector2f((round)(menuView.getSize().x / 2), row * 16));
 
 	//Settign rectangle for the coins sprite, rotation and scale
 	_coinRect.left = (round)(_coinTex->getSize().x / 5 * 0);
@@ -397,7 +397,8 @@ void UpgradeMenu::Update(const double& dt) {
 				Engine::isGamePaused = false;
 				Engine::isMenu = false;
 				Engine::isPausedMenu = true;
-				Engine::ChangeScene(Engine::_lastScreen);
+				musicArray[MUSIC_UPGRADE_MENU].pause();
+				Engine::ChangeScene(Engine::_lastScene);
 				selectedIndex = 1;
 				moveUp();
 				break;

@@ -25,7 +25,7 @@ void BulletComponent::createBullet() {
 	physicsCMP->getBody()->SetBullet(true);
 	physicsCMP->setSensor(true);
 	Vector2f bulletVelocity =_settings.velocity * _settings.direction;
-	physicsCMP->setVelocity(Vector2f(bulletVelocity.x - _parent->getRotation(), bulletVelocity.y));
+	physicsCMP->setVelocity(Vector2f(bulletVelocity.x, bulletVelocity.y));
 	physicsCMP->setCategory(_settings.category);	
 
 	bulletImpactSound = _settings.sound;

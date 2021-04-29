@@ -120,13 +120,13 @@ void PauseMenu::Update(const double& dt) {
 				Engine::isGamePaused = false;
 				Engine::isMenu = false;
 				Engine::isPausedMenu = true;
-				Engine::ChangeScene(Engine::_lastScreen);
+				Engine::ChangeScene(Engine::_lastScene);
 				break;
 			case 1:
 				Engine::isPausedMenu = false;
 				Engine::isMenu = true;
 				Engine::isGamePaused = true;
-				Engine::_lastScreen->UnLoad();
+				Engine::_lastScene->UnLoad();
 				moveUp();
 				Engine::ChangeScene(&mainMenuScene);
 				break;
@@ -134,7 +134,7 @@ void PauseMenu::Update(const double& dt) {
 				UnLoad();
 				Engine::isPausedMenu = false;
 				Engine::isMenu = false;
-				Engine::_lastScreen->UnLoad();
+				Engine::_lastScene->UnLoad();
 				Engine::GetWindow().close();
 				break;
 			default:

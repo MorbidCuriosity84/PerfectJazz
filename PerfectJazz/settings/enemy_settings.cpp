@@ -17,6 +17,7 @@ enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
 		settings.velocity = { 0.f,-100.f };
 		settings.tile = ls::AIRMAN;
 		settings.category = ENEMY_BODY;
+		settings.type = AIRMAN;
 		settings.hpVisible = true;
 		settings.scale = { 1.f,1.f };
 		settings.angle = 0;		
@@ -34,6 +35,7 @@ enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
 		settings.velocity = { 0.f,-100.f };
 		settings.tile = ls::SERGEANT;
 		settings.category = ENEMY_BODY;
+		settings.type = SERGEANT;
 		settings.hpVisible = true;
 		settings.scale = { 1.f,1.f };
 		settings.angle = 0;				
@@ -50,6 +52,7 @@ enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
 		settings.velocity = { 0.f,-100.f };
 		settings.tile = ls::COLONEL;
 		settings.category = ENEMY_BODY;
+		settings.type = COLONEL;
 		settings.hpVisible = true;
 		settings.scale = { 1.f,1.f };
 		settings.angle = 0;		

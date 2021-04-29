@@ -19,7 +19,7 @@
 using namespace sf;
 using namespace std;
 Scene* Engine::_activeScene = nullptr;
-Scene* Engine::_lastScreen = nullptr;
+Scene* Engine::_lastScene = nullptr;
 std::string Engine::_gameName;
 bool Engine::isGamePaused;
 bool Engine::isPausedMenu;
@@ -133,8 +133,8 @@ void Engine::Start(unsigned int width, unsigned int height,
 		if (Keyboard::isKeyPressed(Keyboard::Escape)) {
 			isPausedMenu = false;
 			isMenu = false;
-			if (_lastScreen != nullptr) {
-				_lastScreen->UnLoad();
+			if (_lastScene != nullptr) {
+				_lastScene->UnLoad();
 			}
 			window.close();
 		}
@@ -168,15 +168,15 @@ void Engine::setVsync(bool b) { _window->setVerticalSyncEnabled(b); }
 void Engine::ChangeScene(Scene* s) {
 	cout << "Eng: changing scene: " << s << endl;
 
-	_lastScreen = _activeScene;
+	_lastScene = _activeScene;
 	auto old = _activeScene;
 
 	if (!isGamePaused) {
 		musicArray[MUSIC_LEVEL_3].play();
 	}
 
-	if (isGamePaused && !isPausedMenu && _lastScreen != nullptr) {
-		_lastScreen->UnLoad();
+	if (isGamePaused && !isPausedMenu && _lastScene != nullptr) {
+		_lastScene->UnLoad();
 		old = nullptr;
 	}
 
