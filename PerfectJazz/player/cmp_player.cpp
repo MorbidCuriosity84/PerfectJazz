@@ -138,6 +138,16 @@ void PlayerComponent::setMaxUpdate(int max) { _maxUpdate = max; }
 int PlayerComponent::getMaxUpdate() { return _maxUpdate; }
 
 void PlayerComponent::setMaxLifes(int max) { _playerSettings.maxLifes = max; }
+int PlayerComponent::getShoppingCoins() {
+	return _playerSettings.shopPoints;
+}
+void PlayerComponent::setShoppingCoins(int coins) {
+	_playerSettings.shopPoints = coins;
+}
+int PlayerComponent::getScorePoints() {
+	return _playerSettings.score;
+}
+
 int PlayerComponent::getMaxLifes() { return _playerSettings.maxLifes; }
 
 PlayerComponent::PlayerComponent(Entity* p, textureSettings playerTextureHelper, textureSettings bulletTextureHelper, playerSettings playerSettings, weaponSettings weaponSettings, bulletSettings bulletSettings)

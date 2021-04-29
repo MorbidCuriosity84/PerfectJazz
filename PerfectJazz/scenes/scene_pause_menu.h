@@ -12,7 +12,6 @@ public:
 	void Update(const double& dt) override;
 	void moveUp();
 	void moveDown();
-	int getPressedItem();
 
 protected:
 	sf::IntRect _titleShipLeftRect;
@@ -25,7 +24,7 @@ protected:
 	int selectedIndex;
 	double timer;
 	std::vector<std::string> s;
-	void changeMenuText(std::vector<std::string> s, int index);
+	void changeMenuText(std::vector<std::string> s);
 	void alignSprite();
 };
 

@@ -8,8 +8,8 @@
 
 using namespace Physics;
 
-void MissileMovementComponent::update(double dt)
-{
+void MissileMovementComponent::update(double dt) {
+	
 	if (_seeking) {
 
 		if (player != NULL && player->isAlive()) {
@@ -18,7 +18,7 @@ void MissileMovementComponent::update(double dt)
 			_velocity = normalize(player.get()->getPosition() - _parent->getPosition()) / (float)length(player.get()->getPosition() - _parent->getPosition()) * 45.f;
 			//_velocity.x = player.get()->getPosition().x - _parent->getPosition().x;
 		}
-		
+
 		Vector2f bul_pl_dif = _parent->getPosition() - player->getPosition();
 		bul_pl_dif = Vector2f(fabs(bul_pl_dif.x), fabs(bul_pl_dif.y));
 
@@ -41,11 +41,11 @@ void MissileMovementComponent::update(double dt)
 			else {
 				_parentSprite->getSprite().setRotation(_parentSprite->getSprite().getRotation() + atan(bul_pl_dif.x / bul_pl_dif.y));
 			}
-		}				
+		}
 
 		parentPhysics.get()->impulse(_velocity);
 		//parentPhysics.get()->setVelocity(_velocity);
-	}	
+	}
 }
 
 void MissileMovementComponent::setSeeking(bool b) { _seeking = b; }

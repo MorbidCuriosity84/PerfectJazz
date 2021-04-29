@@ -21,6 +21,8 @@ public:
 	void setTextColour(sf::Color c);
 	void render();
 	void setHP(int hp_value);
+	void setMaxHP(int hp_value);
+	int getMaxHP();
 	int getHP();
 	void setScale(sf::Vector2f scale);
 	void loadHP();

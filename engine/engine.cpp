@@ -107,9 +107,18 @@ void Engine::Start(unsigned int width, unsigned int height,
 	window.setFramerateLimit(60);
 	_gameName = gameName;
 	_window = &window;
-	isGamePaused = true;
-	isMenu = true;
-	isPausedMenu = false;
+
+	//Setting for starting the game in the title menu
+	//isGamePaused = true;
+	//isMenu = true;
+	//isPausedMenu = false;
+
+	//Uncomment this if wanting to load a level directly from main
+	Engine::isGamePaused = false;
+	Engine::isMenu = false;
+	Engine::isPausedMenu = false;
+	/////////////////////////////////////////
+
 	Renderer::initialise(window);
 	Physics::initialise();
 	ChangeScene(scn);
@@ -127,7 +136,6 @@ void Engine::Start(unsigned int width, unsigned int height,
 			if (_lastScreen != nullptr) {
 				_lastScreen->UnLoad();
 			}
-
 			window.close();
 		}
 
@@ -143,6 +151,7 @@ void Engine::Start(unsigned int width, unsigned int height,
 		_activeScene = nullptr;
 	}
 
+	player.reset();
 	window.close();
 	Physics::shutdown();
 	Renderer::shutdown();

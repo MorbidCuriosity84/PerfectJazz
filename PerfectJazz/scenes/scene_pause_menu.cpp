@@ -15,6 +15,9 @@ std::shared_ptr<SpriteComponent> shipSpriteLeft1;
 
 void PauseMenu::Load() {
 	cout << "Title load \n";
+	sf::View tempMain(sf::FloatRect(0, 0, Engine::getWindowSize().x, Engine::getWindowSize().y));
+	menuView = tempMain;
+	menuView.setViewport(sf::FloatRect(0, 0, 1.f, 1.f));
 	auto titleView = makeEntity();
 	titleView->setView(menuView);
 
@@ -57,11 +60,13 @@ void PauseMenu::Load() {
 	s.push_back("Continue");
 	s.push_back("Go to Main Menu");
 	s.push_back("Exit Game");
-	changeMenuText(s, 3);
+	changeMenuText(s);
+
+	setLoaded(true);
 }
 
-void PauseMenu::changeMenuText(std::vector<std::string> s, int index) {
-	for (int i = 0; i < index; i++) {
+void PauseMenu::changeMenuText(std::vector<std::string> s) {
+	for (int i = 0; i < s.size(); i++) {
 
 		menuOption[i]->setFontSize(60u / windowScale.x);
 		menuOption[i]->_text.setString(s[i]);
@@ -103,16 +108,14 @@ void PauseMenu::moveDown() {
 	alignSprite();
 }
 
-int PauseMenu::getPressedItem() { return selectedIndex; }
-
 void PauseMenu::Update(const double& dt) {
 	timer += dt;
 
-	if (timer > 0.15) {
+	if (timer > 0.12) {
 		if (sf::Keyboard::isKeyPressed(Keyboard::Up)) { moveUp(); }
 		if (sf::Keyboard::isKeyPressed(Keyboard::Down)) { moveDown(); }
 		if (sf::Keyboard::isKeyPressed(Keyboard::Enter)) {
-			switch (getPressedItem()) {
+			switch (selectedIndex) {
 			case 0:		
 				Engine::isGamePaused = false;
 				Engine::isMenu = false;

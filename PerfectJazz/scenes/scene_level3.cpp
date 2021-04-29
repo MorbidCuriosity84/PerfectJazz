@@ -78,11 +78,13 @@ void Level3Scene::Load() {
 		PowerupPool::init(&level3);
 		Powerups::createPowerups(dynamic_cast<Scene*>(&level3));
 	}
+
 	EntityPool::init(&level3);
 	//Create player
 	{
 		Player::createPlayer(dynamic_cast<Scene*>(&level3));
 	}
+
 	EnemyPool::init(&level3);
 	//Create Enemies
 	{
@@ -98,20 +100,14 @@ void Level3Scene::Load() {
 	//std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	cout << " Scene 3 Load Done" << endl;
 	setLoaded(true);
+
+	
 }
 
 void Level3Scene::UnLoad() {
 	cout << "Scene 3 Unload" << endl;
 	ls::unload();
 
-	for (auto b : playerBullets) {
-		b.reset();
-	}
-	for (auto b : enemyBullets) {
-		b.reset();
-	}
-	//enemyBullets.clear();
-	player.reset();
 	for (auto e : EntityPool::pool) {
 		e->clearComponents();
 		e.reset();
@@ -128,7 +124,9 @@ void Level3Scene::UnLoad() {
 }
 
 void Level3Scene::Update(const double& dt) {
-	LevelManager::update(&level3);	
+	if (sf::Keyboard::isKeyPressed(Keyboard::Num1)) {
+		Engine::ChangeScene(&upgradeMenu);
+	}
 	Scene::Update(dt);
 }
 

@@ -95,6 +95,13 @@ void HPComponent::setHP(int hp_value) {
 		_hp = _maxHp;
 	}
 }
+void HPComponent::setMaxHP(int hp_value) {
+	_maxHp = hp_value;
+}
+
+int HPComponent::getMaxHP() {
+	return _maxHp;
+}
 int HPComponent::getHP() { return _hp; }
 
 void HPComponent::setScale(sf::Vector2f scale) {

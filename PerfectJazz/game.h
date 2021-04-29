@@ -8,6 +8,7 @@
 #include "scenes/scene_main_menu.h"
 #include "scenes/scene_menu.h"
 #include "scenes/scene_pause_menu.h"
+#include "scenes/scene_upgrade_menu.h"
 #include "SFML/Audio.hpp"
 
 using namespace std;
@@ -19,6 +20,7 @@ extern TitleScene title;
 extern Level1Scene level1;
 extern Level2Scene level2;
 extern Level3Scene level3;
+extern UpgradeMenu upgradeMenu;
 extern Scene* mainScene;
 extern Vector2f windowScale;
 extern sf::View leftView;
@@ -28,8 +30,6 @@ extern sf::View menuView;
 extern shared_ptr<Entity> player;
 extern unsigned int gameWidth;
 extern unsigned int gameHeight;
-static vector<shared_ptr<Entity>> playerBullets;
-static vector<shared_ptr<Entity>> enemyBullets;
 extern myContactListener mContLis;
 extern sf::SoundBuffer sBuffs[128];
 extern sf::Sound sounds[128];

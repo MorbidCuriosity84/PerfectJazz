@@ -24,7 +24,7 @@ playerSettings PlayerSettings::LoadSettings(_playerType type, Scene* scene) {
 		currentPlayerSettings.scale = { 1.f,1.f };
 		currentPlayerSettings.angle = 0;
 		currentPlayerSettings.score = 0;
-		currentPlayerSettings.shopPoints = 0;
+		currentPlayerSettings.shopPoints = 998;
 		break;
 	}
 
