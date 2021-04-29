@@ -61,6 +61,12 @@ void UpgradeMenu::Load() {
 	damageMulti = 1.20;
 	maxHPMulti = 1.05;
 
+	//Setting up max upgrades
+	maxHPUpgrade = 99999;
+	maxFlySpeed = 400;
+	maxBulletDamage = 2500;
+	maxFireRate = 0.1;
+
 	//Adding Sprite component for the ship and coin
 	upgradeShipSprite = titleView->addComponent<SpriteComponent>();
 	_upgradeShipTex = make_shared<sf::Texture>();
@@ -160,7 +166,7 @@ void UpgradeMenu::Load() {
 	for (int i = 0; i < 4; i++) {
 		allTextCMP[i + 4]->setFontSize(45u);
 		allTextCMP[4]->_text.setColor(Color::Red);
-		allTextCMP[i + 4]->setOrigin(Vector2f((round)(allTextCMP[i + 4]->getGlobalBounds().width / 2), (round)(allTextCMP[i + 4]->getGlobalBounds().top + allTextCMP[i + 4]->getGlobalBounds().height / 2.f)));
+		allTextCMP[i + 4]->setOrigin(Vector2f((round)(allTextCMP[i + 4]->getLocalBounds().width / 2), (round)(allTextCMP[i + 4]->getLocalBounds().top + allTextCMP[i + 4]->getLocalBounds().height / 2.f)));
 		allTextCMP[i + 4]->setPosition(Vector2f(col * 9, (round)(menuView.getSize().y / 3) + (menuView.getSize().y / 14 * i)));
 	}
 
@@ -209,7 +215,6 @@ void UpgradeMenu::Load() {
 	pressEnterText->setOrigin(Vector2f((round)(pressEnterText->getLocalBounds().left + pressEnterText->getLocalBounds().width / 2), (round)(pressEnterText->getLocalBounds().height / 2 - pressEnterText->_text.getLocalBounds().height)));
 	pressEnterText->setPosition(Vector2f((round)((currentValueText->getPosition().x + nextValueText->getPosition().x) / 2), row * 12));
 
-
 	setLoaded(true);
 }
 
@@ -247,6 +252,8 @@ void UpgradeMenu::updatingCurrentValues() {
 	menuOption2Value->setText(fireRate.str());
 	menuOption3Value->setText(to_string(upgradedPlayerCMP->hpCMP->getMaxHP()));
 	menuOption4Value->setText(flySpeed.str());
+
+
 }
 
 //Setting up values for the upgraded values
@@ -256,10 +263,10 @@ void UpgradeMenu::updatingNextValues() {
 	std::stringstream flySpeedNext;
 	flySpeedNext << std::fixed << std::setprecision(2) << (upgradedPlayerCMP->_playerSettings.flySpeed * flySpeedMulti);
 
-	menuOption1NextValue->setText(to_string((int)(upgradedPlayerCMP->weaponCMP->_bSettings.damage * damageMulti)));
-	menuOption2NextValue->setText(fireRateNext.str());
-	menuOption3NextValue->setText(to_string((int)(upgradedPlayerCMP->hpCMP->getMaxHP() * maxHPMulti)));
-	menuOption4NextValue->setText(flySpeedNext.str());
+	if (menuOption1NextValue->_text.getString() != "MAX") { menuOption1NextValue->setText(to_string((int)(upgradedPlayerCMP->weaponCMP->_bSettings.damage * damageMulti))); }
+	if (menuOption2NextValue->_text.getString() != "MAX") { menuOption2NextValue->setText(fireRateNext.str()); }
+	if (menuOption3NextValue->_text.getString() != "MAX") { menuOption3NextValue->setText(to_string((int)(upgradedPlayerCMP->hpCMP->getMaxHP() * maxHPMulti))); }
+	if (menuOption4NextValue->_text.getString() != "MAX") { menuOption4NextValue->setText(flySpeedNext.str()); }
 }
 
 //Setting up values for the upgrades cost
@@ -269,10 +276,30 @@ void UpgradeMenu::updatingCost() {
 	std::stringstream flySpeedCost;
 	flySpeedCost << std::fixed << std::setprecision(0) << (upgradedPlayerCMP->_playerSettings.flySpeed * 5);
 
-	menuOption1Cost->setText(to_string((int)(upgradedPlayerCMP->weaponCMP->_bSettings.damage * 1.5)));
-	menuOption2Cost->setText(fireRateCost.str());
-	menuOption3Cost->setText(to_string((int)(upgradedPlayerCMP->hpCMP->getMaxHP() * 0.2)));
-	menuOption4Cost->setText(flySpeedCost.str());
+	if (menuOption1NextValue->_text.getString() != "MAX") { menuOption1Cost->setText(to_string((int)(upgradedPlayerCMP->weaponCMP->_bSettings.damage * 1.5))); }
+	if (menuOption2NextValue->_text.getString() != "MAX") { menuOption2Cost->setText(fireRateCost.str()); }
+	if (menuOption3NextValue->_text.getString() != "MAX") { menuOption3Cost->setText(to_string((int)(upgradedPlayerCMP->hpCMP->getMaxHP() * 0.2))); }
+	if (menuOption4NextValue->_text.getString() != "MAX") { menuOption4Cost->setText(flySpeedCost.str()); }
+}
+
+void UpgradeMenu::centeringText() {
+
+	//Recentering text
+	for (int i = 0; i < 4; i++) {
+		allTextCMP[i + 4]->setOrigin(Vector2f((round)(allTextCMP[i + 4]->getLocalBounds().width / 2), (round)(allTextCMP[i + 4]->getLocalBounds().top + allTextCMP[i + 4]->getLocalBounds().height / 2.f)));
+		allTextCMP[i + 4]->setPosition(Vector2f(col * 9, (round)(menuView.getSize().y / 3) + (menuView.getSize().y / 14 * i)));
+	}
+	for (int i = 0; i < 4; i++) {
+		allTextCMP[i + 8]->setOrigin(Vector2f((round)(allTextCMP[i + 8]->getLocalBounds().width / 2), (round)(allTextCMP[i + 8]->getLocalBounds().top + allTextCMP[i + 8]->getLocalBounds().height / 2.f)));
+		allTextCMP[i + 8]->setPosition(Vector2f(col * 13, (round)(menuView.getSize().y / 3) + (menuView.getSize().y / 14 * i)));
+	}
+	for (int i = 0; i < 4; i++) {
+		allTextCMP[i + 12]->setOrigin(Vector2f((round)(allTextCMP[i + 12]->getLocalBounds().width / 2), (round)(allTextCMP[i + 12]->getLocalBounds().top + allTextCMP[i + 12]->getLocalBounds().height / 2.f)));
+		allTextCMP[i + 12]->setPosition(Vector2f(col * 17, (round)(menuView.getSize().y / 3) + (menuView.getSize().y / 14 * i)));
+	}
+	for (int i = 0; i < 4; i++) {
+		allCoinsSprite[2 + i]->getSprite().setPosition(Vector2f(col * 17 + allTextCMP[i + 12]->_text.getLocalBounds().width, (round)(menuView.getSize().y / 3) + (menuView.getSize().y / 14 * i - allCoinsSprite[2 + i]->getSprite().getGlobalBounds().height)));
+	}
 }
 
 //Updates the values after an upgrade
@@ -281,26 +308,47 @@ void UpgradeMenu::purchasingUpgrade(int type) {
 	upgradeCost = allTextCMP[12 + type]->_text.getString();
 
 	//Check if enough coins to do the purchase
-	if (upgradedPlayerCMP->_playerSettings.shopPoints < std::stoi(upgradeCost)) {
+	if (upgradeCost != "MAX" && upgradedPlayerCMP->_playerSettings.shopPoints < std::stoi(upgradeCost)) {
 		noEnoughMoneyText->setVisible(true);
 		notEnoughTimer = 0;
 	}
 	//Update the values in the player settings
-	if (upgradedPlayerCMP->_playerSettings.shopPoints >= std::stoi(upgradeCost)) {
-		if (type == 0) { upgradedPlayerCMP->weaponCMP->_bSettings.damage = upgradedPlayerCMP->weaponCMP->_bSettings.damage * damageMulti; };
-		if (type == 1) { upgradedPlayerCMP->weaponCMP->_wSettings.fireTime = upgradedPlayerCMP->weaponCMP->_wSettings.fireTime * fireRateMulti; };
-		if (type == 2) { upgradedPlayerCMP->hpCMP->setMaxHP(upgradedPlayerCMP->hpCMP->getMaxHP() * maxHPMulti); };
-		if (type == 3) { upgradedPlayerCMP->_playerSettings.flySpeed = upgradedPlayerCMP->_playerSettings.flySpeed * flySpeedMulti; };
+	else if (upgradeCost != "MAX" && upgradedPlayerCMP->_playerSettings.shopPoints >= std::stoi(upgradeCost)) {
+		if (type == 0) {
+			if (upgradedPlayerCMP->weaponCMP->_bSettings.damage >= maxBulletDamage) {
+				menuOption1NextValue->setText("MAX");
+				menuOption1Cost->setText("MAX");
+			}
+			else { upgradedPlayerCMP->weaponCMP->_bSettings.damage = upgradedPlayerCMP->weaponCMP->_bSettings.damage * damageMulti; }
+		}
+		if (type == 1) {
+			if (upgradedPlayerCMP->weaponCMP->_wSettings.fireTime <= maxFireRate) {
+				menuOption2NextValue->setText("MAX");
+				menuOption2Cost->setText("MAX");
+			}
+			else { upgradedPlayerCMP->weaponCMP->_wSettings.fireTime = upgradedPlayerCMP->weaponCMP->_wSettings.fireTime * fireRateMulti; }
+		}
+		if (type == 2) {
+			if (upgradedPlayerCMP->hpCMP->getMaxHP() >= maxHPUpgrade) {
+				menuOption3NextValue->setText("MAX");
+				menuOption3Cost->setText("MAX");
+			}
+			else { upgradedPlayerCMP->hpCMP->setMaxHP(upgradedPlayerCMP->hpCMP->getMaxHP() * maxHPMulti); }
+		}
+		if (type == 3) {
+			if (upgradedPlayerCMP->_playerSettings.flySpeed >= maxFlySpeed) {
+				menuOption4NextValue->setText("MAX");
+				menuOption4Cost->setText("MAX");
+			}
+			else { upgradedPlayerCMP->_playerSettings.flySpeed = upgradedPlayerCMP->_playerSettings.flySpeed * flySpeedMulti; }
+		}
 
 		upgradedPlayerCMP->_playerSettings.shopPoints -= std::stoi(upgradeCost);
 		coinsTxtCMP->_text.setString("Coins: " + to_string(upgradedPlayerCMP->getShoppingCoins()));
 		updatingCurrentValues();
 		updatingNextValues();
 		updatingCost();
-
-		for (int i = 0; i < 4; i++) {
-			allCoinsSprite[2 + i]->getSprite().setPosition(Vector2f(col * 17 + allTextCMP[i + 12]->_text.getLocalBounds().width, (round)(menuView.getSize().y / 3) + (menuView.getSize().y / 14 * i - allCoinsSprite[2 + i]->getSprite().getGlobalBounds().height)));
-		}
+		centeringText();
 	}
 }
 

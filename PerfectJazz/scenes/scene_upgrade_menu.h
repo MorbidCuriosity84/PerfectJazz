@@ -48,6 +48,10 @@ protected:
 	double flySpeedMulti;
 	double damageMulti;
 	double maxHPMulti;
+	double maxHPUpgrade;
+	double maxFlySpeed;
+	double maxBulletDamage;
+	double maxFireRate;
 
 	int selectedIndex;
 	int col;
@@ -62,6 +66,7 @@ protected:
 	void updatingCurrentValues();
 	void updatingNextValues();
 	void updatingCost();
+	void centeringText();
 	void purchasingUpgrade(int type);
 };
 
