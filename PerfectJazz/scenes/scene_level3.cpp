@@ -122,7 +122,7 @@ void Level3Scene::UnLoad() {
 }
 
 void Level3Scene::Update(const double& dt) {
-
+	LevelManager::update(&level3, true, 4);
 	Scene::Update(dt);
 }
 
