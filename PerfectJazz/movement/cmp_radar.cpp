@@ -8,6 +8,9 @@ using namespace sf;
 RadarComponent::RadarComponent(Entity* p, float radius, _entityCategory cat) : Component(p), _radius(radius), _cat(cat) {	
 }
 
+/*
+* Function to create radar fixture, this will attach to the parent, so be warned it will give the parent two physics bodies
+*/
 void RadarComponent::setRadarFixture() {
 	auto pPhys = _parent->GetCompatibleComponent<PhysicsComponent>()[0];
 	rPhysCMP = _parent->addComponent<PhysicsComponent>(true, Vector2f( 1.f,1.f ));
@@ -16,10 +19,12 @@ void RadarComponent::setRadarFixture() {
 	rPhysCMP->setVelocity(pPhys->getVelocity());
 	b2FixtureDef missileRadar;
 	b2CircleShape circleShape;
-	auto shape = _parent->addComponent<ShapeComponent>();
-	shape->setShape<CircleShape>(240.f);
-	shape->getShape().setOrigin({ 240.f,240.f });
-	shape->getShape().setFillColor(sf::Color(0, 0, 0, 45));
+
+	//Used for debugging radar
+	//auto shape = _parent->addComponent<ShapeComponent>();
+	//shape->setShape<CircleShape>(240.f);
+	//shape->getShape().setOrigin({ 240.f,240.f });
+	//shape->getShape().setFillColor(sf::Color(0, 0, 0, 45));
 	circleShape.m_radius = 8;
 	missileRadar.shape = &circleShape;
 	missileRadar.isSensor = true;

@@ -86,7 +86,7 @@ void Level3Scene::Load() {
 	EnemyPool::init(&level3);
 	//Create Enemies
 	{
-		LevelManager::loadLevel(1);
+		//LevelManager::loadLevel(1);
 		//Enemies::createEnemies("wave1", dynamic_cast<Scene*>(&level3));
 	}
 
