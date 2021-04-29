@@ -4,6 +4,7 @@
 #include <iostream>
 #include "cmp_sound.h"
 #include "../sound_Queue.h"
+#include "../movement/cmp_radar.h"
 
 using namespace std;
 using namespace sf;
@@ -64,8 +65,8 @@ void BulletComponent::update(double dt) {
 		sounds[_settings.sound].setPitch(1.f + sin(accumulation) * .025f);
 		sounds[bulletImpactSound].setVolume(15.f);
 		sounds[bulletImpactSound].play();
-
-		
+		_parent->clearComponents();		
+		return;
 	}	
 	if (_parent->getPosition().y > _parent->getView().getSize().y ||
 		_parent->getPosition().y < 0 ||
@@ -76,8 +77,8 @@ void BulletComponent::update(double dt) {
 		physicsCMP->getBody()->SetActive(false);
 		physicsCMP->getBody()->SetUserData(nullptr);
 		_parent->setPosition(Vector2f(-100.f, -100.f));
-	}
-		
+		_parent->clearComponents();
+	}		
 }
 
 BulletComponent::BulletComponent(Entity* p, bulletSettings settings, textureSettings bulletTexHelper)
@@ -85,16 +86,13 @@ BulletComponent::BulletComponent(Entity* p, bulletSettings settings, textureSett
 	createBullet();
 	bul_colHelp.damageCMP = damageCMP.get();
 	bul_colHelp.hpCMP = hpCMP.get();
-	bul_colHelp.isMissile = false;
+	bul_colHelp.isMissileRadar = false;
 	bul_colHelp.missileCMP = nullptr;
-	if (_settings.category == ENEMY_MISSILE || _settings.category == FRIENDLY_MISSILE) 	{
-		bul_colHelp.isMissile = true;
-		bul_colHelp.missileCMP = _parent->addComponent<MissileMovementComponent>(Vector2f(0.f, -150.f), false, _settings.category).get();		
-		_parent->addTag("missile");
-	}
-	else {
-		bul_colHelp.isMissile = false;
+	if (_settings.category == ENEMY_MISSILE || _settings.category == FRIENDLY_MISSILE) 	{		
+		bul_colHelp.missileCMP = p->addComponent<MissileMovementComponent>(Vector2f(0.f, -150.f), false, _settings.category).get();		
+		auto r =_parent->addComponent<RadarComponent>(8.f, _settings.category);
+		r->setRadarFixture();
+		p->addTag("missile");
 	}
 	physicsCMP->getBody()->SetUserData(&bul_colHelp);
-
 }

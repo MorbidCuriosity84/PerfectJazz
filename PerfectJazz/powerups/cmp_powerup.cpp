@@ -121,7 +121,7 @@ PowerupComponent::PowerupComponent(Entity* p, textureSettings powerupTextureHelp
 	pow_colHelp.damageCMP = damageCMP.get();
 	pow_colHelp.hpCMP = hpCMP.get();
 	pow_colHelp.isPowerup = true;
-	pow_colHelp.isMissile = false;
+	pow_colHelp.isMissileRadar = false;
 	pow_colHelp.missileCMP = nullptr;
 	_parent->addTag("powerup");
 	physicsCMP->getBody()->SetUserData(&pow_colHelp);

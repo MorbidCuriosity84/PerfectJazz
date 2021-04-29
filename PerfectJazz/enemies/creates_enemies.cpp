@@ -1,8 +1,8 @@
-#include <LevelSystem.h>
 #include "creates_enemies.h"
 #include "cmp_enemy.h"
 #include "../pools/enemyPool.h"
 #include "levelManager.h"
+#include "../movement/cmp_move_sine.h"
 
 using namespace std;
 using namespace sf;
@@ -16,7 +16,7 @@ bulletSettings _bulletSettings;
 void Enemies::createEnemies(std::string _waveFile, Scene* _scene) {
 
 	// CARLOS TO-DO windows resolution
-	ls::loadLevelFile("res/levels/" + _waveFile + ".txt", (round)((mainView.getSize().x / 15)));
+	ls::loadLevelFile("res/levels/" + _waveFile + ".txt", (round)((mainView.getSize().x / 16)));
 	auto ho = (round)(Engine::getWindowSize().y) - (round)((ls::getHeight() * mainView.getSize().y / 16));
 	ls::setOffset(Vector2f((mainView.getSize().y) / 32, ho));
 
@@ -34,6 +34,7 @@ void Enemies::createEnemies(std::string _waveFile, Scene* _scene) {
 			if (t == ls::COLONEL) {	setType(COLONEL, _scene); index = colonel_index++;}
 
 			en->addComponent<EnemyComponent>(_enemyTextureHelper, _bulletTextureHelper, _enemySettings, _weaponSettings, _bulletSettings, index);
+			chooseMovement(t, en);
 			en->setAlive(true);
 			LevelManager::enemyCount++;
 		}
@@ -76,10 +77,20 @@ void Enemies::setType(_enemyType type, Scene* _scene) {
 	}
 }
 
-void Enemies::loadLevel(std::queue<std::string> waveFiles, Scene* s)
+void Enemies::chooseMovement(ls::Tile tile, shared_ptr<Entity> en)
 {
-	while (!waveFiles.empty()) {
-
+	switch (tile) {
+	case ls::AIRMAN:
+		//en->addComponent<MovementComponent>(_enemySettings.velocity);
+		break;
+	case ls::SERGEANT:
+		//en->addComponent<SineMovementComponent>(Vector2f(_enemySettings.velocity), 25.f);
+		break;
+	case ls::COLONEL:
+		//en->addComponent<MovementComponent>(_enemySettings.velocity);
+		break;
 	}
 }
+
+
 

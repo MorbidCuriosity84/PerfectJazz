@@ -2,7 +2,7 @@
 #include "../components/cmp_physics.h"
 
 void MovementComponent::update(double dt)
-{	
+{		
 	parentPhysics.get()->setVelocity(_velocity);
 }
 

@@ -13,6 +13,7 @@
 #include "../pools/powerupPool.h"
 #include "../pools/enemyPool.h"
 #include "../enemies/levelManager.h"
+#include "../movement/cmp_move_sine.h"
 
 
 using namespace std;
@@ -85,7 +86,7 @@ void Level3Scene::Load() {
 	EnemyPool::init(&level3);
 	//Create Enemies
 	{
-		LevelManager::loadLevel(1);
+		//LevelManager::loadLevel(1);
 		//Enemies::createEnemies("wave1", dynamic_cast<Scene*>(&level3));
 	}
 
@@ -127,7 +128,7 @@ void Level3Scene::UnLoad() {
 }
 
 void Level3Scene::Update(const double& dt) {
-	LevelManager::update(&level3);
+	LevelManager::update(&level3);	
 	Scene::Update(dt);
 }
 

@@ -223,7 +223,7 @@ enum _powerUpsType {
 };
 /*
 Enums are boring so if you looked all the way 
-down here you deserve a bonuse so here's a llama
+down here you deserve a bonus so here's a llama
 
 88 88
 88 88
