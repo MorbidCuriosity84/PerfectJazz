@@ -127,6 +127,7 @@ void PauseMenu::Update(const double& dt) {
 				Engine::isMenu = true;
 				Engine::isGamePaused = true;
 				Engine::_lastScreen->UnLoad();
+				moveUp();
 				Engine::ChangeScene(&mainMenuScene);
 				break;
 			case 2:

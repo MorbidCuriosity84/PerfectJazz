@@ -55,6 +55,12 @@ void UpgradeMenu::Load() {
 	selectedIndex = 0;
 	timer = 0;
 
+	//Setting up multipliers for upgrades
+	fireRateMulti = 0.95;
+	flySpeedMulti = 1.10;
+	damageMulti = 1.20;
+	maxHPMulti = 1.05;
+
 	//Adding Sprite component for the ship and coin
 	upgradeShipSprite = titleView->addComponent<SpriteComponent>();
 	_upgradeShipTex = make_shared<sf::Texture>();
@@ -233,11 +239,11 @@ void UpgradeMenu::alignSprite() {
 //Setting up values for the current values
 void UpgradeMenu::updatingCurrentValues() {
 	std::stringstream fireRate;
-	fireRate << std::fixed << std::setprecision(2) << upgradedPlayerCMP->_weaponSettings.fireTime;
+	fireRate << std::fixed << std::setprecision(2) << upgradedPlayerCMP->weaponCMP->_wSettings.fireTime;
 	std::stringstream flySpeed;
 	flySpeed << std::fixed << std::setprecision(2) << upgradedPlayerCMP->_playerSettings.flySpeed;
 
-	menuOption1Value->setText(to_string(upgradedPlayerCMP->_bulletSettings.damage));
+	menuOption1Value->setText(to_string(upgradedPlayerCMP->weaponCMP->_bSettings.damage));
 	menuOption2Value->setText(fireRate.str());
 	menuOption3Value->setText(to_string(upgradedPlayerCMP->hpCMP->getMaxHP()));
 	menuOption4Value->setText(flySpeed.str());
@@ -246,50 +252,56 @@ void UpgradeMenu::updatingCurrentValues() {
 //Setting up values for the upgraded values
 void UpgradeMenu::updatingNextValues() {
 	std::stringstream fireRateNext;
-	fireRateNext << std::fixed << std::setprecision(2) << (upgradedPlayerCMP->_weaponSettings.fireTime * 1.15);
+	fireRateNext << std::fixed << std::setprecision(2) << (upgradedPlayerCMP->weaponCMP->_wSettings.fireTime * fireRateMulti);
 	std::stringstream flySpeedNext;
-	flySpeedNext << std::fixed << std::setprecision(2) << (upgradedPlayerCMP->_playerSettings.flySpeed * 1.10);
+	flySpeedNext << std::fixed << std::setprecision(2) << (upgradedPlayerCMP->_playerSettings.flySpeed * flySpeedMulti);
 
-	menuOption1NextValue->setText(to_string((int)(upgradedPlayerCMP->_bulletSettings.damage * 1.2)));
+	menuOption1NextValue->setText(to_string((int)(upgradedPlayerCMP->weaponCMP->_bSettings.damage * damageMulti)));
 	menuOption2NextValue->setText(fireRateNext.str());
-	menuOption3NextValue->setText(to_string((int)(upgradedPlayerCMP->hpCMP->getMaxHP() * 1.2)));
+	menuOption3NextValue->setText(to_string((int)(upgradedPlayerCMP->hpCMP->getMaxHP() * maxHPMulti)));
 	menuOption4NextValue->setText(flySpeedNext.str());
 }
 
 //Setting up values for the upgrades cost
 void UpgradeMenu::updatingCost() {
 	std::stringstream fireRateCost;
-	fireRateCost << std::fixed << std::setprecision(0) << (upgradedPlayerCMP->_weaponSettings.fireTime * 150);
+	fireRateCost << std::fixed << std::setprecision(0) << (300 / upgradedPlayerCMP->weaponCMP->_wSettings.fireTime);
 	std::stringstream flySpeedCost;
 	flySpeedCost << std::fixed << std::setprecision(0) << (upgradedPlayerCMP->_playerSettings.flySpeed * 5);
 
-	menuOption1Cost->setText(to_string((int)(upgradedPlayerCMP->_bulletSettings.damage * 1.5)));
+	menuOption1Cost->setText(to_string((int)(upgradedPlayerCMP->weaponCMP->_bSettings.damage * 1.5)));
 	menuOption2Cost->setText(fireRateCost.str());
 	menuOption3Cost->setText(to_string((int)(upgradedPlayerCMP->hpCMP->getMaxHP() * 0.2)));
 	menuOption4Cost->setText(flySpeedCost.str());
 }
 
+//Updates the values after an upgrade
 void UpgradeMenu::purchasingUpgrade(int type) {
 
 	upgradeCost = allTextCMP[12 + type]->_text.getString();
 
+	//Check if enough coins to do the purchase
 	if (upgradedPlayerCMP->_playerSettings.shopPoints < std::stoi(upgradeCost)) {
 		noEnoughMoneyText->setVisible(true);
 		notEnoughTimer = 0;
 	}
-
+	//Update the values in the player settings
 	if (upgradedPlayerCMP->_playerSettings.shopPoints >= std::stoi(upgradeCost)) {
-		if (type == 0) { upgradedPlayerCMP->_bulletSettings.damage = upgradedPlayerCMP->_bulletSettings.damage * 1.2; };
-		if (type == 1) { upgradedPlayerCMP->_weaponSettings.fireTime = upgradedPlayerCMP->_weaponSettings.fireTime * 1.15; };
-		if (type == 2) { upgradedPlayerCMP->hpCMP->setMaxHP(upgradedPlayerCMP->hpCMP->getMaxHP() * 1.2); };
-		if (type == 3) { upgradedPlayerCMP->_playerSettings.flySpeed = upgradedPlayerCMP->_playerSettings.flySpeed * 1.10; };
+		if (type == 0) { upgradedPlayerCMP->weaponCMP->_bSettings.damage = upgradedPlayerCMP->weaponCMP->_bSettings.damage * damageMulti; };
+		if (type == 1) { upgradedPlayerCMP->weaponCMP->_wSettings.fireTime = upgradedPlayerCMP->weaponCMP->_wSettings.fireTime * fireRateMulti; };
+		if (type == 2) { upgradedPlayerCMP->hpCMP->setMaxHP(upgradedPlayerCMP->hpCMP->getMaxHP() * maxHPMulti); };
+		if (type == 3) { upgradedPlayerCMP->_playerSettings.flySpeed = upgradedPlayerCMP->_playerSettings.flySpeed * flySpeedMulti; };
 
 		upgradedPlayerCMP->_playerSettings.shopPoints -= std::stoi(upgradeCost);
 		coinsTxtCMP->_text.setString("Coins: " + to_string(upgradedPlayerCMP->getShoppingCoins()));
 		updatingCurrentValues();
 		updatingNextValues();
 		updatingCost();
-	};
+
+		for (int i = 0; i < 4; i++) {
+			allCoinsSprite[2 + i]->getSprite().setPosition(Vector2f(col * 17 + allTextCMP[i + 12]->_text.getLocalBounds().width, (round)(menuView.getSize().y / 3) + (menuView.getSize().y / 14 * i - allCoinsSprite[2 + i]->getSprite().getGlobalBounds().height)));
+		}
+	}
 }
 
 //Moves up the selection and changes the colour of the text to red while selected, and while while not
@@ -366,7 +378,7 @@ void UpgradeMenu::Update(const double& dt) {
 	if (keyTimer > 0.12) {
 		if (sf::Keyboard::isKeyPressed(Keyboard::Up)) { moveUp(); }
 		if (sf::Keyboard::isKeyPressed(Keyboard::Down)) { moveDown(); }
-		//Switches between 3 cases, depending on which element of the menu has been selected
+		//Switches between 4 cases, depending on which element of the menu has been selected
 		if (sf::Keyboard::isKeyPressed(Keyboard::Enter)) {
 			switch (selectedIndex) {
 			case 0:
@@ -380,6 +392,14 @@ void UpgradeMenu::Update(const double& dt) {
 				break;
 			case 3:
 				purchasingUpgrade(3);
+				break;
+			case 4:
+				Engine::isGamePaused = false;
+				Engine::isMenu = false;
+				Engine::isPausedMenu = true;
+				Engine::ChangeScene(Engine::_lastScreen);
+				selectedIndex = 1;
+				moveUp();
 				break;
 			default:
 				break;
@@ -397,17 +417,4 @@ void UpgradeMenu::Update(const double& dt) {
 void UpgradeMenu::UnLoad() {
 
 	upgradedPlayerCMP.reset();
-	allTextCMP.clear();
-	menuOption2.reset();
-	menuOption3.reset();
-	menuOption1.reset();
-	menuOption4.reset();
-	coinsTxtCMP.reset();
-	menuOption1Value.reset();
-	menuOption2Value.reset();
-	menuOption3Value.reset();
-	menuOption4Value.reset();
-	currentValueText.reset();
-	nextValueText.reset();
-	upgradeCostText.reset();
 }

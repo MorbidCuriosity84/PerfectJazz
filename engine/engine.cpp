@@ -29,7 +29,7 @@ float deathTimer;
 bool isDead;
 
 static bool loading = false;
-static float loadingspinner = 0.f;
+static float loadingspinner = 0.1f;
 static float loadingTime;
 static RenderWindow* _window;
 static Panels panels;
@@ -199,6 +199,13 @@ void Engine::ChangeScene(Scene* s) {
 void Scene::Update(const double& dt) {
 
 	if (!Engine::isGamePaused) {
+		if (sf::Keyboard::isKeyPressed(Keyboard::Num1)) {
+			Engine::isGamePaused = true;
+			Engine::isMenu = true;
+			Engine::isPausedMenu = true;
+			musicArray[MUSIC_LEVEL_3].pause();
+			Engine::ChangeScene(&upgradeMenu);
+		}
 		if (sf::Keyboard::isKeyPressed(Keyboard::Space)) {
 			Engine::isGamePaused = true;
 			Engine::isMenu = true;

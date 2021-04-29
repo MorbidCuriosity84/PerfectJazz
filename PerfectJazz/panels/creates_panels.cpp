@@ -38,6 +38,7 @@ int currentFlySpeed;
 int currentScore;
 int currentCoins;
 int currentHP;
+int currentMaxHP;
 int row;
 int col;
 
@@ -203,8 +204,10 @@ void Panels::setUpgradesSprites(string type, int counter) {
 		coinsTxtCMP->setText("Coins: " + to_string(playerCMP->_playerSettings.shopPoints));
 	};	
 	if (type == "hp") {
+		currentHP = playerCMP->hpCMP->getHP();
+		currentMaxHP = playerCMP->hpCMP->getMaxHP();
 		hpCMP->setHP(counter);
-		hpCMP->textCMP->setText(to_string(playerCMP->hpCMP->getHP()) + "/" + to_string(playerCMP->_playerSettings.maxHP));
+		hpCMP->textCMP->setText(to_string(playerCMP->hpCMP->getHP()) + "/" + to_string(playerCMP->hpCMP->getMaxHP()));
 		hpCMP->textCMP->setOrigin(Vector2f((round)(hpCMP->textCMP->getGlobalBounds().width / 2), (round)(hpCMP->textCMP->getGlobalBounds().height / 2)));
 		hpCMP->textCMP->setPosition(Vector2f((round)(leftView.getSize().x / 2), (round)(hpCMP->textCMP->getPosition().y)));
 	};
@@ -214,8 +217,7 @@ void Panels::setUpgradesSprites(string type, int counter) {
 void Panels::update(double dt) {
 	timer += dt;
 
-	// CHANGE THIS TIMER BACK TO 0.1 - CARLOS - THIS IS JUST FOR DEBUG
-	if (timer > 10.1) {
+	if (timer > 0.1) {
 
 		if (currentLifes != playerCMP->_playerSettings.lifes) { setLifeSprites(); }
 
@@ -237,7 +239,7 @@ void Panels::update(double dt) {
 		if (currentCoins != playerCMP->_playerSettings.shopPoints) {
 			setUpgradesSprites("coin", playerCMP->_playerSettings.shopPoints);
 		}
-		if (currentHP != playerCMP->hpCMP->getHP()) {
+		if (currentHP != playerCMP->hpCMP->getHP() || currentMaxHP != playerCMP->hpCMP->getMaxHP()){
 			setUpgradesSprites("hp", playerCMP->hpCMP->getHP());
 		}
 		timer = 0;

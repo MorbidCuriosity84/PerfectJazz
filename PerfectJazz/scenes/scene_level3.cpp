@@ -88,8 +88,8 @@ void Level3Scene::Load() {
 	EnemyPool::init(&level3);
 	//Create Enemies
 	{
-		//LevelManager::loadLevel(1);
-		//Enemies::createEnemies("wave1", dynamic_cast<Scene*>(&level3));
+		LevelManager::loadLevel(1);
+		Enemies::createEnemies("wave1", dynamic_cast<Scene*>(&level3));
 	}
 
 	//Create text for left and right boxes
@@ -99,9 +99,7 @@ void Level3Scene::Load() {
 
 	//std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	cout << " Scene 3 Load Done" << endl;
-	setLoaded(true);
-
-	
+	setLoaded(true);	
 }
 
 void Level3Scene::UnLoad() {
@@ -124,9 +122,7 @@ void Level3Scene::UnLoad() {
 }
 
 void Level3Scene::Update(const double& dt) {
-	if (sf::Keyboard::isKeyPressed(Keyboard::Num1)) {
-		Engine::ChangeScene(&upgradeMenu);
-	}
+
 	Scene::Update(dt);
 }
 
