@@ -10,11 +10,11 @@
 void WeaponComponent::fire() {
 	//auto bullet = _wSettings.scene->makeEntity();
 
-	int odd = _wSettings.numBulletsUpgradeCount * 2 - 1;
+	int odd = _wSettings.numBulletsUpgradeCount * 2 + 1;
 	float deg = 30.f / (float)odd;
 	float spread = 1.f;
 	float angleStart = _parent->getRotation();
-	if (_wSettings.numBulletsUpgradeCount > 1) {
+	if (_wSettings.numBulletsUpgradeCount + 1 > 1) {
 		for (int i = 0 ; i < odd; i++) {			
 			if (i % 2 != 0) {
 				deg *= i;

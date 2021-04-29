@@ -7,6 +7,7 @@
 #include "levelManager.h"
 #include <random>
 #include "../randomNumber.h"
+#include "../player/cmp_player.h"
 
 using namespace std;
 using namespace sf;
@@ -70,6 +71,11 @@ void EnemyComponent::update(double dt) {
 		physicsCMP->getBody()->SetActive(false);
 		physicsCMP->getBody()->SetUserData(nullptr);
 		_parent->setPosition(Vector2f(-100.f, -100.f));
+
+		auto type = _parent->GetCompatibleComponent<EnemyComponent>()[0].get()->_enemySettings.type;
+		if (type == AIRMAN) { player->GetCompatibleComponent<PlayerComponent>()[0].get()->_playerSettings.score += 10; }
+		if (type == SERGEANT) { player->GetCompatibleComponent<PlayerComponent>()[0].get()->_playerSettings.score += 20; }
+		if (type == COLONEL) { player->GetCompatibleComponent<PlayerComponent>()[0].get()->_playerSettings.score += 30; }
 
 		sounds[_enemySettings.sound].setPitch(1.f + sin(accumulation) * .025f);
 		sounds[_enemySettings.sound].setVolume(15.f);

@@ -75,6 +75,7 @@ void PowerupComponent::update(double dt) {
 void PowerupComponent::powerupAction() {
 	auto playerCMP = player->GetCompatibleComponent<PlayerComponent>()[0];
 	physicsCMP->teleport(Vector2f(-500.f, -500.f));
+
 	hpCMP->setHP(1);
 
 	if (_parent->getTags().find("hp_pwu") != _parent->getTags().end()) {

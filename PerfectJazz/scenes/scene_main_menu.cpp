@@ -235,8 +235,8 @@ void MainMenu::Update(const double& dt) {
 }
 
 void MainMenu::UnLoad() {
-	if (Engine::isMenu && Engine::_lastScreen != nullptr) {
-		Engine::_lastScreen->UnLoad();
+	if (Engine::isMenu && Engine::_lastScene != nullptr) {
+		Engine::_lastScene->UnLoad();
 	}
 
 	switchSceneText(MAIN_MENU);

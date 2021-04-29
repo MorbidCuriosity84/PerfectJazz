@@ -57,7 +57,11 @@ add_custom_target(copy_resources ALL COMMAND ${CMAKE_COMMAND}
     "${PROJECT_SOURCE_DIR}/res"
     ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/$<CONFIGURATION>/res
 )
-	
+add_custom_target(copy_dlls ALL COMMAND ${CMAKE_COMMAND} 
+-E copy_directory
+      "${PROJECT_SOURCE_DIR}/lib/sfml/extlibs/bin/x64"
+      ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/$<CONFIGURATION>
+)
 	
 #### Perfect Jazz Files ####
 file(GLOB_RECURSE SOURCES PerfectJazz/*.cpp PerfectJazz/*.h)
@@ -93,7 +97,7 @@ source_group("background" FILES ${BACKGROUND})
 #target_include_directories(PerfectJazz SYSTEM PRIVATE ${SFML_INCS} ${B2D_INCS})
 target_link_libraries(PerfectJazz lib_engine)
 set(EXECUTABLES ${EXECUTABLES} PerfectJazz)
-add_dependencies(PerfectJazz copy_resources)
+add_dependencies(PerfectJazz copy_resources copy_dlls)
 
 set_target_properties(PerfectJazz 
     PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY

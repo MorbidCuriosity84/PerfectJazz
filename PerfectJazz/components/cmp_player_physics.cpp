@@ -94,7 +94,7 @@ PlayerPhysicsComponent::PlayerPhysicsComponent(Entity* p,
 	const Vector2f& size)
 	: PhysicsComponent(p, true, size) {
 	_size = sv2_to_bv2(size, true);
-	_maxVelocity = Vector2f(500.f, 5300.f);
+	_maxVelocity = Vector2f(1000.f, 1000.f);
 	_body->SetSleepingAllowed(false);
 	_body->SetFixedRotation(true);
 	//Bullet items have higher-res collision detection
@@ -108,6 +108,5 @@ std::string PlayerPhysicsComponent::GetDirection() {
 }
 
 void PlayerPhysicsComponent::setFlySpeed(int speed) {
-	auto playerCMP = player->GetCompatibleComponent<PlayerComponent>()[0];
-	playerCMP->_playerSettings.flySpeed = speed;
+	auto playerCMP = player->GetCompatibleComponent<PlayerComponent>()[0].get()->_playerSettings.flySpeed = speed;
 }
