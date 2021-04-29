@@ -19,6 +19,7 @@ protected:
 	float _visibilityTimer;
 	int _maxUpdate;
 
+
 public:
 	PlayerComponent() = delete;
 	explicit PlayerComponent(Entity* p, textureSettings playerTextureHelper, textureSettings bulletTextureHelper, playerSettings playerSettings, weaponSettings weaponSettings, bulletSettings bulletSettings);
@@ -34,6 +35,9 @@ public:
 	void setBulletNumberUpgradeState(int state);
 	void setMaxUpdate(int max);
 	void setMaxLifes(int max);
+	int getShoppingCoins();
+	void setShoppingCoins(int coins);
+	int getScorePoints();
 	int getFlySpeedUpgradeState();
 	int getDamageUpgradeState();
 	int getFireRateUpgradeState();

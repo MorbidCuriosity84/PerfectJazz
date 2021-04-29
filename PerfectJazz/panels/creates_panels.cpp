@@ -214,7 +214,8 @@ void Panels::setUpgradesSprites(string type, int counter) {
 void Panels::update(double dt) {
 	timer += dt;
 
-	if (timer > 0.1) {
+	// CHANGE THIS TIMER BACK TO 0.1 - CARLOS - THIS IS JUST FOR DEBUG
+	if (timer > 10.1) {
 
 		if (currentLifes != playerCMP->_playerSettings.lifes) { setLifeSprites(); }
 

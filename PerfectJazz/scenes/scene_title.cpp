@@ -13,7 +13,6 @@ void TitleScene::Load() {
 	cout << "Title load \n";
 	sf::View mainView(sf::FloatRect(0, 0, Engine::getWindowSize().x, Engine::getWindowSize().y));
 	mainView.setViewport(sf::FloatRect(0, 0, 1, 1));
-	//views.push_back(mainView);
 	auto titleView = makeEntity();
 	titleView->setView(mainView);
 
@@ -67,7 +66,8 @@ void TitleScene::Load() {
 	titleTimer = 0;
 	titleCol = 0;
 	titleRow = 0;	
-	
+
+	setLoaded(true);
 }
 
 void TitleScene::Update(const double& dt) {

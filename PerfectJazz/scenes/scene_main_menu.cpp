@@ -54,15 +54,17 @@ void MainMenu::Load() {
 	menuOption = titleView->GetCompatibleComponent<TextComponent>();
 
 	switchSceneText(MAIN_MENU);
-	changeMenuText(s, 3);
+	changeMenuText(s);
 
 	isMainMenuScreen = true;
 	isSettingsScreen = false;
 	isResolutionScreen = false;
+
+	setLoaded(true);
 }
 
-void MainMenu::changeMenuText(std::vector<std::string> s, int index) {
-	for (int i = 0; i < index; i++) {
+void MainMenu::changeMenuText(std::vector<std::string> s) {
+	for (int i = 0; i < s.size(); i++) {
 
 		menuOption[i]->setFontSize(60u / windowScale.x);
 		menuOption[i]->_text.setString(s[i]);
@@ -95,7 +97,7 @@ void MainMenu::switchSceneText(_menuType scene) {
 		s.push_back("Settings");
 		s.push_back("Exit");
 		if (selectedIndex >= s.size()) { selectedIndex--; }
-		changeMenuText(s, 3);
+		changeMenuText(s);
 		changeBools(true, false, false, false);
 		break;
 	}
@@ -105,7 +107,7 @@ void MainMenu::switchSceneText(_menuType scene) {
 		s.push_back("Infite run");
 		s.push_back("Back");
 		if (selectedIndex >= s.size()) { selectedIndex--; }
-		changeMenuText(s, 3);
+		changeMenuText(s);
 		changeBools(false, true, false, false);
 		break;
 	}
@@ -115,7 +117,7 @@ void MainMenu::switchSceneText(_menuType scene) {
 		s.push_back("Something else");
 		s.push_back("Back");
 		if (selectedIndex >= s.size()) { selectedIndex--; }
-		changeMenuText(s, 3);
+		changeMenuText(s);
 		changeBools(false, false, true, false);
 		break;
 	}
@@ -127,7 +129,7 @@ void MainMenu::switchSceneText(_menuType scene) {
 		s.push_back("1280 x 720");
 		s.push_back("1920 x 1080");
 		s.push_back("Back");
-		changeMenuText(s, 4);
+		changeMenuText(s);
 		changeBools(false, false, false, true);
 
 		break;
@@ -175,16 +177,15 @@ void MainMenu::moveDown() {
 	alignSprite();
 }
 
-int MainMenu::getPressedItem() { return selectedIndex; }
 
 void MainMenu::Update(const double& dt) {
 	timer += dt;
 
-	if (timer > 0.15) {
+	if (timer > 0.12) {
 		if (sf::Keyboard::isKeyPressed(Keyboard::Up)) { moveUp(); }
 		if (sf::Keyboard::isKeyPressed(Keyboard::Down)) { moveDown(); }
 		if (sf::Keyboard::isKeyPressed(Keyboard::Enter)) {
-			switch (getPressedItem()) {
+			switch (selectedIndex) {
 			case 0:
 				if (isMainMenuScreen) { switchSceneText(LEVEL_MENU); break; };
 				if (isLevelMenuScreen) { 
