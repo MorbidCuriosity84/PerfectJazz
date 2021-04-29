@@ -20,7 +20,7 @@ void Powerups::deployPowerups() {
 	std::discrete_distribution<> powerupsWeights({
 		20,    // Damage % chance       1,  
 		60,    // Health % chance       1,  
-		80,    // Bullet Num % chance   0.3,
+		20,    // Bullet Num % chance   0.3,
 		20,    // Firerate % chance	   0.7,
 		20,    // Player Mov % chance 0.7,
 		20,    // Coin % chance		   97,	
@@ -214,7 +214,7 @@ void Powerups::createPowerups(Scene* scene) {
 void Powerups::update(double dt) {
 	_timer += dt;
 
-	if (_timer > 2) {
+	if (_timer > 1) {
 		deployPowerups();
 		_timer = 0.f;
 	}

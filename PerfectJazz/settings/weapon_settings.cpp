@@ -10,8 +10,8 @@ weaponSettings WeaponSettings::LoadSettings(_weaponType type, Scene* scene) {
 		settings.fireTime = 1.5f;
 		settings.fireTimer = 0;
 		settings.firerateUpgradeCount = 0;
-		settings.numBulletsUpgradeCount = 2;
-		settings.numBullets = 1;
+		settings.numBulletsUpgradeCount = 0;
+		settings.numBullets = 0;
 		settings.scene = scene;
 		settings.direction = 1.f;
 		settings.sound = BULLET_FIRE_1;
@@ -23,8 +23,8 @@ weaponSettings WeaponSettings::LoadSettings(_weaponType type, Scene* scene) {
 		settings.fireTime = .2f;
 		settings.fireTimer = 0;
 		settings.firerateUpgradeCount = 0;
-		settings.numBulletsUpgradeCount = 1;
-		settings.numBullets = 1;
+		settings.numBulletsUpgradeCount = 0;
+		settings.numBullets = 0;
 		settings.scene = scene;
 		settings.direction = 1.f;
 		settings.sound = BULLET_FIRE_2;
@@ -35,8 +35,8 @@ weaponSettings WeaponSettings::LoadSettings(_weaponType type, Scene* scene) {
 		settings.fireTime = 1.5f;
 		settings.fireTimer = 0;
 		settings.firerateUpgradeCount = 0;
-		settings.numBulletsUpgradeCount = 1;
-		settings.numBullets = 1;
+		settings.numBulletsUpgradeCount = 0;
+		settings.numBullets = 0;
 		settings.scene = scene;
 		settings.direction = 1.f;
 		settings.sound = MISSILE_FIRE_1;

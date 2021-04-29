@@ -44,6 +44,10 @@ protected:
 	std::shared_ptr<TextComponent> noEnoughMoneyText;
 	std::shared_ptr<TextComponent> exitText;
 	std::string upgradeCost;
+	double fireRateMulti;
+	double flySpeedMulti;
+	double damageMulti;
+	double maxHPMulti;
 
 	int selectedIndex;
 	int col;

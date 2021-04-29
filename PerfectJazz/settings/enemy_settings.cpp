@@ -10,7 +10,7 @@ enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
 	case AIRMAN:
 	{
 		settings.damage = 100;
-		settings.hp = 1;
+		settings.hp = 10000;
 		settings.scene = scene;
 		settings.restitution = 0.4f;
 		settings.friction = 0.005f;
@@ -27,7 +27,7 @@ enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
 	case SERGEANT:
 	{
 		settings.damage = 200;
-		settings.hp = 25;
+		settings.hp = 250000;
 		settings.scene = scene;
 		settings.restitution = 0.4f;
 		settings.friction = 0.005f;
@@ -43,7 +43,7 @@ enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
 	case COLONEL:
 	{
 		settings.damage = 300;
-		settings.hp = 35;
+		settings.hp = 35000;
 		settings.scene = scene;
 		settings.restitution = 0.4f;
 		settings.friction = 0.005f;
