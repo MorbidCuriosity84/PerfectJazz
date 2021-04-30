@@ -2,7 +2,6 @@
 
 #include "../game.h"
 #include <ecm.h>
-#include <SFML/Audio/Sound.hpp>
 
 struct bulletSettings {
 	float lifetime;

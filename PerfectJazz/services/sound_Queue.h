@@ -1,7 +1,7 @@
 #pragma once
 #include <queue>
 #include <SFML/Audio.hpp>
-#include "game.h"
+#include "../game.h"
 
 using namespace std;
 using namespace sf;

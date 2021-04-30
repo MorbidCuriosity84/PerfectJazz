@@ -3,7 +3,7 @@
 #include "maths.h"
 #include <iostream>
 #include "cmp_sound.h"
-#include "../sound_Queue.h"
+#include "../services/sound_Queue.h"
 #include "../movement/cmp_radar.h"
 
 using namespace std;

@@ -1,7 +1,6 @@
 #include "player_settings.h"
 #include "../game.h"
-#include "../engine/engine.h"
-
+#include "engine.h"
 
 playerSettings PlayerSettings::LoadSettings(_playerType type, Scene* scene) {
 	playerSettings currentPlayerSettings;

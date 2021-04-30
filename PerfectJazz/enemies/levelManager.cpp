@@ -2,8 +2,7 @@
 #include "../settings/level_settings.h"
 #include "LevelSystem.h"
 #include "maths.h"
-#include "../randomNumber.h"
-#include "../game.h"
+#include "../services/randomNumber.h"
 
 std::queue<std::string> LevelManager::waves;
 int LevelManager::enemyCount;

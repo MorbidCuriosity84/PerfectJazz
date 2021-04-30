@@ -1,7 +1,6 @@
 #pragma once
 #include "../game.h"
 #include <ecm.h>
-#include <SFML/Graphics.hpp>
 #include <LevelSystem.h>
 #include "../components/cmp_sprite.h"
 #include "../components/cmp_weapon.h"

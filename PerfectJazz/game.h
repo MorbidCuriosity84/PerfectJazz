@@ -1,6 +1,6 @@
 #pragma once
 #include "ecm.h"
-#include "myContactListener.h"
+#include "services/myContactListener.h"
 #include "scenes/scene_title.h"
 #include "scenes/scene_level1.h"
 #include "scenes/scene_level2.h"
@@ -10,7 +10,7 @@
 #include "scenes/scene_pause_menu.h"
 #include "scenes/scene_upgrade_menu.h"
 #include "SFML/Audio.hpp"
-#include "detecting_keys.h"
+#include "services/detecting_keys.h"
 
 using namespace std;
 
