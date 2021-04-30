@@ -31,6 +31,9 @@ const unsigned int soundsPerBuffer = 8;
 void Level3Scene::Load() {
   	cout << " Scene 3 Load" << endl;
 
+	Engine::isLevelComplete = false;
+	Engine::_nextScene = &level3;
+
  	for (int sndInt = PLAYER_DIE_1; sndInt != PICKUP_5; sndInt++) {
 		sBuffs[sndInt].loadFromFile(soundFilenames[sndInt]);
 		sounds[sndInt].setBuffer(sBuffs[sndInt]);
@@ -51,21 +54,7 @@ void Level3Scene::Load() {
 	musicArray[MUSIC_LEVEL_3].setPosition(0, 1, 50);
 	musicArray[MUSIC_LEVEL_3].setVolume(25);
 	musicArray[MUSIC_LEVEL_3].setLoop(true);
-	musicArray[MUSIC_LEVEL_3].play();
-	
-
-	//Create left view
-	sf::View tempLeft(sf::FloatRect(0, 0, Engine::getWindowSize().x / 5, Engine::getWindowSize().y));
-	leftView = tempLeft;
-	leftView.setViewport(sf::FloatRect(0, 0, 0.2f, 1.f));
-	//Create right view
-	sf::View tempRight(sf::FloatRect(0, 0, Engine::getWindowSize().x / 5, Engine::getWindowSize().y));
-	rightView = tempRight;
-	rightView.setViewport(sf::FloatRect(0.8f, 0, 0.2f, 1.f));
-	//Create main view
-	sf::View tempMain(sf::FloatRect(0, 0, (round)(Engine::getWindowSize().x / 1.66666), Engine::getWindowSize().y));
-	mainView = tempMain;
-	mainView.setViewport(sf::FloatRect(0.2f, 0, 0.6f, 1.f));
+	musicArray[MUSIC_LEVEL_3].play();		
 		
 
 	//Create background	
@@ -82,7 +71,8 @@ void Level3Scene::Load() {
 	EntityPool::init(&level3);
 	//Create player
 	{
-		Player::createPlayer(dynamic_cast<Scene*>(&level3));
+		//Player::createPlayer(dynamic_cast<Scene*>(&level3));
+		Player::createPlayerFromSettings(&level3);
 	}
 
 	EnemyPool::init(&level3);
@@ -122,7 +112,7 @@ void Level3Scene::UnLoad() {
 }
 
 void Level3Scene::Update(const double& dt) {
-	LevelManager::update(&level3, true, 4);
+	LevelManager::update(&level3, false, 4, dt);
 	Scene::Update(dt);
 }
 

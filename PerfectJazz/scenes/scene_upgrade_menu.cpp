@@ -446,6 +446,15 @@ void UpgradeMenu::Update(const double& dt) {
 				Engine::isMenu = false;
 				Engine::isPausedMenu = true;
 				musicArray[MUSIC_UPGRADE_MENU].pause();
+				if (Engine::isLevelComplete) {
+					Engine::isGamePaused = false;
+					Engine::isMenu = false;
+					Engine::isPausedMenu = false;
+					PlayerComponent::clonePlayer(player, Engine::_nextScene);
+					Engine::_lastScene->UnLoad();
+					Engine::ChangeScene(Engine::_nextScene);
+					break;					
+				}
 				Engine::ChangeScene(Engine::_lastScene);
 				selectedIndex = 1;
 				moveUp();

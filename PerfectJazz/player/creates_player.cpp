@@ -1,4 +1,5 @@
 #include "creates_player.h"
+#include "../settings/settings_holder.h"
 
 using namespace std;
 using namespace sf;
@@ -24,4 +25,12 @@ void Player::createPlayer(Scene* _scene) {
 	_playerBulletTextureHelper = TextureHelpingSettings::LoadSettings(TYPE1, _scene);
 
 	player->addComponent<PlayerComponent>(_playerSpriteTextureHelper, _playerBulletTextureHelper, _playerSettings, _playerWeaponSettings, _playerBulletSettings);
+}
+
+
+void Player::createPlayerFromSettings(Scene* _scene) {
+	player = _scene->makeEntity();
+	player->setView(mainView);	
+
+	player->addComponent<PlayerComponent>(SettingsHolder::pTexHelper, SettingsHolder::bTexHelper, SettingsHolder::pSettings, SettingsHolder::wSettings, SettingsHolder::bSettings);
 }

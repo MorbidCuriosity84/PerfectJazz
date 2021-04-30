@@ -20,10 +20,12 @@ using namespace sf;
 using namespace std;
 Scene* Engine::_activeScene = nullptr;
 Scene* Engine::_lastScene = nullptr;
+Scene* Engine::_nextScene = nullptr;
 std::string Engine::_gameName;
 bool Engine::isGamePaused;
 bool Engine::isPausedMenu;
 bool Engine::isMenu;
+bool Engine::isLevelComplete;
 
 float deathTimer;
 bool isDead;
@@ -107,6 +109,19 @@ void Engine::Start(unsigned int width, unsigned int height,
 	window.setFramerateLimit(60);
 	_gameName = gameName;
 	_window = &window;
+
+	//Create left view
+	sf::View tempLeft(sf::FloatRect(0, 0, Engine::getWindowSize().x / 5, Engine::getWindowSize().y));
+	leftView = tempLeft;
+	leftView.setViewport(sf::FloatRect(0, 0, 0.2f, 1.f));
+	//Create right view
+	sf::View tempRight(sf::FloatRect(0, 0, Engine::getWindowSize().x / 5, Engine::getWindowSize().y));
+	rightView = tempRight;
+	rightView.setViewport(sf::FloatRect(0.8f, 0, 0.2f, 1.f));
+	//Create main view
+	sf::View tempMain(sf::FloatRect(0, 0, (round)(Engine::getWindowSize().x / 1.66666), Engine::getWindowSize().y));
+	mainView = tempMain;
+	mainView.setViewport(sf::FloatRect(0.2f, 0, 0.6f, 1.f));
 
 	//Setting for starting the game in the title menu
 	//isGamePaused = true;
@@ -266,6 +281,24 @@ bool Scene::isLoaded() const {
 		return _loaded;
 	}
 }
+
+void Scene::levelOver()
+{
+	Engine::isLevelComplete = true;
+	if (!isDead) {
+		auto ent = player->scene->makeEntity();
+		ent->setView(mainView);
+		auto t = ent->addComponent<TextComponent>("LEVEL COMPLETE");
+		t->setFontSize(110u);
+		t->_text.setColor(Color::White);
+		t->_text.setOutlineColor(Color::White);
+		t->_text.setOutlineThickness(2);
+		sf::FloatRect textRect = t->getLocalBounds();
+		t->setOrigin(Vector2f((round)(textRect.left + textRect.width / 2.f), (round)(textRect.top + textRect.height / 2.f)));
+		t->setPosition(Vector2f((round)(mainView.getSize().x / 2), (round)(mainView.getSize().y / 2)));
+	}
+}
+
 void Scene::setLoaded(bool b) {
 	{
 		std::lock_guard<std::mutex> lck(_loaded_mtx);
