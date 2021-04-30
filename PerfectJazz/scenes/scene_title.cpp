@@ -95,7 +95,6 @@ void TitleScene::Update(const double& dt) {
 
 void TitleScene::UnLoad() {
 	cout << "Scene Title Unload" << endl;
-	musicArray[MUSIC_TITLE_SCREEN].stop();
 	titleSpriteCMP.reset();
 	txtCMP.reset();
 	Scene::UnLoad();

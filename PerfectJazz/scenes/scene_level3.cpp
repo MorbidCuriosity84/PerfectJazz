@@ -52,7 +52,7 @@ void Level3Scene::Load() {
 	musicArray[MUSIC_LEVEL_3].setVolume(25);
 	musicArray[MUSIC_LEVEL_3].setLoop(true);
 	musicArray[MUSIC_LEVEL_3].play();
-	//currentLevelMusic = MUSIC_LEVEL_3;
+	currentLvlMusicIndex = 4;
 
 	//Create left view
 	sf::View tempLeft(sf::FloatRect(0, 0, Engine::getWindowSize().x / 5, Engine::getWindowSize().y));

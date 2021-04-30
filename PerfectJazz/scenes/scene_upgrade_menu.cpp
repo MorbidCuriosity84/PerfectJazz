@@ -2,6 +2,7 @@
 #include <system_physics.h>
 #include <SFML/Window/Keyboard.hpp>
 #include <iostream>
+#include "../game.h"
 #include "../components/cmp_sprite.h"
 #include "../components/cmp_sound.h"
 #include "../player/cmp_player.h"
@@ -427,7 +428,7 @@ void UpgradeMenu::Update(const double& dt) {
 	if (sf::Keyboard::isKeyPressed(Keyboard::Up) && !detectingKeys.keyUp) { moveUp(); }
 	if (sf::Keyboard::isKeyPressed(Keyboard::Down) && !detectingKeys.keyDown) { moveDown(); }
 	//Switches between 4 cases, depending on which element of the menu has been selected
-	if (sf::Keyboard::isKeyPressed(Keyboard::Enter)) {
+	if (sf::Keyboard::isKeyPressed(Keyboard::Enter) && !detectingKeys.keyEnter) {
 		switch (selectedIndex) {
 		case 0:
 			purchasingUpgrade(0);
@@ -446,7 +447,7 @@ void UpgradeMenu::Update(const double& dt) {
 			Engine::isMenu = false;
 			Engine::isPausedMenu = true;
 			musicArray[MUSIC_UPGRADE_MENU].pause();
-			//musicArray[currentLevelMusic].play();
+			musicArray[currentLvlMusicIndex].play();
 			selectedIndex = 1;
 			moveUp();
 			Engine::ChangeScene(Engine::_lastScene);
