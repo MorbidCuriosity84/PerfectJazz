@@ -1,5 +1,6 @@
 #include "cmp_player.h"
 #include <SFML/Graphics/CircleShape.hpp>
+#include "../settings/settings_holder.h"
 
 using namespace std;
 using namespace sf;
@@ -159,4 +160,21 @@ PlayerComponent::PlayerComponent(Entity* p, textureSettings playerTextureHelper,
 	colHelp.missileCMP = nullptr;
 
 	physicsCMP->getBody()->SetUserData(&colHelp);
+}
+
+void PlayerComponent::clonePlayer(shared_ptr<Entity> pl, Scene* target)
+{
+	auto oldCMP = pl->GetCompatibleComponent<PlayerComponent>()[0];
+	auto wep = pl->GetCompatibleComponent<WeaponComponent>()[0];
+	auto hp = pl->GetCompatibleComponent<HPComponent>()[0];
+	SettingsHolder::pSettings = oldCMP->_playerSettings;
+	SettingsHolder::pSettings.flySpeed = oldCMP->_playerSettings.flySpeed;
+	SettingsHolder::pSettings.flySpeedUpgradeCount = oldCMP->_playerSettings.flySpeedUpgradeCount;
+	SettingsHolder::pSettings.hp = hp->getHP();
+	SettingsHolder::pSettings.maxHP = hp->getMaxHP();
+	SettingsHolder::wSettings = wep->_wSettings;
+	SettingsHolder::bSettings = wep->_bSettings;
+	SettingsHolder::pTexHelper = oldCMP->_playerTextureHelper;
+	SettingsHolder::bTexHelper = oldCMP->_bulletTextureHelper;
+	//auto newPCMP = en->addComponent<PlayerComponent>(oldCMP->_playerTextureHelper, oldCMP->_bulletTextureHelper, oldCMP->_playerSettings, oldCMP->_weaponSettings, oldCMP->_bulletSettings);
 }

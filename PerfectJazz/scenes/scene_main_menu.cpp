@@ -193,7 +193,7 @@ void MainMenu::Update(const double& dt) {
 				Engine::isGamePaused = false;
 				Engine::isPausedMenu = false;
 				Engine::isMenu = false;
-				Engine::ChangeScene(&level3);
+				Engine::ChangeScene(&level2);
 				break;
 			};
 			if (isSettingsScreen) { switchSceneText(RESOLUTION_MENU); break; }

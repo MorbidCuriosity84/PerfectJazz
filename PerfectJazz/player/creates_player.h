@@ -12,5 +12,6 @@
 class Player {
 public:
 	static void createPlayer(Scene* _scene);
+	static void createPlayerFromSettings(Scene* _scene);
 };
 

@@ -23,6 +23,7 @@ protected:
 public:
 	PlayerComponent() = delete;
 	explicit PlayerComponent(Entity* p, textureSettings playerTextureHelper, textureSettings bulletTextureHelper, playerSettings playerSettings, weaponSettings weaponSettings, bulletSettings bulletSettings);
+	static void clonePlayer(shared_ptr<Entity> pl, Scene* target);
 	void Load();
 	void revive();
 	void render() override {};

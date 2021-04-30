@@ -18,8 +18,9 @@ public:
 	void GameOver();
 	virtual void Render();
 	bool isLoaded() const;
+	void levelOver();
 	std::shared_ptr<Entity> makeEntity();
-	EntityManager ents;
+	EntityManager ents;	
 
 protected:
 	void setLoaded(bool);
@@ -41,8 +42,9 @@ public:
 	static bool isGamePaused;
 	static bool isMenu;
 	static bool isPausedMenu;
+	static bool isLevelComplete;
 	static Scene* _lastScene;
-	static Scene* _lastLastScene;
+	static Scene* _nextScene;
 
 private:
 	static Scene* _activeScene;

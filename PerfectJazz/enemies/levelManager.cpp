@@ -3,10 +3,11 @@
 #include "LevelSystem.h"
 #include "maths.h"
 #include "../randomNumber.h"
+#include "../game.h"
 
 std::queue<std::string> LevelManager::waves;
 int LevelManager::enemyCount;
-
+float LevelManager::levelOverTimer;
 
 void LevelManager::loadLevel(int level)
 {
@@ -20,6 +21,7 @@ void LevelManager::loadLevel(int level)
 		i++;
 	}
 	enemyCount = 0;
+	levelOverTimer = 3.f;
 }
 
 void LevelManager::playLevel(Scene* s)
@@ -30,19 +32,31 @@ void LevelManager::playLevel(Scene* s)
 			waves.pop();
 		}
 	}
+	if (waves.empty()) {
+		if (enemyCount == 0) {
+			s->levelOver();
+		}
+	}
 }
 
-void LevelManager::update(Scene* s, bool infinite, int numWaveFiles)
+//updates the level 
+void LevelManager::update(Scene* s, bool infinite, int numWaveFiles, double dt)
 {
 	if (infinite) {
 		infiniteLevel(s, numWaveFiles);
 		return;
 	}
 	playLevel(s);
+	if (Engine::isLevelComplete) {
+		levelOverTimer -= dt;
+		if (levelOverTimer <= 0.0) {
+			Engine::ChangeScene(&upgradeMenu);
+		}
+	}
 }
 
 void LevelManager::infiniteLevel(Scene* s, int numWaveFiles) {
-		
+
 	if (enemyCount == 0) {
 		int wave = RandomNumber::genRandomNumBetween(0, numWaveFiles - 1);
 		Enemies::createEnemies(waveFilenames[wave], s);

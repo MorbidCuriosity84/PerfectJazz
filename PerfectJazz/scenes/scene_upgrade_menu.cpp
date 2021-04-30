@@ -424,7 +424,6 @@ void UpgradeMenu::Update(const double& dt) {
 
 	notEnoughTimer += dt;
 	//Checks for key pressed to go up or down the menu
-
 	if (sf::Keyboard::isKeyPressed(Keyboard::Up) && !detectingKeys.keyUp) { moveUp(); }
 	if (sf::Keyboard::isKeyPressed(Keyboard::Down) && !detectingKeys.keyDown) { moveDown(); }
 	//Switches between 4 cases, depending on which element of the menu has been selected
@@ -450,6 +449,15 @@ void UpgradeMenu::Update(const double& dt) {
 			musicArray[currentLvlMusicIndex].play();
 			selectedIndex = 1;
 			moveUp();
+			if (Engine::isLevelComplete) {
+				Engine::isGamePaused = false;
+				Engine::isMenu = false;
+				Engine::isPausedMenu = false;
+				PlayerComponent::clonePlayer(player, Engine::_nextScene);
+				Engine::_lastScene->UnLoad();
+				Engine::ChangeScene(Engine::_nextScene);
+				break;					
+			}
 			Engine::ChangeScene(Engine::_lastScene);
 			break;
 		default:
