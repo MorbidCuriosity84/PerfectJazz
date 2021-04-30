@@ -8,7 +8,6 @@ textureSettings _playerBulletTextureHelper;
 textureSettings _playerSpriteTextureHelper;
 weaponSettings _playerWeaponSettings;
 bulletSettings _playerBulletSettings;
-shared_ptr<Entity> player;
 void Player::createPlayer(Scene* _scene) {
 
 	player = _scene->makeEntity();

@@ -3,7 +3,7 @@
 #include "cmp_bullet.h"
 #include "../pools/entityPool.h"
 #include "../game.h"
-#include "../sound_Queue.h"
+#include "../services/sound_Queue.h"
 #include "../lib_maths/maths.h"
 
 
