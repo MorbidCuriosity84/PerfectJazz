@@ -1,11 +1,13 @@
 #include "scene_pause_menu.h"
 #include "../game.h"
-#include <SFML/Window/Keyboard.hpp>
-#include <iostream>
 #include "../components/cmp_sprite.h"
 #include "../components/cmp_sound.h"
-#include <system_physics.h>
 #include "../pools/entityPool.h"
+#include <SFML/Window/Keyboard.hpp>
+#include <iostream>
+#include <system_physics.h>
+#include "../detecting_keys.h"
+
 
 using namespace std;
 using namespace sf;
@@ -80,7 +82,6 @@ void PauseMenu::changeMenuText(std::vector<std::string> s) {
 		menuOption[i]->setOrigin(Vector2f((round)(textRect.left + textRect.width / 2.f), (round)(textRect.top + textRect.height / 2.f)));
 		menuOption[i]->setPosition(Vector2f(menuView.getCenter().x, (round)(menuView.getSize().y / 3) + (menuView.getSize().y / 10 * i)));
 	}
-
 	alignSprite();
 }
 
@@ -88,7 +89,6 @@ void PauseMenu::alignSprite() {
 	shipSpriteLeft1->getSprite().setPosition((round)(menuOption[selectedIndex]->getGlobalBounds().left - 50.f), (round)(menuOption[selectedIndex]->getGlobalBounds().top + menuOption[selectedIndex]->getGlobalBounds().getSize().y / 2));
 	shipSpriteRight1->getSprite().setPosition((round)(menuOption[selectedIndex]->getGlobalBounds().left + menuOption[selectedIndex]->getGlobalBounds().width + 50.f), (round)(menuOption[selectedIndex]->getGlobalBounds().top + menuOption[selectedIndex]->getGlobalBounds().getSize().y / 2));
 }
-
 
 void PauseMenu::moveUp() {
 	if (selectedIndex - 1 >= 0) {
@@ -112,49 +112,51 @@ void PauseMenu::moveDown() {
 }
 
 void PauseMenu::Update(const double& dt) {
-	timer += dt;
-
-	if (timer > 0.12) {
-		if (sf::Keyboard::isKeyPressed(Keyboard::Up)) { moveUp(); }
-		if (sf::Keyboard::isKeyPressed(Keyboard::Down)) { moveDown(); }
-		if (sf::Keyboard::isKeyPressed(Keyboard::Enter)) {
-			switch (selectedIndex) {
-			case 0:
-				Engine::isGamePaused = false;
-				Engine::isMenu = false;
-				Engine::isPausedMenu = true;
-				Engine::ChangeScene(Engine::_lastScene);
-				break;
-			case 1:
-				cout << "Game saved" << endl;
-				break;
-			case 2:
-				Engine::isPausedMenu = false;
-				Engine::isMenu = true;
-				Engine::isGamePaused = true;
-				if (upgradeMenu.ents.list.size() != 0) {
-					upgradeMenu.UnLoad();
-				}
-				Engine::_lastScene->UnLoad();
-				moveUp();
-				moveUp();
-				Engine::ChangeScene(&mainMenuScene);
-				break;
-			case 3:
-				Engine::isPausedMenu = false;
-				Engine::isMenu = false;
-				Engine::isGamePaused = false;
-				if (upgradeMenu.ents.list.size() != 0) {
-					upgradeMenu.UnLoad();
-				}
-				Engine::_lastScene->UnLoad();
-				Engine::GetWindow().close();
-				break;
-			default:
-				break;
+	if (sf::Keyboard::isKeyPressed(Keyboard::Up) && !detectingKeys.keyUp) { moveUp(); }
+	if (sf::Keyboard::isKeyPressed(Keyboard::Down) && !detectingKeys.keyDown) { moveDown(); }
+	if (sf::Keyboard::isKeyPressed(Keyboard::Enter) && !detectingKeys.keyEnter) {
+		switch (selectedIndex) {
+		case 0:
+			Engine::isGamePaused = false;
+			Engine::isMenu = false;
+			Engine::isPausedMenu = false;
+			musicArray[MUSIC_LEVEL_3].play();
+			Engine::ChangeScene(Engine::_lastScene);
+			break;
+		case 1:
+			cout << "Game saved" << endl;
+			break;
+		case 2:
+			Engine::isPausedMenu = false;
+			Engine::isMenu = true;
+			Engine::isGamePaused = true;
+			if (upgradeMenu.ents.list.size() != 0) {
+				upgradeMenu.UnLoad();
 			}
+			Engine::_lastScene->UnLoad();
+			moveUp();
+			moveUp();
+			Engine::ChangeScene(&mainMenuScene);
+			break;
+		case 3:
+			Engine::isPausedMenu = false;
+			Engine::isMenu = false;
+			Engine::isGamePaused = false;
+			if (upgradeMenu.ents.list.size() != 0) {
+				upgradeMenu.UnLoad();
+			}
+			Engine::_lastScene->UnLoad();
+			Engine::GetWindow().close();
+			break;
+		default:
+			break;
 		}
+	}
 
+	detectingKeys.detectingKeys();
+
+	timer += dt;
+	if (timer > 0.12) {
 		if (Engine::isMenu && Engine::isPausedMenu) {
 			//Check if the loaded sprite is the bottom, if so, load the top. And viceversa
 			if (_titleShipLeftRect.left == _titleShipLeftRect.getSize().y / 1) { _titleShipLeftRect.left = 0; }

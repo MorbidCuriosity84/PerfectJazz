@@ -183,59 +183,58 @@ void MainMenu::moveDown() {
 void MainMenu::Update(const double& dt) {
 	timer += dt;
 
-	if (timer > 0.12) {
-		if (sf::Keyboard::isKeyPressed(Keyboard::Up)) { moveUp(); }
-		if (sf::Keyboard::isKeyPressed(Keyboard::Down)) { moveDown(); }
-		if (sf::Keyboard::isKeyPressed(Keyboard::Enter)) {
-			switch (selectedIndex) {
-			case 0:
-				if (isMainMenuScreen) { switchSceneText(LEVEL_MENU); break; };
-				if (isLevelMenuScreen) {
-					Engine::isGamePaused = false;
-					Engine::isPausedMenu = false;
-					Engine::isMenu = false;
-					Engine::ChangeScene(&level3);
-					break;
-				};
-				if (isSettingsScreen) { switchSceneText(RESOLUTION_MENU); break; }
-				if (isResolutionScreen) { changeResolution(1); break; }
+	if (sf::Keyboard::isKeyPressed(Keyboard::Up) && !detectingKeys.keyUp) { moveUp(); }
+	if (sf::Keyboard::isKeyPressed(Keyboard::Down) && !detectingKeys.keyDown) { moveDown(); }
+	if (sf::Keyboard::isKeyPressed(Keyboard::Enter) && !detectingKeys.keyEnter) {
+		switch (selectedIndex) {
+		case 0:
+			if (isMainMenuScreen) { switchSceneText(LEVEL_MENU); break; };
+			if (isLevelMenuScreen) {
+				Engine::isGamePaused = false;
+				Engine::isPausedMenu = false;
+				Engine::isMenu = false;
+				Engine::ChangeScene(&level3);
 				break;
-			case 1:
-				if (isMainMenuScreen) { switchSceneText(SETTINGS_MENU); break; }
-				if (isLevelMenuScreen) { cout << "Infinite" << endl; break; }
-				if (isResolutionScreen) { changeResolution(2); break; }
-				break;
-			case 2:
-				if (isMainMenuScreen) { Engine::GetWindow().close(); break; }
-				if (isLevelMenuScreen) { switchSceneText(MAIN_MENU); break; }
-				if (isSettingsScreen) { switchSceneText(MAIN_MENU); break; }
-				if (isResolutionScreen) { changeResolution(3); break; }
-				break;
-			case 3:
-				if (isResolutionScreen) { switchSceneText(SETTINGS_MENU);  break; }
-				break;
-			default:
-				break;
-			}
+			};
+			if (isSettingsScreen) { switchSceneText(RESOLUTION_MENU); break; }
+			if (isResolutionScreen) { changeResolution(1); break; }
+			break;
+		case 1:
+			if (isMainMenuScreen) { switchSceneText(SETTINGS_MENU); break; }
+			if (isLevelMenuScreen) { cout << "Infinite" << endl; break; }
+			if (isResolutionScreen) { changeResolution(2); break; }
+			break;
+		case 2:
+			if (isMainMenuScreen) { Engine::GetWindow().close(); break; }
+			if (isLevelMenuScreen) { switchSceneText(MAIN_MENU); break; }
+			if (isSettingsScreen) { switchSceneText(MAIN_MENU); break; }
+			if (isResolutionScreen) { changeResolution(3); break; }
+			break;
+		case 3:
+			if (isResolutionScreen) { switchSceneText(SETTINGS_MENU);  break; }
+			break;
+		default:
+			break;
 		}
-		if (sf::Keyboard::isKeyPressed(Keyboard::Escape)) {
-			if (isSettingsScreen) { switchSceneText(MAIN_MENU); }
-			else if (isResolutionScreen) { switchSceneText(SETTINGS_MENU); }
-		}
-
-
-		if (Engine::isMenu) {
-			//Check if the loaded sprite is the bottom, if so, load the top. And viceversa
-			if (_titleShipLeftRect.top == _titleShipLeftRect.getSize().y / 1) { _titleShipLeftRect.top = 0; }
-			else { _titleShipLeftRect.top = _titleShipLeftRect.getSize().y / 1; }
-			shipSpriteLeft->getSprite().setTextureRect(_titleShipLeftRect);
-
-			if (_titleShipRightRect.top == _titleShipRightRect.getSize().y / 1) { _titleShipRightRect.top = 0; }
-			else { _titleShipRightRect.top = _titleShipRightRect.getSize().y / 1; }
-			shipSpriteRight->getSprite().setTextureRect(_titleShipRightRect);
-		}
-		timer = 0;
 	}
+	if (sf::Keyboard::isKeyPressed(Keyboard::Escape)) {
+		if (isSettingsScreen) { switchSceneText(MAIN_MENU); }
+		else if (isResolutionScreen) { switchSceneText(SETTINGS_MENU); }
+	}
+
+
+	if (Engine::isMenu) {
+		//Check if the loaded sprite is the bottom, if so, load the top. And viceversa
+		if (_titleShipLeftRect.top == _titleShipLeftRect.getSize().y / 1) { _titleShipLeftRect.top = 0; }
+		else { _titleShipLeftRect.top = _titleShipLeftRect.getSize().y / 1; }
+		shipSpriteLeft->getSprite().setTextureRect(_titleShipLeftRect);
+
+		if (_titleShipRightRect.top == _titleShipRightRect.getSize().y / 1) { _titleShipRightRect.top = 0; }
+		else { _titleShipRightRect.top = _titleShipRightRect.getSize().y / 1; }
+		shipSpriteRight->getSprite().setTextureRect(_titleShipRightRect);
+	}
+
+	detectingKeys.detectingKeys();
 }
 
 void MainMenu::UnLoad() {
