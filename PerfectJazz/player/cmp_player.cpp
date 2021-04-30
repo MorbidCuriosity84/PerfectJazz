@@ -167,6 +167,7 @@ void PlayerComponent::clonePlayer(shared_ptr<Entity> pl, Scene* target)
 	auto oldCMP = pl->GetCompatibleComponent<PlayerComponent>()[0];
 	auto wep = pl->GetCompatibleComponent<WeaponComponent>()[0];
 	auto hp = pl->GetCompatibleComponent<HPComponent>()[0];
+	SettingsHolder::pSettings = oldCMP->_playerSettings;
 	SettingsHolder::pSettings.flySpeed = oldCMP->_playerSettings.flySpeed;
 	SettingsHolder::pSettings.flySpeedUpgradeCount = oldCMP->_playerSettings.flySpeedUpgradeCount;
 	SettingsHolder::pSettings.hp = hp->getHP();

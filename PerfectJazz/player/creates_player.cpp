@@ -29,6 +29,7 @@ void Player::createPlayer(Scene* _scene) {
 }
 
 void Player::createPlayerFromSettings(Scene* _scene) {
+	player.reset();
 	player = _scene->makeEntity();
 	player->setView(mainView);	
 
