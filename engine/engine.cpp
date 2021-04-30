@@ -20,6 +20,7 @@ using namespace sf;
 using namespace std;
 Scene* Engine::_activeScene = nullptr;
 Scene* Engine::_lastScene = nullptr;
+Scene* Engine::_lastLastScene = nullptr;
 std::string Engine::_gameName;
 bool Engine::isGamePaused;
 bool Engine::isPausedMenu;
@@ -199,11 +200,12 @@ void Engine::ChangeScene(Scene* s) {
 void Scene::Update(const double& dt) {
 
 	if (!Engine::isGamePaused) {
-		if (sf::Keyboard::isKeyPressed(Keyboard::Num1)) {
+		if (sf::Keyboard::isKeyPressed(Keyboard::Num1)) {			
 			Engine::isGamePaused = true;
 			Engine::isMenu = true;
 			Engine::isPausedMenu = true;
 			musicArray[MUSIC_LEVEL_3].pause();
+			musicArray[MUSIC_UPGRADE_MENU].play();
 			Engine::ChangeScene(&upgradeMenu);
 		}
 		if (sf::Keyboard::isKeyPressed(Keyboard::Space)) {

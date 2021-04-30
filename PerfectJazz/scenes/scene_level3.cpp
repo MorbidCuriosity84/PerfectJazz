@@ -29,9 +29,9 @@ sf::Sound sounds[128];
 const unsigned int soundsPerBuffer = 8;
 
 void Level3Scene::Load() {
-  	cout << " Scene 3 Load" << endl;
+	cout << " Scene 3 Load" << endl;
 
- 	for (int sndInt = PLAYER_DIE_1; sndInt != PICKUP_5; sndInt++) {
+	for (int sndInt = PLAYER_DIE_1; sndInt != PICKUP_5; sndInt++) {
 		sBuffs[sndInt].loadFromFile(soundFilenames[sndInt]);
 		sounds[sndInt].setBuffer(sBuffs[sndInt]);
 		sounds[sndInt].setVolume(25.f);
@@ -52,7 +52,7 @@ void Level3Scene::Load() {
 	musicArray[MUSIC_LEVEL_3].setVolume(25);
 	musicArray[MUSIC_LEVEL_3].setLoop(true);
 	musicArray[MUSIC_LEVEL_3].play();
-	
+
 
 	//Create left view
 	sf::View tempLeft(sf::FloatRect(0, 0, Engine::getWindowSize().x / 5, Engine::getWindowSize().y));
@@ -66,13 +66,13 @@ void Level3Scene::Load() {
 	sf::View tempMain(sf::FloatRect(0, 0, (round)(Engine::getWindowSize().x / 1.66666), Engine::getWindowSize().y));
 	mainView = tempMain;
 	mainView.setViewport(sf::FloatRect(0.2f, 0, 0.6f, 1.f));
-		
+
 
 	//Create background	
 	{
- 		Background::createBackground(dynamic_cast<Scene*>(&level3));
+		Background::createBackground(dynamic_cast<Scene*>(&level3));
 	}
-	
+
 	//Create powerups
 	{
 		PowerupPool::init(&level3);
@@ -94,12 +94,12 @@ void Level3Scene::Load() {
 
 	//Create text for left and right boxes
 	{
-   		Panels::createPanels(dynamic_cast<Scene*>(&level3));
+		Panels::createPanels(dynamic_cast<Scene*>(&level3));
 	}
 
 	//std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	cout << " Scene 3 Load Done" << endl;
-	setLoaded(true);	
+	setLoaded(true);
 }
 
 void Level3Scene::UnLoad() {
