@@ -250,7 +250,7 @@ void Panels::render() {}
 
 Panels::~Panels() { 
 	playerCMP.reset();
-	leftPanel.reset();
+	leftPanel.reset();	
 	playerLifeSpriteCMP.reset();
 	upgradeDamageSpriteCMP.reset();
 	upgradeFlyeSpeedSpriteCMP.reset();

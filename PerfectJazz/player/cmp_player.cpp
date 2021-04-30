@@ -173,6 +173,8 @@ void PlayerComponent::clonePlayer(shared_ptr<Entity> pl, Scene* target)
 	SettingsHolder::pSettings.hp = hp->getHP();
 	SettingsHolder::pSettings.maxHP = hp->getMaxHP();
 	SettingsHolder::wSettings = wep->_wSettings;
+	SettingsHolder::wSettings.numBullets = 0;
+	SettingsHolder::wSettings.numBulletsUpgradeCount = 0;
 	SettingsHolder::bSettings = wep->_bSettings;
 	SettingsHolder::pTexHelper = oldCMP->_playerTextureHelper;
 	SettingsHolder::bTexHelper = oldCMP->_bulletTextureHelper;

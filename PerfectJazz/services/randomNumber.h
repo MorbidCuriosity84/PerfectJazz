@@ -8,6 +8,6 @@ public:
 	//Generates numbers uniformly between a and b
 	static int genRandomNumBetween(int a, int b);
 	//Generates a random real number between a and b
-	static double generateUniformRealNumber(int a, int b);
+	static double generateUniformRealNumber(double a, double b);
 };
 

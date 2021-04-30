@@ -70,6 +70,7 @@ enum _entityCategory {
     ENEMY_BODY_RADAR = 0x0400, //1024
     PLAYER_BODY_RADAR = 0x0800, //2048
     POWERUP = 0x1000, // 4096
+    KAMIKAZE = 0x2000, //8192
 };
 
 
@@ -177,6 +178,7 @@ enum _enemyType {
     AIRMAN,
     SERGEANT,
     COLONEL,
+    BANSAI,
 };
 
 enum _playerType {
@@ -191,6 +193,7 @@ enum _bulletType {
 };
 
 enum _weaponType {
+    EMPTY,
     GUN,
     MACHINE_GUN,
     ROCKET_LAUNCHER,
