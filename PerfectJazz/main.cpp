@@ -10,6 +10,7 @@ MenuScene menuScene;
 MainMenu mainMenuScene;
 PauseMenu pauseMenu;
 UpgradeMenu upgradeMenu;
+int currentLvlMusicIndex;
 TitleScene title;
 Level1Scene level1;
 Level2Scene level2;

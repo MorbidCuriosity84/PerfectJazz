@@ -4,8 +4,6 @@
 #include "../myContactListener.h"
 #include <SFML/Graphics/Text.hpp>
 #include <Box2D/Dynamics/Contacts/b2Contact.h>
-#include "ecm.h"
-#include "engine.h"
 #include "../components/cmp_sprite.h"
 #include "../components/cmp_text.h"
 

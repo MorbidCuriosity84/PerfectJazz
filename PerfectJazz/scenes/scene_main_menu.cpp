@@ -4,23 +4,25 @@
 #include <iostream>
 #include "../components/cmp_sprite.h"
 #include "../components/cmp_sound.h"
+#include "../player/cmp_player.h"
 
 using namespace std;
 using namespace sf;
 
 std::shared_ptr<SpriteComponent> shipSpriteRight;
 std::shared_ptr<SpriteComponent> shipSpriteLeft;
+std::shared_ptr<Entity> mainMenuView;
 
 void MainMenu::Load() {
 	cout << "Title load \n";
 	sf::View tempMain(sf::FloatRect(0, 0, Engine::getWindowSize().x, Engine::getWindowSize().y));
 	menuView = tempMain;
 	menuView.setViewport(sf::FloatRect(0, 0, 1.f, 1.f));
-	auto titleView = makeEntity();
-	titleView->setView(menuView);
+	mainMenuView = makeEntity();
+	mainMenuView->setView(menuView);
 
 	for (int i = 0; i < 2; i++) {
-		auto temp = titleView->addComponent<SpriteComponent>();
+		auto temp = mainMenuView->addComponent<SpriteComponent>();
 		_titleShipTex = make_shared<sf::Texture>();
 		auto rec = sf::IntRect();
 		_titleShipTex->loadFromFile("res/img/player/player_900.png");
@@ -47,11 +49,11 @@ void MainMenu::Load() {
 	selectedIndex = 0;
 	timer = 0;
 
-	menuOption1 = titleView->addComponent<TextComponent>();
-	menuOption2 = titleView->addComponent<TextComponent>();
-	menuOption3 = titleView->addComponent<TextComponent>();
-	menuOption4 = titleView->addComponent<TextComponent>();
-	menuOption = titleView->GetCompatibleComponent<TextComponent>();
+	menuOption1 = mainMenuView->addComponent<TextComponent>();
+	menuOption2 = mainMenuView->addComponent<TextComponent>();
+	menuOption3 = mainMenuView->addComponent<TextComponent>();
+	menuOption4 = mainMenuView->addComponent<TextComponent>();
+	menuOption = mainMenuView->GetCompatibleComponent<TextComponent>();
 
 	switchSceneText(MAIN_MENU);
 	changeMenuText(s);
@@ -181,66 +183,66 @@ void MainMenu::moveDown() {
 void MainMenu::Update(const double& dt) {
 	timer += dt;
 
-	if (timer > 0.12) {
-		if (sf::Keyboard::isKeyPressed(Keyboard::Up)) { moveUp(); }
-		if (sf::Keyboard::isKeyPressed(Keyboard::Down)) { moveDown(); }
-		if (sf::Keyboard::isKeyPressed(Keyboard::Enter)) {
-			switch (selectedIndex) {
-			case 0:
-				if (isMainMenuScreen) { switchSceneText(LEVEL_MENU); break; };
-				if (isLevelMenuScreen) { 
-					Engine::isGamePaused = false; 
-					Engine::isMenu = false; 
-					Engine::ChangeScene(&level3);  
-					break; };
-				if (isSettingsScreen) { switchSceneText(RESOLUTION_MENU); break; }
-				if (isResolutionScreen) { changeResolution(1); break; }
+	if (sf::Keyboard::isKeyPressed(Keyboard::Up) && !detectingKeys.keyUp) { moveUp(); }
+	if (sf::Keyboard::isKeyPressed(Keyboard::Down) && !detectingKeys.keyDown) { moveDown(); }
+	if (sf::Keyboard::isKeyPressed(Keyboard::Enter) && !detectingKeys.keyEnter) {
+		switch (selectedIndex) {
+		case 0:
+			if (isMainMenuScreen) { switchSceneText(LEVEL_MENU); break; };
+			if (isLevelMenuScreen) {
+				Engine::isGamePaused = false;
+				Engine::isPausedMenu = false;
+				Engine::isMenu = false;
+				Engine::ChangeScene(&level3);
 				break;
-			case 1:
-				if (isMainMenuScreen) { switchSceneText(SETTINGS_MENU); break; }
-				if (isLevelMenuScreen) { cout << "Infinite" << endl; break; }
-				if (isResolutionScreen) { changeResolution(2); break; }
-				break;
-			case 2:
-				if (isMainMenuScreen) { Engine::GetWindow().close(); break; }
-				if (isLevelMenuScreen) { switchSceneText(MAIN_MENU); break; }
-				if (isSettingsScreen) { switchSceneText(MAIN_MENU); break; }
-				if (isResolutionScreen) { changeResolution(3); break; }
-				break;
-			case 3:
-				if (isResolutionScreen) { switchSceneText(SETTINGS_MENU);  break; }
-				break;
-			default:
-				break;
-			}
+			};
+			if (isSettingsScreen) { switchSceneText(RESOLUTION_MENU); break; }
+			if (isResolutionScreen) { changeResolution(1); break; }
+			break;
+		case 1:
+			if (isMainMenuScreen) { switchSceneText(SETTINGS_MENU); break; }
+			if (isLevelMenuScreen) { cout << "Infinite" << endl; break; }
+			if (isResolutionScreen) { changeResolution(2); break; }
+			break;
+		case 2:
+			if (isMainMenuScreen) { Engine::GetWindow().close(); break; }
+			if (isLevelMenuScreen) { switchSceneText(MAIN_MENU); break; }
+			if (isSettingsScreen) { switchSceneText(MAIN_MENU); break; }
+			if (isResolutionScreen) { changeResolution(3); break; }
+			break;
+		case 3:
+			if (isResolutionScreen) { switchSceneText(SETTINGS_MENU);  break; }
+			break;
+		default:
+			break;
 		}
-		if (sf::Keyboard::isKeyPressed(Keyboard::Escape)) {
-			if (isSettingsScreen) { switchSceneText(MAIN_MENU); }
-			else if (isResolutionScreen) { switchSceneText(SETTINGS_MENU); }
-		}
-
-
-		if (Engine::isMenu) {
-			//Check if the loaded sprite is the bottom, if so, load the top. And viceversa
-			if (_titleShipLeftRect.top == _titleShipLeftRect.getSize().y / 1) { _titleShipLeftRect.top = 0; }
-			else { _titleShipLeftRect.top = _titleShipLeftRect.getSize().y / 1; }
-			shipSpriteLeft->getSprite().setTextureRect(_titleShipLeftRect);
-
-			if (_titleShipRightRect.top == _titleShipRightRect.getSize().y / 1) { _titleShipRightRect.top = 0; }
-			else { _titleShipRightRect.top = _titleShipRightRect.getSize().y / 1; }
-			shipSpriteRight->getSprite().setTextureRect(_titleShipRightRect);
-		}
-		timer = 0;
 	}
+	if (sf::Keyboard::isKeyPressed(Keyboard::Escape)) {
+		if (isSettingsScreen) { switchSceneText(MAIN_MENU); }
+		else if (isResolutionScreen) { switchSceneText(SETTINGS_MENU); }
+	}
+
+
+	if (Engine::isMenu) {
+		//Check if the loaded sprite is the bottom, if so, load the top. And viceversa
+		if (_titleShipLeftRect.top == _titleShipLeftRect.getSize().y / 1) { _titleShipLeftRect.top = 0; }
+		else { _titleShipLeftRect.top = _titleShipLeftRect.getSize().y / 1; }
+		shipSpriteLeft->getSprite().setTextureRect(_titleShipLeftRect);
+
+		if (_titleShipRightRect.top == _titleShipRightRect.getSize().y / 1) { _titleShipRightRect.top = 0; }
+		else { _titleShipRightRect.top = _titleShipRightRect.getSize().y / 1; }
+		shipSpriteRight->getSprite().setTextureRect(_titleShipRightRect);
+	}
+
+	detectingKeys.detectingKeys();
 }
 
 void MainMenu::UnLoad() {
 	if (Engine::isMenu && Engine::_lastScene != nullptr) {
 		Engine::_lastScene->UnLoad();
 	}
-
 	switchSceneText(MAIN_MENU);
-
+	mainMenuView.reset();
 	isMainMenuScreen = true;
 	isSettingsScreen = false;
 	isResolutionScreen = false;

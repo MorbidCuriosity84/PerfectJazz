@@ -147,9 +147,13 @@ void Engine::Start(unsigned int width, unsigned int height,
 		}
 		if (Keyboard::isKeyPressed(Keyboard::Escape)) {
 			isPausedMenu = false;
+			isGamePaused = false;
 			isMenu = false;
 			if (_lastScene != nullptr) {
 				_lastScene->UnLoad();
+			}
+			if (upgradeMenu.ents.list.size() != 0) {
+				upgradeMenu.UnLoad();
 			}
 			window.close();
 		}
@@ -186,10 +190,6 @@ void Engine::ChangeScene(Scene* s) {
 	_lastScene = _activeScene;
 	auto old = _activeScene;
 
-	if (!isGamePaused) {
-		musicArray[MUSIC_LEVEL_3].play();
-	}
-
 	if (isGamePaused && !isPausedMenu && _lastScene != nullptr) {
 		_lastScene->UnLoad();
 		old = nullptr;
@@ -214,18 +214,19 @@ void Engine::ChangeScene(Scene* s) {
 void Scene::Update(const double& dt) {
 
 	if (!Engine::isGamePaused) {
-		if (sf::Keyboard::isKeyPressed(Keyboard::Num1)) {
+		if (sf::Keyboard::isKeyPressed(Keyboard::Num1)) {			
 			Engine::isGamePaused = true;
 			Engine::isMenu = true;
 			Engine::isPausedMenu = true;
-			musicArray[MUSIC_LEVEL_3].pause();
+			musicArray[currentLvlMusicIndex].pause();
+			musicArray[MUSIC_UPGRADE_MENU].play();
 			Engine::ChangeScene(&upgradeMenu);
 		}
 		if (sf::Keyboard::isKeyPressed(Keyboard::Space)) {
 			Engine::isGamePaused = true;
 			Engine::isMenu = true;
 			Engine::isPausedMenu = true;
-			musicArray[MUSIC_LEVEL_3].pause();
+			musicArray[currentLvlMusicIndex].pause();
 			Engine::ChangeScene(&pauseMenu);
 		}
 		auto playerCMP = player->GetCompatibleComponent<PlayerComponent>()[0];

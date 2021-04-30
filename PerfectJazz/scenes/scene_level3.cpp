@@ -29,7 +29,7 @@ sf::Sound sounds[128];
 const unsigned int soundsPerBuffer = 8;
 
 void Level3Scene::Load() {
-  	cout << " Scene 3 Load" << endl;
+	cout << " Scene 3 Load" << endl;
 
 	Engine::isLevelComplete = false;
 	Engine::_nextScene = &level3;
@@ -59,9 +59,9 @@ void Level3Scene::Load() {
 
 	//Create background	
 	{
- 		Background::createBackground(dynamic_cast<Scene*>(&level3));
+		Background::createBackground(dynamic_cast<Scene*>(&level3));
 	}
-	
+
 	//Create powerups
 	{
 		PowerupPool::init(&level3);
@@ -84,12 +84,12 @@ void Level3Scene::Load() {
 
 	//Create text for left and right boxes
 	{
-   		Panels::createPanels(dynamic_cast<Scene*>(&level3));
+		Panels::createPanels(dynamic_cast<Scene*>(&level3));
 	}
 
 	//std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	cout << " Scene 3 Load Done" << endl;
-	setLoaded(true);	
+	setLoaded(true);
 }
 
 void Level3Scene::UnLoad() {

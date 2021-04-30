@@ -21,8 +21,11 @@ protected:
 	std::shared_ptr<TextComponent> menuOption1;
 	std::shared_ptr<TextComponent> menuOption2;
 	std::shared_ptr<TextComponent> menuOption3;
+	std::shared_ptr<TextComponent> menuOption4;
+
 	int selectedIndex;
 	double timer;
+
 	std::vector<std::string> s;
 	void changeMenuText(std::vector<std::string> s);
 	void alignSprite();

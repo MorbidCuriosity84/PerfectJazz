@@ -3,13 +3,14 @@
 
 using namespace std;
 using namespace sf;
-	playerSettings _playerSettings;
-	textureSettings _playerBulletTextureHelper;
-	textureSettings _playerSpriteTextureHelper;
-	weaponSettings _playerWeaponSettings;
-	bulletSettings _playerBulletSettings;
-	shared_ptr<Entity> player;
+playerSettings _playerSettings;
+textureSettings _playerBulletTextureHelper;
+textureSettings _playerSpriteTextureHelper;
+weaponSettings _playerWeaponSettings;
+bulletSettings _playerBulletSettings;
+shared_ptr<Entity> player;
 void Player::createPlayer(Scene* _scene) {
+
 	player = _scene->makeEntity();
 	player->setView(mainView);
 
@@ -26,7 +27,6 @@ void Player::createPlayer(Scene* _scene) {
 
 	player->addComponent<PlayerComponent>(_playerSpriteTextureHelper, _playerBulletTextureHelper, _playerSettings, _playerWeaponSettings, _playerBulletSettings);
 }
-
 
 void Player::createPlayerFromSettings(Scene* _scene) {
 	player = _scene->makeEntity();

@@ -10,30 +10,33 @@
 #include "scenes/scene_pause_menu.h"
 #include "scenes/scene_upgrade_menu.h"
 #include "SFML/Audio.hpp"
+#include "detecting_keys.h"
 
 using namespace std;
 
+extern Scene* mainScene;
 extern MenuScene menuScene;
 extern MainMenu mainMenuScene;
 extern PauseMenu pauseMenu;
+extern shared_ptr<Entity> player;
+extern sf::SoundBuffer sBuffs[128];
+extern sf::Sound sounds[128];
+extern sf::Music musicArray[8];
 extern TitleScene title;
 extern Level1Scene level1;
 extern Level2Scene level2;
 extern Level3Scene level3;
 extern UpgradeMenu upgradeMenu;
-extern Scene* mainScene;
 extern Vector2f windowScale;
 extern sf::View leftView;
 extern sf::View rightView;
 extern sf::View mainView;
 extern sf::View menuView;
-extern shared_ptr<Entity> player;
 extern unsigned int gameWidth;
 extern unsigned int gameHeight;
 extern myContactListener mContLis;
-extern sf::SoundBuffer sBuffs[128];
-extern sf::Sound sounds[128];
-extern sf::Music musicArray[8];
+extern DetectingKeys detectingKeys;
+extern int currentLvlMusicIndex;
 
 
 /*
@@ -47,7 +50,7 @@ extern sf::Music musicArray[8];
 * So if you want player to collide with enemy bullets and enemy missiles you would set 
 * 
 * player_body.filter.categorybits = PLAYERS
-* player_body.filter.categorybits = ENEMY | ENEMY_MISSiLE | ENEMY_BULLET
+* player_body.filter.categorybits = ENEMY | ENEMY_MISSILE | ENEMY_BULLET
 * 
 * This works because it essentially performs a bitwise AND to check the collision 
 * At least that's my understanding of it. Hopefully it works. There's a switch case of doom further down
