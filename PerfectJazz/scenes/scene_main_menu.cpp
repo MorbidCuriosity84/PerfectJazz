@@ -4,23 +4,25 @@
 #include <iostream>
 #include "../components/cmp_sprite.h"
 #include "../components/cmp_sound.h"
+#include "../player/cmp_player.h"
 
 using namespace std;
 using namespace sf;
 
 std::shared_ptr<SpriteComponent> shipSpriteRight;
 std::shared_ptr<SpriteComponent> shipSpriteLeft;
+std::shared_ptr<Entity> mainMenuView;
 
 void MainMenu::Load() {
 	cout << "Title load \n";
 	sf::View tempMain(sf::FloatRect(0, 0, Engine::getWindowSize().x, Engine::getWindowSize().y));
 	menuView = tempMain;
 	menuView.setViewport(sf::FloatRect(0, 0, 1.f, 1.f));
-	auto titleView = makeEntity();
-	titleView->setView(menuView);
+	mainMenuView = makeEntity();
+	mainMenuView->setView(menuView);
 
 	for (int i = 0; i < 2; i++) {
-		auto temp = titleView->addComponent<SpriteComponent>();
+		auto temp = mainMenuView->addComponent<SpriteComponent>();
 		_titleShipTex = make_shared<sf::Texture>();
 		auto rec = sf::IntRect();
 		_titleShipTex->loadFromFile("res/img/player/player_900.png");
@@ -47,11 +49,11 @@ void MainMenu::Load() {
 	selectedIndex = 0;
 	timer = 0;
 
-	menuOption1 = titleView->addComponent<TextComponent>();
-	menuOption2 = titleView->addComponent<TextComponent>();
-	menuOption3 = titleView->addComponent<TextComponent>();
-	menuOption4 = titleView->addComponent<TextComponent>();
-	menuOption = titleView->GetCompatibleComponent<TextComponent>();
+	menuOption1 = mainMenuView->addComponent<TextComponent>();
+	menuOption2 = mainMenuView->addComponent<TextComponent>();
+	menuOption3 = mainMenuView->addComponent<TextComponent>();
+	menuOption4 = mainMenuView->addComponent<TextComponent>();
+	menuOption = mainMenuView->GetCompatibleComponent<TextComponent>();
 
 	switchSceneText(MAIN_MENU);
 	changeMenuText(s);
@@ -188,11 +190,13 @@ void MainMenu::Update(const double& dt) {
 			switch (selectedIndex) {
 			case 0:
 				if (isMainMenuScreen) { switchSceneText(LEVEL_MENU); break; };
-				if (isLevelMenuScreen) { 
-					Engine::isGamePaused = false; 
-					Engine::isMenu = false; 
-					Engine::ChangeScene(&level3);  
-					break; };
+				if (isLevelMenuScreen) {
+					Engine::isGamePaused = false;
+					Engine::isPausedMenu = false;
+					Engine::isMenu = false;
+					Engine::ChangeScene(&level3);
+					break;
+				};
 				if (isSettingsScreen) { switchSceneText(RESOLUTION_MENU); break; }
 				if (isResolutionScreen) { changeResolution(1); break; }
 				break;

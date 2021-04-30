@@ -42,6 +42,7 @@ public:
 	static bool isMenu;
 	static bool isPausedMenu;
 	static Scene* _lastScene;
+	static Scene* _lastLastScene;
 
 private:
 	static Scene* _activeScene;

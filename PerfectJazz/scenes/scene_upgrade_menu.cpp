@@ -10,14 +10,15 @@
 using namespace std;
 using namespace sf;
 
-shared_ptr<SpriteComponent> upgradeShipSprite;
-shared_ptr<PlayerComponent> upgradedPlayerCMP;
-shared_ptr<SpriteComponent> cointSprite;
-shared_ptr<SpriteComponent> cointSprite2;
-shared_ptr<SpriteComponent> cointSprite3;
-shared_ptr<SpriteComponent> cointSprite4;
-shared_ptr<SpriteComponent> cointSprite5;
+std::shared_ptr<SpriteComponent> upgradeShipSprite;
+std::shared_ptr<PlayerComponent> upgradedPlayerCMP;
+std::shared_ptr<SpriteComponent> cointSprite;
+std::shared_ptr<SpriteComponent> cointSprite2;
+std::shared_ptr<SpriteComponent> cointSprite3;
+std::shared_ptr<SpriteComponent> cointSprite4;
+std::shared_ptr<SpriteComponent> cointSprite5;
 std::vector<shared_ptr<SpriteComponent>> allCoinsSprite;
+std::shared_ptr<Entity> upgradeView;
 
 void UpgradeMenu::Load() {
 
@@ -41,8 +42,8 @@ void UpgradeMenu::Load() {
 	menuView = tempMain;
 	menuView.setViewport(sf::FloatRect(0, 0, 1.f, 1.f));
 	//Creates an entity and asgins it to the view
-	auto titleView = makeEntity();
-	titleView->setView(menuView);
+	upgradeView = makeEntity();
+	upgradeView->setView(menuView);
 
 	//Getting the player component
 	upgradedPlayerCMP = player->GetCompatibleComponent<PlayerComponent>()[0];
@@ -68,16 +69,16 @@ void UpgradeMenu::Load() {
 	maxFireRate = 0.1;
 
 	//Adding Sprite component for the ship and coin
-	upgradeShipSprite = titleView->addComponent<SpriteComponent>();
+	upgradeShipSprite = upgradeView->addComponent<SpriteComponent>();
 	_upgradeShipTex = make_shared<sf::Texture>();
 	_upgradeShipRect = sf::IntRect();
 	_upgradeShipTex->loadFromFile("res/img/player/upgrade_player.png");
-	cointSprite = titleView->addComponent<SpriteComponent>();
-	cointSprite2 = titleView->addComponent<SpriteComponent>();
-	cointSprite3 = titleView->addComponent<SpriteComponent>();
-	cointSprite4 = titleView->addComponent<SpriteComponent>();
-	cointSprite5 = titleView->addComponent<SpriteComponent>();
-	allCoinsSprite = titleView->GetCompatibleComponent <SpriteComponent>();
+	cointSprite = upgradeView->addComponent<SpriteComponent>();
+	cointSprite2 = upgradeView->addComponent<SpriteComponent>();
+	cointSprite3 = upgradeView->addComponent<SpriteComponent>();
+	cointSprite4 = upgradeView->addComponent<SpriteComponent>();
+	cointSprite5 = upgradeView->addComponent<SpriteComponent>();
+	allCoinsSprite = upgradeView->GetCompatibleComponent <SpriteComponent>();
 	_coinTex = make_shared<sf::Texture>();
 	_coinRect = sf::IntRect();
 	_coinTex->loadFromFile("res/img/powerups/coins.png");
@@ -94,31 +95,31 @@ void UpgradeMenu::Load() {
 	upgradeShipSprite->getSprite().setPosition(col * 2.5, row * 8);
 
 	//Adding text components
-	menuOption1 = titleView->addComponent<TextComponent>();
-	menuOption2 = titleView->addComponent<TextComponent>();
-	menuOption3 = titleView->addComponent<TextComponent>();
-	menuOption4 = titleView->addComponent<TextComponent>();
-	menuOption1Value = titleView->addComponent<TextComponent>();
-	menuOption2Value = titleView->addComponent<TextComponent>();
-	menuOption3Value = titleView->addComponent<TextComponent>();
-	menuOption4Value = titleView->addComponent<TextComponent>();
-	menuOption1NextValue = titleView->addComponent<TextComponent>();
-	menuOption2NextValue = titleView->addComponent<TextComponent>();
-	menuOption3NextValue = titleView->addComponent<TextComponent>();
-	menuOption4NextValue = titleView->addComponent<TextComponent>();
-	menuOption1Cost = titleView->addComponent<TextComponent>();
-	menuOption2Cost = titleView->addComponent<TextComponent>();
-	menuOption3Cost = titleView->addComponent<TextComponent>();
-	menuOption4Cost = titleView->addComponent<TextComponent>();
-	currentValueText = titleView->addComponent<TextComponent>();
-	nextValueText = titleView->addComponent<TextComponent>();
-	upgradeCostText = titleView->addComponent<TextComponent>();
-	coinsTxtCMP = titleView->addComponent<TextComponent>();
-	titleCMP = titleView->addComponent<TextComponent>();
-	pressEnterText = titleView->addComponent<TextComponent>();
-	noEnoughMoneyText = titleView->addComponent<TextComponent>();
-	exitText = titleView->addComponent<TextComponent>();
-	allTextCMP = titleView->GetCompatibleComponent<TextComponent>();
+	menuOption1 = upgradeView->addComponent<TextComponent>();
+	menuOption2 = upgradeView->addComponent<TextComponent>();
+	menuOption3 = upgradeView->addComponent<TextComponent>();
+	menuOption4 = upgradeView->addComponent<TextComponent>();
+	menuOption1Value = upgradeView->addComponent<TextComponent>();
+	menuOption2Value = upgradeView->addComponent<TextComponent>();
+	menuOption3Value = upgradeView->addComponent<TextComponent>();
+	menuOption4Value = upgradeView->addComponent<TextComponent>();
+	menuOption1NextValue = upgradeView->addComponent<TextComponent>();
+	menuOption2NextValue = upgradeView->addComponent<TextComponent>();
+	menuOption3NextValue = upgradeView->addComponent<TextComponent>();
+	menuOption4NextValue = upgradeView->addComponent<TextComponent>();
+	menuOption1Cost = upgradeView->addComponent<TextComponent>();
+	menuOption2Cost = upgradeView->addComponent<TextComponent>();
+	menuOption3Cost = upgradeView->addComponent<TextComponent>();
+	menuOption4Cost = upgradeView->addComponent<TextComponent>();
+	currentValueText = upgradeView->addComponent<TextComponent>();
+	nextValueText = upgradeView->addComponent<TextComponent>();
+	upgradeCostText = upgradeView->addComponent<TextComponent>();
+	coinsTxtCMP = upgradeView->addComponent<TextComponent>();
+	titleCMP = upgradeView->addComponent<TextComponent>();
+	pressEnterText = upgradeView->addComponent<TextComponent>();
+	noEnoughMoneyText = upgradeView->addComponent<TextComponent>();
+	exitText = upgradeView->addComponent<TextComponent>();
+	allTextCMP = upgradeView->GetCompatibleComponent<TextComponent>();
 
 	//Setting up title scene
 	titleCMP->setFontSize(70u);
@@ -188,7 +189,7 @@ void UpgradeMenu::Load() {
 	}
 
 	//Setting the no enough money text
-	noEnoughMoneyText = titleView->addComponent<TextComponent>();
+	noEnoughMoneyText = upgradeView->addComponent<TextComponent>();
 	noEnoughMoneyText->setFontSize(120u);
 	noEnoughMoneyText->_text.setColor(Color::Red);
 	noEnoughMoneyText->_text.setString("NOT ENOUGH COINS");
@@ -446,9 +447,9 @@ void UpgradeMenu::Update(const double& dt) {
 				Engine::isMenu = false;
 				Engine::isPausedMenu = true;
 				musicArray[MUSIC_UPGRADE_MENU].pause();
-				Engine::ChangeScene(Engine::_lastScene);
 				selectedIndex = 1;
 				moveUp();
+				Engine::ChangeScene(Engine::_lastScene);
 				break;
 			default:
 				break;
@@ -464,6 +465,16 @@ void UpgradeMenu::Update(const double& dt) {
 }
 
 void UpgradeMenu::UnLoad() {
-
 	upgradedPlayerCMP.reset();
+	upgradeShipSprite.reset();
+	upgradedPlayerCMP.reset();
+	cointSprite.reset();
+	cointSprite2.reset();
+	cointSprite3.reset();
+	cointSprite4.reset();
+	cointSprite5.reset();
+	allCoinsSprite.clear();
+	upgradeView->setForDelete();
+
+	setLoaded(false);
 }
