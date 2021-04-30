@@ -42,6 +42,16 @@ weaponSettings WeaponSettings::LoadSettings(_weaponType type, Scene* scene) {
 		settings.sound = MISSILE_FIRE_1;
 		break;
 	}
+	case NONE:
+		settings.fireTime = 0.f;
+		settings.fireTimer = 0;
+		settings.firerateUpgradeCount = 0;
+		settings.numBulletsUpgradeCount = 0;
+		settings.numBullets = 0;
+		settings.scene = scene;
+		settings.direction = 1.f;
+		settings.sound = MISSILE_FIRE_2;
+		break;
 	default:
 		break;
 	}

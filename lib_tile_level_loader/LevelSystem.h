@@ -24,6 +24,7 @@ public:
 		AIRMAN = '1',
 		SERGEANT = '2',
 		COLONEL = '3',
+		KAMIKAZE = '4',		
 		WAYPOINT = '+'
 	};
 

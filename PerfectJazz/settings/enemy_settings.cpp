@@ -58,6 +58,23 @@ enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
 		settings.sound = ENEMY_DIE_3;
 		break;
 	}
+	case BANSAI:
+	{
+		settings.damage = 1000;
+		settings.hp = 350;
+		settings.scene = scene;
+		settings.restitution = 0.4f;
+		settings.friction = 0.005f;
+		settings.velocity = { 0.f,-250.f };
+		settings.tile = ls::KAMIKAZE;
+		settings.category = KAMIKAZE;
+		settings.type = BANSAI;
+		settings.hpVisible = true;
+		settings.scale = { 1.f,1.f };
+		settings.angle = 0.f;
+		settings.sound = EXPLOSION_5;
+		break;
+	}
 	default:
 		break;
 	}

@@ -26,20 +26,39 @@ void MissileMovementComponent::update(double dt) {
 		//quadrant to the next (ie NE -> SE or SW -> NW as the missile starts rotating in the opposite direction than it had been.
 		//I'll have a think and see if i can come up with something better, maybe adding a vector will help, or using parent position
 		//vector maths and trig is always fun, apart from at 3am.
-		if (_parent->getPosition().y < player->getPosition().y) { // missile below 
-			if (_parent->getPosition().x > player->getPosition().x) {  //target to the left of weapon
-				_parentSprite->getSprite().setRotation(_parentSprite->getSprite().getRotation() - (180.f - atan(bul_pl_dif.x / bul_pl_dif.y)));
-			}
-			else {
-				_parentSprite->getSprite().setRotation(_parentSprite->getSprite().getRotation() + (180.f - atan(bul_pl_dif.x / bul_pl_dif.y)));
-			}
+		//if (_parent->getPosition().y < player->getPosition().y) { // missile below 
+		//	if (_parent->getPosition().x > player->getPosition().x) {  //target to the left of weapon
+		//		_parentSprite->getSprite().setRotation(_parentSprite->getSprite().getRotation() - (180.f - atan(bul_pl_dif.x / bul_pl_dif.y)));
+		//	}
+		//	else {
+		//		_parentSprite->getSprite().setRotation(_parentSprite->getSprite().getRotation() + (180.f - atan(bul_pl_dif.x / bul_pl_dif.y)));
+		//	}
+		//}
+		//else { //missile above
+		//	if (_parent->getPosition().x > player->getPosition().x) {  //target to the left of weapon
+		//		_parentSprite->getSprite().setRotation(_parentSprite->getSprite().getRotation() - atan(bul_pl_dif.x / bul_pl_dif.y));
+		//	}
+		//	else {
+		//		_parentSprite->getSprite().setRotation(_parentSprite->getSprite().getRotation() + atan(bul_pl_dif.x / bul_pl_dif.y));
+		//	}
+		//}
+
+		//Better way using dot product and not atan calls, still getting weirdness when the missile moves awayy though
+		Vector2f a = parentPhysics->getVelocity();
+		Vector2f b = player->getPosition() - _parent->getPosition();
+
+		if ( (a.x * b.y) - (a.y * b.x) < 0) { //if left
+			_parentSprite->getSprite().rotate(2.f);
 		}
-		else { //missile above
-			if (_parent->getPosition().x > player->getPosition().x) {  //target to the left of weapon
-				_parentSprite->getSprite().setRotation(_parentSprite->getSprite().getRotation() - atan(bul_pl_dif.x / bul_pl_dif.y));
+		else if ( (a.x * b.y) - (a.y * b.x) > 0) {
+			_parentSprite->getSprite().rotate(-2.f);
+		}
+		else { //if moving away
+			if ( (a.x * b.x) + (a.y * b.y) < 0) {
+				_parentSprite->getSprite().rotate(2.f);
 			}
 			else {
-				_parentSprite->getSprite().setRotation(_parentSprite->getSprite().getRotation() + atan(bul_pl_dif.x / bul_pl_dif.y));
+				_parentSprite->getSprite().rotate(-2.f);
 			}
 		}
 
