@@ -28,7 +28,7 @@ void WeaponComponent::fire() {
 			bullet->addTag("Bullet");
 			auto bul = bullet->addComponent<BulletComponent>(_bSettings, _bulletTextureHelper);
 			float len = length(bul->physicsCMP->getVelocity());
-			Vector2f direction = Vector2f(len * spread * cos(deg), bul->physicsCMP->getVelocity().y);				
+			Vector2f direction = Vector2f(_parent->getRotation() + len * spread * cos(deg), bul->physicsCMP->getVelocity().y);
 			bul->physicsCMP->setVelocity(direction);
 			bullet->setView(_parent->getView());
 			bullet->setAlive(true);

@@ -56,6 +56,6 @@ void MissileMovementComponent::setPhysics(shared_ptr<PhysicsComponent> phys) { _
 
 shared_ptr<PhysicsComponent> MissileMovementComponent::getPhysics() const { return _parentPhysics; }
 
-MissileMovementComponent::MissileMovementComponent(Entity* p, sf::Vector2f vel, bool seek, _entityCategory cat) : MovementComponent(p, vel), _seeking(seek), cat(cat) {	
+MissileMovementComponent::MissileMovementComponent(Entity* p, sf::Vector2f vel, bool seek, _entityCategory cat) : MovementComponent(p, vel, { 0.f,0.f }, false), _seeking(seek), cat(cat) {
 	_parentSprite = _parent->GetCompatibleComponent<SpriteComponent>()[0];
 }
