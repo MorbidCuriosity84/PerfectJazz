@@ -10,5 +10,5 @@ class Enemies {
 public:
 	static void createEnemies(std::string _waveFile, Scene*);
 	static void setType(_enemyType type, Scene*);
-	static void chooseMovement(ls::Tile tile, shared_ptr<Entity> en);
+	static void chooseMovement(ls::Tile tile, shared_ptr<Entity> en, Vector2f initPos);
 };

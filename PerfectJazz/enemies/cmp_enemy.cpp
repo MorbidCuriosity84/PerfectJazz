@@ -15,7 +15,7 @@ using namespace sf;
 void EnemyComponent::Load(int index) {
 	vector<Vector2ul> tile = ls::findTiles(_enemySettings.tile);
 
-	_parent->setPosition(Vector2f(ls::getTilePosition(tile[index]).x, ls::getTilePosition(tile[index]).y - Engine::getWindowSize().y/1.5));
+	_parent->setPosition(Vector2f(ls::getTilePosition(tile[index]).x, ls::getTilePosition(tile[index]).y - Engine::getWindowSize().y));
 
 	//_parent->addComponent<MovementComponent>(Vector2f(0.f, -50.f));
 	_parent->addTag("enemies");

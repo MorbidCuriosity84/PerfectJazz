@@ -33,8 +33,8 @@ void Enemies::createEnemies(std::string _waveFile, Scene* _scene) {
 			if (t == ls::SERGEANT) { setType(SERGEANT, _scene); index = sergeant_index++;}
 			if (t == ls::COLONEL) {	setType(COLONEL, _scene); index = colonel_index++;}
 
-			en->addComponent<EnemyComponent>(_enemyTextureHelper, _bulletTextureHelper, _enemySettings, _weaponSettings, _bulletSettings, index);
-			chooseMovement(t, en);
+			en->addComponent<EnemyComponent>(_enemyTextureHelper, _bulletTextureHelper, _enemySettings, _weaponSettings, _bulletSettings, index);			
+			chooseMovement(t, en, ls::getTilePosition(ls::findTiles(_enemySettings.tile)[index]));
 			en->setAlive(true);
 			LevelManager::enemyCount++;
 		}
@@ -77,17 +77,17 @@ void Enemies::setType(_enemyType type, Scene* _scene) {
 	}
 }
 
-void Enemies::chooseMovement(ls::Tile tile, shared_ptr<Entity> en)
+void Enemies::chooseMovement(ls::Tile tile, shared_ptr<Entity> en, Vector2f initPos)
 {
 	switch (tile) {
 	case ls::AIRMAN:
-		//en->addComponent<MovementComponent>(_enemySettings.velocity);
+		en->addComponent<MovementComponent>(_enemySettings.velocity, initPos, true);		
 		break;
 	case ls::SERGEANT:
-		//en->addComponent<SineMovementComponent>(Vector2f(_enemySettings.velocity), 25.f);
+		en->addComponent<SineMovementComponent>(Vector2f(_enemySettings.velocity), 25.f, initPos, true);
 		break;
 	case ls::COLONEL:
-		//en->addComponent<MovementComponent>(_enemySettings.velocity);
+		en->addComponent<MovementComponent>(_enemySettings.velocity, initPos, true);
 		break;
 	}
 }
