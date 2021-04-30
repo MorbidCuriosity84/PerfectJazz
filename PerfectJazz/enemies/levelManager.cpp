@@ -2,12 +2,7 @@
 #include "../settings/level_settings.h"
 #include "LevelSystem.h"
 #include "maths.h"
-<<<<<<< Updated upstream
-#include "../randomNumber.h"
-#include "../game.h"
-=======
 #include "../services/randomNumber.h"
->>>>>>> Stashed changes
 
 std::queue<std::string> LevelManager::waves;
 int LevelManager::enemyCount;

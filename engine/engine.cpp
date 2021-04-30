@@ -20,10 +20,7 @@ using namespace sf;
 using namespace std;
 Scene* Engine::_activeScene = nullptr;
 Scene* Engine::_lastScene = nullptr;
-<<<<<<< Updated upstream
 Scene* Engine::_nextScene = nullptr;
-=======
->>>>>>> Stashed changes
 std::string Engine::_gameName;
 bool Engine::isGamePaused;
 bool Engine::isPausedMenu;

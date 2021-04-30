@@ -44,10 +44,7 @@ public:
 	static bool isPausedMenu;
 	static bool isLevelComplete;
 	static Scene* _lastScene;
-<<<<<<< Updated upstream
 	static Scene* _nextScene;
-=======
->>>>>>> Stashed changes
 
 private:
 	static Scene* _activeScene;
