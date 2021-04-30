@@ -1,7 +1,6 @@
 #include "texture_helper_settings.h"
 #include "../game.h"
-#include "../engine/engine.h"
-
+#include "engine.h"
 textureSettings TextureHelpingSettings::LoadSettings(_playerType type, Scene* scene) {
 
 	textureSettings settings;

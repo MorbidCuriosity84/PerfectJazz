@@ -1,6 +1,6 @@
 #include "creates_powerups.h"
 #include "cmp_powerup.h"
-#include "../PerfectJazz/randomNumber.h"
+#include "../PerfectJazz/services/randomNumber.h"
 #include "../settings/texture_helper_settings.h"
 #include "../pools/powerupPool.h"
 #include <system_physics.h>

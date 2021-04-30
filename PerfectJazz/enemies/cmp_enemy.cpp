@@ -6,7 +6,7 @@
 #include "../movement/cmp_move_sine.h"
 #include "levelManager.h"
 #include <random>
-#include "../randomNumber.h"
+#include "../services/detecting_keys.h"
 #include "../player/cmp_player.h"
 
 using namespace std;

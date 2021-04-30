@@ -1,6 +1,5 @@
 #include "scene_level3.h"
 #include <iostream>
-#include <thread>
 #include <LevelSystem.h>
 #include "../enemies/creates_enemies.h"
 #include "../player/creates_player.h"
@@ -9,12 +8,11 @@
 #include "../background/create_background.h"
 #include "../game.h"
 #include "../pools/entityPool.h"
-#include <system_physics.h>
 #include "../pools/powerupPool.h"
 #include "../pools/enemyPool.h"
 #include "../enemies/levelManager.h"
-#include "../movement/cmp_move_sine.h"
-
+//#include "../movement/cmp_move_sine.h"
+//#include <system_physics.h>
 
 using namespace std;
 using namespace sf;

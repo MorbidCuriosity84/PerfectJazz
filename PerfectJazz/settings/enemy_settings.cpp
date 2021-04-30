@@ -1,7 +1,6 @@
 #include "enemy_settings.h"
 #include "../game.h"
-#include "../engine/engine.h"
-
+#include <engine.h>
 enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
 	
 	enemySettings settings;
