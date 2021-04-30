@@ -204,7 +204,7 @@ void Scene::Update(const double& dt) {
 			Engine::isGamePaused = true;
 			Engine::isMenu = true;
 			Engine::isPausedMenu = true;
-			musicArray[MUSIC_LEVEL_3].pause();
+			musicArray[currentLvlMusicIndex].pause();
 			musicArray[MUSIC_UPGRADE_MENU].play();
 			Engine::ChangeScene(&upgradeMenu);
 		}
@@ -212,7 +212,7 @@ void Scene::Update(const double& dt) {
 			Engine::isGamePaused = true;
 			Engine::isMenu = true;
 			Engine::isPausedMenu = true;
-			musicArray[MUSIC_LEVEL_3].pause();
+			musicArray[currentLvlMusicIndex].pause();
 			Engine::ChangeScene(&pauseMenu);
 		}
 		auto playerCMP = player->GetCompatibleComponent<PlayerComponent>()[0];

@@ -136,6 +136,7 @@ void PauseMenu::Update(const double& dt) {
 			Engine::_lastScene->UnLoad();
 			moveUp();
 			moveUp();
+			musicArray[MUSIC_TITLE_SCREEN].play();
 			Engine::ChangeScene(&mainMenuScene);
 			break;
 		case 3:
