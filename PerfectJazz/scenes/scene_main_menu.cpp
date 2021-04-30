@@ -242,9 +242,8 @@ void MainMenu::UnLoad() {
 	if (Engine::isMenu && Engine::_lastScene != nullptr) {
 		Engine::_lastScene->UnLoad();
 	}
-
 	switchSceneText(MAIN_MENU);
-
+	mainMenuView.reset();
 	isMainMenuScreen = true;
 	isSettingsScreen = false;
 	isResolutionScreen = false;
