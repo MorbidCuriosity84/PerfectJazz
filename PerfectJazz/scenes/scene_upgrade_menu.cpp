@@ -467,7 +467,6 @@ void UpgradeMenu::Update(const double& dt) {
 void UpgradeMenu::UnLoad() {
 	upgradedPlayerCMP.reset();
 	upgradeShipSprite.reset();
-	upgradedPlayerCMP.reset();
 	cointSprite.reset();
 	cointSprite2.reset();
 	cointSprite3.reset();

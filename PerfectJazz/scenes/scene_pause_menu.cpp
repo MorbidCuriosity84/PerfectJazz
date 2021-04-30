@@ -119,7 +119,7 @@ void PauseMenu::Update(const double& dt) {
 		if (sf::Keyboard::isKeyPressed(Keyboard::Down)) { moveDown(); }
 		if (sf::Keyboard::isKeyPressed(Keyboard::Enter)) {
 			switch (selectedIndex) {
-			case 0:		
+			case 0:
 				Engine::isGamePaused = false;
 				Engine::isMenu = false;
 				Engine::isPausedMenu = true;
@@ -132,8 +132,9 @@ void PauseMenu::Update(const double& dt) {
 				Engine::isPausedMenu = false;
 				Engine::isMenu = true;
 				Engine::isGamePaused = true;
-				if (upgradeMenu.ents.list.size() != 0) { 
-					upgradeMenu.UnLoad(); }
+				if (upgradeMenu.ents.list.size() != 0) {
+					upgradeMenu.UnLoad();
+				}
 				Engine::_lastScene->UnLoad();
 				moveUp();
 				moveUp();
@@ -143,8 +144,10 @@ void PauseMenu::Update(const double& dt) {
 				Engine::isPausedMenu = false;
 				Engine::isMenu = false;
 				Engine::isGamePaused = false;
+				if (upgradeMenu.ents.list.size() != 0) {
+					upgradeMenu.UnLoad();
+				}
 				Engine::_lastScene->UnLoad();
-				UnLoad();
 				Engine::GetWindow().close();
 				break;
 			default:
@@ -170,5 +173,6 @@ void PauseMenu::UnLoad() {
 	shipSpriteRight1.reset();
 	shipSpriteLeft1.reset();
 	pauseView->setForDelete();
+
 	setLoaded(false);
 }
