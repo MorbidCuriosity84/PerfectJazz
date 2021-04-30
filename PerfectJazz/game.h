@@ -10,6 +10,7 @@
 #include "scenes/scene_pause_menu.h"
 #include "scenes/scene_upgrade_menu.h"
 #include "SFML/Audio.hpp"
+#include "detecting_keys.h"
 
 using namespace std;
 
@@ -34,6 +35,7 @@ extern myContactListener mContLis;
 extern sf::SoundBuffer sBuffs[128];
 extern sf::Sound sounds[128];
 extern sf::Music musicArray[8];
+extern DetectingKeys detectingKeys;
 
 
 /*

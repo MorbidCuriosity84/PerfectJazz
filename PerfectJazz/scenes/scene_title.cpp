@@ -86,13 +86,16 @@ void TitleScene::Update(const double& dt) {
 		titleSpriteCMP->getSprite().setTextureRect(_titleRect);
 	}
 
-	if (sf::Keyboard::isKeyPressed(Keyboard::Enter)) {
+	if (sf::Keyboard::isKeyPressed(Keyboard::Enter) && !detectingKeys.keyEnter) {
 		Engine::ChangeScene(&mainMenuScene);
 	}
+
+	detectingKeys.detectingKeys();
 }
 
 void TitleScene::UnLoad() {
 	cout << "Scene Title Unload" << endl;
+	musicArray[MUSIC_TITLE_SCREEN].stop();
 	titleSpriteCMP.reset();
 	txtCMP.reset();
 	Scene::UnLoad();

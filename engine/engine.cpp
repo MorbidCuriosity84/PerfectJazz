@@ -133,9 +133,13 @@ void Engine::Start(unsigned int width, unsigned int height,
 		}
 		if (Keyboard::isKeyPressed(Keyboard::Escape)) {
 			isPausedMenu = false;
+			isGamePaused = false;
 			isMenu = false;
 			if (_lastScene != nullptr) {
 				_lastScene->UnLoad();
+			}
+			if (upgradeMenu.ents.list.size() != 0) {
+				upgradeMenu.UnLoad();
 			}
 			window.close();
 		}
@@ -171,10 +175,6 @@ void Engine::ChangeScene(Scene* s) {
 
 	_lastScene = _activeScene;
 	auto old = _activeScene;
-
-	if (!isGamePaused) {
-		musicArray[MUSIC_LEVEL_3].play();
-	}
 
 	if (isGamePaused && !isPausedMenu && _lastScene != nullptr) {
 		_lastScene->UnLoad();

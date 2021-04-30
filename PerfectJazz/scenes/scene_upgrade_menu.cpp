@@ -421,46 +421,46 @@ void UpgradeMenu::Update(const double& dt) {
 	if (pressTextTimer > 1.5f && timer <= 2.f) { pressEnterText->setVisible(false); }
 	if (pressTextTimer > 2.f) { pressTextTimer = 0; }
 
-	keyTimer += dt;
 	notEnoughTimer += dt;
 	//Checks for key pressed to go up or down the menu
-	if (keyTimer > 0.12) {
-		if (sf::Keyboard::isKeyPressed(Keyboard::Up)) { moveUp(); }
-		if (sf::Keyboard::isKeyPressed(Keyboard::Down)) { moveDown(); }
-		//Switches between 4 cases, depending on which element of the menu has been selected
-		if (sf::Keyboard::isKeyPressed(Keyboard::Enter)) {
-			switch (selectedIndex) {
-			case 0:
-				purchasingUpgrade(0);
-				break;
-			case 1:
-				purchasingUpgrade(1);
-				break;
-			case 2:
-				purchasingUpgrade(2);
-				break;
-			case 3:
-				purchasingUpgrade(3);
-				break;
-			case 4:
-				Engine::isGamePaused = false;
-				Engine::isMenu = false;
-				Engine::isPausedMenu = true;
-				musicArray[MUSIC_UPGRADE_MENU].pause();
-				selectedIndex = 1;
-				moveUp();
-				Engine::ChangeScene(Engine::_lastScene);
-				break;
-			default:
-				break;
-			}
-		}
 
-		if (notEnoughTimer > 2) {
-			noEnoughMoneyText->setVisible(false);
-			notEnoughTimer = 0;
+	if (sf::Keyboard::isKeyPressed(Keyboard::Up) && !detectingKeys.keyUp) { moveUp(); }
+	if (sf::Keyboard::isKeyPressed(Keyboard::Down) && !detectingKeys.keyDown) { moveDown(); }
+	//Switches between 4 cases, depending on which element of the menu has been selected
+	if (sf::Keyboard::isKeyPressed(Keyboard::Enter)) {
+		switch (selectedIndex) {
+		case 0:
+			purchasingUpgrade(0);
+			break;
+		case 1:
+			purchasingUpgrade(1);
+			break;
+		case 2:
+			purchasingUpgrade(2);
+			break;
+		case 3:
+			purchasingUpgrade(3);
+			break;
+		case 4:
+			Engine::isGamePaused = false;
+			Engine::isMenu = false;
+			Engine::isPausedMenu = true;
+			musicArray[MUSIC_UPGRADE_MENU].pause();
+			//musicArray[currentLevelMusic].play();
+			selectedIndex = 1;
+			moveUp();
+			Engine::ChangeScene(Engine::_lastScene);
+			break;
+		default:
+			break;
 		}
-		keyTimer = 0;
+	}
+
+	detectingKeys.detectingKeys();
+
+	if (notEnoughTimer > 2) {
+		noEnoughMoneyText->setVisible(false);
+		notEnoughTimer = 0;
 	}
 }
 
