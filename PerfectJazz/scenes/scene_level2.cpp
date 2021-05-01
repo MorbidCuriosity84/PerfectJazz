@@ -54,6 +54,7 @@ void Level2Scene::Load() {
 	musicArray[MUSIC_LEVEL_2].setVolume(25);
 	musicArray[MUSIC_LEVEL_2].setLoop(true);
 	musicArray[MUSIC_LEVEL_2].play();
+	currentLvlMusicIndex = 3;
 
 	//Create background	
 	{

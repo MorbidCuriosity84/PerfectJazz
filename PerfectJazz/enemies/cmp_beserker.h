@@ -15,6 +15,8 @@ protected:
 	int enemyCountAtLoad;
 	float beserkTime;
 	int damageMultiplier;
+	float lifetime;
+	bool seeking;
 public:
 	std::shared_ptr<WeaponComponent> weapon2;
 	std::shared_ptr<WeaponComponent> weapon3;

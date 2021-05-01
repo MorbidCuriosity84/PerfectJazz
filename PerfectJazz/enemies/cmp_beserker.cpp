@@ -3,10 +3,12 @@
 #include "../movement/cmp_radar.h"
 
 Beserker::Beserker(Entity* p, textureSettings enemyTextureHelper, textureSettings bulletTextureHelper, enemySettings enemySettings, weaponSettings weaponSettings, bulletSettings bulletSettings, int index)
-	: EnemyComponent(p, enemyTextureHelper, bulletTextureHelper, enemySettings, weaponSettings, bulletSettings, index)
+	: EnemyComponent(p, enemyTextureHelper, bulletTextureHelper, enemySettings, weaponSettings, bulletSettings, index), beserkTime(3.f), lifetime(15.f), goneBeserk(false), seeking(false)
 {
-	beserkTime = 10.f;
+	beserkTime = 3.f;
+	lifetime = 15.f;
 	goneBeserk = false;
+	seeking = false;
 	deadEnemies = 0;
 	damageMultiplier = 3;
 	enemyCountAtLoad = LevelManager::enemyCount;
@@ -17,22 +19,48 @@ Beserker::Beserker(Entity* p, textureSettings enemyTextureHelper, textureSetting
 void Beserker::update(double dt)
 {	
 	if (_parent->getPosition().y < 50.f - Engine::getWindowSize().y /1.5f ) {
-		//moveCMP->isLinger(true);
+		moveCMP->isLinger(true);
 	}
 
 	if (goneBeserk) {		
 		beserkTime -= dt;
-		if (beserkTime < 0) {
+		if (beserkTime < 0 && !seeking) {
 			//moveCMP->isLinger(false);
-			weapon2->~WeaponComponent();
-			weapon3->~WeaponComponent();
-			moveCMP->~MovementComponent();
-			moveCMP = _parent->addComponent<MissileMovementComponent>(_enemySettings.velocity, true, BESERKER);
-			_parent->addComponent<RadarComponent>(8.f, ENEMY_MISSILE_RADAR);
-		}
+			seeking = true;
+			moveCMP->isActive(false);
+			hpCMP->setHP(hpCMP->getHP() / 10);
+			_parent->addComponent<MissileMovementComponent>(_enemySettings.velocity, true, BESERKER);
+			//_parent->addComponent<RadarComponent>(2.f, ENEMY_MISSILE_RADAR);
+		}		
 	}	
 	_parent->setRotation(_parent->getRotation() + 2.f);
+
+	if (_parent->getPosition().x > _parent->getView().getSize().x || _parent->getPosition().x < 0) {
+		_parent->setAlive(false);
+		_parent->setVisible(false);
+		physicsCMP->getBody()->SetActive(false);
+		physicsCMP->getBody()->SetUserData(nullptr);
+		_parent->setPosition(Vector2f(-100.f, -100.f));
+		_parent->clearComponents();
+		cout << "Enemy count before removal beserker side = " << LevelManager::enemyCount << endl;
+		LevelManager::enemyCount--;
+		cout << "Enemy count after removal berserker side = " << LevelManager::enemyCount << endl;
+		return;
+	}
 	EnemyComponent::update(dt);
+
+	/*lifetime -= dt;
+	if (_parent->isAlive() && lifetime < 0) {
+		_parent->setAlive(false);
+		_parent->setVisible(false);
+		physicsCMP->getBody()->SetActive(false);
+		physicsCMP->getBody()->SetUserData(nullptr);
+		_parent->setPosition(Vector2f(-100.f, -100.f));
+		_parent->clearComponents();
+		cout << "Enemy count before removal beserker time = " << LevelManager::enemyCount << endl;
+		LevelManager::enemyCount--;
+		cout << "Enemy count after removal berserker time = " << LevelManager::enemyCount << endl;
+	}*/
 }
 
 void Beserker::goBeserk()

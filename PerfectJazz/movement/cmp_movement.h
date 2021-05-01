@@ -11,6 +11,7 @@ protected:
 	sf::Vector2f _velocity;
 	bool linger;
 	float lingerTime;
+	bool active;
 	Vector2f parentInitVelocity;
 	Vector2f initPosition;
 public:
@@ -24,6 +25,7 @@ public:
 
 	void setLingerTime(float t);
 	void isLinger(bool b);	
+	void isActive(bool b);
 
 	MovementComponent(Entity* p, sf::Vector2f velocity, Vector2f initPos, bool linger);
 };
