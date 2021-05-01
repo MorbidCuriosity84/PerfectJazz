@@ -15,7 +15,7 @@ using namespace sf;
 
 void EnemyComponent::Load(int index) {
 
-	if (_enemySettings.category != KAMIKAZE) {
+	if (_enemySettings.category == ENEMY_BODY) {
 		vector<Vector2ul> tile = ls::findTiles(_enemySettings.tile);
 		_parent->setPosition(Vector2f(ls::getTilePosition(tile[index]).x, ls::getTilePosition(tile[index]).y - Engine::getWindowSize().y));
 	}
@@ -26,8 +26,7 @@ void EnemyComponent::Load(int index) {
 	_parent->addTag("enemies");
 	_enemyTextureHelper.spriteTexture.get()->loadFromFile(_enemyTextureHelper.spriteFilename);
 	spriteCMP = _parent->addComponent<SpriteComponent>();
-	spriteCMP.get()->loadTexture(_enemyTextureHelper, _enemySettings.scale, _enemySettings.angle);
-
+	spriteCMP.get()->loadTexture(_enemyTextureHelper, _enemySettings.scale, _enemySettings.angle);	
 	damageCMP = _parent->addComponent<DamageComponent>(_enemySettings.damage);
 	if (_enemySettings.category != KAMIKAZE) {
 		_weaponSettings.fireTimer = RandomNumber::generateUniformRealNumber(0.0, _weaponSettings.fireTime);
@@ -48,7 +47,7 @@ void EnemyComponent::Load(int index) {
 void EnemyComponent::update(double dt) {	
 
 	_enemyTextureHelper.spriteTimer += dt;
-	if (_enemySettings.category != KAMIKAZE) {
+	if (_enemySettings.category == ENEMY_BODY) {
 		if (_enemyTextureHelper.spriteTimer < 0.05) {
 			_enemyTextureHelper.spriteRectangle.get()->left = (_enemyTextureHelper.spriteTexture.get()->getSize().x / 2) * 0;
 		}
@@ -84,12 +83,16 @@ void EnemyComponent::update(double dt) {
 		if (type == AIRMAN) { player->GetCompatibleComponent<PlayerComponent>()[0].get()->_playerSettings.score += 10; }
 		if (type == SERGEANT) { player->GetCompatibleComponent<PlayerComponent>()[0].get()->_playerSettings.score += 20; }
 		if (type == COLONEL) { player->GetCompatibleComponent<PlayerComponent>()[0].get()->_playerSettings.score += 30; }
-
+		if (type == BANSAI) { player->GetCompatibleComponent<PlayerComponent>()[0].get()->_playerSettings.score += 40; }
+		if (type == MADMAN) { player->GetCompatibleComponent<PlayerComponent>()[0].get()->_playerSettings.score += 50; }		
 		sounds[_enemySettings.sound].setPitch(1.f + sin(accumulation) * .025f);
 		sounds[_enemySettings.sound].setVolume(35.f);
 		sounds[_enemySettings.sound].play();
 		_parent->clearComponents();
 		LevelManager::enemyCount--;		
+		if (type != MADMAN) {
+			Scene::deadEnemies++;
+		}		
 	}
 }
 

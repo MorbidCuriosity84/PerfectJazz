@@ -8,6 +8,8 @@
 #include "../settings/weapon_settings.h"
 #include "../settings/bullet_settings.h"
 #include "cmp_kamikaze.h"
+#include "cmp_beserker.h"
+#include "../pools/enemyPool.h"
 
 std::queue<std::string> LevelManager::waves;
 int LevelManager::enemyCount;
@@ -38,16 +40,21 @@ void LevelManager::loadLevel(int level)
 
 void LevelManager::playLevel(Scene* s)
 {
-
+	
 	if (enemyCount == 0) {
 		if (!waves.empty()) {
-			Enemies::createEnemies(waves.front(), s);
+			Enemies::createEnemies(waves.front(), s);			
+			Scene::deadEnemies = 0;
 			waves.pop();
 		}
 	}	
 	if (kamikazeTimer < 0 && !Engine::isLevelComplete) {
-		spawnKamikaze(s);
+		spawnKamikaze(s);		
 		kamikazeTimer = 5.f;
+	}
+	if (Scene::deadEnemies > 5) {
+		spawnBeserker(s);
+		Scene::deadEnemies = 0;
 	}
 	if (waves.empty()) {
 		if (enemyCount == 0) {
@@ -86,8 +93,8 @@ void LevelManager::infiniteLevel(Scene* s, int numWaveFiles) {
 }
 
 void LevelManager::spawnKamikaze(Scene* s)
-{
-	auto en = s->makeEntity();
+{	
+	auto en = EnemyPool::en_pool[EnemyPool::en_poolPointer++];
 	en->setView(mainView);
 	_eSettings = EnemySettings::LoadSettings(BANSAI, s);
 	_eTexHelper = TextureHelpingSettings::LoadSettings(BANSAI, s);
@@ -95,5 +102,20 @@ void LevelManager::spawnKamikaze(Scene* s)
 	_bSettings = BulletSettings::LoadSettings(TYPE3, s);
 	_bTexHelper = TextureHelpingSettings::LoadSettings(TYPE3, s);
 	en->addComponent<Kamikaze>(_eTexHelper, _bTexHelper, _eSettings, _wSettings, _bSettings, 0);	
+	en->setAlive(true);
+	enemyCount++;
+}
+
+void LevelManager::spawnBeserker(Scene* s)
+{	
+	auto en = EnemyPool::en_pool[EnemyPool::en_poolPointer++];
+	en->setView(mainView);
+	_eSettings = EnemySettings::LoadSettings(MADMAN, s);
+	_eTexHelper = TextureHelpingSettings::LoadSettings(MADMAN, s);
+	_wSettings = WeaponSettings::LoadSettings(GUN, s);
+	_bSettings = BulletSettings::LoadSettings(TYPE3, s);
+	_bTexHelper = TextureHelpingSettings::LoadSettings(TYPE3, s);
+	en->addComponent<Beserker>(_eTexHelper, _bTexHelper, _eSettings, _wSettings, _bSettings, 0);		
+	en->setAlive(true);
 	enemyCount++;
 }

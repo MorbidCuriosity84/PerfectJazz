@@ -43,7 +43,7 @@ weaponSettings WeaponSettings::LoadSettings(_weaponType type, Scene* scene) {
 		break;
 	}
 	case NONE:
-		settings.fireTime = 0.f;
+		settings.fireTime = 1000000.f;
 		settings.fireTimer = 0;
 		settings.firerateUpgradeCount = 0;
 		settings.numBulletsUpgradeCount = 0;

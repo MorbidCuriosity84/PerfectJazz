@@ -86,6 +86,18 @@ textureSettings TextureHelpingSettings::LoadSettings(_enemyType type, Scene* sce
 		settings.spriteTimer = 0;
 		break;
 	}
+	case MADMAN:
+	{
+		settings.spriteFilename = "res/img/enemies/Spaceships.png";
+		settings.spriteRows = 3;
+		settings.spriteCols = 5;
+		settings.desiredRow = 1;
+		settings.desiredCol = 4;
+		settings.spriteTexture = enemySpriteTexture;
+		settings.spriteRectangle = enemySpriteRectangle;
+		settings.spriteTimer = 0;
+		break;
+	}
 	default:
 		break;
 	}

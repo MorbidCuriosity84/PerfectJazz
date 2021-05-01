@@ -11,6 +11,7 @@ Kamikaze::Kamikaze(Entity* p, textureSettings enemyTextureHelper, textureSetting
 
 void Kamikaze::update(double dt)
 {
+	spriteCMP->getSprite().setRotation(_enemySettings.angle);
 	if (_parent->getPosition().x > _parent->getView().getSize().x || _parent->getPosition().x < 0) {
 		_parent->setAlive(false);
 		_parent->setVisible(false);

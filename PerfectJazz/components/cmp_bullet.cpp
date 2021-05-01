@@ -24,7 +24,7 @@ void BulletComponent::createBullet() {
 
 	physicsCMP->getBody()->SetBullet(true);
 	physicsCMP->setSensor(true);
-	Vector2f bulletVelocity =_settings.velocity * _settings.direction;
+	Vector2f bulletVelocity = _parent->GetCompatibleComponent<PhysicsComponent>()[0]->getVelocity() + _settings.velocity * _settings.direction;
 	physicsCMP->setVelocity(Vector2f(bulletVelocity.x, bulletVelocity.y));
 	physicsCMP->setCategory(_settings.category);	
 

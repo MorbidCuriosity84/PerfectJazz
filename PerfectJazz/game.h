@@ -71,6 +71,7 @@ enum _entityCategory {
     PLAYER_BODY_RADAR = 0x0800, //2048
     POWERUP = 0x1000, // 4096
     KAMIKAZE = 0x2000, //8192
+    BESERKER = 0x4000 //16384
 };
 
 
@@ -179,6 +180,7 @@ enum _enemyType {
     SERGEANT,
     COLONEL,
     BANSAI,
+    MADMAN,
 };
 
 enum _playerType {

@@ -9,7 +9,7 @@ enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
 	case AIRMAN:
 	{
 		settings.damage = 100;
-		settings.hp = 1;
+		settings.hp = 10;
 		settings.scene = scene;
 		settings.restitution = 0.4f;
 		settings.friction = 0.005f;
@@ -61,18 +61,35 @@ enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
 	case BANSAI:
 	{
 		settings.damage = 1000;
-		settings.hp = 350;
+		settings.hp = 500;
 		settings.scene = scene;
 		settings.restitution = 0.4f;
 		settings.friction = 0.005f;
-		settings.velocity = { 0.f,-250.f };
+		settings.velocity = { 0.f,-350.f };
 		settings.tile = ls::KAMIKAZE;
 		settings.category = KAMIKAZE;
 		settings.type = BANSAI;
 		settings.hpVisible = true;
 		settings.scale = { 1.f,1.f };
-		settings.angle = 0.f;
+		settings.angle = 90.f;
 		settings.sound = EXPLOSION_5;
+		break;
+	}
+	case MADMAN:
+	{
+		settings.damage = 500;
+		settings.hp = 2500;
+		settings.scene = scene;
+		settings.restitution = 0.4f;
+		settings.friction = 0.005f;
+		settings.velocity = { 0.f,-150.f };
+		settings.tile = ls::BESERKER;
+		settings.category = BESERKER;
+		settings.type = MADMAN;
+		settings.hpVisible = true;
+		settings.scale = { 1.f,1.f };
+		settings.angle = 90.f;
+		settings.sound = EXPLOSION_3;
 		break;
 	}
 	default:

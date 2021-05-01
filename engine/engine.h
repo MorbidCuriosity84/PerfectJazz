@@ -19,6 +19,7 @@ public:
 	virtual void Render();
 	bool isLoaded() const;
 	void levelOver();
+	static int deadEnemies;
 	std::shared_ptr<Entity> makeEntity();
 	EntityManager ents;	
 
