@@ -20,7 +20,7 @@ void Enemies::createEnemies(std::string _waveFile, Scene* _scene) {
 	auto ho = (round)(Engine::getWindowSize().y) - (round)((ls::getHeight() * mainView.getSize().y / 16));
 	ls::setOffset(Vector2f((mainView.getSize().y) / 32, ho));
 
-	int index = 0, airman_index = 0, sergeant_index = 0, colonel_index = 0;
+	int index = 0, airman_index = 0, sergeant_index = 0, colonel_index = 0, berserk_index = 0, kami_index = 0;
 
 	//MARK - I was thinking this could be condensed into a single loop
 	//If we get ls::_height and ls_width we can use that to loop through h x w
@@ -41,6 +41,8 @@ void Enemies::createEnemies(std::string _waveFile, Scene* _scene) {
 		if (t == ls::AIRMAN) { setType(AIRMAN, _scene); index = airman_index++; }
 		if (t == ls::SERGEANT) { setType(SERGEANT, _scene); index = sergeant_index++; }
 		if (t == ls::COLONEL) { setType(COLONEL, _scene); index = colonel_index++; }
+		if (t == ls::BESERKER) { setType(MADMAN, _scene); index = berserk_index++; }
+		if (t == ls::KAMIKAZE) { setType(BANSAI, _scene); index = kami_index++; }
 
 		en->addComponent<EnemyComponent>(_enemyTextureHelper, _bulletTextureHelper, _enemySettings, _weaponSettings, _bulletSettings, index);
 		chooseMovement(t, en, ls::getTilePosition(ls::findTiles(_enemySettings.tile)[index]));
