@@ -13,6 +13,11 @@
 
 std::queue<std::string> LevelManager::waves;
 int LevelManager::enemyCount;
+int LevelManager::airCount;
+int LevelManager::sargCount;
+int LevelManager::colCount;
+int LevelManager::kamCount;
+int LevelManager::desCount;
 float LevelManager::levelOverTimer;
 float LevelManager::kamikazeTimer;
 float LevelManager::countTimer;
@@ -30,6 +35,7 @@ void LevelManager::loadLevel(int level)
 	kamikazeTimer = 5.f;
 	countTimer = 3.f;
 	singleTimer = 15.f;
+	Scene::deadEnemies;
 	if (level == -1) { // infinite level flag
 		return;
 	}
@@ -55,12 +61,12 @@ void LevelManager::playLevel(Scene* s)
 		cout << "Enemy count after creation of kamikaze = " << LevelManager::enemyCount << endl;
 		kamikazeTimer = 5.f;
 	}
-	if (Scene::deadEnemies > 5 && !Engine::isLevelComplete) {
+	/*if (Scene::deadEnemies > 5 && !Engine::isLevelComplete) {
 		cout << "Enemy count before creation of berserker = " << LevelManager::enemyCount << endl;
 		spawnBeserker(s);
 		cout << "Enemy count after creation of berserker = " << LevelManager::enemyCount << endl;
 		Scene::deadEnemies = 0;
-	}
+	}*/
 	if (waves.empty()) {
 		if (enemyCount == 0) {
 			s->levelOver();

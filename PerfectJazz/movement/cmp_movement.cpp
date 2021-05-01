@@ -16,10 +16,7 @@ void MovementComponent::update(double dt)
 				}
 			}
 		}
-		//check if off the side of view, then move to center
-		if (_parent->getPosition().x < 0 || _parent->getPosition().x > mainView.getSize().x) {
-			_velocity.x = _velocity.x - mainView.getCenter().x;
-		}
+
 		parentPhysics->setVelocity(_velocity);
 	}	
 }
@@ -36,7 +33,7 @@ void MovementComponent::isLinger(bool b) { linger = b; }
 
 void MovementComponent::isActive(bool b) { active = b; }
 
-MovementComponent::MovementComponent(Entity* p, sf::Vector2f velocity, Vector2f initPos, bool l) : Component(p), _velocity(velocity), initPosition(initPos), linger(l), active(true) {
+MovementComponent::MovementComponent(Entity* p, sf::Vector2f velocity, Vector2f initPos, bool l) : Component(p), _velocity(velocity), initPosition(initPos), linger(false), active(true) {
 	auto phys = _parent->GetCompatibleComponent<PhysicsComponent>();
 	parentPhysics = phys[0];
 	parentInitVelocity = parentPhysics->getVelocity();

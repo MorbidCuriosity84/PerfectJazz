@@ -11,10 +11,7 @@ class Beserker : public EnemyComponent
 {
 protected:
 	bool goneBeserk;
-	int deadEnemies;
-	int enemyCountAtLoad;
 	float beserkTime;
-	int damageMultiplier;
 	float lifetime;
 	bool seeking;
 public:

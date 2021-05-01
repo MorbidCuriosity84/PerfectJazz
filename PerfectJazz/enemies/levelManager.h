@@ -13,6 +13,11 @@ public:
 	static std::queue<std::string> waves;					//queue of filenames representing waves and the count of enemies for that wave
 	static float levelOverTimer;
 	static int enemyCount;									//count of current enemies in play. needs to be decremented when enemy dies or offscreen
+	static int airCount;
+	static int sargCount;
+	static int colCount;
+	static int kamCount;
+	static int desCount;
 	static float kamikazeTimer;
 	static float countTimer;
 	static float singleTimer;

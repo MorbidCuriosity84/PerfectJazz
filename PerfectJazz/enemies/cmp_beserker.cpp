@@ -4,17 +4,7 @@
 
 Beserker::Beserker(Entity* p, textureSettings enemyTextureHelper, textureSettings bulletTextureHelper, enemySettings enemySettings, weaponSettings weaponSettings, bulletSettings bulletSettings, int index)
 	: EnemyComponent(p, enemyTextureHelper, bulletTextureHelper, enemySettings, weaponSettings, bulletSettings, index), beserkTime(3.f), lifetime(15.f), goneBeserk(false), seeking(false)
-{
-	beserkTime = 3.f;
-	lifetime = 15.f;
-	goneBeserk = false;
-	seeking = false;
-	deadEnemies = 0;
-	damageMultiplier = 3;
-	enemyCountAtLoad = LevelManager::enemyCount;
-	moveCMP = p->addComponent<MovementComponent>(_enemySettings.velocity, p->getPosition(), false);
-	goBeserk();
-}
+{}
 
 void Beserker::update(double dt)
 {	
@@ -22,14 +12,18 @@ void Beserker::update(double dt)
 		moveCMP->isLinger(true);
 	}
 
+	if (Scene::deadEnemies > 5) {
+		goBeserk();
+		Scene::deadEnemies = 0;
+	}
+
 	if (goneBeserk) {		
 		beserkTime -= dt;
 		if (beserkTime < 0 && !seeking) {
-			//moveCMP->isLinger(false);
-			seeking = true;
-			moveCMP->isActive(false);
+			moveCMP->isLinger(false);
+			seeking = true;			
 			hpCMP->setHP(hpCMP->getHP() / 10);
-			_parent->addComponent<MissileMovementComponent>(_enemySettings.velocity, true, BESERKER);
+			_parent->addComponent<MissileMovementComponent>(_enemySettings.velocity, true, ENEMY_MISSILE);
 			//_parent->addComponent<RadarComponent>(2.f, ENEMY_MISSILE_RADAR);
 		}		
 	}	
@@ -41,26 +35,11 @@ void Beserker::update(double dt)
 		physicsCMP->getBody()->SetActive(false);
 		physicsCMP->getBody()->SetUserData(nullptr);
 		_parent->setPosition(Vector2f(-100.f, -100.f));
-		_parent->clearComponents();
-		cout << "Enemy count before removal beserker side = " << LevelManager::enemyCount << endl;
-		LevelManager::enemyCount--;
-		cout << "Enemy count after removal berserker side = " << LevelManager::enemyCount << endl;
+		_parent->clearComponents();		
+		LevelManager::enemyCount--;				
 		return;
 	}
 	EnemyComponent::update(dt);
-
-	/*lifetime -= dt;
-	if (_parent->isAlive() && lifetime < 0) {
-		_parent->setAlive(false);
-		_parent->setVisible(false);
-		physicsCMP->getBody()->SetActive(false);
-		physicsCMP->getBody()->SetUserData(nullptr);
-		_parent->setPosition(Vector2f(-100.f, -100.f));
-		_parent->clearComponents();
-		cout << "Enemy count before removal beserker time = " << LevelManager::enemyCount << endl;
-		LevelManager::enemyCount--;
-		cout << "Enemy count after removal berserker time = " << LevelManager::enemyCount << endl;
-	}*/
 }
 
 void Beserker::goBeserk()
@@ -68,17 +47,17 @@ void Beserker::goBeserk()
 	goneBeserk = true;
 	//add machine gun
 	_weaponSettings = WeaponSettings::LoadSettings(MACHINE_GUN, _parent->scene);
-	_weaponSettings.numBulletsUpgradeCount = 3;
+	_weaponSettings.numBulletsUpgradeCount = 2;
 	_bulletSettings = BulletSettings::LoadSettings(TYPE2, _parent->scene);
 	_bulletTextureHelper = TextureHelpingSettings::LoadSettings(TYPE2, _parent->scene);
-	_bulletSettings.damage = _bulletSettings.damage * damageMultiplier;			
+	_bulletSettings.damage = _bulletSettings.damage * 2;			
 	weapon2 = _parent->addComponent<WeaponComponent>(_weaponSettings, _bulletSettings, _bulletTextureHelper);
 
 	//add missile launcher
 	_weaponSettings = WeaponSettings::LoadSettings(ROCKET_LAUNCHER, _parent->scene);
 	_bulletSettings = BulletSettings::LoadSettings(TYPE3, _parent->scene);
 	_bulletTextureHelper = TextureHelpingSettings::LoadSettings(TYPE3, _parent->scene);
-	_bulletSettings.damage = _bulletSettings.damage * damageMultiplier;	
+	_bulletSettings.damage = _bulletSettings.damage * 2;	
 	weapon3 = _parent->addComponent<WeaponComponent>(_weaponSettings, _bulletSettings, _bulletTextureHelper);
 
 	hpCMP->setHP(hpCMP->getHP() * 3);

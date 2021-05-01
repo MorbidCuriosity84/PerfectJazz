@@ -84,7 +84,7 @@ enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
 		settings.friction = 0.005f;
 		settings.velocity = { 0.f,-150.f };
 		settings.tile = ls::BESERKER;
-		settings.category = BESERKER;
+		settings.category = ENEMY_BODY;
 		settings.type = MADMAN;
 		settings.hpVisible = true;
 		settings.scale = { 1.f,1.f };
