@@ -243,9 +243,9 @@ void Scene::Update(const double& dt) {
 		if (!isDead && playerCMP->_playerSettings.lifes <= 0) {
 			GameOver();
 			isDead = true;
-		}
-		Panels::update(dt);
+		}		
 		Powerups::update(dt);
+		Panels::update(dt);
 		ents.update(dt);
 	}
 }

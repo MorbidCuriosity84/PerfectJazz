@@ -14,6 +14,8 @@ public:
 	static float levelOverTimer;
 	static int enemyCount;									//count of current enemies in play. needs to be decremented when enemy dies or offscreen
 	static float kamikazeTimer;
+	static float countTimer;
+	static float singleTimer;
 	static void loadLevel(int i);
 	static void playLevel(Scene* s);
 	static void update(Scene* s, bool infinite, int numWaveFiles, double dt);

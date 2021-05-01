@@ -3,6 +3,8 @@
 #include "../pools/enemyPool.h"
 #include "levelManager.h"
 #include "../movement/cmp_move_sine.h"
+#include "cmp_beserker.h"
+#include "cmp_kamikaze.h"
 
 using namespace std;
 using namespace sf;
@@ -43,12 +45,20 @@ void Enemies::createEnemies(std::string _waveFile, Scene* _scene) {
 		if (t == ls::COLONEL) { setType(COLONEL, _scene); index = colonel_index++; }
 		if (t == ls::BESERKER) { setType(MADMAN, _scene); index = berserk_index++; }
 		if (t == ls::KAMIKAZE) { setType(BANSAI, _scene); index = kami_index++; }
-
-		en->addComponent<EnemyComponent>(_enemyTextureHelper, _bulletTextureHelper, _enemySettings, _weaponSettings, _bulletSettings, index);
-		chooseMovement(t, en, ls::getTilePosition(ls::findTiles(_enemySettings.tile)[index]));
+		
+		cout << "Enemy count before creation of " << t << " = " << LevelManager::enemyCount << endl;		
+		if (t == ls::BESERKER) {
+			en->addComponent<Beserker>(_enemyTextureHelper, _bulletTextureHelper, _enemySettings, _weaponSettings, _bulletSettings, index);
+		}else if( t == ls::KAMIKAZE) {
+			en->addComponent<Kamikaze>(_enemyTextureHelper, _bulletTextureHelper, _enemySettings, _weaponSettings, _bulletSettings, index);
+		}
+		else {
+			en->addComponent<EnemyComponent>(_enemyTextureHelper, _bulletTextureHelper, _enemySettings, _weaponSettings, _bulletSettings, index);
+			chooseMovement(t, en, ls::getTilePosition(ls::findTiles(_enemySettings.tile)[index]));
+		}
 		en->setAlive(true);
 		LevelManager::enemyCount++;
-		
+		cout << "Enemy count after creation of " << t << " = " << LevelManager::enemyCount << endl;
 	}
 
 	/*for (size_t y = 0; y < ls::_height; ++y) {

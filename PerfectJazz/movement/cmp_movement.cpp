@@ -3,23 +3,25 @@
 
 void MovementComponent::update(double dt)
 {		
-	if (linger) {
-		if (_parent->getPosition().y > initPosition.y - Engine::getWindowSize().y / 1.5) {			
-			if (lingerTime > 0) {
-				_velocity = Vector2f(parentPhysics->getVelocity().x, 0.f);
-				parentPhysics->setVelocity(_velocity);				
-				lingerTime = lingerTime - dt;
+	if (active) {
+		if (linger) {
+			if (_parent->getPosition().y > initPosition.y - Engine::getWindowSize().y / 1.5) {
+				if (lingerTime > 0) {
+					_velocity = Vector2f(parentPhysics->getVelocity().x, 0.f);
+					parentPhysics->setVelocity(_velocity);
+					lingerTime = lingerTime - dt;
+				}
+				else {
+					_velocity = parentInitVelocity;
+				}
 			}
-			else {				
-				_velocity = parentInitVelocity;
-			}
-		}		
-	}
-	//check if off the side of view, then move to center
-	if (_parent->getPosition().x < 0 || _parent->getPosition().x > mainView.getSize().x) {
-		_velocity.x = _velocity.x - mainView.getCenter().x;
-	}
-	parentPhysics->setVelocity(_velocity);	
+		}
+		//check if off the side of view, then move to center
+		if (_parent->getPosition().x < 0 || _parent->getPosition().x > mainView.getSize().x) {
+			_velocity.x = _velocity.x - mainView.getCenter().x;
+		}
+		parentPhysics->setVelocity(_velocity);
+	}	
 }
 
 void MovementComponent::render() {}
@@ -32,7 +34,9 @@ void MovementComponent::setLingerTime(float t) { lingerTime = t; }
 
 void MovementComponent::isLinger(bool b) { linger = b; }
 
-MovementComponent::MovementComponent(Entity* p, sf::Vector2f velocity, Vector2f initPos, bool l) : Component(p), _velocity(velocity), initPosition(initPos), linger(l) {
+void MovementComponent::isActive(bool b) { active = b; }
+
+MovementComponent::MovementComponent(Entity* p, sf::Vector2f velocity, Vector2f initPos, bool l) : Component(p), _velocity(velocity), initPosition(initPos), linger(l), active(true) {
 	auto phys = _parent->GetCompatibleComponent<PhysicsComponent>();
 	parentPhysics = phys[0];
 	parentInitVelocity = parentPhysics->getVelocity();

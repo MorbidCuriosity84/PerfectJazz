@@ -11,7 +11,7 @@ Kamikaze::Kamikaze(Entity* p, textureSettings enemyTextureHelper, textureSetting
 
 void Kamikaze::update(double dt)
 {
-	spriteCMP->getSprite().setRotation(_enemySettings.angle);
+	spriteCMP->getSprite().setRotation(_enemySettings.angle);	
 	if (_parent->getPosition().x > _parent->getView().getSize().x || _parent->getPosition().x < 0) {
 		_parent->setAlive(false);
 		_parent->setVisible(false);
@@ -19,8 +19,10 @@ void Kamikaze::update(double dt)
 		physicsCMP->getBody()->SetUserData(nullptr);
 		_parent->setPosition(Vector2f(-100.f, -100.f));
 		_parent->clearComponents();
+		cout << "Enemy count before removal kamikaze side = " << LevelManager::enemyCount << endl;
 		LevelManager::enemyCount--;
+		cout << "Enemy count after removal kamikaze side = " << LevelManager::enemyCount << endl;
 		return;
 	}
-	EnemyComponent::update(dt);
+	EnemyComponent::update(dt);	
 }

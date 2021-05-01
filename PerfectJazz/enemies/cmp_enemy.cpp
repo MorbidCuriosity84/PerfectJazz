@@ -60,7 +60,7 @@ void EnemyComponent::update(double dt) {
 	}	
 	spriteCMP->getSprite().setTextureRect(*_enemyTextureHelper.spriteRectangle.get());
 	spriteCMP->getSprite().setPosition(_parent->getPosition());
-	spriteCMP->getSprite().setRotation(_parent->getRotation() / 5.f);
+	spriteCMP->getSprite().setRotation(_enemySettings.angle);
 		
 	if (_parent->getPosition().y > _parent->getView().getSize().y) {
 		_parent->setAlive(false);
@@ -69,7 +69,9 @@ void EnemyComponent::update(double dt) {
 		physicsCMP->getBody()->SetUserData(nullptr);
 		_parent->setPosition(Vector2f(-100.f, -100.f));
 		_parent->clearComponents();
+		cout << "Enemy count before removal below = " << LevelManager::enemyCount << endl;
 		LevelManager::enemyCount--;				
+		cout << "Enemy count after removal below = " << LevelManager::enemyCount << endl;
 		return;
 	}
 	if (hpCMP->getHP() <= 0) {
@@ -89,8 +91,10 @@ void EnemyComponent::update(double dt) {
 		sounds[_enemySettings.sound].setVolume(35.f);
 		sounds[_enemySettings.sound].play();
 		_parent->clearComponents();
-		LevelManager::enemyCount--;		
-		if (type != MADMAN) {
+		cout << "Enemy count before death of " << type << " = " << LevelManager::enemyCount << endl;
+		LevelManager::enemyCount--;
+		cout << "Enemy count after death of " << type << " = " << LevelManager::enemyCount << endl;
+		if (type == AIRMAN || type == COLONEL || type == SERGEANT) {
 			Scene::deadEnemies++;
 		}		
 	}
