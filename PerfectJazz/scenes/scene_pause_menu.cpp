@@ -56,6 +56,7 @@ void PauseMenu::Load() {
 	menuOption4 = pauseView->addComponent<TextComponent>();
 	menuOption = pauseView->GetCompatibleComponent<TextComponent>();
 	savingGameTxt = pauseView->addComponent<TextComponent>();
+	cantSaveTxt = pauseView->addComponent<TextComponent>();
 
 	//Setting up format and values for savingGame text component
 	savingGameTxt->setFontSize(180u);
@@ -65,9 +66,18 @@ void PauseMenu::Load() {
 	savingGameTxt->_text.setString("GAME SAVED");
 	savingGameTxt->setOrigin(Vector2f((round)(savingGameTxt->getLocalBounds().left + savingGameTxt->getLocalBounds().width / 2), (round)(savingGameTxt->getLocalBounds().top + savingGameTxt->_text.getLocalBounds().height / 2)));
 	savingGameTxt->setPosition(Vector2f((round)(menuView.getSize().x / 2), (round)(menuView.getSize().y / 2)));
-	savingGameTxt->setVisible(false);	
-	
-	
+	savingGameTxt->setVisible(false);
+
+	//Setting up format and values for cantSaveTxt text component
+	cantSaveTxt->setFontSize(110u);
+	cantSaveTxt->_text.setColor(Color::White);
+	cantSaveTxt->_text.setOutlineColor(Color::Red);
+	cantSaveTxt->_text.setOutlineThickness(2);
+	cantSaveTxt->_text.setString("CANNOT SAVE IN INFINITE MODE");
+	cantSaveTxt->setOrigin(Vector2f((round)(cantSaveTxt->getLocalBounds().left + cantSaveTxt->getLocalBounds().width / 2), (round)(cantSaveTxt->getLocalBounds().top + cantSaveTxt->_text.getLocalBounds().height / 2)));
+	cantSaveTxt->setPosition(Vector2f((round)(menuView.getSize().x / 2), (round)(menuView.getSize().y / 2)));
+	cantSaveTxt->setVisible(false);
+
 	//Clearning vector of strings and initializing it to default menu	
 	s.clear();
 	s.push_back("Continue");
@@ -79,7 +89,10 @@ void PauseMenu::Load() {
 	//Setting up variables
 	selectedIndex = 0;
 	timer = 0;
+	savingTimer = 0;
+	notSavingTimer = 0;
 	savingGame = false;
+	notSavingTimer = false;
 	setLoaded(true);
 }
 
@@ -125,7 +138,7 @@ void PauseMenu::moveDown() {
 }
 
 void PauseMenu::Update(const double& dt) {
-	if (!savingGame) {
+	if (!savingGame && !notSavingGame) {
 		if (sf::Keyboard::isKeyPressed(Keyboard::Up) && !detectingKeys.keyUp) { moveUp(); }
 		if (sf::Keyboard::isKeyPressed(Keyboard::Down) && !detectingKeys.keyDown) { moveDown(); }
 		if (sf::Keyboard::isKeyPressed(Keyboard::Enter) && !detectingKeys.keyEnter) {
@@ -138,9 +151,17 @@ void PauseMenu::Update(const double& dt) {
 				Engine::ChangeScene(Engine::_lastScene);
 				break;
 			case 1:
-				savingGame = true;
-				savingTimer = 0;
-				LoadSaveGame::saveGame();
+
+				if (Engine::currentPlayerLevel >= 0) {
+					savingGame = true;
+					savingTimer = 0;
+					LoadSaveGame::saveGame();
+				}
+
+				else {
+					notSavingGame = true;
+					notSavingTimer = 0;
+				}
 				break;
 			case 2:
 				Engine::isPausedMenu = true;
@@ -175,7 +196,6 @@ void PauseMenu::Update(const double& dt) {
 		detectingKeys.detectingKeys();
 	}
 
-
 	timer += dt;
 	if (timer > 0.12) {
 		if (Engine::isMenu && Engine::isPausedMenu) {
@@ -188,7 +208,9 @@ void PauseMenu::Update(const double& dt) {
 			else { _titleShipRightRect.left = _titleShipRightRect.getSize().y / 1; }
 			shipSpriteRight1->getSprite().setTextureRect(_titleShipRightRect);
 		}
+
 		timer = 0;
+
 		if (savingGame) {
 			savingGameTxt->setVisible(true);
 			savingTimer += dt;
@@ -196,7 +218,16 @@ void PauseMenu::Update(const double& dt) {
 				savingGame = false;
 				savingGameTxt->setVisible(false);
 			}
+		}		
+		else if (notSavingGame) {
+			cantSaveTxt->setVisible(true);
+			notSavingGame += dt;
+			if (notSavingTimer > 0.2) {
+				notSavingGame = false;
+				cantSaveTxt->setVisible(false);
+			}
 		}
+
 	}
 }
 

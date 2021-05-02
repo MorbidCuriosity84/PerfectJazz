@@ -259,9 +259,8 @@ void Panels::update(double dt) {
 			setUpgradesSprites("hp", playerCMP->hpCMP->getHP());
 		}
 		timer = 0;
+		FPStxtCMP->setText("FPS: " + toStrDecPt(2, Engine::FPS));
 	}
-
-	FPStxtCMP->setText("FPS: " + toStrDecPt(2, Engine::FPS));
 }
 
 void Panels::render() {}

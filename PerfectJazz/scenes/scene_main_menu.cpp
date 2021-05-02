@@ -236,7 +236,14 @@ void MainMenu::Update(const double& dt) {
 				break;
 			case 1:
 				if (isSettingsScreen) { switchSceneText(MAIN_MENU); break; }
-				if (isLevelMenuScreen) { cout << "Infinite" << endl; break; }
+				if (isLevelMenuScreen) { 
+					Engine::isGamePaused = false;
+					Engine::isPausedMenu = false;
+					Engine::isMenu = false;
+					Engine::currentPlayerLevel = -1;
+					Engine::ChangeScene(&levelScene);
+					break;
+				}
 				if (isMainMenuScreen) {
 					isGameLoading = true;
 					loadingTimer = 0;
