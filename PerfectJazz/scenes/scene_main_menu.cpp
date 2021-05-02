@@ -78,6 +78,7 @@ void MainMenu::Load() {
 	isMainMenuScreen = true;
 	isSettingsScreen = false;
 	isResolutionScreen = false;
+	timer = 0;
 
 	setLoaded(true);
 }
@@ -212,7 +213,6 @@ void MainMenu::loadGame() {
 }
 void MainMenu::Update(const double& dt) {
 
-
 	if (!isGameLoading) {
 		if (sf::Keyboard::isKeyPressed(Keyboard::Up) && !detectingKeys.keyUp) { moveUp(); }
 		if (sf::Keyboard::isKeyPressed(Keyboard::Down) && !detectingKeys.keyDown) { moveDown(); }
@@ -271,8 +271,9 @@ void MainMenu::Update(const double& dt) {
 		else if (isResolutionScreen) { switchSceneText(SETTINGS_MENU); }
 	}
 
+	timer += dt;
 
-	if (Engine::isMenu) {
+	if (Engine::isMenu && timer > 0.15) {
 		//Check if the loaded sprite is the bottom, if so, load the top. And viceversa
 		if (_titleShipLeftRect.top == _titleShipLeftRect.getSize().y / 1) { _titleShipLeftRect.top = 0; }
 		else { _titleShipLeftRect.top = _titleShipLeftRect.getSize().y / 1; }
@@ -281,6 +282,7 @@ void MainMenu::Update(const double& dt) {
 		if (_titleShipRightRect.top == _titleShipRightRect.getSize().y / 1) { _titleShipRightRect.top = 0; }
 		else { _titleShipRightRect.top = _titleShipRightRect.getSize().y / 1; }
 		shipSpriteRight->getSprite().setTextureRect(_titleShipRightRect);
+		timer = 0;
 	}
 
 	detectingKeys.detectingKeys();

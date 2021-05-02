@@ -128,8 +128,8 @@ void Engine::Start(unsigned int width, unsigned int height,
 	mainView.setViewport(sf::FloatRect(0.2f, 0, 0.6f, 1.f));
 
 	isLoading = false;
-	isGamePaused = false;
-	isMenu = false;
+	isGamePaused = true;
+	isMenu = true;
 	isPausedMenu = false;
 
 	Renderer::initialise(window);
