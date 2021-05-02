@@ -32,6 +32,7 @@ void Level3Scene::Load() {
 
 	Engine::isLevelComplete = false;
 	Engine::_nextScene = &level3;
+	Engine::currentPlayerLevel = 2;
 
  	for (int sndInt = PLAYER_DIE_1; sndInt != PICKUP_5; sndInt++) {
 		sBuffs[sndInt].loadFromFile(soundFilenames[sndInt]);

@@ -218,7 +218,7 @@ void UpgradeMenu::Load() {
 	pressEnterText->setOrigin(Vector2f((round)(pressEnterText->getLocalBounds().left + pressEnterText->getLocalBounds().width / 2), (round)(pressEnterText->getLocalBounds().height / 2 - pressEnterText->_text.getLocalBounds().height)));
 	pressEnterText->setPosition(Vector2f((round)((currentValueText->getPosition().x + nextValueText->getPosition().x) / 2), row * 12));
 
-
+	asignMaxValues();
 	setLoaded(true);
 }
 
@@ -237,6 +237,26 @@ void UpgradeMenu::changeMenuText(std::vector<std::string> s) {
 		allTextCMP[i]->setPosition(Vector2f(col * 7, (round)(menuView.getSize().y / 3) + (menuView.getSize().y / 14 * i)));
 	}
 	alignSprite();
+}
+//Initial check for MAX values
+void UpgradeMenu::asignMaxValues() {
+	if (upgradedPlayerCMP->weaponCMP->_bSettings.damage >= maxBulletDamage) {
+		menuOption1NextValue->setText("MAX");
+		menuOption1Cost->setText("MAX");
+	}
+	if (upgradedPlayerCMP->weaponCMP->_wSettings.fireTime <= maxFireRate) {
+		menuOption2NextValue->setText("MAX");
+		menuOption2Cost->setText("MAX");
+	}
+	if (upgradedPlayerCMP->hpCMP->getMaxHP() >= maxHPUpgrade) {
+		menuOption3NextValue->setText("MAX");
+		menuOption3Cost->setText("MAX");
+	}
+
+	if (upgradedPlayerCMP->_playerSettings.flySpeed >= maxFlySpeed) {
+		menuOption4NextValue->setText("MAX");
+		menuOption4Cost->setText("MAX");
+	}
 }
 
 //Align sprites with the selected text
@@ -335,8 +355,8 @@ void UpgradeMenu::purchasingUpgrade(int type) {
 				menuOption3NextValue->setText("MAX");
 				menuOption3Cost->setText("MAX");
 			}
-			else { 
-				upgradedPlayerCMP->hpCMP->setMaxHP(upgradedPlayerCMP->hpCMP->getMaxHP() * maxHPMulti); 
+			else {
+				upgradedPlayerCMP->hpCMP->setMaxHP(upgradedPlayerCMP->hpCMP->getMaxHP() * maxHPMulti);
 				upgradedPlayerCMP->_playerSettings.maxHP = upgradedPlayerCMP->hpCMP->getMaxHP();
 			}
 		}
@@ -457,7 +477,7 @@ void UpgradeMenu::Update(const double& dt) {
 				PlayerComponent::clonePlayer(player);
 				Engine::_lastScene->UnLoad();
 				Engine::ChangeScene(Engine::_nextScene);
-				break;					
+				break;
 			}
 			Engine::ChangeScene(Engine::_lastScene);
 			break;

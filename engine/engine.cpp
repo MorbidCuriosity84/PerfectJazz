@@ -219,19 +219,6 @@ void Scene::Update(const double& dt) {
 			musicArray[MUSIC_UPGRADE_MENU].play();
 			Engine::ChangeScene(&upgradeMenu);
 		}
-		/*if (sf::Keyboard::isKeyPressed(Keyboard::Num3)) {
-			LoadSaveGame::saveGame();
-		}
-		if (sf::Keyboard::isKeyPressed(Keyboard::Num4)) {
-			Engine::isGamePaused = false;
-			Engine::isMenu = false;
-			Engine::isPausedMenu = false;
-			Engine::isLoading = true;
-			Engine::_lastScene->UnLoad();
-			PlayerComponent::clonePlayer(player);
-			Engine::ChangeScene(player->GetCompatibleComponent<PlayerComponent>()[0]->_playerSettings.scene);
-		}*/
-
 		if (sf::Keyboard::isKeyPressed(Keyboard::Space)) {
 			Engine::isGamePaused = true;
 			Engine::isMenu = true;

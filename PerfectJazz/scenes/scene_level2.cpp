@@ -30,6 +30,7 @@ void Level2Scene::Load() {
 
 	Engine::isLevelComplete = false;
 	Engine::_nextScene = &level3;
+	Engine::currentPlayerLevel = 2;
 
 	//Loops through from the start of the sound enum (PLAYER_1_DIE) to the last PICKUP_5 and loads the relevent files
 	for (int sndInt = PLAYER_DIE_1; sndInt != PICKUP_5; sndInt++) {

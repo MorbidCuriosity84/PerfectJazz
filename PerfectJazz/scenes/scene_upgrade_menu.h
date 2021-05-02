@@ -62,6 +62,7 @@ protected:
 	double notEnoughTimer;
 	std::vector<std::string> s;
 	void changeMenuText(std::vector<std::string> s);
+	void asignMaxValues();
 	void alignSprite();
 	void updatingCurrentValues();
 	void updatingNextValues();
