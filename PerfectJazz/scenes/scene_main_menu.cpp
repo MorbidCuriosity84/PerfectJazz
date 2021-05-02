@@ -7,6 +7,7 @@
 #include "../player/cmp_player.h"
 #include "../player/creates_player.h"
 #include "../services/load_save_game.h"
+#include "../background/create_background.h"
 
 using namespace std;
 using namespace sf;
@@ -47,7 +48,6 @@ void MainMenu::Load() {
 			shipSpriteLeft->getSprite().setRotation(90.f);
 		}
 	}
-
 
 	//Creating textcomponents and initializing menu index
 	selectedIndex = 0;
@@ -153,7 +153,6 @@ void MainMenu::switchSceneText(_menuType scene) {
 		s.push_back("Back");
 		changeMenuText(s);
 		changeBools(false, false, false, true);
-
 		break;
 	}
 	default:
@@ -203,10 +202,11 @@ void MainMenu::loadGame() {
 	Engine::isGamePaused = false;
 	Engine::isMenu = false;
 	Engine::isPausedMenu = false;
-	Engine::isLoading = true;
 	Engine::_lastScene->UnLoad();
-	Player::createPlayer(dynamic_cast<Scene*>(&level2));
-	PlayerComponent::clonePlayer(player);
+	Engine::isLoading = true;
+	LoadSaveGame::loadGame();
+	Background::createBackground(dynamic_cast<Scene*>(&level2));	
+	Player::createPlayerFromSettings(dynamic_cast<Scene*>(&level2));
 	Engine::ChangeScene(player->GetCompatibleComponent<PlayerComponent>()[0]->_playerSettings.scene);
 }
 void MainMenu::Update(const double& dt) {

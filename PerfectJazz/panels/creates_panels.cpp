@@ -240,7 +240,7 @@ void Panels::update(double dt) {
 		if (currentCoins != playerCMP->_playerSettings.shopPoints) {
 			setUpgradesSprites("coin", playerCMP->_playerSettings.shopPoints);
 		}
-		if (currentHP != playerCMP->hpCMP->getHP() || currentMaxHP != playerCMP->hpCMP->getMaxHP()){
+		if (currentHP != playerCMP->hpCMP->getHP() || currentMaxHP != playerCMP->hpCMP->getMaxHP()) {
 			setUpgradesSprites("hp", playerCMP->hpCMP->getHP());
 		}
 		timer = 0;

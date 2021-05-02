@@ -178,9 +178,5 @@ void PlayerComponent::clonePlayer(shared_ptr<Entity> pl) {
 		SettingsHolder::pTexHelper = oldCMP->_playerTextureHelper;
 		SettingsHolder::bTexHelper = oldCMP->_bulletTextureHelper;
 	}
-
-	else if (Engine::isLoading) {
-		LoadSaveGame::loadGame();
-	}
 	//auto newPCMP = en->addComponent<PlayerComponent>(oldCMP->_playerTextureHelper, oldCMP->_bulletTextureHelper, oldCMP->_playerSettings, oldCMP->_weaponSettings, oldCMP->_bulletSettings);
 }

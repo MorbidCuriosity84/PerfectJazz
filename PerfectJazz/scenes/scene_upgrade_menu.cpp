@@ -65,7 +65,7 @@ void UpgradeMenu::Load() {
 	maxHPMulti = 1.05;
 
 	//Setting up max upgrades
-	maxHPUpgrade = 99999;
+	maxHPUpgrade = 999999;
 	maxFlySpeed = 400;
 	maxBulletDamage = 2500;
 	maxFireRate = 0.1;
@@ -218,6 +218,7 @@ void UpgradeMenu::Load() {
 	pressEnterText->setOrigin(Vector2f((round)(pressEnterText->getLocalBounds().left + pressEnterText->getLocalBounds().width / 2), (round)(pressEnterText->getLocalBounds().height / 2 - pressEnterText->_text.getLocalBounds().height)));
 	pressEnterText->setPosition(Vector2f((round)((currentValueText->getPosition().x + nextValueText->getPosition().x) / 2), row * 12));
 
+
 	setLoaded(true);
 }
 
@@ -255,8 +256,6 @@ void UpgradeMenu::updatingCurrentValues() {
 	menuOption2Value->setText(fireRate.str());
 	menuOption3Value->setText(to_string(upgradedPlayerCMP->hpCMP->getMaxHP()));
 	menuOption4Value->setText(flySpeed.str());
-
-
 }
 
 //Setting up values for the upgraded values
@@ -454,11 +453,9 @@ void UpgradeMenu::Update(const double& dt) {
 			selectedIndex = 1;
 			moveUp();
 			if (Engine::isLevelComplete) {
-				Engine::isGamePaused = false;
-				Engine::isMenu = false;
 				Engine::isPausedMenu = false;
-				Engine::_lastScene->UnLoad();
 				PlayerComponent::clonePlayer(player);
+				Engine::_lastScene->UnLoad();
 				Engine::ChangeScene(Engine::_nextScene);
 				break;					
 			}

@@ -57,7 +57,9 @@ void Level2Scene::Load() {
 	currentLvlMusicIndex = 3;
 	//Create background	
 	{
-		Background::createBackground(dynamic_cast<Scene*>(&level2));
+		if (!Engine::isLoading) {
+			Background::createBackground(dynamic_cast<Scene*>(&level2));
+		}
 	}
 
 	//Create powerups
@@ -69,12 +71,9 @@ void Level2Scene::Load() {
 	EntityPool::init(&level2);
 	//Create player
 	{
-		if (Engine::isLoading = true) { 
-			Player::createPlayerFromSettings(dynamic_cast<Scene*>(&level2));
+		if (!Engine::isLoading) {
+			Player::createPlayer(dynamic_cast<Scene*>(&level2));
 		}
-		
-		else { Player::createPlayer(dynamic_cast<Scene*>(&level2)); }
-		
 	}
 
 	EnemyPool::init(&level2);
