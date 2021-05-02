@@ -7,6 +7,7 @@
 #include "../components/cmp_sound.h"
 #include "../player/cmp_player.h"
 #include "../player/creates_player.h"
+#include "../services/load_save_game.h"
 
 using namespace std;
 using namespace sf;
@@ -64,7 +65,7 @@ void UpgradeMenu::Load() {
 	maxHPMulti = 1.05;
 
 	//Setting up max upgrades
-	maxHPUpgrade = 99999;
+	maxHPUpgrade = 999999;
 	maxFlySpeed = 400;
 	maxBulletDamage = 2500;
 	maxFireRate = 0.1;
@@ -217,6 +218,7 @@ void UpgradeMenu::Load() {
 	pressEnterText->setOrigin(Vector2f((round)(pressEnterText->getLocalBounds().left + pressEnterText->getLocalBounds().width / 2), (round)(pressEnterText->getLocalBounds().height / 2 - pressEnterText->_text.getLocalBounds().height)));
 	pressEnterText->setPosition(Vector2f((round)((currentValueText->getPosition().x + nextValueText->getPosition().x) / 2), row * 12));
 
+	asignMaxValues();
 	setLoaded(true);
 }
 
@@ -236,6 +238,26 @@ void UpgradeMenu::changeMenuText(std::vector<std::string> s) {
 	}
 	alignSprite();
 }
+//Initial check for MAX values
+void UpgradeMenu::asignMaxValues() {
+	if (upgradedPlayerCMP->weaponCMP->_bSettings.damage >= maxBulletDamage) {
+		menuOption1NextValue->setText("MAX");
+		menuOption1Cost->setText("MAX");
+	}
+	if (upgradedPlayerCMP->weaponCMP->_wSettings.fireTime <= maxFireRate) {
+		menuOption2NextValue->setText("MAX");
+		menuOption2Cost->setText("MAX");
+	}
+	if (upgradedPlayerCMP->hpCMP->getMaxHP() >= maxHPUpgrade) {
+		menuOption3NextValue->setText("MAX");
+		menuOption3Cost->setText("MAX");
+	}
+
+	if (upgradedPlayerCMP->_playerSettings.flySpeed >= maxFlySpeed) {
+		menuOption4NextValue->setText("MAX");
+		menuOption4Cost->setText("MAX");
+	}
+}
 
 //Align sprites with the selected text
 void UpgradeMenu::alignSprite() {
@@ -254,8 +276,6 @@ void UpgradeMenu::updatingCurrentValues() {
 	menuOption2Value->setText(fireRate.str());
 	menuOption3Value->setText(to_string(upgradedPlayerCMP->hpCMP->getMaxHP()));
 	menuOption4Value->setText(flySpeed.str());
-
-
 }
 
 //Setting up values for the upgraded values
@@ -335,7 +355,10 @@ void UpgradeMenu::purchasingUpgrade(int type) {
 				menuOption3NextValue->setText("MAX");
 				menuOption3Cost->setText("MAX");
 			}
-			else { upgradedPlayerCMP->hpCMP->setMaxHP(upgradedPlayerCMP->hpCMP->getMaxHP() * maxHPMulti); }
+			else {
+				upgradedPlayerCMP->hpCMP->setMaxHP(upgradedPlayerCMP->hpCMP->getMaxHP() * maxHPMulti);
+				upgradedPlayerCMP->_playerSettings.maxHP = upgradedPlayerCMP->hpCMP->getMaxHP();
+			}
 		}
 		if (type == 3) {
 			if (upgradedPlayerCMP->_playerSettings.flySpeed >= maxFlySpeed) {
@@ -427,7 +450,7 @@ void UpgradeMenu::Update(const double& dt) {
 	if (sf::Keyboard::isKeyPressed(Keyboard::Up) && !detectingKeys.keyUp) { moveUp(); }
 	if (sf::Keyboard::isKeyPressed(Keyboard::Down) && !detectingKeys.keyDown) { moveDown(); }
 	//Switches between 4 cases, depending on which element of the menu has been selected
-	if (sf::Keyboard::isKeyPressed(Keyboard::Enter) && !detectingKeys.keyEnter) {
+	if (sf::Keyboard::isKeyPressed(Keyboard::Enter) /*&& !detectingKeys.keyEnter*/) {
 		switch (selectedIndex) {
 		case 0:
 			purchasingUpgrade(0);
@@ -450,13 +473,11 @@ void UpgradeMenu::Update(const double& dt) {
 			selectedIndex = 1;
 			moveUp();
 			if (Engine::isLevelComplete) {
-				Engine::isGamePaused = false;
-				Engine::isMenu = false;
 				Engine::isPausedMenu = false;
-				PlayerComponent::clonePlayer(player, Engine::_nextScene);
+				PlayerComponent::clonePlayer(player);
 				Engine::_lastScene->UnLoad();
 				Engine::ChangeScene(Engine::_nextScene);
-				break;					
+				break;
 			}
 			Engine::ChangeScene(Engine::_lastScene);
 			break;

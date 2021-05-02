@@ -9,7 +9,6 @@
 
 
 void WeaponComponent::fire() {
-	//auto bullet = _wSettings.scene->makeEntity();
 
 	int odd = _wSettings.numBulletsUpgradeCount * 2 + 1;
 	float deg = 30.f / (float)odd;

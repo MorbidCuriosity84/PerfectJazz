@@ -205,8 +205,9 @@ void Panels::setUpgradesSprites(string type, int counter) {
 	};	
 	if (type == "hp") {
 		currentHP = playerCMP->hpCMP->getHP();
+		hpCMP->setHP(playerCMP->hpCMP->getHP());
 		currentMaxHP = playerCMP->hpCMP->getMaxHP();
-		hpCMP->setHP(counter);
+		hpCMP->setMaxHP(playerCMP->hpCMP->getMaxHP());
 		hpCMP->textCMP->setText(to_string(playerCMP->hpCMP->getHP()) + "/" + to_string(playerCMP->hpCMP->getMaxHP()));
 		hpCMP->textCMP->setOrigin(Vector2f((round)(hpCMP->textCMP->getGlobalBounds().width / 2), (round)(hpCMP->textCMP->getGlobalBounds().height / 2)));
 		hpCMP->textCMP->setPosition(Vector2f((round)(leftView.getSize().x / 2), (round)(hpCMP->textCMP->getPosition().y)));
@@ -239,7 +240,7 @@ void Panels::update(double dt) {
 		if (currentCoins != playerCMP->_playerSettings.shopPoints) {
 			setUpgradesSprites("coin", playerCMP->_playerSettings.shopPoints);
 		}
-		if (currentHP != playerCMP->hpCMP->getHP() || currentMaxHP != playerCMP->hpCMP->getMaxHP()){
+		if (currentHP != playerCMP->hpCMP->getHP() || currentMaxHP != playerCMP->hpCMP->getMaxHP()) {
 			setUpgradesSprites("hp", playerCMP->hpCMP->getHP());
 		}
 		timer = 0;
@@ -249,14 +250,11 @@ void Panels::update(double dt) {
 void Panels::render() {}
 
 Panels::~Panels() { 
-	playerCMP.reset();
-	leftPanel.reset();	
 	playerLifeSpriteCMP.reset();
 	upgradeDamageSpriteCMP.reset();
 	upgradeFlyeSpeedSpriteCMP.reset();
 	upgradeFirerateSpriteCMP.reset();
 	upgradeBulletsSpriteCMP.reset();
-	playerCMP.reset();
 	playerTxtCMP.reset();
 	scoreTxtCMP.reset();
 	coinsTxtCMP.reset();
@@ -265,4 +263,5 @@ Panels::~Panels() {
 	playerFireRateTxtCMP.reset();
 	playerBulletNumberTxtCMP.reset();
 	hpCMP.reset();
+	playerCMP.reset();
 }

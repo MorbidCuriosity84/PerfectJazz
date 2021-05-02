@@ -1,5 +1,6 @@
 #include "creates_player.h"
 #include "../settings/settings_holder.h"
+#include "../services/load_save_game.h"
 
 using namespace std;
 using namespace sf;
@@ -25,6 +26,15 @@ void Player::createPlayer(Scene* _scene) {
 	_playerBulletSettings.category = FRIENDLY_BULLET;
 	_playerWeaponSettings.direction = -1.f;
 	_playerBulletTextureHelper = TextureHelpingSettings::LoadSettings(TYPE1, _scene);
+
+	if (Engine::isLoading) {
+		LoadSaveGame::loadGame();
+		_playerSettings = SettingsHolder::pSettings;
+		_playerWeaponSettings = SettingsHolder::wSettings;
+		_playerBulletSettings = SettingsHolder::bSettings;
+		_playerBulletTextureHelper = SettingsHolder::bTexHelper;
+		_playerSpriteTextureHelper = SettingsHolder::pTexHelper;
+	}
 
 	player->addComponent<PlayerComponent>(_playerSpriteTextureHelper, _playerBulletTextureHelper, _playerSettings, _playerWeaponSettings, _playerBulletSettings);
 }

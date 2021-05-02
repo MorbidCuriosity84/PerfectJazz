@@ -23,6 +23,7 @@ sf::View mainView;
 sf::View menuView;
 sf::SoundBuffer sBuffs[128];
 sf::Sound sounds[128];
+static Panels panels;
 
 const unsigned int soundsPerBuffer = 8;
 
@@ -31,6 +32,7 @@ void Level3Scene::Load() {
 
 	Engine::isLevelComplete = false;
 	Engine::_nextScene = &level3;
+	Engine::currentPlayerLevel = 2;
 
  	for (int sndInt = PLAYER_DIE_1; sndInt != PICKUP_5; sndInt++) {
 		sBuffs[sndInt].loadFromFile(soundFilenames[sndInt]);
@@ -54,7 +56,6 @@ void Level3Scene::Load() {
 	musicArray[MUSIC_LEVEL_3].setLoop(true);
 	musicArray[MUSIC_LEVEL_3].play();		
 	currentLvlMusicIndex = 4;
-		
 
 	//Create background	
 	{
@@ -70,15 +71,15 @@ void Level3Scene::Load() {
 	EntityPool::init(&level3);
 	//Create player
 	{
-		//Player::createPlayer(dynamic_cast<Scene*>(&level3));
 		Player::createPlayerFromSettings(&level3);
 	}
 
 	EnemyPool::init(&level3);
 	//Create Enemies
 	{
-		LevelManager::loadLevel(1);
-		Enemies::createEnemies("wave1", dynamic_cast<Scene*>(&level3));
+		LevelManager::loadLevel(3);
+		Engine::currentPlayerLevel = 3;
+		//Enemies::createEnemies("wave1", dynamic_cast<Scene*>(&level3));
 	}
 
 	//Create text for left and right boxes
@@ -93,7 +94,8 @@ void Level3Scene::Load() {
 
 void Level3Scene::UnLoad() {
 	cout << "Scene 3 Unload" << endl;
-	ls::unload();
+	ls::unload();	
+	panels.~Panels();
 
 	for (auto e : EntityPool::pool) {
 		e->clearComponents();
@@ -107,6 +109,7 @@ void Level3Scene::UnLoad() {
 		e->clearComponents();
 		e.reset();
 	}
+
 	Scene::UnLoad();
 }
 

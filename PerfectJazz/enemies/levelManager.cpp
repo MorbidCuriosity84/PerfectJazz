@@ -40,7 +40,7 @@ void LevelManager::loadLevel(int level)
 		return;
 	}
 	for (char c : levels[level]) {
-		int idx = c - 48; //converts level character to int		
+		int idx = c - 48; //converts level character to int        
 		LevelManager::waves.push(waveFilenames[idx]);
 	}	
 }

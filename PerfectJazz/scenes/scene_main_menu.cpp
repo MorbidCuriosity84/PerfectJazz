@@ -5,6 +5,9 @@
 #include "../components/cmp_sprite.h"
 #include "../components/cmp_sound.h"
 #include "../player/cmp_player.h"
+#include "../player/creates_player.h"
+#include "../services/load_save_game.h"
+#include "../background/create_background.h"
 
 using namespace std;
 using namespace sf;
@@ -46,18 +49,32 @@ void MainMenu::Load() {
 		}
 	}
 
+	//Creating textcomponents and initializing menu index
 	selectedIndex = 0;
-	timer = 0;
-
 	menuOption1 = mainMenuView->addComponent<TextComponent>();
 	menuOption2 = mainMenuView->addComponent<TextComponent>();
 	menuOption3 = mainMenuView->addComponent<TextComponent>();
 	menuOption4 = mainMenuView->addComponent<TextComponent>();
+	menuOption4 = mainMenuView->addComponent<TextComponent>();
 	menuOption = mainMenuView->GetCompatibleComponent<TextComponent>();
+	loadGameTxt = mainMenuView->addComponent<TextComponent>();
 
+	//Setting up format and values for loadGame text component
+	loadGameTxt->setFontSize(180u);
+	loadGameTxt->_text.setColor(Color::White);
+	loadGameTxt->_text.setOutlineColor(Color::Red);
+	loadGameTxt->_text.setOutlineThickness(2);
+	loadGameTxt->_text.setString("LOADING GAME");
+	loadGameTxt->setOrigin(Vector2f((round)(loadGameTxt->getLocalBounds().left + loadGameTxt->getLocalBounds().width / 2), (round)(loadGameTxt->getLocalBounds().top + loadGameTxt->_text.getLocalBounds().height / 2)));
+	loadGameTxt->setPosition(Vector2f((round)(menuView.getSize().x / 2), (round)(menuView.getSize().y / 2)));
+	loadGameTxt->setVisible(false);
+
+	//Assigning and initializing the default text for the menus
 	switchSceneText(MAIN_MENU);
+	//Updates the position of the text to align it properly
 	changeMenuText(s);
 
+	//Set initial values
 	isMainMenuScreen = true;
 	isSettingsScreen = false;
 	isResolutionScreen = false;
@@ -94,8 +111,11 @@ void MainMenu::switchSceneText(_menuType scene) {
 
 	switch (scene) {
 	case MAIN_MENU: {
+		menuOption[3]->setVisible(true);
+		menuOption[3]->setAlive(true);
 		s.clear();
 		s.push_back("Start Game");
+		s.push_back("Load Game");
 		s.push_back("Settings");
 		s.push_back("Exit");
 		if (selectedIndex >= s.size()) { selectedIndex--; }
@@ -133,7 +153,6 @@ void MainMenu::switchSceneText(_menuType scene) {
 		s.push_back("Back");
 		changeMenuText(s);
 		changeBools(false, false, false, true);
-
 		break;
 	}
 	default:
@@ -179,44 +198,73 @@ void MainMenu::moveDown() {
 	alignSprite();
 }
 
-
+void MainMenu::loadGame() {
+	Engine::isGamePaused = false;
+	Engine::isMenu = false;
+	Engine::isPausedMenu = false;
+	Engine::_lastScene->UnLoad();
+	Engine::isLoading = true;
+	LoadSaveGame::loadGame();
+	Background::createBackground(dynamic_cast<Scene*>(&level2));	
+	Player::createPlayerFromSettings(dynamic_cast<Scene*>(&level2));
+	Engine::ChangeScene(player->GetCompatibleComponent<PlayerComponent>()[0]->_playerSettings.scene);
+}
 void MainMenu::Update(const double& dt) {
-	timer += dt;
 
-	if (sf::Keyboard::isKeyPressed(Keyboard::Up) && !detectingKeys.keyUp) { moveUp(); }
-	if (sf::Keyboard::isKeyPressed(Keyboard::Down) && !detectingKeys.keyDown) { moveDown(); }
-	if (sf::Keyboard::isKeyPressed(Keyboard::Enter) && !detectingKeys.keyEnter) {
-		switch (selectedIndex) {
-		case 0:
-			if (isMainMenuScreen) { switchSceneText(LEVEL_MENU); break; };
-			if (isLevelMenuScreen) {
-				Engine::isGamePaused = false;
-				Engine::isPausedMenu = false;
-				Engine::isMenu = false;
-				Engine::ChangeScene(&level2);
+
+	if (!isLoading) {
+		if (sf::Keyboard::isKeyPressed(Keyboard::Up) && !detectingKeys.keyUp) { moveUp(); }
+		if (sf::Keyboard::isKeyPressed(Keyboard::Down) && !detectingKeys.keyDown) { moveDown(); }
+		if (sf::Keyboard::isKeyPressed(Keyboard::Enter) && !detectingKeys.keyEnter) {
+			switch (selectedIndex) {
+			case 0:
+				if (isMainMenuScreen) { switchSceneText(LEVEL_MENU); break; };
+				if (isLevelMenuScreen) {
+					Engine::isGamePaused = false;
+					Engine::isPausedMenu = false;
+					Engine::isMenu = false;
+					Engine::ChangeScene(&level2);
+					break;
+				};
+				if (isSettingsScreen) { switchSceneText(RESOLUTION_MENU); break; }
+				if (isResolutionScreen) { changeResolution(1); break; }
 				break;
-			};
-			if (isSettingsScreen) { switchSceneText(RESOLUTION_MENU); break; }
-			if (isResolutionScreen) { changeResolution(1); break; }
-			break;
-		case 1:
-			if (isMainMenuScreen) { switchSceneText(SETTINGS_MENU); break; }
-			if (isLevelMenuScreen) { cout << "Infinite" << endl; break; }
-			if (isResolutionScreen) { changeResolution(2); break; }
-			break;
-		case 2:
-			if (isMainMenuScreen) { Engine::GetWindow().close(); break; }
-			if (isLevelMenuScreen) { switchSceneText(MAIN_MENU); break; }
-			if (isSettingsScreen) { switchSceneText(MAIN_MENU); break; }
-			if (isResolutionScreen) { changeResolution(3); break; }
-			break;
-		case 3:
-			if (isResolutionScreen) { switchSceneText(SETTINGS_MENU);  break; }
-			break;
-		default:
-			break;
+			case 1:
+				if (isLevelMenuScreen) { cout << "Infinite" << endl; break; }
+				if (isMainMenuScreen) {
+					isLoading = true;
+					loadingTimer = 0;
+					loadGameTxt->setVisible(true);
+					break;
+				}
+				if (isResolutionScreen) { changeResolution(2); break; }
+				break;
+			case 2:
+				if (isMainMenuScreen) { switchSceneText(SETTINGS_MENU); break; }
+				if (isLevelMenuScreen) { switchSceneText(MAIN_MENU); break; }
+				if (isSettingsScreen) { switchSceneText(MAIN_MENU); break; }
+				if (isResolutionScreen) { changeResolution(3); break; }
+				break;
+			case 3:
+				if (isMainMenuScreen) { Engine::GetWindow().close(); break; }
+				if (isResolutionScreen) { switchSceneText(SETTINGS_MENU);  break; }
+				break;
+			default:
+				break;
+			}
 		}
 	}
+
+	if (isLoading) {
+		loadingTimer += dt;
+		if (loadingTimer > 2) {
+			isLoading = false;
+			loadingTimer = 0;
+			loadGameTxt->setVisible(false);
+			loadGame();
+		}
+	}
+
 	if (sf::Keyboard::isKeyPressed(Keyboard::Escape)) {
 		if (isSettingsScreen) { switchSceneText(MAIN_MENU); }
 		else if (isResolutionScreen) { switchSceneText(SETTINGS_MENU); }

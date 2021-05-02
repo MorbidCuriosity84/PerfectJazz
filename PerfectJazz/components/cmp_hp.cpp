@@ -97,6 +97,9 @@ void HPComponent::setHP(int hp_value) {
 }
 void HPComponent::setMaxHP(int hp_value) {
 	_maxHp = hp_value;
+	if (_maxHp > 999999) {
+		_maxHp = 999999;
+	}
 }
 
 int HPComponent::getMaxHP() {
@@ -122,7 +125,7 @@ void HPComponent::update(double dt) {
 	if (_dynamic) {
 		Vector2f pos = _parent->getPosition();
 
-		underHPBar->getSprite().setPosition(Vector2f((round)(pos.x), (round)(pos.y - parentSpriteCMP->getSprite().getGlobalBounds().height / 2 - underHPBar->getSprite().getGlobalBounds().height/2)));
+		underHPBar->getSprite().setPosition(Vector2f((round)(pos.x), (round)(pos.y - parentSpriteCMP->getSprite().getGlobalBounds().height / 2 - underHPBar->getSprite().getGlobalBounds().height / 2)));
 		overHPBar->getSprite().setPosition(Vector2f((round)(pos.x), (round)(pos.y - parentSpriteCMP->getSprite().getGlobalBounds().height / 2 - underHPBar->getSprite().getGlobalBounds().height / 2)));
 		textCMP->setText(std::to_string(_hp));
 		textCMP->setOrigin(Vector2f((round)(textCMP->getGlobalBounds().width / 2), (round)(textCMP->getGlobalBounds().height / 2)));

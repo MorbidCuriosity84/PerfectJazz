@@ -14,6 +14,7 @@
 #include "../PerfectJazz/player/cmp_player.h"
 #include "../PerfectJazz/powerups/creates_powerups.h"
 #include "../PerfectJazz/pools/entityPool.h"
+#include "../PerfectJazz/services/load_save_game.h"
 
 
 using namespace sf;
@@ -26,7 +27,8 @@ bool Engine::isGamePaused;
 bool Engine::isPausedMenu;
 bool Engine::isMenu;
 bool Engine::isLevelComplete;
-
+bool Engine::isLoading;
+int Engine::currentPlayerLevel;
 float deathTimer;
 bool isDead;
 int Scene::deadEnemies;
@@ -124,16 +126,10 @@ void Engine::Start(unsigned int width, unsigned int height,
 	mainView = tempMain;
 	mainView.setViewport(sf::FloatRect(0.2f, 0, 0.6f, 1.f));
 
-	//Setting for starting the game in the title menu
-	//isGamePaused = true;
-	//isMenu = true;
-	//isPausedMenu = false;
-
-	//Uncomment this if wanting to load a level directly from main
-	Engine::isGamePaused = false;
-	Engine::isMenu = false;
-	Engine::isPausedMenu = false;
-	/////////////////////////////////////////
+	isLoading = false;
+	isGamePaused = false;
+	isMenu = false;
+	isPausedMenu = false;
 
 	Renderer::initialise(window);
 	Physics::initialise();
@@ -215,7 +211,7 @@ void Engine::ChangeScene(Scene* s) {
 void Scene::Update(const double& dt) {
 
 	if (!Engine::isGamePaused) {
-		if (sf::Keyboard::isKeyPressed(Keyboard::Num1)) {			
+		if (sf::Keyboard::isKeyPressed(Keyboard::Num1)) {
 			Engine::isGamePaused = true;
 			Engine::isMenu = true;
 			Engine::isPausedMenu = true;
@@ -243,10 +239,10 @@ void Scene::Update(const double& dt) {
 		if (!isDead && playerCMP->_playerSettings.lifes <= 0) {
 			GameOver();
 			isDead = true;
-		}		
-		Powerups::update(dt);
-		Panels::update(dt);
+		}
 		ents.update(dt);
+		Panels::update(dt);
+		Powerups::update(dt);
 	}
 }
 
@@ -284,8 +280,7 @@ bool Scene::isLoaded() const {
 	}
 }
 
-void Scene::levelOver()
-{
+void Scene::levelOver() {
 	Engine::isLevelComplete = true;
 	if (!isDead) {
 		auto ent = player->scene->makeEntity();

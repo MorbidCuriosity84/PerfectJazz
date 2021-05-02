@@ -24,6 +24,7 @@ playerSettings PlayerSettings::LoadSettings(_playerType type, Scene* scene) {
 		currentPlayerSettings.angle = 0;
 		currentPlayerSettings.score = 0;
 		currentPlayerSettings.shopPoints = 999998;
+		currentPlayerSettings.currentLevel = 1;
 		break;
 	}
 
@@ -36,4 +37,3 @@ playerSettings PlayerSettings::LoadSettings(_playerType type, Scene* scene) {
 	}
 	return currentPlayerSettings;
 }
-
