@@ -227,6 +227,7 @@ void MainMenu::Update(const double& dt) {
 					Engine::isGamePaused = false;
 					Engine::isPausedMenu = false;
 					Engine::isMenu = false;
+					Engine::currentPlayerLevel = 0;
 					Engine::ChangeScene(&levelScene);
 					break;
 				};
@@ -269,9 +270,10 @@ void MainMenu::Update(const double& dt) {
 		}
 	}
 
-	if (sf::Keyboard::isKeyPressed(Keyboard::Escape)) {
+	if (sf::Keyboard::isKeyPressed(Keyboard::Escape) && !detectingKeys.keyEscape) {
 		if (isSettingsScreen) { switchSceneText(MAIN_MENU); }
 		else if (isResolutionScreen) { switchSceneText(SETTINGS_MENU); }
+		else if (isLevelMenuScreen) { switchSceneText(MAIN_MENU); }
 	}
 
 	timer += dt;

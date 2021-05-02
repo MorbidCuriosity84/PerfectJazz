@@ -239,6 +239,8 @@ void LoadSaveGame::loadGame() {
 		auto pSpriteTexture = make_shared<sf::Texture>();
 		auto pspriteRectangle = make_shared<sf::IntRect>();
 
+		SettingsHolder::pSettings.scene == &levelScene;
+
 		SettingsHolder::pTexHelper.spriteTexture = bSpriteTexture;
 		SettingsHolder::pTexHelper.spriteRectangle = bSpriteRectangle;
 		SettingsHolder::bTexHelper.spriteTexture = pSpriteTexture;

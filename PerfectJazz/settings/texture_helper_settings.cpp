@@ -209,11 +209,11 @@ textureSettings TextureHelpingSettings::LoadSettings(_backgroundType type, Scene
 
 	case FOREST:
 	{
-		settings.spriteFilename = "res/img/backgrounds/desert_900.png";
+		settings.spriteFilename = "res/img/backgrounds/forest.png";
 		settings.spriteRows = 1;
-		settings.spriteCols = 3;
+		settings.spriteCols = 1;
 		settings.desiredRow = 0;
-		settings.desiredCol = 2;
+		settings.desiredCol = 0;
 		settings.spriteTexture = backgroundSpriteTexture;
 		settings.spriteRectangle = backgroundSpriteRectangle;
 		settings.spriteTimer = 0;
@@ -223,9 +223,9 @@ textureSettings TextureHelpingSettings::LoadSettings(_backgroundType type, Scene
 	{
 		settings.spriteFilename = "res/img/backgrounds/desert_clouds.png";
 		settings.spriteRows = 1;
-		settings.spriteCols = 3;
+		settings.spriteCols = 1;
 		settings.desiredRow = 0;
-		settings.desiredCol = 2;
+		settings.desiredCol = 0;
 		settings.spriteTexture = backgroundSpriteTexture;
 		settings.spriteRectangle = backgroundSpriteRectangle;
 		settings.spriteTimer = 0;

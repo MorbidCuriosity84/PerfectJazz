@@ -152,21 +152,9 @@ void Engine::Start(unsigned int width, unsigned int height,
 			}
 
 			//If the window is resized, the views will be set accordinly, avoiding components to be auto-resized
-			if (event.type == sf::Event::Resized)     {
+			if (event.type == sf::Event::Resized) {
 				updateViewsSize();
 			}
-		}
-		if (Keyboard::isKeyPressed(Keyboard::Escape)) {
-			isPausedMenu = false;
-			isGamePaused = false;
-			isMenu = false;
-			if (_lastScene != nullptr) {
-				_lastScene->UnLoad();
-			}
-			if (upgradeMenu.ents.list.size() != 0) {
-				upgradeMenu.UnLoad();
-			}
-			window.close();
 		}
 
 		window.clear();
@@ -226,14 +214,16 @@ void Scene::Update(const double& dt) {
 
 	if (!Engine::isGamePaused) {
 		if (sf::Keyboard::isKeyPressed(Keyboard::Num1)) {
-			Engine::isGamePaused = true;
+			player->GetCompatibleComponent<PlayerComponent>()[0]->_playerSettings.shopPoints += 10000;
+		}
+		if (sf::Keyboard::isKeyPressed(Keyboard::Num3)) {
 			Engine::isMenu = true;
 			Engine::isPausedMenu = true;
 			musicArray[currentLvlMusicIndex].pause();
-			musicArray[MUSIC_UPGRADE_MENU].play();
+			musicArray[MUSIC_UPGRADE_MENU].play ();
 			Engine::ChangeScene(&upgradeMenu);
 		}
-		if (sf::Keyboard::isKeyPressed(Keyboard::Space)) {
+		if (sf::Keyboard::isKeyPressed(Keyboard::Escape)) {
 			Engine::isGamePaused = true;
 			Engine::isMenu = true;
 			Engine::isPausedMenu = true;
