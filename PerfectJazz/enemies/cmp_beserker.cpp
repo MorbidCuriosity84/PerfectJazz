@@ -8,25 +8,15 @@ Beserker::Beserker(Entity* p, textureSettings enemyTextureHelper, textureSetting
 
 void Beserker::update(double dt)
 {	
-	if (_parent->getPosition().y < 50.f - Engine::getWindowSize().y /1.5f ) {
-		moveCMP->isLinger(true);
-	}
+	//if (_parent->getPosition().y < 50.f - Engine::getWindowSize().y /1.5f ) {
+	//	moveCMP->isLinger(true);
+	//}
 
 	if (Scene::deadEnemies > 5) {
 		goBeserk();
 		Scene::deadEnemies = 0;
 	}
 
-	if (goneBeserk) {		
-		beserkTime -= dt;
-		if (beserkTime < 0 && !seeking) {
-			moveCMP->isLinger(false);
-			seeking = true;			
-			hpCMP->setHP(hpCMP->getHP() / 10);
-			_parent->addComponent<MissileMovementComponent>(_enemySettings.velocity, true, ENEMY_MISSILE);
-			//_parent->addComponent<RadarComponent>(2.f, ENEMY_MISSILE_RADAR);
-		}		
-	}	
 	_parent->setRotation(_parent->getRotation() + 2.f);
 
 	if (_parent->getPosition().x > _parent->getView().getSize().x || _parent->getPosition().x < 0) {

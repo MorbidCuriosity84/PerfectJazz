@@ -159,7 +159,6 @@ void UpgradeMenu::Load() {
 	changeMenuText(s);
 	updatingCurrentValues();
 	updatingNextValues();
-	updatingCost();
 
 	//Positioning value text components
 	for (int i = 0; i < 4; i++) {
@@ -215,6 +214,7 @@ void UpgradeMenu::Load() {
 	pressEnterText->setPosition(Vector2f((round)((currentValueText->getPosition().x + nextValueText->getPosition().x) / 2), row * 12));
 
 	asignMaxValues();
+	updatingCost();
 	setLoaded(true);
 }
 
@@ -315,6 +315,10 @@ void UpgradeMenu::centeringText() {
 		allTextCMP[i + 12]->setOrigin(Vector2f((round)(allTextCMP[i + 12]->getLocalBounds().width / 2), (round)(allTextCMP[i + 12]->getLocalBounds().top + allTextCMP[i + 12]->getLocalBounds().height / 2.f)));
 		allTextCMP[i + 12]->setPosition(Vector2f(col * 17, (round)(menuView.getSize().y / 3) + (menuView.getSize().y / 14 * i)));
 	}
+
+	coinsTxtCMP->setOrigin(Vector2f((round)(coinsTxtCMP->getLocalBounds().left + coinsTxtCMP->getLocalBounds().width / 2), (round)(coinsTxtCMP->getLocalBounds().height / 2 - coinsTxtCMP->_text.getLocalBounds().height)));
+	coinsTxtCMP->setPosition(Vector2f((round)(menuView.getSize().x / 2), row * 2.5));
+
 	for (int i = 0; i < 4; i++) {
 		allCoinsSprite[2 + i]->getSprite().setPosition(Vector2f(col * 17 + allTextCMP[i + 12]->_text.getLocalBounds().width, (round)(menuView.getSize().y / 3) + (menuView.getSize().y / 14 * i - allCoinsSprite[2 + i]->getSprite().getGlobalBounds().height)));
 	}
@@ -441,6 +445,18 @@ void UpgradeMenu::Update(const double& dt) {
 	if (pressTextTimer > 1.5f && timer <= 2.f) { pressEnterText->setVisible(false); }
 	if (pressTextTimer > 2.f) { pressTextTimer = 0; }
 
+
+	//Updates and centers current coins
+	coinsTxtCMP->_text.setString("Coins: " + to_string(upgradedPlayerCMP->getShoppingCoins()));
+	centeringText();
+
+	detectingKeys.detectingKeys();
+
+	if (notEnoughTimer > 2) {
+		noEnoughMoneyText->setVisible(false);
+		notEnoughTimer = 0;
+	}
+
 	notEnoughTimer += dt;
 	//Checks for key pressed to go up or down the menu
 	if (sf::Keyboard::isKeyPressed(Keyboard::Up) && !detectingKeys.keyUp) { moveUp(); }
@@ -473,6 +489,7 @@ void UpgradeMenu::Update(const double& dt) {
 				PlayerComponent::clonePlayer(player);
 				Engine::_lastScene->UnLoad();
 				Engine::currentPlayerLevel++;
+				Engine::isLevelFinished = true;
 				Engine::ChangeScene(&levelScene);
 				break;
 			}
@@ -481,13 +498,6 @@ void UpgradeMenu::Update(const double& dt) {
 		default:
 			break;
 		}
-	}
-
-	detectingKeys.detectingKeys();
-
-	if (notEnoughTimer > 2) {
-		noEnoughMoneyText->setVisible(false);
-		notEnoughTimer = 0;
 	}
 }
 
