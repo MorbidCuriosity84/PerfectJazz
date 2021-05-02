@@ -8,24 +8,30 @@
 #include <random>
 #include "../services/detecting_keys.h"
 #include "../player/cmp_player.h"
+#include "../services/randomNumber.h"
 
 using namespace std;
 using namespace sf;
 
 void EnemyComponent::Load(int index) {
-	vector<Vector2ul> tile = ls::findTiles(_enemySettings.tile);
 
-	_parent->setPosition(Vector2f(ls::getTilePosition(tile[index]).x, ls::getTilePosition(tile[index]).y - Engine::getWindowSize().y/1.5));
-
-	//_parent->addComponent<MovementComponent>(Vector2f(0.f, -50.f));
+	if (_enemySettings.category == ENEMY_BODY) {
+		vector<Vector2ul> tile = ls::findTiles(_enemySettings.tile);
+		_parent->setPosition(Vector2f(ls::getTilePosition(tile[index]).x, ls::getTilePosition(tile[index]).y - Engine::getWindowSize().y));
+	}
+	else {
+		float xPos = RandomNumber::generateUniformRealNumber(0.0, mainView.getSize().x);
+		_parent->setPosition(Vector2f(xPos, -50.f));
+	}	
 	_parent->addTag("enemies");
 	_enemyTextureHelper.spriteTexture.get()->loadFromFile(_enemyTextureHelper.spriteFilename);
 	spriteCMP = _parent->addComponent<SpriteComponent>();
-	spriteCMP.get()->loadTexture(_enemyTextureHelper, _enemySettings.scale, _enemySettings.angle);
-
+	spriteCMP.get()->loadTexture(_enemyTextureHelper, _enemySettings.scale, _enemySettings.angle);	
 	damageCMP = _parent->addComponent<DamageComponent>(_enemySettings.damage);
-	
-	weaponCMP = _parent->addComponent<WeaponComponent>(_weaponSettings, _bulletSettings, _bulletTextureHelper);	
+	if (_enemySettings.category != KAMIKAZE) {
+		_weaponSettings.fireTimer = RandomNumber::generateUniformRealNumber(0.0, _weaponSettings.fireTime);
+		weaponCMP = _parent->addComponent<WeaponComponent>(_weaponSettings, _bulletSettings, _bulletTextureHelper);
+	}	
 	physicsCMP = _parent->addComponent<EnemyPhysicsComponent>(spriteCMP->getSprite().getGlobalBounds().getSize());
 	physicsCMP.get()->setCategory(_enemySettings.category);
 
@@ -41,19 +47,20 @@ void EnemyComponent::Load(int index) {
 void EnemyComponent::update(double dt) {	
 
 	_enemyTextureHelper.spriteTimer += dt;
-
-	if (_enemyTextureHelper.spriteTimer < 0.05) {
-		_enemyTextureHelper.spriteRectangle.get()->left = (_enemyTextureHelper.spriteTexture.get()->getSize().x / 2) * 0;
-	}
-	if (_enemyTextureHelper.spriteTimer >= 0.1 && _enemyTextureHelper.spriteTimer < 0.15) {
-		_enemyTextureHelper.spriteRectangle.get()->left = (_enemyTextureHelper.spriteTexture.get()->getSize().x / 2) * 1;
-	}
-	if (_enemyTextureHelper.spriteTimer > 0.2) {
-		_enemyTextureHelper.spriteTimer = 0.0;
-	}
+	if (_enemySettings.category == ENEMY_BODY) {
+		if (_enemyTextureHelper.spriteTimer < 0.05) {
+			_enemyTextureHelper.spriteRectangle.get()->left = (_enemyTextureHelper.spriteTexture.get()->getSize().x / 2) * 0;
+		}
+		if (_enemyTextureHelper.spriteTimer >= 0.1 && _enemyTextureHelper.spriteTimer < 0.15) {
+			_enemyTextureHelper.spriteRectangle.get()->left = (_enemyTextureHelper.spriteTexture.get()->getSize().x / 2) * 1;
+		}
+		if (_enemyTextureHelper.spriteTimer > 0.2) {
+			_enemyTextureHelper.spriteTimer = 0.0;
+		}
+	}	
 	spriteCMP->getSprite().setTextureRect(*_enemyTextureHelper.spriteRectangle.get());
 	spriteCMP->getSprite().setPosition(_parent->getPosition());
-	spriteCMP->getSprite().setRotation(_parent->getRotation() / 5.f);
+	spriteCMP->getSprite().setRotation(_enemySettings.angle);
 		
 	if (_parent->getPosition().y > _parent->getView().getSize().y) {
 		_parent->setAlive(false);
@@ -62,7 +69,9 @@ void EnemyComponent::update(double dt) {
 		physicsCMP->getBody()->SetUserData(nullptr);
 		_parent->setPosition(Vector2f(-100.f, -100.f));
 		_parent->clearComponents();
+		cout << "Enemy count before removal below = " << LevelManager::enemyCount << endl;
 		LevelManager::enemyCount--;				
+		cout << "Enemy count after removal below = " << LevelManager::enemyCount << endl;
 		return;
 	}
 	if (hpCMP->getHP() <= 0) {
@@ -76,12 +85,18 @@ void EnemyComponent::update(double dt) {
 		if (type == AIRMAN) { player->GetCompatibleComponent<PlayerComponent>()[0].get()->_playerSettings.score += 10; }
 		if (type == SERGEANT) { player->GetCompatibleComponent<PlayerComponent>()[0].get()->_playerSettings.score += 20; }
 		if (type == COLONEL) { player->GetCompatibleComponent<PlayerComponent>()[0].get()->_playerSettings.score += 30; }
-
+		if (type == BANSAI) { player->GetCompatibleComponent<PlayerComponent>()[0].get()->_playerSettings.score += 40; }
+		if (type == MADMAN) { player->GetCompatibleComponent<PlayerComponent>()[0].get()->_playerSettings.score += 50; }		
 		sounds[_enemySettings.sound].setPitch(1.f + sin(accumulation) * .025f);
-		sounds[_enemySettings.sound].setVolume(15.f);
+		sounds[_enemySettings.sound].setVolume(35.f);
 		sounds[_enemySettings.sound].play();
 		_parent->clearComponents();
-		LevelManager::enemyCount--;		
+		cout << "Enemy count before death of " << type << " = " << LevelManager::enemyCount << endl;
+		LevelManager::enemyCount--;
+		cout << "Enemy count after death of " << type << " = " << LevelManager::enemyCount << endl;
+		if (type == AIRMAN || type == COLONEL || type == SERGEANT) {
+			Scene::deadEnemies++;
+		}		
 	}
 }
 

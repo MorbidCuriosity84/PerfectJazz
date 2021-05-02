@@ -31,6 +31,7 @@ bool Engine::isLoading;
 int Engine::currentPlayerLevel;
 float deathTimer;
 bool isDead;
+int Scene::deadEnemies;
 
 static bool loading = false;
 static float loadingspinner = 0.1f;

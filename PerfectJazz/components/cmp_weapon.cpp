@@ -5,6 +5,7 @@
 #include "../game.h"
 #include "../services/sound_Queue.h"
 #include "../lib_maths/maths.h"
+#include "../services/randomNumber.h"
 
 
 void WeaponComponent::fire() {
@@ -24,10 +25,10 @@ void WeaponComponent::fire() {
 			bullet->setView(_parent->getView());
 			bullet->setPosition({ _parent->getPosition().x, _parent->getPosition().y + (pS[0]->getSprite().getTextureRect().height / 2 * _wSettings.direction) });
 			bullet->setRotation(_parent->getRotation());
-			bullet->addTag("Bullet");
+			bullet->addTag("Bullet");			
 			auto bul = bullet->addComponent<BulletComponent>(_bSettings, _bulletTextureHelper);
 			float len = length(bul->physicsCMP->getVelocity());
-			Vector2f direction = Vector2f(len * spread * cos(deg), bul->physicsCMP->getVelocity().y);				
+			Vector2f direction = Vector2f(len * spread * cos(deg), bul->physicsCMP->getVelocity().y);			
 			bul->physicsCMP->setVelocity(direction);
 			bullet->setView(_parent->getView());
 			bullet->setAlive(true);
@@ -44,9 +45,10 @@ void WeaponComponent::fire() {
 	bullet->clearComponents();
 	bullet->setView(_parent->getView());
 	bullet->setPosition({ _parent->getPosition().x, _parent->getPosition().y + (pS[0]->getSprite().getTextureRect().height/2 * _wSettings.direction) });
-	bullet->setRotation(_parent->getRotation());
+	bullet->setRotation(_parent->getRotation());	
 	bullet->addTag("Bullet");
 	auto bul = bullet->addComponent<BulletComponent>(_bSettings, _bulletTextureHelper);	
+	bul->physicsCMP->setVelocity(Vector2f(_parent->getRotation(), bul->physicsCMP->getVelocity().y));
 	bullet->setView(_parent->getView());
 	bullet->setAlive(true);
 	bullet->setVisible(true);

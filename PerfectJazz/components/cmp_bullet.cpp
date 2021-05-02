@@ -14,7 +14,7 @@ void BulletComponent::createBullet() {
 	_bulletTextHelper.spriteTexture->loadFromFile(_bulletTextHelper.spriteFilename);
 	spriteCMP = _parent->addComponent<SpriteComponent>();
 	spriteCMP.get()->loadTexture(_bulletTextHelper, _settings.spriteScale, _settings.angle);	
-	spriteCMP.get()->getSprite().setRotation(_settings.angle);
+	spriteCMP.get()->getSprite().setRotation(_settings.angle + 180.f);
 	damageCMP = _parent->addComponent<DamageComponent>(_settings.damage + (_settings.damage * 0.2 * _settings.damageUpgradeCount));
 	physicsCMP = _parent->addComponent<PhysicsComponent>(true, spriteCMP.get()->getSprite().getLocalBounds().getSize());
 	
@@ -24,7 +24,7 @@ void BulletComponent::createBullet() {
 
 	physicsCMP->getBody()->SetBullet(true);
 	physicsCMP->setSensor(true);
-	Vector2f bulletVelocity =_settings.velocity * _settings.direction;
+	Vector2f bulletVelocity = _parent->GetCompatibleComponent<PhysicsComponent>()[0]->getVelocity() + _settings.velocity * _settings.direction;
 	physicsCMP->setVelocity(Vector2f(bulletVelocity.x, bulletVelocity.y));
 	physicsCMP->setCategory(_settings.category);	
 
@@ -54,6 +54,7 @@ void BulletComponent::update(double dt) {
 
 	spriteCMP->getSprite().setTextureRect(*_bulletTextHelper.spriteRectangle.get());
 	spriteCMP->getSprite().setPosition(_parent->getPosition());		
+	spriteCMP->getSprite().setRotation(_parent->getRotation() + _settings.angle);
 	
 	if (hpCMP->getHP() <= 0) {
 		_parent->setAlive(false);

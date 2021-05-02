@@ -56,7 +56,6 @@ void Level3Scene::Load() {
 	musicArray[MUSIC_LEVEL_3].play();		
 	currentLvlMusicIndex = 4;
 
-
 	//Create background	
 	{
 		Background::createBackground(dynamic_cast<Scene*>(&level3));

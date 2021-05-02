@@ -17,6 +17,6 @@ public:
 	float getMaxAngle() const;
 	void setMultiplier(float multi);
 	
-	SineMovementComponent(Entity* p, sf::Vector2f vel, float maxAngle);
+	SineMovementComponent(Entity* p, sf::Vector2f vel, float maxAngle, Vector2f initPos, bool l);
 };
 
