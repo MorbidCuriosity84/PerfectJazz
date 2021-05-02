@@ -49,10 +49,11 @@ void Enemies::createEnemies(std::string _waveFile, Scene* _scene) {
 
 		if (t == ls::BESERKER) {
 			auto bes = en->addComponent<Beserker>(_enemyTextureHelper, _bulletTextureHelper, _enemySettings, _weaponSettings, _bulletSettings, index);
-			bes->moveCMP = chooseMovement(t, en, ls::getTilePosition(ls::findTiles(_enemySettings.tile)[index]));
+			en->addComponent<MovementComponent>(_enemySettings.velocity, ls::getTilePosition(ls::findTiles(_enemySettings.tile)[index]), true);
 		}
 		else if (t == ls::KAMIKAZE) {
 			en->addComponent<Kamikaze>(_enemyTextureHelper, _bulletTextureHelper, _enemySettings, _weaponSettings, _bulletSettings, index);
+			en->addComponent<MovementComponent>(_enemySettings.velocity, ls::getTilePosition(ls::findTiles(_enemySettings.tile)[index]), true);
 		}
 		else if (t == ls::BOSS) {
 			auto boss = en->addComponent<Boss>(_enemyTextureHelper, _bulletTextureHelper, _enemySettings, _weaponSettings, _bulletSettings, index);
@@ -61,7 +62,7 @@ void Enemies::createEnemies(std::string _waveFile, Scene* _scene) {
 		}
 		else {
 			en->addComponent<EnemyComponent>(_enemyTextureHelper, _bulletTextureHelper, _enemySettings, _weaponSettings, _bulletSettings, index);
-			chooseMovement(t, en, ls::getTilePosition(ls::findTiles(_enemySettings.tile)[index]));
+			en->addComponent<MovementComponent>(_enemySettings.velocity, ls::getTilePosition(ls::findTiles(_enemySettings.tile)[index]), true);
 		}
 		en->setAlive(true);
 		LevelManager::enemyCount++;

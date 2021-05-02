@@ -30,6 +30,9 @@ bulletSettings _bSettings;
 
 void LevelManager::loadLevel(int level)
 {
+	std::queue<std::string> empty;
+	std::swap(waves, empty); 
+
 	enemyCount = 0;
 	levelOverTimer = 3.f;
 	kamikazeTimer = 5.f;
@@ -73,8 +76,18 @@ void LevelManager::update(Scene* s, bool infinite, int numWaveFiles, double dt)
 	if (enemyCount == 1 || enemyCount == 2) {
 		singleTimer -= dt;		
 	}
+	else {
+		singleTimer = 5.f;
+	}
 	if (singleTimer < 0) {
-		enemyCount == 0;
+		enemyCount = 0;
+		singleTimer = 5.f;
+	}
+	countTimer -= dt;
+	if (countTimer < 0) {
+		cout << "Enemy count = " << enemyCount << endl;
+		cout << "Timer = " << singleTimer << endl;
+		countTimer = 3.f;
 	}
 	kamikazeTimer -= dt;
 	if (infinite) {
@@ -87,12 +100,7 @@ void LevelManager::update(Scene* s, bool infinite, int numWaveFiles, double dt)
 		if (levelOverTimer <= 0.0) {
 			Engine::ChangeScene(&upgradeMenu);
 		}
-	}
-	countTimer -= dt;
-	if (countTimer < 0) {
-		cout << "Enemy count = " << enemyCount << endl;
-		countTimer = 3.f;
-	}
+	}	
 }
 
 void LevelManager::infiniteLevel(Scene* s, int numWaveFiles) {

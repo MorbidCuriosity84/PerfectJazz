@@ -16,7 +16,7 @@ bulletSettings BulletSettings::LoadSettings(_bulletType type, Scene* scene) {
 		settings.category = ENEMY_BULLET;
 		settings.direction = -1.f;
 		settings.velocity = Vector2f(0.f, 300.f);
-		settings.spriteScale = Vector2f(1.f, 1.f);
+		settings.spriteScale = Vector2f(1.25f, 1.25f);
 		settings.sound = EXPLOSION_1;
 		break;
 	}
@@ -32,7 +32,7 @@ bulletSettings BulletSettings::LoadSettings(_bulletType type, Scene* scene) {
 		settings.category = ENEMY_BULLET;
 		settings.direction = -1.f;
 		settings.velocity = Vector2f(0.f, 400.f);
-		settings.spriteScale = Vector2f(1.f, 1.f);
+		settings.spriteScale = Vector2f(1.25f, 1.25f);
 		settings.sound = EXPLOSION_2;
 		break;
 	}
@@ -46,7 +46,7 @@ bulletSettings BulletSettings::LoadSettings(_bulletType type, Scene* scene) {
 		settings.angle = 90.f;
 		settings.category = ENEMY_MISSILE;
 		settings.direction = -1.f;
-		settings.velocity = Vector2f(0.f, 350);
+		settings.velocity = Vector2f(0.f, 200.f);
 		settings.spriteScale = Vector2f(3.f, 3.f);
 		settings.sound = EXPLOSION_3;
 		break;
