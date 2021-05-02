@@ -45,6 +45,7 @@ public:
 	static bool isPausedMenu;
 	static bool isLevelComplete;
 	static bool isLoading;
+	static bool isLevelFinished;
 	static Scene* _lastScene;
 	static Scene* _activeScene;
 	static int currentPlayerLevel;
