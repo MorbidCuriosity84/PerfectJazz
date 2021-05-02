@@ -30,7 +30,7 @@ protected:
 	bool isLevelMenuScreen;
 	bool isSettingsScreen;
 	bool isResolutionScreen;
-	bool isLoading;
+	bool isGameLoading;
 	int selectedIndex;
 	double loadingTimer;
 	std::vector<std::string> s;

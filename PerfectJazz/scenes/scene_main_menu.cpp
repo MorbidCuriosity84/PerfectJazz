@@ -212,7 +212,7 @@ void MainMenu::loadGame() {
 void MainMenu::Update(const double& dt) {
 
 
-	if (!isLoading) {
+	if (!isGameLoading) {
 		if (sf::Keyboard::isKeyPressed(Keyboard::Up) && !detectingKeys.keyUp) { moveUp(); }
 		if (sf::Keyboard::isKeyPressed(Keyboard::Down) && !detectingKeys.keyDown) { moveDown(); }
 		if (sf::Keyboard::isKeyPressed(Keyboard::Enter) && !detectingKeys.keyEnter) {
@@ -232,7 +232,7 @@ void MainMenu::Update(const double& dt) {
 			case 1:
 				if (isLevelMenuScreen) { cout << "Infinite" << endl; break; }
 				if (isMainMenuScreen) {
-					isLoading = true;
+					isGameLoading = true;
 					loadingTimer = 0;
 					loadGameTxt->setVisible(true);
 					break;
@@ -255,10 +255,10 @@ void MainMenu::Update(const double& dt) {
 		}
 	}
 
-	if (isLoading) {
+	if (isGameLoading) {
 		loadingTimer += dt;
 		if (loadingTimer > 2) {
-			isLoading = false;
+			isGameLoading = false;
 			loadingTimer = 0;
 			loadGameTxt->setVisible(false);
 			loadGame();

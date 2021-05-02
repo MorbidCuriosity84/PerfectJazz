@@ -28,11 +28,11 @@ bool Engine::isPausedMenu;
 bool Engine::isMenu;
 bool Engine::isLevelComplete;
 bool Engine::isLoading;
+double Engine::FPS;
 int Engine::currentPlayerLevel;
+int Scene::deadEnemies;
 float deathTimer;
 bool isDead;
-int Scene::deadEnemies;
-
 static bool loading = false;
 static float loadingspinner = 0.1f;
 static float loadingTime;
@@ -80,6 +80,7 @@ void Engine::Update() {
 			}
 			davg = 1.0 / (davg / 255.0);
 			_window->setTitle(avg + toStrDecPt(2, davg));
+			FPS = davg;
 		}
 	}
 
