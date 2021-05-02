@@ -17,10 +17,6 @@ std::shared_ptr<SpriteComponent> shipSpriteLeft;
 std::shared_ptr<Entity> mainMenuView;
 
 void MainMenu::Load() {
-	cout << "Title load \n";
-	sf::View tempMain(sf::FloatRect(0, 0, Engine::getWindowSize().x, Engine::getWindowSize().y));
-	menuView = tempMain;
-	menuView.setViewport(sf::FloatRect(0, 0, 1.f, 1.f));
 	mainMenuView = makeEntity();
 	mainMenuView->setView(menuView);
 
@@ -86,7 +82,7 @@ void MainMenu::Load() {
 void MainMenu::changeMenuText(std::vector<std::string> s) {
 	for (int i = 0; i < s.size(); i++) {
 
-		menuOption[i]->setFontSize(60u / windowScale.x);
+		menuOption[i]->setFontSize(60u);
 		menuOption[i]->_text.setString(s[i]);
 		menuOption[i]->_text.setColor(Color::White);
 		if (i == selectedIndex) { menuOption[i]->_text.setColor(Color::Red); }
@@ -169,6 +165,8 @@ void MainMenu::changeResolution(int type) {
 	auto desktop = sf::VideoMode::getDesktopMode();
 
 	Engine::GetWindow().setPosition(Vector2i(desktop.width / 2 - Engine::GetWindow().getSize().x / 2, desktop.height / 2 - Engine::GetWindow().getSize().y / 2));
+	MainMenu::UnLoad();
+	Engine::ChangeScene(&title);
 }
 
 
@@ -289,12 +287,11 @@ void MainMenu::Update(const double& dt) {
 }
 
 void MainMenu::UnLoad() {
-	if (Engine::isMenu && Engine::_lastScene != nullptr) {
-		Engine::_lastScene->UnLoad();
-	}
 	switchSceneText(MAIN_MENU);
-	mainMenuView.reset();
+	mainMenuView->setForDelete();
 	isMainMenuScreen = true;
 	isSettingsScreen = false;
 	isResolutionScreen = false;
+
+	Scene::setLoaded(false);
 }

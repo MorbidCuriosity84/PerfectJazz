@@ -17,10 +17,6 @@
 using namespace std;
 using namespace sf;
 
-sf::View leftView;
-sf::View rightView;
-sf::View mainView;
-sf::View menuView;
 sf::SoundBuffer sBuffs[128];
 sf::Sound sounds[128];
 static Panels panels;
