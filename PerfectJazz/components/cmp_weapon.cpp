@@ -12,8 +12,7 @@ void WeaponComponent::fire() {
 
 	int odd = _wSettings.numBulletsUpgradeCount * 2 + 1;
 	float deg = 30.f / (float)odd;
-	float spread = 1.f;
-	float angleStart = _parent->getRotation();
+	float spread = 1.f;	
 	if (_wSettings.numBulletsUpgradeCount + 1 > 1) {
 		for (int i = 0 ; i < odd; i++) {			
 			if (i % 2 != 0) {
@@ -36,7 +35,7 @@ void WeaponComponent::fire() {
 			spread *= -1.f;
 		}
 		sounds[_wSettings.sound].setPitch(1.f + sin(accumulation) * .025f);
-		sounds[_wSettings.sound].setVolume(15.f);
+		sounds[_wSettings.sound].setVolume(_wSettings.volume);
 		sounds[_wSettings.sound].play();
 	}	
 
@@ -54,7 +53,7 @@ void WeaponComponent::fire() {
 	bullet->setVisible(true);
 	
 	sounds[_wSettings.sound].setPitch(1.f + sin(accumulation) * .025f);
-	sounds[_wSettings.sound].setVolume(15.f);
+	sounds[_wSettings.sound].setVolume(_wSettings.volume);
 	sounds[_wSettings.sound].play();
 }
 

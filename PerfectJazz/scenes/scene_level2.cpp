@@ -28,6 +28,7 @@ const unsigned int soundsPerBuffer = 8;
 void Level2Scene::Load() {
 	cout << " Scene 2 Load" << endl;
 
+	Scene::deadEnemies = 0;
 	Engine::isLevelComplete = false;
 	Engine::_nextScene = &level3;
 	Engine::currentPlayerLevel = 2;
