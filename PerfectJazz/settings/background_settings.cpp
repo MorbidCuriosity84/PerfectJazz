@@ -33,7 +33,7 @@ backgroundSettings BackgroundSettings::LoadSettings(_backgroundType type, Scene*
 	{
 		settings.scene = scene;
 		settings.direction = -1.f;
-		settings.velocity = Vector2f(0.f / windowScale.x, 100.f / windowScale.y);
+		settings.velocity = Vector2f(0.f / windowScale.x, 50.f * windowScale.y);
 		settings.angle = 0;
 		settings.opacity = { 255, 255, 255, 255 };
 		settings.spriteScale = Vector2f(1.f, 1.f);
@@ -43,7 +43,7 @@ backgroundSettings BackgroundSettings::LoadSettings(_backgroundType type, Scene*
 	{
 		settings.scene = scene;
 		settings.direction = -1.f;
-		settings.velocity = Vector2f(0.f / windowScale.x, 100.f / windowScale.y);
+		settings.velocity = Vector2f(0.f / windowScale.x, 10.f / windowScale.y);
 		settings.angle = 0;
 		settings.opacity = { 255, 255, 255, 255 };
 		settings.spriteScale = Vector2f(1.f, 1.f);

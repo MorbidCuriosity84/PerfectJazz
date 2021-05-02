@@ -34,7 +34,7 @@ void LevelManager::loadLevel(int level)
 	levelOverTimer = 3.f;
 	kamikazeTimer = 5.f;
 	countTimer = 3.f;
-	singleTimer = 15.f;
+	singleTimer = 5.f;
 	Scene::deadEnemies = 0;
 	if (level == -1) { // infinite level flag
 		return;

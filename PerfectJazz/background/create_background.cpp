@@ -13,8 +13,17 @@ void Background::createBackground(Scene* _scene) {
 		for (int i = 0; i < 2; i++) {
 			auto background = _scene->makeEntity();
 			background->setView(mainView);
-			_backgroundTextureHelper = TextureHelpingSettings::LoadSettings(MOUNTAIN, _scene);
-			_backgroundSettings = BackgroundSettings::LoadSettings(MOUNTAIN, _scene);
+
+			if (Engine::currentPlayerLevel == 0 || Engine::currentPlayerLevel == 2) {
+				_backgroundTextureHelper = TextureHelpingSettings::LoadSettings(FOREST, _scene);
+				_backgroundSettings = BackgroundSettings::LoadSettings(FOREST, _scene);
+			}
+
+			else {
+				_backgroundTextureHelper = TextureHelpingSettings::LoadSettings(MOUNTAIN, _scene);
+				_backgroundSettings = BackgroundSettings::LoadSettings(MOUNTAIN, _scene);
+			}
+
 			auto loadBackground = background->addComponent<BackgroundComponent>(_backgroundTextureHelper, _backgroundSettings);
 
 			bool repeated = false;
@@ -34,7 +43,7 @@ void Background::createBackground(Scene* _scene) {
 			bool repeated = false;
 			if (i == 1) {
 				repeated = true;
-				_backgroundSettings.spriteScale = { _backgroundSettings.spriteScale .x, _backgroundSettings.spriteScale.y *  -1.f };
+				_backgroundSettings.spriteScale = { _backgroundSettings.spriteScale.x, _backgroundSettings.spriteScale.y * -1.f };
 				_backgroundSettings.velocity = { 0, 80.f };
 				_backgroundSettings.opacity = { 255, 255, 255, 120 };
 			}
