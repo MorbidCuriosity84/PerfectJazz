@@ -37,12 +37,8 @@ void UpgradeMenu::Load() {
 	musicArray[MUSIC_UPGRADE_MENU].setVolume(25);
 	musicArray[MUSIC_UPGRADE_MENU].setLoop(true);
 	musicArray[MUSIC_UPGRADE_MENU].play();
+		
 
-	//Creates a view for the menu
-	cout << "Title load \n";
-	sf::View tempMain(sf::FloatRect(0, 0, Engine::getWindowSize().x, Engine::getWindowSize().y));
-	menuView = tempMain;
-	menuView.setViewport(sf::FloatRect(0, 0, 1.f, 1.f));
 	//Creates an entity and asgins it to the view
 	upgradeView = makeEntity();
 	upgradeView->setView(menuView);
@@ -87,7 +83,7 @@ void UpgradeMenu::Load() {
 
 	//Settign rectangle for the ship sprite, rotation and scale
 	upgradeShipSprite->setTexure(_upgradeShipTex);
-	upgradeShipSprite->getSprite().setScale(Vector2f(3.f, 3.f) * windowScale);
+	upgradeShipSprite->getSprite().setScale(Vector2f(3.f * windowScale.x, 3.f * windowScale.y));
 	_upgradeShipRect.left = (round)(_upgradeShipTex->getSize().x / 5 * 1);
 	_upgradeShipRect.top = (round)(_upgradeShipTex->getSize().y / 2 * 0);
 	_upgradeShipRect.width = (round)(_upgradeShipTex->getSize().x / 5);
@@ -148,7 +144,7 @@ void UpgradeMenu::Load() {
 	_coinRect.height = (round)(_coinTex->getSize().y / 1);
 	for (int i = 1; i < allCoinsSprite.size(); i++) {
 		allCoinsSprite[i]->setTexure(_coinTex);
-		allCoinsSprite[i]->getSprite().setScale(Vector2f(1.5f, 1.5f) * windowScale);
+		allCoinsSprite[i]->getSprite().setScale(Vector2f(1.5f * windowScale.x, 1.5f * windowScale.y));
 		allCoinsSprite[i]->getSprite().setTextureRect(_coinRect);
 		allCoinsSprite[i]->getSprite().setOrigin(Vector2f(_coinRect.width / 2, _coinRect.height / 2 - cointSprite->getSprite().getLocalBounds().height));
 	}

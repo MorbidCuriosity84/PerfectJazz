@@ -8,13 +8,11 @@ using namespace std;
 using namespace sf;
 
 std::shared_ptr<SpriteComponent> titleSpriteCMP;
+std::shared_ptr<Entity> titleView;
 
 void TitleScene::Load() {
-	cout << "Title load \n";
-	sf::View mainView(sf::FloatRect(0, 0, Engine::getWindowSize().x, Engine::getWindowSize().y));
-	mainView.setViewport(sf::FloatRect(0, 0, 1, 1));
-	auto titleView = makeEntity();
-	titleView->setView(mainView);
+	titleView = makeEntity();
+	titleView->setView(menuView);
 
 	//load music
 	for (int i = 0; i < 8; i++) {
@@ -36,8 +34,9 @@ void TitleScene::Load() {
 	auto backgroundRectangle = make_shared<sf::IntRect>();
 	backgroundTexture->loadFromFile("res/img/title/title_background2.png");
 	backSprite->setTexure(backgroundTexture);
-	backSprite->getSprite().setOrigin(backSprite->getSprite().getGlobalBounds().width / 2, backSprite->getSprite().getGlobalBounds().height / 2 - (mainView.getSize().y / 2 - backSprite->getSprite().getGlobalBounds().height / 2));
-	backSprite->getSprite().setPosition(Vector2f(mainView.getSize().x / 2, mainView.getSize().y / 2));
+	backSprite->getSprite().setScale(windowScale);
+	backSprite->getSprite().setOrigin(Vector2f((round)(backSprite->getSprite().getGlobalBounds().left + backSprite->getSprite().getGlobalBounds().width / 2), (round)(backSprite->getSprite().getGlobalBounds().height / 2)));
+	backSprite->getSprite().setPosition(Vector2f(menuView.getSize().x/2, menuView.getSize().y / 2));
 
 
 	//Load title animation sprite sheet
@@ -50,10 +49,10 @@ void TitleScene::Load() {
 	_titleRect.top = (round)(_titleText->getSize().y / 5 * 0);
 	_titleRect.width = (round)(_titleText->getSize().x / 8);
 	_titleRect.height = (round)(_titleText->getSize().y / 5);
-
+	titleSpriteCMP->getSprite().setScale(windowScale);
 	titleSpriteCMP->getSprite().setTextureRect(_titleRect);
-	titleSpriteCMP->getSprite().setOrigin(titleSpriteCMP->getSprite().getGlobalBounds().width / 2, titleSpriteCMP->getSprite().getGlobalBounds().height / 2);
-	titleSpriteCMP->getSprite().setPosition(Vector2f(mainView.getSize().x / 2, mainView.getSize().y / 2));
+	titleSpriteCMP->getSprite().setOrigin(titleSpriteCMP->getSprite().getLocalBounds().width / 2, titleSpriteCMP->getSprite().getLocalBounds().height / 2);
+	titleSpriteCMP->getSprite().setPosition(Vector2f(menuView.getSize().x / 2, menuView.getSize().y / 2));
 
 	//Load ENTER text
 	txtCMP = titleView->addComponent<TextComponent>("Press ENTER");
@@ -94,8 +93,8 @@ void TitleScene::Update(const double& dt) {
 }
 
 void TitleScene::UnLoad() {
-	cout << "Scene Title Unload" << endl;
 	titleSpriteCMP.reset();
 	txtCMP.reset();
+	titleView->setForDelete();
 	Scene::UnLoad();
 }

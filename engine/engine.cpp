@@ -28,11 +28,11 @@ bool Engine::isPausedMenu;
 bool Engine::isMenu;
 bool Engine::isLevelComplete;
 bool Engine::isLoading;
+double Engine::FPS;
 int Engine::currentPlayerLevel;
+int Scene::deadEnemies;
 float deathTimer;
 bool isDead;
-int Scene::deadEnemies;
-
 static bool loading = false;
 static float loadingspinner = 0.1f;
 static float loadingTime;
@@ -80,6 +80,7 @@ void Engine::Update() {
 			}
 			davg = 1.0 / (davg / 255.0);
 			_window->setTitle(avg + toStrDecPt(2, davg));
+			FPS = davg;
 		}
 	}
 
@@ -103,16 +104,7 @@ void Engine::Render(RenderWindow& window) {
 	Renderer::render();
 }
 
-void Engine::Start(unsigned int width, unsigned int height,
-	const std::string& gameName, Scene* scn) {
-	RenderWindow window(VideoMode(width, height), gameName, sf::Style::None);
-	auto desktop = sf::VideoMode::getDesktopMode();
-	window.setPosition(Vector2i(desktop.width / 2 - window.getSize().x / 2, desktop.height / 2 - window.getSize().y / 2));
-	//Limits the framerate
-	window.setFramerateLimit(60);
-	_gameName = gameName;
-	_window = &window;
-
+void Engine::updateViewsSize() {
 	//Create left view
 	sf::View tempLeft(sf::FloatRect(0, 0, Engine::getWindowSize().x / 5, Engine::getWindowSize().y));
 	leftView = tempLeft;
@@ -125,21 +117,44 @@ void Engine::Start(unsigned int width, unsigned int height,
 	sf::View tempMain(sf::FloatRect(0, 0, (round)(Engine::getWindowSize().x / 1.66666), Engine::getWindowSize().y));
 	mainView = tempMain;
 	mainView.setViewport(sf::FloatRect(0.2f, 0, 0.6f, 1.f));
+	//Create menuView
+	sf::View tempMenu(sf::FloatRect(0, 0, Engine::getWindowSize().x, Engine::getWindowSize().y));
+	menuView = tempMenu;
+	menuView.setViewport(sf::FloatRect(0, 0, 1.f, 1.f));
+}
+
+void Engine::Start(unsigned int width, unsigned int height,
+	const std::string& gameName, Scene* scn) {
+	RenderWindow window(VideoMode(width, height), gameName, sf::Style::None);
+	auto desktop = sf::VideoMode::getDesktopMode();
+	window.setPosition(Vector2i(desktop.width / 2 - window.getSize().x / 2, desktop.height / 2 - window.getSize().y / 2));
+	//Limits the framerate
+	window.setFramerateLimit(60);
+	_gameName = gameName;
+	_window = &window;
 
 	isLoading = false;
-	isGamePaused = false;
-	isMenu = false;
-	isPausedMenu = false;
+	isGamePaused = true;
+	isMenu = true;
+	isPausedMenu = true;
 
 	Renderer::initialise(window);
 	Physics::initialise();
 	ChangeScene(scn);
+
+	//Updates the view, so the elements inside don't auto-resize
+	updateViewsSize();
 
 	while (window.isOpen()) {
 		Event event;
 		while (window.pollEvent(event)) {
 			if (event.type == Event::Closed) {
 				window.close();
+			}
+
+			//If the window is resized, the views will be set accordinly, avoiding components to be auto-resized
+			if (event.type == sf::Event::Resized)     {
+				updateViewsSize();
 			}
 		}
 		if (Keyboard::isKeyPressed(Keyboard::Escape)) {

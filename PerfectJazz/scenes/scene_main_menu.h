@@ -30,8 +30,9 @@ protected:
 	bool isLevelMenuScreen;
 	bool isSettingsScreen;
 	bool isResolutionScreen;
-	bool isLoading;
+	bool isGameLoading;
 	int selectedIndex;
+	double timer;
 	double loadingTimer;
 	std::vector<std::string> s;
 	void changeMenuText(std::vector<std::string> s);

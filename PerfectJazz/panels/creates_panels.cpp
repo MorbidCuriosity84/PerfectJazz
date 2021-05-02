@@ -4,13 +4,15 @@
 #include "../components/cmp_hp.h"
 #include "../components/cmp_sprite.h"
 #include "../settings/texture_helper_settings.h"
+#include <engine.h>
+#include <math.h>
 
 
-double timer;
 using namespace std;
 using namespace sf;
 
 shared_ptr<Entity> leftPanel;
+shared_ptr<Entity> rightPanel;
 shared_ptr<SpriteComponent> playerLifeSpriteCMP;
 shared_ptr<SpriteComponent> upgradeDamageSpriteCMP;
 shared_ptr<SpriteComponent> upgradeFlyeSpeedSpriteCMP;
@@ -24,6 +26,7 @@ shared_ptr<TextComponent> playerSpeedTxtCMP;
 shared_ptr<TextComponent> playerBulletPowerTxtCMP;
 shared_ptr<TextComponent> playerFireRateTxtCMP;
 shared_ptr<TextComponent> playerBulletNumberTxtCMP;
+shared_ptr<TextComponent> FPStxtCMP;
 shared_ptr<HPComponent> hpCMP;
 textureSettings playerLifeTextureHelper;
 Texture playerLifeTexture;
@@ -39,6 +42,7 @@ int currentScore;
 int currentCoins;
 int currentHP;
 int currentMaxHP;
+double timer;
 int row;
 int col;
 
@@ -109,11 +113,13 @@ void Panels::createPanels(Scene* _scene) {
 		playerBulletPowerTxtCMP->setFontSize(30u);
 		auto pbpRec = playerBulletPowerTxtCMP->getGlobalBounds();
 		playerBulletPowerTxtCMP->setPosition(Vector2f((round)(col * 6 + pbpRec.left - pbpRec.width), (round)(row * 11)));
-		
+
+		//Fire rate PowerUps
 		playerFireRateTxtCMP->setFontSize(30u);
 		auto pfRect = playerFireRateTxtCMP->getGlobalBounds();
 		playerFireRateTxtCMP->setPosition(Vector2f((round)(col * 6 + pfRect.left - pfRect.width), (round)(row * 12)));
 
+		//Bullet number PowerUp
 		playerBulletNumberTxtCMP->setFontSize(30u);
 		auto pbnRect = playerBulletNumberTxtCMP->getGlobalBounds();
 		playerBulletNumberTxtCMP->setPosition(Vector2f((round)(col * 6) + pbnRect.left - pbnRect.width, (round)(row * 13)));
@@ -137,6 +143,15 @@ void Panels::createPanels(Scene* _scene) {
 
 	//Right Panel
 	{
+		//Creating entity and setting view
+		rightPanel = _scene->makeEntity();
+		rightPanel->setView(rightView);
+		//Creating fps textcomponent and initializing its settings
+		FPStxtCMP = rightPanel->addComponent<TextComponent>("FPS: " + toStrDecPt(2, Engine::FPS));		
+		FPStxtCMP->setFontSize(40u);
+		sf::FloatRect textRect = FPStxtCMP->getLocalBounds();
+		FPStxtCMP->setOrigin(Vector2f((round)(textRect.left + textRect.width / 2), (round)(textRect.top + textRect.height / 2)));
+		FPStxtCMP->setPosition(Vector2f((round)(rightView.getSize().x / 2), (round)(row * 2.4)));
 	}
 }
 
@@ -245,6 +260,8 @@ void Panels::update(double dt) {
 		}
 		timer = 0;
 	}
+
+	FPStxtCMP->setText("FPS: " + toStrDecPt(2, Engine::FPS));
 }
 
 void Panels::render() {}
@@ -258,6 +275,7 @@ Panels::~Panels() {
 	playerTxtCMP.reset();
 	scoreTxtCMP.reset();
 	coinsTxtCMP.reset();
+	FPStxtCMP.reset();
 	playerSpeedTxtCMP.reset();
 	playerBulletPowerTxtCMP.reset();
 	playerFireRateTxtCMP.reset();

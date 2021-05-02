@@ -17,10 +17,6 @@ std::shared_ptr<SpriteComponent> shipSpriteLeft;
 std::shared_ptr<Entity> mainMenuView;
 
 void MainMenu::Load() {
-	cout << "Title load \n";
-	sf::View tempMain(sf::FloatRect(0, 0, Engine::getWindowSize().x, Engine::getWindowSize().y));
-	menuView = tempMain;
-	menuView.setViewport(sf::FloatRect(0, 0, 1.f, 1.f));
 	mainMenuView = makeEntity();
 	mainMenuView->setView(menuView);
 
@@ -78,6 +74,7 @@ void MainMenu::Load() {
 	isMainMenuScreen = true;
 	isSettingsScreen = false;
 	isResolutionScreen = false;
+	timer = 0;
 
 	setLoaded(true);
 }
@@ -85,7 +82,7 @@ void MainMenu::Load() {
 void MainMenu::changeMenuText(std::vector<std::string> s) {
 	for (int i = 0; i < s.size(); i++) {
 
-		menuOption[i]->setFontSize(60u / windowScale.x);
+		menuOption[i]->setFontSize(60u);
 		menuOption[i]->_text.setString(s[i]);
 		menuOption[i]->_text.setColor(Color::White);
 		if (i == selectedIndex) { menuOption[i]->_text.setColor(Color::Red); }
@@ -108,6 +105,7 @@ void MainMenu::switchSceneText(_menuType scene) {
 
 	menuOption[3]->setVisible(false);
 	menuOption[3]->setAlive(false);
+	selectedIndex = 0;
 
 	switch (scene) {
 	case MAIN_MENU: {
@@ -167,6 +165,8 @@ void MainMenu::changeResolution(int type) {
 	auto desktop = sf::VideoMode::getDesktopMode();
 
 	Engine::GetWindow().setPosition(Vector2i(desktop.width / 2 - Engine::GetWindow().getSize().x / 2, desktop.height / 2 - Engine::GetWindow().getSize().y / 2));
+	MainMenu::UnLoad();
+	Engine::ChangeScene(&title);
 }
 
 
@@ -211,8 +211,7 @@ void MainMenu::loadGame() {
 }
 void MainMenu::Update(const double& dt) {
 
-
-	if (!isLoading) {
+	if (!isGameLoading) {
 		if (sf::Keyboard::isKeyPressed(Keyboard::Up) && !detectingKeys.keyUp) { moveUp(); }
 		if (sf::Keyboard::isKeyPressed(Keyboard::Down) && !detectingKeys.keyDown) { moveDown(); }
 		if (sf::Keyboard::isKeyPressed(Keyboard::Enter) && !detectingKeys.keyEnter) {
@@ -232,7 +231,7 @@ void MainMenu::Update(const double& dt) {
 			case 1:
 				if (isLevelMenuScreen) { cout << "Infinite" << endl; break; }
 				if (isMainMenuScreen) {
-					isLoading = true;
+					isGameLoading = true;
 					loadingTimer = 0;
 					loadGameTxt->setVisible(true);
 					break;
@@ -255,10 +254,10 @@ void MainMenu::Update(const double& dt) {
 		}
 	}
 
-	if (isLoading) {
+	if (isGameLoading) {
 		loadingTimer += dt;
 		if (loadingTimer > 2) {
-			isLoading = false;
+			isGameLoading = false;
 			loadingTimer = 0;
 			loadGameTxt->setVisible(false);
 			loadGame();
@@ -270,8 +269,9 @@ void MainMenu::Update(const double& dt) {
 		else if (isResolutionScreen) { switchSceneText(SETTINGS_MENU); }
 	}
 
+	timer += dt;
 
-	if (Engine::isMenu) {
+	if (Engine::isMenu && timer > 0.15) {
 		//Check if the loaded sprite is the bottom, if so, load the top. And viceversa
 		if (_titleShipLeftRect.top == _titleShipLeftRect.getSize().y / 1) { _titleShipLeftRect.top = 0; }
 		else { _titleShipLeftRect.top = _titleShipLeftRect.getSize().y / 1; }
@@ -280,18 +280,18 @@ void MainMenu::Update(const double& dt) {
 		if (_titleShipRightRect.top == _titleShipRightRect.getSize().y / 1) { _titleShipRightRect.top = 0; }
 		else { _titleShipRightRect.top = _titleShipRightRect.getSize().y / 1; }
 		shipSpriteRight->getSprite().setTextureRect(_titleShipRightRect);
+		timer = 0;
 	}
 
 	detectingKeys.detectingKeys();
 }
 
 void MainMenu::UnLoad() {
-	if (Engine::isMenu && Engine::_lastScene != nullptr) {
-		Engine::_lastScene->UnLoad();
-	}
 	switchSceneText(MAIN_MENU);
-	mainMenuView.reset();
+	mainMenuView->setForDelete();
 	isMainMenuScreen = true;
 	isSettingsScreen = false;
 	isResolutionScreen = false;
+
+	Scene::setLoaded(false);
 }

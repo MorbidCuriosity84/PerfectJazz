@@ -18,10 +18,6 @@ std::shared_ptr<SpriteComponent> shipSpriteLeft1;
 std::shared_ptr<Entity> pauseView;
 
 void PauseMenu::Load() {
-	cout << "Title load \n";
-	sf::View tempMain(sf::FloatRect(0, 0, Engine::getWindowSize().x, Engine::getWindowSize().y));
-	menuView = tempMain;
-	menuView.setViewport(sf::FloatRect(0, 0, 1.f, 1.f));
 	pauseView = makeEntity();
 	pauseView->setView(menuView);
 
@@ -89,7 +85,7 @@ void PauseMenu::Load() {
 void PauseMenu::changeMenuText(std::vector<std::string> s) {
 	for (int i = 0; i < s.size(); i++) {
 
-		menuOption[i]->setFontSize(60u / windowScale.x);
+		menuOption[i]->setFontSize(60u);
 		menuOption[i]->_text.setString(s[i]);
 		menuOption[i]->_text.setColor(Color::White);
 		if (i == selectedIndex) { menuOption[i]->_text.setColor(Color::Red); }
@@ -149,6 +145,8 @@ void PauseMenu::Update(const double& dt) {
 				Engine::isPausedMenu = false;
 				Engine::isMenu = true;
 				Engine::isGamePaused = true;
+				Engine::isLoading = false;
+
 				if (upgradeMenu.ents.list.size() != 0) {
 					upgradeMenu.UnLoad();
 				}
