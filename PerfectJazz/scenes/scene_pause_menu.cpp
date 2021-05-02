@@ -7,6 +7,7 @@
 #include <iostream>
 #include <system_physics.h>
 #include "../services/detecting_keys.h"
+#include "../services/load_save_game.h"
 
 
 using namespace std;
@@ -51,15 +52,26 @@ void PauseMenu::Load() {
 		}
 	}
 
-	selectedIndex = 0;
-	timer = 0;
-
+	//Setting up textcomponents
 	menuOption1 = pauseView->addComponent<TextComponent>();
 	menuOption2 = pauseView->addComponent<TextComponent>();
 	menuOption3 = pauseView->addComponent<TextComponent>();
 	menuOption4 = pauseView->addComponent<TextComponent>();
 	menuOption = pauseView->GetCompatibleComponent<TextComponent>();
+	savingGameTxt = pauseView->addComponent<TextComponent>();
 
+	//Setting up format and values for savingGame text component
+	savingGameTxt->setFontSize(180u);
+	savingGameTxt->_text.setColor(Color::White);
+	savingGameTxt->_text.setOutlineColor(Color::Red);
+	savingGameTxt->_text.setOutlineThickness(2);
+	savingGameTxt->_text.setString("GAME SAVED");
+	savingGameTxt->setOrigin(Vector2f((round)(savingGameTxt->getLocalBounds().left + savingGameTxt->getLocalBounds().width / 2), (round)(savingGameTxt->getLocalBounds().top + savingGameTxt->_text.getLocalBounds().height / 2)));
+	savingGameTxt->setPosition(Vector2f((round)(menuView.getSize().x / 2), (round)(menuView.getSize().y / 2)));
+	savingGameTxt->setVisible(false);	
+	
+	
+	//Clearning vector of strings and initializing it to default menu	
 	s.clear();
 	s.push_back("Continue");
 	s.push_back("Save Game");
@@ -67,6 +79,10 @@ void PauseMenu::Load() {
 	s.push_back("Exit Game");
 	changeMenuText(s);
 
+	//Setting up variables
+	selectedIndex = 0;
+	timer = 0;
+	savingGame = false;
 	setLoaded(true);
 }
 
@@ -112,49 +128,53 @@ void PauseMenu::moveDown() {
 }
 
 void PauseMenu::Update(const double& dt) {
-	if (sf::Keyboard::isKeyPressed(Keyboard::Up) && !detectingKeys.keyUp) { moveUp(); }
-	if (sf::Keyboard::isKeyPressed(Keyboard::Down) && !detectingKeys.keyDown) { moveDown(); }
-	if (sf::Keyboard::isKeyPressed(Keyboard::Enter) && !detectingKeys.keyEnter) {
-		switch (selectedIndex) {
-		case 0:
-			Engine::isGamePaused = false;
-			Engine::isMenu = false;
-			Engine::isPausedMenu = false;
-			musicArray[MUSIC_LEVEL_3].play();
-			Engine::ChangeScene(Engine::_lastScene);
-			break;
-		case 1:
-			cout << "Game saved" << endl;
-			break;
-		case 2:
-			Engine::isPausedMenu = false;
-			Engine::isMenu = true;
-			Engine::isGamePaused = true;
-			if (upgradeMenu.ents.list.size() != 0) {
-				upgradeMenu.UnLoad();
+	if (!savingGame) {
+		if (sf::Keyboard::isKeyPressed(Keyboard::Up) && !detectingKeys.keyUp) { moveUp(); }
+		if (sf::Keyboard::isKeyPressed(Keyboard::Down) && !detectingKeys.keyDown) { moveDown(); }
+		if (sf::Keyboard::isKeyPressed(Keyboard::Enter) && !detectingKeys.keyEnter) {
+			switch (selectedIndex) {
+			case 0:
+				Engine::isGamePaused = false;
+				Engine::isMenu = false;
+				Engine::isPausedMenu = false;
+				musicArray[currentLvlMusicIndex].play();
+				Engine::ChangeScene(Engine::_lastScene);
+				break;
+			case 1:
+				savingGame = true;
+				savingTimer = 0;
+				LoadSaveGame::saveGame();
+				break;
+			case 2:
+				Engine::isPausedMenu = false;
+				Engine::isMenu = true;
+				Engine::isGamePaused = true;
+				if (upgradeMenu.ents.list.size() != 0) {
+					upgradeMenu.UnLoad();
+				}
+				Engine::_lastScene->UnLoad();
+				moveUp();
+				moveUp();
+				musicArray[MUSIC_TITLE_SCREEN].play();
+				Engine::ChangeScene(&mainMenuScene);
+				break;
+			case 3:
+				Engine::isPausedMenu = false;
+				Engine::isMenu = false;
+				Engine::isGamePaused = false;
+				if (upgradeMenu.ents.list.size() != 0) {
+					upgradeMenu.UnLoad();
+				}
+				Engine::_lastScene->UnLoad();
+				Engine::GetWindow().close();
+				break;
+			default:
+				break;
 			}
-			Engine::_lastScene->UnLoad();
-			moveUp();
-			moveUp();
-			musicArray[MUSIC_TITLE_SCREEN].play();
-			Engine::ChangeScene(&mainMenuScene);
-			break;
-		case 3:
-			Engine::isPausedMenu = false;
-			Engine::isMenu = false;
-			Engine::isGamePaused = false;
-			if (upgradeMenu.ents.list.size() != 0) {
-				upgradeMenu.UnLoad();
-			}
-			Engine::_lastScene->UnLoad();
-			Engine::GetWindow().close();
-			break;
-		default:
-			break;
 		}
+		detectingKeys.detectingKeys();
 	}
 
-	detectingKeys.detectingKeys();
 
 	timer += dt;
 	if (timer > 0.12) {
@@ -169,6 +189,14 @@ void PauseMenu::Update(const double& dt) {
 			shipSpriteRight1->getSprite().setTextureRect(_titleShipRightRect);
 		}
 		timer = 0;
+		if (savingGame) {
+			savingGameTxt->setVisible(true);
+			savingTimer += dt;
+			if (savingTimer > 0.2) {
+				savingGame = false;
+				savingGameTxt->setVisible(false);
+			}
+		}
 	}
 }
 

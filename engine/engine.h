@@ -43,11 +43,14 @@ public:
 	static bool isMenu;
 	static bool isPausedMenu;
 	static bool isLevelComplete;
+	static bool isLoading;
 	static Scene* _lastScene;
 	static Scene* _nextScene;
+	static Scene* _activeScene;
+	static int currentPlayerLevel;
+
 
 private:
-	static Scene* _activeScene;
 	static std::string _gameName;
 	static void Update();
 	static void Render(sf::RenderWindow& window);

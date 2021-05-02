@@ -15,9 +15,8 @@ void LevelManager::loadLevel(int level)
 	}
 	int i = 0;
 	for (char c : levels[level]) {
-		int idx = c - 48; //converts level character to int		
-		LevelManager::waves.push(waveFilenames[i]);
-		i++;
+		int idx = c - 48; //converts level character to int        
+		LevelManager::waves.push(waveFilenames[idx]);
 	}
 	enemyCount = 0;
 	levelOverTimer = 3.f;

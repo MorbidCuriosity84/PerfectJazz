@@ -7,7 +7,7 @@ bulletSettings BulletSettings::LoadSettings(_bulletType type, Scene* scene) {
 	switch (type) {
 	case TYPE1:
 	{
-		settings.damage = 100;
+		settings.damage = 1000;
 		settings.damageUpgradeCount = 0;
 		settings.hp = 100;
 		settings.lifetime = 10.f;
@@ -23,7 +23,7 @@ bulletSettings BulletSettings::LoadSettings(_bulletType type, Scene* scene) {
 
 	case TYPE2:
 	{
-		settings.damage = 25;
+		settings.damage = 2500;
 		settings.damageUpgradeCount = 0;
 		settings.hp = 100;
 		settings.lifetime = 10.f;
@@ -38,7 +38,7 @@ bulletSettings BulletSettings::LoadSettings(_bulletType type, Scene* scene) {
 	}
 	case TYPE3:
 	{
-		settings.damage = 300;
+		settings.damage = 3000;
 		settings.damageUpgradeCount = 0;
 		settings.hp = 100;
 		settings.lifetime = 10.f;

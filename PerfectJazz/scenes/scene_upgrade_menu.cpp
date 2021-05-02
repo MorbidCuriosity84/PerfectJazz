@@ -7,6 +7,7 @@
 #include "../components/cmp_sound.h"
 #include "../player/cmp_player.h"
 #include "../player/creates_player.h"
+#include "../services/load_save_game.h"
 
 using namespace std;
 using namespace sf;
@@ -335,7 +336,10 @@ void UpgradeMenu::purchasingUpgrade(int type) {
 				menuOption3NextValue->setText("MAX");
 				menuOption3Cost->setText("MAX");
 			}
-			else { upgradedPlayerCMP->hpCMP->setMaxHP(upgradedPlayerCMP->hpCMP->getMaxHP() * maxHPMulti); }
+			else { 
+				upgradedPlayerCMP->hpCMP->setMaxHP(upgradedPlayerCMP->hpCMP->getMaxHP() * maxHPMulti); 
+				upgradedPlayerCMP->_playerSettings.maxHP = upgradedPlayerCMP->hpCMP->getMaxHP();
+			}
 		}
 		if (type == 3) {
 			if (upgradedPlayerCMP->_playerSettings.flySpeed >= maxFlySpeed) {
@@ -427,7 +431,7 @@ void UpgradeMenu::Update(const double& dt) {
 	if (sf::Keyboard::isKeyPressed(Keyboard::Up) && !detectingKeys.keyUp) { moveUp(); }
 	if (sf::Keyboard::isKeyPressed(Keyboard::Down) && !detectingKeys.keyDown) { moveDown(); }
 	//Switches between 4 cases, depending on which element of the menu has been selected
-	if (sf::Keyboard::isKeyPressed(Keyboard::Enter) && !detectingKeys.keyEnter) {
+	if (sf::Keyboard::isKeyPressed(Keyboard::Enter) /*&& !detectingKeys.keyEnter*/) {
 		switch (selectedIndex) {
 		case 0:
 			purchasingUpgrade(0);
@@ -453,8 +457,8 @@ void UpgradeMenu::Update(const double& dt) {
 				Engine::isGamePaused = false;
 				Engine::isMenu = false;
 				Engine::isPausedMenu = false;
-				PlayerComponent::clonePlayer(player, Engine::_nextScene);
 				Engine::_lastScene->UnLoad();
+				PlayerComponent::clonePlayer(player);
 				Engine::ChangeScene(Engine::_nextScene);
 				break;					
 			}

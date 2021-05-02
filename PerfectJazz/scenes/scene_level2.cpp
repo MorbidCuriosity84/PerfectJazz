@@ -21,7 +21,7 @@
 
 using namespace std;
 using namespace sf;
-
+static Panels panels;
 
 const unsigned int soundsPerBuffer = 8;
 
@@ -54,7 +54,7 @@ void Level2Scene::Load() {
 	musicArray[MUSIC_LEVEL_2].setVolume(25);
 	musicArray[MUSIC_LEVEL_2].setLoop(true);
 	musicArray[MUSIC_LEVEL_2].play();
-
+	currentLvlMusicIndex = 3;
 	//Create background	
 	{
 		Background::createBackground(dynamic_cast<Scene*>(&level2));
@@ -69,7 +69,12 @@ void Level2Scene::Load() {
 	EntityPool::init(&level2);
 	//Create player
 	{
-		Player::createPlayer(dynamic_cast<Scene*>(&level2));
+		if (Engine::isLoading = true) { 
+			Player::createPlayerFromSettings(dynamic_cast<Scene*>(&level2));
+		}
+		
+		else { Player::createPlayer(dynamic_cast<Scene*>(&level2)); }
+		
 	}
 
 	EnemyPool::init(&level2);
@@ -77,6 +82,7 @@ void Level2Scene::Load() {
 	{
 		LevelManager::loadLevel(2); //-- only needed for specific levels, infinite levels just need a call to LevelManager in the update
 		//Enemies::createEnemies("wave1", dynamic_cast<Scene*>(&level2));
+		Engine::currentPlayerLevel = 2;
 	}
 
 	//Create text for left and right boxes
@@ -92,6 +98,8 @@ void Level2Scene::Load() {
 void Level2Scene::UnLoad() {
 	cout << "Scene 2 Unload" << endl;
 	ls::unload();
+	panels.~Panels();
+
 	//saving player settings
 	/*auto pCMP = player->GetCompatibleComponent<PlayerComponent>()[0];
 	pSettings = pCMP->_playerSettings;
@@ -112,6 +120,7 @@ void Level2Scene::UnLoad() {
 		e->clearComponents();
 		e.reset();
 	}
+
 	Scene::UnLoad();
 }
 

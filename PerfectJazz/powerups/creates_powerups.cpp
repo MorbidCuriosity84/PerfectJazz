@@ -198,11 +198,15 @@ void Powerups::deployPowerups() {
 	else {
 		shared_ptr<Entity> en = PowerupPool::pwp_pool[PowerupPool::pwp_poolPointer++];
 		en->setView(mainView);
+		en->setVisible(false);
+
 		en->setPosition(Vector2f((round)(mainView.getSize().x / 16 * choosenColumn) + (round)((mainView.getSize().x / 16) / 2), 0 - mainView.getSize().x / 32));
 
 		en->addComponent<PowerupComponent>(_powerupTextureHelper, _powerupSettings);
 		en->addTag(type);
 		en->setAlive(true);
+		en->setVisible(true);
+
 	}
 }
 

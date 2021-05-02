@@ -22,10 +22,12 @@ protected:
 	std::shared_ptr<TextComponent> menuOption2;
 	std::shared_ptr<TextComponent> menuOption3;
 	std::shared_ptr<TextComponent> menuOption4;
+	std::shared_ptr<TextComponent> savingGameTxt;
 
 	int selectedIndex;
 	double timer;
-
+	double savingTimer;
+	bool savingGame;
 	std::vector<std::string> s;
 	void changeMenuText(std::vector<std::string> s);
 	void alignSprite();

@@ -1,13 +1,14 @@
 #include "cmp_player.h"
 #include <SFML/Graphics/CircleShape.hpp>
 #include "../settings/settings_holder.h"
+#include "../services/load_save_game.h"
 
 using namespace std;
 using namespace sf;
 
 void PlayerComponent::Load() {
 
-	player->setPosition((Vector2f((round)(mainView.getSize().x / 2), mainView.getSize().y - mainView.getSize().y/6)));
+	player->setPosition((Vector2f((round)(mainView.getSize().x / 2), mainView.getSize().y - mainView.getSize().y / 6)));
 	damageCMP = player->addComponent<DamageComponent>(_playerSettings.damage);
 	weaponCMP = player->addComponent<WeaponComponent>(_weaponSettings, _bulletSettings, _bulletTextureHelper);
 	player->addTag("player");
@@ -33,7 +34,8 @@ void PlayerComponent::revive() {
 	_gracePeriod = true;
 	physicsCMP->setCategory(NO_COLLIDE);
 	physicsCMP->teleport((Vector2f((round)(mainView.getSize().x / 2), mainView.getSize().y - mainView.getSize().y / 6)));
-	hpCMP->setHP(_playerSettings.maxHP);
+	hpCMP->setHP(hpCMP->getMaxHP());
+	_playerSettings.maxHP = hpCMP->getMaxHP();
 }
 
 void PlayerComponent::update(double dt) {
@@ -149,8 +151,6 @@ int PlayerComponent::getScorePoints() {
 	return _playerSettings.score;
 }
 
-int PlayerComponent::getMaxLifes() { return _playerSettings.maxLifes; }
-
 PlayerComponent::PlayerComponent(Entity* p, textureSettings playerTextureHelper, textureSettings bulletTextureHelper, playerSettings playerSettings, weaponSettings weaponSettings, bulletSettings bulletSettings)
 	: Component(p), _playerTextureHelper(playerTextureHelper), _bulletTextureHelper(bulletTextureHelper), _playerSettings(playerSettings), _weaponSettings(weaponSettings), _bulletSettings(bulletSettings), _gracePeriod(false), _gracePeriodTimer(0), _visibilityTimer(0), _maxUpdate(5) {
 	Load();
@@ -162,19 +162,25 @@ PlayerComponent::PlayerComponent(Entity* p, textureSettings playerTextureHelper,
 	physicsCMP->getBody()->SetUserData(&colHelp);
 }
 
-void PlayerComponent::clonePlayer(shared_ptr<Entity> pl, Scene* target)
-{
+void PlayerComponent::clonePlayer(shared_ptr<Entity> pl) {
 	auto oldCMP = pl->GetCompatibleComponent<PlayerComponent>()[0];
 	auto wep = pl->GetCompatibleComponent<WeaponComponent>()[0];
 	auto hp = pl->GetCompatibleComponent<HPComponent>()[0];
-	SettingsHolder::pSettings = oldCMP->_playerSettings;
-	SettingsHolder::pSettings.flySpeed = oldCMP->_playerSettings.flySpeed;
-	SettingsHolder::pSettings.flySpeedUpgradeCount = oldCMP->_playerSettings.flySpeedUpgradeCount;
-	SettingsHolder::pSettings.hp = hp->getHP();
-	SettingsHolder::pSettings.maxHP = hp->getMaxHP();
-	SettingsHolder::wSettings = wep->_wSettings;
-	SettingsHolder::bSettings = wep->_bSettings;
-	SettingsHolder::pTexHelper = oldCMP->_playerTextureHelper;
-	SettingsHolder::bTexHelper = oldCMP->_bulletTextureHelper;
+
+	if (!Engine::isLoading) {
+		SettingsHolder::pSettings = oldCMP->_playerSettings;
+		SettingsHolder::pSettings.flySpeed = oldCMP->_playerSettings.flySpeed;
+		SettingsHolder::pSettings.flySpeedUpgradeCount = oldCMP->_playerSettings.flySpeedUpgradeCount;
+		SettingsHolder::pSettings.hp = hp->getHP();
+		SettingsHolder::pSettings.maxHP = hp->getMaxHP();
+		SettingsHolder::wSettings = wep->_wSettings;
+		SettingsHolder::bSettings = wep->_bSettings;
+		SettingsHolder::pTexHelper = oldCMP->_playerTextureHelper;
+		SettingsHolder::bTexHelper = oldCMP->_bulletTextureHelper;
+	}
+
+	else if (Engine::isLoading) {
+		LoadSaveGame::loadGame();
+	}
 	//auto newPCMP = en->addComponent<PlayerComponent>(oldCMP->_playerTextureHelper, oldCMP->_bulletTextureHelper, oldCMP->_playerSettings, oldCMP->_weaponSettings, oldCMP->_bulletSettings);
 }

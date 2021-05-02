@@ -1,9 +1,9 @@
 #include "myContactListener.h"
 #include <iostream>
 #include <ecm.h>
-#include "components/cmp_bullet.h"
-#include "components/cmp_hp.h"
-#include "settings/collision_helper.h"
+#include "../components/cmp_bullet.h"
+#include "../components/cmp_hp.h"
+#include "../settings/collision_helper.h"
 
 
 void myContactListener::BeginContact(b2Contact* contact) {
