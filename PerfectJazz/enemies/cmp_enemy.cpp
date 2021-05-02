@@ -60,10 +60,10 @@ void EnemyComponent::update(double dt) {
 			_enemyTextureHelper.spriteTimer = 0.0;
 		}
 	}
+
 	spriteCMP->getSprite().setTextureRect(*_enemyTextureHelper.spriteRectangle.get());
 	spriteCMP->getSprite().setPosition(_parent->getPosition());
-	spriteCMP->getSprite().setRotation(_parent->getRotation() + _enemySettings.angle);
-
+	spriteCMP->getSprite().setRotation(_parent->getRotation() + _enemySettings.angle);	
 
 	if (_parent->getPosition().y > _parent->getView().getSize().y) {
 		_parent->setAlive(false);
