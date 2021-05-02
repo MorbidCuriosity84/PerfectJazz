@@ -5,6 +5,7 @@
 #include "../movement/cmp_move_sine.h"
 #include "cmp_beserker.h"
 #include "cmp_kamikaze.h"
+#include "cmp_boss.h"
 
 using namespace std;
 using namespace sf;
@@ -22,7 +23,7 @@ void Enemies::createEnemies(std::string _waveFile, Scene* _scene) {
 	auto ho = (round)(Engine::getWindowSize().y) - (round)((ls::getHeight() * mainView.getSize().y / 16));
 	ls::setOffset(Vector2f((mainView.getSize().y) / 32, ho));
 
-	int index = 0, airman_index = 0, sergeant_index = 0, colonel_index = 0, berserk_index = 0, kami_index = 0;
+	int index = 0, airman_index = 0, sergeant_index = 0, colonel_index = 0, berserk_index = 0, kami_index = 0, boss_index = 0;
 
 	//MARK - I was thinking this could be condensed into a single loop
 	//If we get ls::_height and ls_width we can use that to loop through h x w
@@ -45,12 +46,18 @@ void Enemies::createEnemies(std::string _waveFile, Scene* _scene) {
 		if (t == ls::COLONEL) { setType(COLONEL, _scene); index = colonel_index++; }		
 		if (t == ls::KAMIKAZE) { setType(BANSAI, _scene); index = kami_index++; }
 		if (t == ls::BESERKER) { setType(MADMAN, _scene); index = berserk_index++; }
+		if (t == ls::BOSS) { setType(BOSS, _scene); index = boss_index++; }
 	
 		if (t == ls::BESERKER) {
 			auto bes = en->addComponent<Beserker>(_enemyTextureHelper, _bulletTextureHelper, _enemySettings, _weaponSettings, _bulletSettings, index);
 			bes->moveCMP = chooseMovement(t, en, ls::getTilePosition(ls::findTiles(_enemySettings.tile)[index]));
 		}else if( t == ls::KAMIKAZE) {
 			en->addComponent<Kamikaze>(_enemyTextureHelper, _bulletTextureHelper, _enemySettings, _weaponSettings, _bulletSettings, index);			
+		}
+		else if (t == ls::BOSS) {
+			auto boss = en->addComponent<Boss>(_enemyTextureHelper, _bulletTextureHelper, _enemySettings, _weaponSettings, _bulletSettings, index);
+			boss->moveCMP = chooseMovement(t, en, ls::getTilePosition(ls::findTiles(_enemySettings.tile)[index]));
+			boss->moveCMP->isLinger(true);
 		}
 		else {
 			en->addComponent<EnemyComponent>(_enemyTextureHelper, _bulletTextureHelper, _enemySettings, _weaponSettings, _bulletSettings, index);
@@ -104,6 +111,12 @@ void Enemies::setType(_enemyType type, Scene* _scene) {
 		_weaponSettings = WeaponSettings::LoadSettings(MACHINE_GUN, _scene);
 		_bulletSettings = BulletSettings::LoadSettings(TYPE2, _scene);
 		_bulletTextureHelper = TextureHelpingSettings::LoadSettings(TYPE2, _scene);
+	case BOSS:
+		_enemySettings = EnemySettings::LoadSettings(BOSS, _scene);
+		_enemyTextureHelper = TextureHelpingSettings::LoadSettings(BOSS, _scene);
+		_weaponSettings = WeaponSettings::LoadSettings(MACHINE_GUN, _scene);
+		_bulletSettings = BulletSettings::LoadSettings(TYPE2, _scene);
+		_bulletTextureHelper = TextureHelpingSettings::LoadSettings(TYPE2, _scene);
 	default:
 		break;
 	}
@@ -125,6 +138,9 @@ shared_ptr<MovementComponent> Enemies::chooseMovement(ls::Tile tile, shared_ptr<
 		return en->addComponent<MissileMovementComponent>(_enemySettings.velocity, true, _enemySettings.category);
 		break;
 	case ls::BESERKER:
+		return en->addComponent<SineMovementComponent>(_enemySettings.velocity, 60.f,  initPos, true);
+		break;
+	case ls::BOSS:
 		return en->addComponent<MovementComponent>(_enemySettings.velocity, initPos, true);
 		break;
 	}

@@ -7,14 +7,16 @@ weaponSettings WeaponSettings::LoadSettings(_weaponType type, Scene* scene) {
 	switch (type) {
 	case GUN:
 	{
-		settings.fireTime = 1.5f;
+		settings.fireTime = .75f;
 		settings.fireTimer = 0;
 		settings.firerateUpgradeCount = 0;
 		settings.numBulletsUpgradeCount = 0;
 		settings.numBullets = 0;
 		settings.scene = scene;
 		settings.direction = 1.f;
-		settings.sound = BULLET_FIRE_1;
+		settings.sound = MISSILE_FIRE_2;
+		settings.volume = 0.15f;
+		settings.pitch = 1.f;
 		break;
 	}
 
@@ -28,6 +30,8 @@ weaponSettings WeaponSettings::LoadSettings(_weaponType type, Scene* scene) {
 		settings.scene = scene;
 		settings.direction = 1.f;
 		settings.sound = BULLET_FIRE_2;
+		settings.volume = 0.15f;
+		settings.pitch = 1.f;
 		break;
 	}
 	case ROCKET_LAUNCHER:
@@ -40,6 +44,8 @@ weaponSettings WeaponSettings::LoadSettings(_weaponType type, Scene* scene) {
 		settings.scene = scene;
 		settings.direction = 1.f;
 		settings.sound = MISSILE_FIRE_1;
+		settings.volume = 0.15f;
+		settings.pitch = 1.f;
 		break;
 	}
 	case NONE:
@@ -51,6 +57,8 @@ weaponSettings WeaponSettings::LoadSettings(_weaponType type, Scene* scene) {
 		settings.scene = scene;
 		settings.direction = 1.f;
 		settings.sound = MISSILE_FIRE_2;
+		settings.volume = 0.15f;
+		settings.pitch = 1.f;
 		break;
 	default:
 		break;

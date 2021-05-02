@@ -16,8 +16,10 @@ void Player::createPlayer(Scene* _scene) {
 	_playerSettings = PlayerSettings::LoadSettings(PLAYER1, _scene);
 	_playerSpriteTextureHelper = TextureHelpingSettings::LoadSettings(PLAYER1, _scene);
 	_playerWeaponSettings = WeaponSettings::LoadSettings(MACHINE_GUN, _scene);
+	_playerWeaponSettings.sound = MISSILE_FIRE_2;
 	_playerWeaponSettings.fireTimer = 0.f;
 	_playerWeaponSettings.fireTime = 1.f;
+	_playerWeaponSettings.volume = 0.35f;
 	_playerBulletSettings = BulletSettings::LoadSettings(TYPE1, _scene);
 	_playerBulletSettings.direction = 1.f;
 	_playerBulletSettings.category = FRIENDLY_BULLET;

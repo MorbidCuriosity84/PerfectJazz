@@ -181,6 +181,7 @@ enum _enemyType {
     COLONEL,
     BANSAI,
     MADMAN,
+    BOSS,
 };
 
 enum _playerType {

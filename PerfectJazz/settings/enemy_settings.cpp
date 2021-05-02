@@ -92,6 +92,23 @@ enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
 		settings.sound = EXPLOSION_3;
 		break;
 	}
+	case BOSS:
+	{
+		settings.damage = 5000;
+		settings.hp = 25000;
+		settings.scene = scene;
+		settings.restitution = 0.4f;
+		settings.friction = 0.005f;
+		settings.velocity = { 0.f,-150.f };
+		settings.tile = ls::BOSS;
+		settings.category = ENEMY_BODY;
+		settings.type = BOSS;
+		settings.hpVisible = true;
+		settings.scale = { 1.5f,1.5f };
+		settings.angle = 90.f;
+		settings.sound = EXPLOSION_3;
+		break;
+	}
 	default:
 		break;
 	}
