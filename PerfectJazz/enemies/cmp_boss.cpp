@@ -98,4 +98,7 @@ Boss::Boss(Entity* p, textureSettings enemyTextureHelper, textureSettings bullet
 	_bulletSettings = BulletSettings::LoadSettings(TYPE3, _parent->scene);
 	_bulletTextureHelper = TextureHelpingSettings::LoadSettings(TYPE3, _parent->scene);	
 	_parent->addComponent<WeaponComponent>(_weaponSettings, _bulletSettings, _bulletTextureHelper);
+
+	physicsCMP->setCategory(ENEMY_BODY);
+
 }

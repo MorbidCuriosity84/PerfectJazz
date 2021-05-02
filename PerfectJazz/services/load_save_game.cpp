@@ -241,6 +241,8 @@ void LoadSaveGame::loadGame() {
 
 		SettingsHolder::pSettings.scene == &levelScene;
 
+
+		
 		SettingsHolder::pTexHelper.spriteTexture = bSpriteTexture;
 		SettingsHolder::pTexHelper.spriteRectangle = bSpriteRectangle;
 		SettingsHolder::bTexHelper.spriteTexture = pSpriteTexture;

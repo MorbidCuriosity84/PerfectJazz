@@ -76,11 +76,11 @@ textureSettings TextureHelpingSettings::LoadSettings(_enemyType type, Scene* sce
 	}
 	case BANSAI:
 	{
-		settings.spriteFilename = "res/img/enemies/Spaceships.png";
-		settings.spriteRows = 3;
-		settings.spriteCols = 5;
-		settings.desiredRow = 1;   
-		settings.desiredCol = 2;
+		settings.spriteFilename = "res/img/enemies/kamikaze1.png";
+		settings.spriteRows = 1;
+		settings.spriteCols = 1;
+		settings.desiredRow = 0;   
+		settings.desiredCol = 0;
 		settings.spriteTexture = enemySpriteTexture;
 		settings.spriteRectangle = enemySpriteRectangle;
 		settings.spriteTimer = 0;
@@ -88,11 +88,11 @@ textureSettings TextureHelpingSettings::LoadSettings(_enemyType type, Scene* sce
 	}
 	case MADMAN:
 	{
-		settings.spriteFilename = "res/img/enemies/Spaceships.png";
-		settings.spriteRows = 3;
-		settings.spriteCols = 5;
-		settings.desiredRow = 1;
-		settings.desiredCol = 3;
+		settings.spriteFilename = "res/img/enemies/madman1.png";
+		settings.spriteRows = 1;
+		settings.spriteCols = 1;
+		settings.desiredRow = 0;
+		settings.desiredCol = 0;
 		settings.spriteTexture = enemySpriteTexture;
 		settings.spriteRectangle = enemySpriteRectangle;
 		settings.spriteTimer = 0;
@@ -100,11 +100,11 @@ textureSettings TextureHelpingSettings::LoadSettings(_enemyType type, Scene* sce
 	}
 	case BOSS:
 	{
-		settings.spriteFilename = "res/img/enemies/Spaceships.png";
-		settings.spriteRows = 3;
-		settings.spriteCols = 5;
-		settings.desiredRow = 1;
-		settings.desiredCol = 4;
+		settings.spriteFilename = "res/img/enemies/boss1.png";
+		settings.spriteRows = 1;
+		settings.spriteCols = 1;
+		settings.desiredRow = 0;
+		settings.desiredCol = 0;
 		settings.spriteTexture = enemySpriteTexture;
 		settings.spriteRectangle = enemySpriteRectangle;
 		settings.spriteTimer = 0;

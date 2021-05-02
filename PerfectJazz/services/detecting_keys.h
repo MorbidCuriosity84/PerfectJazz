@@ -6,5 +6,6 @@ public:
 	static bool keyDown;
 	static bool keyEnter;
 	static bool keyEscape;
+	static bool keySpace;
 };
 
