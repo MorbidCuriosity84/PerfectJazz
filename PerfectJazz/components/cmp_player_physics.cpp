@@ -2,6 +2,7 @@
 #include "system_physics.h"
 #include <SFML/Window/Keyboard.hpp>
 #include "../player/cmp_player.h"
+#include "../services/detecting_keys.h"
 
 using namespace std;
 using namespace sf;
@@ -66,7 +67,18 @@ void PlayerPhysicsComponent::update(double dt) {
 					impulse({ 0, (float)(dt * _flySpeed) });
 			}
 		}
+
+		if (Keyboard::isKeyPressed(Keyboard::Space) && !detectingKeys.keySpace) {
+			playerCMP->weaponCMP->_bSettings.direction *= -1.f;
+			if (playerCMP->spriteCMP->getSprite().getRotation() != 180.f) {
+				playerCMP->spriteCMP->getSprite().setRotation(180.f);
+			}
+			else { playerCMP->spriteCMP->getSprite().setRotation(0.f); }
+		}
 	}
+
+	detectingKeys.detectingKeys();
+
 
 	if ((pos.x > mainView.getSize().x || pos.x < 0 || pos.y > mainView.getSize().y || pos.y < 0)) {
 		playerCMP->setPlayerAlive(false);

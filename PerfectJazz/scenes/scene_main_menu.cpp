@@ -212,7 +212,7 @@ void MainMenu::loadGame() {
 	LoadSaveGame::loadGame();
 	Background::createBackground(dynamic_cast<Scene*>(&levelScene));
 	Player::createPlayerFromSettings(dynamic_cast<Scene*>(&levelScene));
-	Engine::ChangeScene(player->GetCompatibleComponent<PlayerComponent>()[0]->_playerSettings.scene);
+	Engine::ChangeScene(&levelScene);
 }
 void MainMenu::Update(const double& dt) {
 

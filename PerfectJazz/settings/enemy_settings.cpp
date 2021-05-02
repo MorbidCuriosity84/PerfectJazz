@@ -2,7 +2,7 @@
 #include "../game.h"
 #include <engine.h>
 enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
-	
+
 	enemySettings settings;
 
 	switch (type) {
@@ -19,7 +19,7 @@ enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
 		settings.type = AIRMAN;
 		settings.hpVisible = true;
 		settings.scale = { 1.f,1.f };
-		settings.angle = 0;		
+		settings.angle = 0;
 		settings.sound = ENEMY_DIE_1;
 		break;
 	}
@@ -37,7 +37,7 @@ enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
 		settings.type = SERGEANT;
 		settings.hpVisible = true;
 		settings.scale = { 1.f,1.f };
-		settings.angle = 0;				
+		settings.angle = 0;
 		settings.sound = ENEMY_DIE_2;
 		break;
 	}
@@ -54,7 +54,7 @@ enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
 		settings.type = COLONEL;
 		settings.hpVisible = true;
 		settings.scale = { 1.f,1.f };
-		settings.angle = 0;		
+		settings.angle = 0;
 		settings.sound = ENEMY_DIE_3;
 		break;
 	}
@@ -71,7 +71,7 @@ enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
 		settings.type = BANSAI;
 		settings.hpVisible = true;
 		settings.scale = { 1.f,1.f };
-		settings.angle = 90.f;
+		settings.angle = 0;
 		settings.sound = EXPLOSION_5;
 		break;
 	}
@@ -88,7 +88,7 @@ enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
 		settings.type = MADMAN;
 		settings.hpVisible = true;
 		settings.scale = { 1.f,1.f };
-		settings.angle = 90.f;
+		settings.angle = 0;
 		settings.sound = EXPLOSION_3;
 		break;
 	}
@@ -105,7 +105,7 @@ enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
 		settings.type = BOSS;
 		settings.hpVisible = true;
 		settings.scale = { 1.5f,1.5f };
-		settings.angle = 90.f;
+		settings.angle = 0;
 		settings.sound = EXPLOSION_3;
 		break;
 	}

@@ -42,16 +42,17 @@ void Enemies::createEnemies(std::string _waveFile, Scene* _scene) {
 
 		if (t == ls::AIRMAN) { setType(AIRMAN, _scene); index = airman_index++; }
 		if (t == ls::SERGEANT) { setType(SERGEANT, _scene); index = sergeant_index++; }
-		if (t == ls::COLONEL) { setType(COLONEL, _scene); index = colonel_index++; }		
+		if (t == ls::COLONEL) { setType(COLONEL, _scene); index = colonel_index++; }
 		if (t == ls::KAMIKAZE) { setType(BANSAI, _scene); index = kami_index++; }
 		if (t == ls::BESERKER) { setType(MADMAN, _scene); index = berserk_index++; }
 		if (t == ls::BOSS) { setType(BOSS, _scene); index = boss_index++; }
-	
+
 		if (t == ls::BESERKER) {
 			auto bes = en->addComponent<Beserker>(_enemyTextureHelper, _bulletTextureHelper, _enemySettings, _weaponSettings, _bulletSettings, index);
 			bes->moveCMP = chooseMovement(t, en, ls::getTilePosition(ls::findTiles(_enemySettings.tile)[index]));
-		}else if( t == ls::KAMIKAZE) {
-			en->addComponent<Kamikaze>(_enemyTextureHelper, _bulletTextureHelper, _enemySettings, _weaponSettings, _bulletSettings, index);			
+		}
+		else if (t == ls::KAMIKAZE) {
+			en->addComponent<Kamikaze>(_enemyTextureHelper, _bulletTextureHelper, _enemySettings, _weaponSettings, _bulletSettings, index);
 		}
 		else if (t == ls::BOSS) {
 			auto boss = en->addComponent<Boss>(_enemyTextureHelper, _bulletTextureHelper, _enemySettings, _weaponSettings, _bulletSettings, index);
@@ -70,8 +71,7 @@ void Enemies::createEnemies(std::string _waveFile, Scene* _scene) {
 void Enemies::setType(_enemyType type, Scene* _scene) {
 
 	switch (type) {
-	case AIRMAN:
-	{
+	case AIRMAN: {
 		_enemySettings = EnemySettings::LoadSettings(AIRMAN, _scene);
 		_enemyTextureHelper = TextureHelpingSettings::LoadSettings(AIRMAN, _scene);
 		_weaponSettings = WeaponSettings::LoadSettings(GUN, _scene);
@@ -80,11 +80,10 @@ void Enemies::setType(_enemyType type, Scene* _scene) {
 		break;
 	}
 
-	case SERGEANT:
-	{
-		_enemySettings = EnemySettings::LoadSettings(SERGEANT, _scene);		
+	case SERGEANT: {
+		_enemySettings = EnemySettings::LoadSettings(SERGEANT, _scene);
 		_enemyTextureHelper = TextureHelpingSettings::LoadSettings(SERGEANT, _scene);
-		_weaponSettings = WeaponSettings::LoadSettings(MACHINE_GUN, _scene);		
+		_weaponSettings = WeaponSettings::LoadSettings(MACHINE_GUN, _scene);
 		_bulletSettings = BulletSettings::LoadSettings(TYPE2, _scene);
 		_bulletTextureHelper = TextureHelpingSettings::LoadSettings(TYPE2, _scene);
 		break;
@@ -98,34 +97,39 @@ void Enemies::setType(_enemyType type, Scene* _scene) {
 		_bulletTextureHelper = TextureHelpingSettings::LoadSettings(TYPE3, _scene);
 		break;
 	}
-	case BANSAI:
+	case BANSAI: {
 		_enemySettings = EnemySettings::LoadSettings(BANSAI, _scene);
 		_enemyTextureHelper = TextureHelpingSettings::LoadSettings(BANSAI, _scene);
 		_weaponSettings = WeaponSettings::LoadSettings(EMPTY, _scene);
 		_bulletSettings = BulletSettings::LoadSettings(TYPE3, _scene);
 		_bulletTextureHelper = TextureHelpingSettings::LoadSettings(TYPE3, _scene);
-	case MADMAN:
+		break;
+	}
+	case MADMAN: {
 		_enemySettings = EnemySettings::LoadSettings(MADMAN, _scene);
 		_enemyTextureHelper = TextureHelpingSettings::LoadSettings(MADMAN, _scene);
 		_weaponSettings = WeaponSettings::LoadSettings(MACHINE_GUN, _scene);
 		_bulletSettings = BulletSettings::LoadSettings(TYPE2, _scene);
 		_bulletTextureHelper = TextureHelpingSettings::LoadSettings(TYPE2, _scene);
-	case BOSS:
+		break;
+	}
+	case BOSS: {
 		_enemySettings = EnemySettings::LoadSettings(BOSS, _scene);
 		_enemyTextureHelper = TextureHelpingSettings::LoadSettings(BOSS, _scene);
 		_weaponSettings = WeaponSettings::LoadSettings(MACHINE_GUN, _scene);
 		_bulletSettings = BulletSettings::LoadSettings(TYPE2, _scene);
 		_bulletTextureHelper = TextureHelpingSettings::LoadSettings(TYPE2, _scene);
+		break;
+	}
 	default:
 		break;
 	}
 }
 
-shared_ptr<MovementComponent> Enemies::chooseMovement(ls::Tile tile, shared_ptr<Entity> en, Vector2f initPos)
-{
+shared_ptr<MovementComponent> Enemies::chooseMovement(ls::Tile tile, shared_ptr<Entity> en, Vector2f initPos) {
 	switch (tile) {
 	case ls::AIRMAN:
-		return en->addComponent<MovementComponent>(_enemySettings.velocity, initPos, true);		
+		return en->addComponent<MovementComponent>(_enemySettings.velocity, initPos, true);
 		break;
 	case ls::SERGEANT:
 		return en->addComponent<SineMovementComponent>(Vector2f(_enemySettings.velocity), 45.f, initPos, true);
@@ -137,7 +141,7 @@ shared_ptr<MovementComponent> Enemies::chooseMovement(ls::Tile tile, shared_ptr<
 		return en->addComponent<MissileMovementComponent>(_enemySettings.velocity, true, _enemySettings.category);
 		break;
 	case ls::BESERKER:
-		return en->addComponent<SineMovementComponent>(_enemySettings.velocity, 60.f,  initPos, true);
+		return en->addComponent<SineMovementComponent>(_enemySettings.velocity, 60.f, initPos, true);
 		break;
 	case ls::BOSS:
 		return en->addComponent<MovementComponent>(_enemySettings.velocity, initPos, true);
