@@ -142,7 +142,7 @@ void PauseMenu::Update(const double& dt) {
 				LoadSaveGame::saveGame();
 				break;
 			case 2:
-				Engine::isPausedMenu = false;
+				Engine::isPausedMenu = true;
 				Engine::isMenu = true;
 				Engine::isGamePaused = true;
 				Engine::isLoading = false;

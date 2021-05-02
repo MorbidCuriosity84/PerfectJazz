@@ -2,11 +2,8 @@
 #include "ecm.h"
 #include "services/myContactListener.h"
 #include "scenes/scene_title.h"
-#include "scenes/scene_level1.h"
-#include "scenes/scene_level2.h"
-#include "scenes/scene_level3.h"
+#include "scenes/scene_level.h"
 #include "scenes/scene_main_menu.h"
-#include "scenes/scene_menu.h"
 #include "scenes/scene_pause_menu.h"
 #include "scenes/scene_upgrade_menu.h"
 #include "SFML/Audio.hpp"
@@ -14,19 +11,15 @@
 
 using namespace std;
 
-extern Scene* mainScene;
-extern MenuScene menuScene;
 extern MainMenu mainMenuScene;
 extern PauseMenu pauseMenu;
+extern TitleScene title;
+extern LevelScene levelScene;
+extern UpgradeMenu upgradeMenu;
 extern shared_ptr<Entity> player;
 extern sf::SoundBuffer sBuffs[128];
 extern sf::Sound sounds[128];
 extern sf::Music musicArray[8];
-extern TitleScene title;
-extern Level1Scene level1;
-extern Level2Scene level2;
-extern Level3Scene level3;
-extern UpgradeMenu upgradeMenu;
 extern Vector2f windowScale;
 extern sf::View leftView;
 extern sf::View rightView;
@@ -37,6 +30,11 @@ extern unsigned int gameHeight;
 extern myContactListener mContLis;
 extern DetectingKeys detectingKeys;
 extern int currentLvlMusicIndex;
+extern int bulletDamageScale;
+extern int fireRateScale;
+extern int enemyHPScale;
+extern Vector2f bulletVelocityScale;
+extern Vector2f enemyVelocityScale;
 
 
 /*
@@ -170,8 +168,8 @@ enum MUSIC {
     MUSIC_LEVEL_3,
     MUSIC_LEVEL_4,
     MUSIC_LEVEL_5,
-    MUSIC_BOSS_SPLASH,
     MUSIC_BOSS_FIGHT,
+    MUSIC_BOSS_SPLASH,    
 };
 
 enum _enemyType {
@@ -193,6 +191,7 @@ enum _bulletType {
     TYPE1,
     TYPE2,
     TYPE3,
+    TYPE_PLAYER,
 };
 
 enum _weaponType {
@@ -200,6 +199,7 @@ enum _weaponType {
     GUN,
     MACHINE_GUN,
     ROCKET_LAUNCHER,
+    PLAYER_GUN,
 };
 
 enum _backgroundType {

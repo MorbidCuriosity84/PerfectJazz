@@ -234,15 +234,6 @@ void LoadSaveGame::loadGame() {
 		SettingsHolder::pTexHelper = pHelperJson;
 		SettingsHolder::bTexHelper = bHelperJson;
 
-		//Setting up level
-		if (SettingsHolder::pSettings.currentLevel == 1) { SettingsHolder::pSettings.scene = &level1; }
-		if (SettingsHolder::pSettings.currentLevel == 2) { SettingsHolder::pSettings.scene = &level2; }
-		if (SettingsHolder::pSettings.currentLevel == 3) { SettingsHolder::pSettings.scene = &level3; }
-		//if (Engine::currentLevel == "level4") { scene = &level4; }
-		//if (Engine::currentLevel == "level5") { scene = &level5; }
-		//if (Engine::currentLevel == "level6") { scene = &level6; }
-
-
 		auto bSpriteTexture = make_shared<sf::Texture>();
 		auto bSpriteRectangle = make_shared<sf::IntRect>();
 		auto pSpriteTexture = make_shared<sf::Texture>();

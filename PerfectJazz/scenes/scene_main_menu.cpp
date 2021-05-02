@@ -110,7 +110,9 @@ void MainMenu::switchSceneText(_menuType scene) {
 	switch (scene) {
 	case MAIN_MENU: {
 		menuOption[3]->setVisible(true);
-		menuOption[3]->setAlive(true);
+		menuOption[3]->setAlive(true);	
+		menuOption[2]->setVisible(true);
+		menuOption[2]->setAlive(true);
 		s.clear();
 		s.push_back("Start Game");
 		s.push_back("Load Game");
@@ -132,9 +134,10 @@ void MainMenu::switchSceneText(_menuType scene) {
 		break;
 	}
 	case SETTINGS_MENU: {
+		menuOption[2]->setVisible(false);
+		menuOption[2]->setAlive(false);
 		s.clear();
 		s.push_back("Resolution");
-		s.push_back("Something else");
 		s.push_back("Back");
 		if (selectedIndex >= s.size()) { selectedIndex--; }
 		changeMenuText(s);
@@ -142,6 +145,8 @@ void MainMenu::switchSceneText(_menuType scene) {
 		break;
 	}
 	case RESOLUTION_MENU: {
+		menuOption[2]->setVisible(true);
+		menuOption[2]->setAlive(true);
 		menuOption[3]->setVisible(true);
 		menuOption[3]->setAlive(true);
 		s.clear();
@@ -205,8 +210,8 @@ void MainMenu::loadGame() {
 	Engine::_lastScene->UnLoad();
 	Engine::isLoading = true;
 	LoadSaveGame::loadGame();
-	Background::createBackground(dynamic_cast<Scene*>(&level2));	
-	Player::createPlayerFromSettings(dynamic_cast<Scene*>(&level2));
+	Background::createBackground(dynamic_cast<Scene*>(&levelScene));
+	Player::createPlayerFromSettings(dynamic_cast<Scene*>(&levelScene));
 	Engine::ChangeScene(player->GetCompatibleComponent<PlayerComponent>()[0]->_playerSettings.scene);
 }
 void MainMenu::Update(const double& dt) {
@@ -222,13 +227,14 @@ void MainMenu::Update(const double& dt) {
 					Engine::isGamePaused = false;
 					Engine::isPausedMenu = false;
 					Engine::isMenu = false;
-					Engine::ChangeScene(&level2);
+					Engine::ChangeScene(&levelScene);
 					break;
 				};
 				if (isSettingsScreen) { switchSceneText(RESOLUTION_MENU); break; }
 				if (isResolutionScreen) { changeResolution(1); break; }
 				break;
 			case 1:
+				if (isSettingsScreen) { switchSceneText(MAIN_MENU); break; }
 				if (isLevelMenuScreen) { cout << "Infinite" << endl; break; }
 				if (isMainMenuScreen) {
 					isGameLoading = true;
@@ -241,7 +247,6 @@ void MainMenu::Update(const double& dt) {
 			case 2:
 				if (isMainMenuScreen) { switchSceneText(SETTINGS_MENU); break; }
 				if (isLevelMenuScreen) { switchSceneText(MAIN_MENU); break; }
-				if (isSettingsScreen) { switchSceneText(MAIN_MENU); break; }
 				if (isResolutionScreen) { changeResolution(3); break; }
 				break;
 			case 3:

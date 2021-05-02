@@ -3,12 +3,15 @@
 
 using namespace std;
 using namespace sf;
-
 using namespace Physics;
 
 void PhysicsComponent::update(double dt) {
-    _parent->setPosition(invert_height(bv2_to_sv2(_body->GetPosition())));
-    _parent->setRotation((180 / b2_pi) * _body->GetAngle());
+    timer += dt;
+    if (timer < 0.1) {
+        _parent->setPosition(invert_height(bv2_to_sv2(_body->GetPosition())));
+        _parent->setRotation((180 / b2_pi) * _body->GetAngle());
+        timer = 0;
+    }
 }
 
 PhysicsComponent::PhysicsComponent(Entity* p, bool dyn,
@@ -39,30 +42,7 @@ PhysicsComponent::PhysicsComponent(Entity* p, bool dyn,
         //_fixture->SetRestitution(.9)
         FixtureDef.restitution = .2;
     }
-
-    // An ideal Pod/capusle shape should be used for the player,
-    // this isn't built into B2d, but we can combine two shapes to do so.
-    // This would allwo the player to go up steps
-    /*
-      BodyDef.bullet = true;
-      b2PolygonShape shape1;
-      shape1.SetAsBox(sv2_to_bv2(size).x * 0.5f, sv2_to_bv2(size).y * 0.5f);
-      {
-        b2PolygonShape poly ;
-        poly.SetAsBox(0.45f, 1.4f);
-        b2FixtureDef FixtureDefPoly;
-        FixtureDefPoly.shape = &poly;
-        _body->CreateFixture(&FixtureDefPoly);
-      }
-      {
-        b2CircleShape circle;
-        circle.m_radius = 0.45f;
-        circle.m_p.Set(0, -1.4f);
-        b2FixtureDef FixtureDefCircle;
-        FixtureDefCircle.shape = &circle;
-        _body->CreateFixture(&FixtureDefCircle);
-      }
-    */
+    timer = 0;
 }
 
 void PhysicsComponent::setFriction(float r) { _fixture->SetFriction(r); }

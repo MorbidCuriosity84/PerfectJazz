@@ -8,12 +8,12 @@ enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
 	switch (type) {
 	case AIRMAN:
 	{
-		settings.damage = 1000;
+		settings.damage = 300;
 		settings.hp = 1000;
 		settings.scene = scene;
 		settings.restitution = 0.4f;
 		settings.friction = 0.005f;
-		settings.velocity = { 0.f,-100.f };
+		settings.velocity = { 0.f,-20.f };
 		settings.tile = ls::AIRMAN;
 		settings.category = ENEMY_BODY;
 		settings.type = AIRMAN;
@@ -26,12 +26,12 @@ enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
 
 	case SERGEANT:
 	{
-		settings.damage = 2000;
+		settings.damage = 500;
 		settings.hp = 2500;
 		settings.scene = scene;
 		settings.restitution = 0.4f;
 		settings.friction = 0.005f;
-		settings.velocity = { 0.f,-100.f };
+		settings.velocity = { 0.f,-20.f };
 		settings.tile = ls::SERGEANT;
 		settings.category = ENEMY_BODY;
 		settings.type = SERGEANT;
@@ -43,12 +43,12 @@ enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
 	}
 	case COLONEL:
 	{
-		settings.damage = 3000;
+		settings.damage = 700;
 		settings.hp = 3500;
 		settings.scene = scene;
 		settings.restitution = 0.4f;
 		settings.friction = 0.005f;
-		settings.velocity = { 0.f,-100.f };
+		settings.velocity = { 0.f,-20.f };
 		settings.tile = ls::COLONEL;
 		settings.category = ENEMY_BODY;
 		settings.type = COLONEL;
@@ -60,12 +60,12 @@ enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
 	}
 	case BANSAI:
 	{
-		settings.damage = 1000;
+		settings.damage = 500;
 		settings.hp = 500;
 		settings.scene = scene;
 		settings.restitution = 0.4f;
 		settings.friction = 0.005f;
-		settings.velocity = { 0.f,-350.f };
+		settings.velocity = { 0.f,-150.f };
 		settings.tile = ls::KAMIKAZE;
 		settings.category = KAMIKAZE;
 		settings.type = BANSAI;
@@ -77,12 +77,12 @@ enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
 	}
 	case MADMAN:
 	{
-		settings.damage = 500;
+		settings.damage = 300;
 		settings.hp = 2500;
 		settings.scene = scene;
 		settings.restitution = 0.4f;
 		settings.friction = 0.005f;
-		settings.velocity = { 0.f,-150.f };
+		settings.velocity = { 0.f,-300.f };
 		settings.tile = ls::BESERKER;
 		settings.category = ENEMY_BODY;
 		settings.type = MADMAN;
@@ -99,7 +99,7 @@ enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
 		settings.scene = scene;
 		settings.restitution = 0.4f;
 		settings.friction = 0.005f;
-		settings.velocity = { 0.f,-150.f };
+		settings.velocity = { 0.f,-30.f };
 		settings.tile = ls::BOSS;
 		settings.category = ENEMY_BODY;
 		settings.type = BOSS;

@@ -23,6 +23,7 @@ protected:
 	weaponSettings _weaponSettings;
 	bulletSettings _bulletSettings;
 	collisionHelper en_colHelp;
+	int currentHP;
 public:
 	std::shared_ptr<SpriteComponent> spriteCMP;
 	std::shared_ptr<DamageComponent> damageCMP;
