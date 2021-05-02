@@ -108,6 +108,7 @@ void MainMenu::switchSceneText(_menuType scene) {
 
 	menuOption[3]->setVisible(false);
 	menuOption[3]->setAlive(false);
+	selectedIndex = 0;
 
 	switch (scene) {
 	case MAIN_MENU: {

@@ -8,13 +8,13 @@ using namespace std;
 using namespace sf;
 
 void PowerupComponent::deployPowerup() {
-	
+
 	_powerupTextureHelper.spriteTexture.get()->loadFromFile(_powerupTextureHelper.spriteFilename);
 	powerupSpriteCMP = _parent->addComponent<SpriteComponent>();
 	powerupSpriteCMP.get()->loadTexture(_powerupTextureHelper, { _powerupSettings.spriteScale }, 0);
 	damageCMP = _parent->addComponent<DamageComponent>(_powerupSettings.damage);
 	physicsCMP = _parent->addComponent<PhysicsComponent>(true, powerupSpriteCMP->getSprite().getLocalBounds().getSize());
-	
+
 	hpCMP = _parent->addComponent<HPComponent>(_powerupSettings.scene, 1, 1);
 	hpCMP->loadHP();
 	hpCMP.get()->setVisible(false);
@@ -81,43 +81,32 @@ void PowerupComponent::powerupAction() {
 	if (_parent->getTags().find("hp_pwu") != _parent->getTags().end()) {
 		int maxHP = playerCMP->_playerSettings.maxHP;
 		int current = playerCMP->hpCMP->getHP();
-		playerCMP->hpCMP->setHP(current + maxHP/8);
+		playerCMP->hpCMP->setHP(current + maxHP / 8);
 	}
 	if (_parent->getTags().find("damage_pwu") != _parent->getTags().end()) {
-		cout << "before: " << playerCMP->weaponCMP->_bSettings.damageUpgradeCount << ": damage upgrade" << endl;
 		int current = playerCMP->getDamageUpgradeState();
 		playerCMP->setDamageUpgradeState(current + 1);
-		cout << "after: " << playerCMP->weaponCMP->_bSettings.damageUpgradeCount << ": damage upgrade " << endl;
 	}
 	if (_parent->getTags().find("firerate_pwu") != _parent->getTags().end()) {
-		cout << "before: " << playerCMP->weaponCMP->_wSettings.firerateUpgradeCount << ": firetime upgrade" << endl;
 		int current = playerCMP->getFireRateUpgradeState();
 		playerCMP->setFireRateUpgradeState(current + 1);
-		cout << "after: " << playerCMP->weaponCMP->_wSettings.firerateUpgradeCount << ": firetime upgrade" << endl;
 	}
 	if (_parent->getTags().find("bullet_num_pwu") != _parent->getTags().end()) {
-		cout << "before: " << playerCMP->weaponCMP->_wSettings.numBulletsUpgradeCount << ": bullet num upgrade" << endl;
 		int current = playerCMP->getBulletNumberUpgradeState();
 		playerCMP->setBulletNumberUpgradeState(current + 1);
-		cout << "after: " << playerCMP->weaponCMP->_wSettings.numBulletsUpgradeCount << ": bullet num upgrade" << endl;
 	}
 	if (_parent->getTags().find("player_movement_pwu") != _parent->getTags().end()) {
-		cout << "before: " << playerCMP->_playerSettings.flySpeed << ": fly speed - ";
-		cout << playerCMP->_playerSettings.flySpeedUpgradeCount << ": fly upgrade" << endl;
 		int current = playerCMP->getFlySpeedUpgradeState();
 		playerCMP->setFlySpeedUpgradeState(current + 1);
-		cout << "after: " << playerCMP->_playerSettings.flySpeedUpgradeCount << ": fly upgrade" << endl;
 	}
 	if (_parent->getTags().find("coin_pwu") != _parent->getTags().end()) {
-		cout << "before: " << playerCMP->_playerSettings.shopPoints << ": coins - ";
 		int current = playerCMP->_playerSettings.shopPoints;
 		playerCMP->_playerSettings.shopPoints = current + 10;
-		cout << "after: " << playerCMP->_playerSettings.shopPoints << ": coins - " << endl;
-
 	}
+	playerCMP->_playerSettings.score += 5;
 }
 
-PowerupComponent::PowerupComponent(Entity* p, textureSettings powerupTextureHelper, powerupSettings powerupSettings) : Component(p), _powerupTextureHelper(powerupTextureHelper), _powerupSettings(powerupSettings){
+PowerupComponent::PowerupComponent(Entity* p, textureSettings powerupTextureHelper, powerupSettings powerupSettings) : Component(p), _powerupTextureHelper(powerupTextureHelper), _powerupSettings(powerupSettings) {
 	deployPowerup();
 	pow_colHelp.damageCMP = damageCMP.get();
 	pow_colHelp.hpCMP = hpCMP.get();

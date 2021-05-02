@@ -149,6 +149,8 @@ void PauseMenu::Update(const double& dt) {
 				Engine::isPausedMenu = false;
 				Engine::isMenu = true;
 				Engine::isGamePaused = true;
+				Engine::isLoading = false;
+
 				if (upgradeMenu.ents.list.size() != 0) {
 					upgradeMenu.UnLoad();
 				}
