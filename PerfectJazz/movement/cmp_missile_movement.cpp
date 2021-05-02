@@ -15,14 +15,14 @@ void MissileMovementComponent::update(double dt) {
 		if (player != NULL && player->isAlive()) {
 
 			//This needs some work to make the impulse smoother
-			_velocity = normalize(player.get()->getPosition() - _parent->getPosition()) / (float)length(player.get()->getPosition() - _parent->getPosition()) * 45.f;
+			_velocity = normalize(player.get()->getPosition() - _parent->getPosition()) / (float)length(player.get()->getPosition() - _parent->getPosition()) * 95.f;
 			//_velocity.x = player.get()->getPosition().x - _parent->getPosition().x;
 		}
 
 		Vector2f bul_pl_dif = _parent->getPosition() - player->getPosition();
 		bul_pl_dif = Vector2f(fabs(bul_pl_dif.x), fabs(bul_pl_dif.y));
 
-		//Better way using dot product and not atan calls, still getting weirdness when the missile moves away though
+		//Better way using dot product and not atan calls, still getting weirdness when the missile moves away though	
 		Vector2f a = parentPhysics->getVelocity();
 		Vector2f b = player->getPosition() - _parent->getPosition();
 

@@ -61,6 +61,8 @@ void PowerupComponent::update(double dt) {
 		_parent->setPosition(Vector2f(-100.f, -100.f));
 		powerupAction();
 		sounds[_powerupSettings.sound].play();
+		_parent->clearComponents();
+		return;
 	}
 	if (_parent->getPosition().y > _parent->getView().getSize().y) {
 		_parent->setAlive(false);
@@ -68,6 +70,7 @@ void PowerupComponent::update(double dt) {
 		physicsCMP->getBody()->SetActive(false);
 		physicsCMP->getBody()->SetUserData(nullptr);
 		_parent->setPosition(Vector2f(-100.f, -100.f));
+		_parent->clearComponents();
 	}
 
 }

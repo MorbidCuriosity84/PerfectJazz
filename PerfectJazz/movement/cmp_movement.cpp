@@ -13,11 +13,14 @@ void MovementComponent::update(double dt)
 				}
 				else {
 					_velocity = parentInitVelocity;
+					linger = false;
 				}
 			}
-		}
-
-		parentPhysics->setVelocity(_velocity);
+		}		
+		auto a = normalize(_velocity);
+		auto b = b2Vec2(a.x * 0.01f, a.y * 0.01f) ;
+		parentPhysics->getBody()->ApplyLinearImpulseToCenter(b, true);
+		//parentPhysics->setVelocity(_velocity);
 	}	
 }
 
@@ -33,9 +36,8 @@ void MovementComponent::isLinger(bool b) { linger = b; }
 
 void MovementComponent::isActive(bool b) { active = b; }
 
-MovementComponent::MovementComponent(Entity* p, sf::Vector2f velocity, Vector2f initPos, bool l) : Component(p), _velocity(velocity), initPosition(initPos), linger(false), active(true) {
-	auto phys = _parent->GetCompatibleComponent<PhysicsComponent>();
-	parentPhysics = phys[0];
+MovementComponent::MovementComponent(Entity* p, sf::Vector2f velocity, Vector2f initPos, bool l) : Component(p), _velocity(velocity), initPosition(initPos), linger(false), active(true) {	
+	parentPhysics = _parent->GetCompatibleComponent<PhysicsComponent>()[0];
 	parentInitVelocity = parentPhysics->getVelocity();
 	linger ? lingerTime = 15.f : lingerTime = 0.f;
 }
