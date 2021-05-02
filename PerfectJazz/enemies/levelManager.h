@@ -21,6 +21,7 @@ public:
 	static float kamikazeTimer;
 	static float countTimer;
 	static float singleTimer;
+	static bool isBoss;
 	static void loadLevel(int i);
 	static void playLevel(Scene* s);
 	static void update(Scene* s, bool infinite, int numWaveFiles, double dt);

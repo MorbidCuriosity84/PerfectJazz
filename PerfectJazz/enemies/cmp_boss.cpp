@@ -25,8 +25,7 @@ void Boss::update(double dt)
 	}	
 
 	if (invincible) {
-		invTimer -= dt;						
-		physicsCMP->setCategory(NO_COLLIDE);
+		invTimer -= dt;								
 		switchSprite(trigger);
 	}
 	if (invTimer < 0) {
@@ -34,8 +33,7 @@ void Boss::update(double dt)
 		for (int i = 0; i < numKamikazes; i++) {
 			spawnKamikazes(i);
 		}				
-		invincible = false;
-		physicsCMP->setCategory(ENEMY_BODY);
+		invincible = false;		
 	}
 	if (hpCMP->getHP() <= 0) {
 		_parent->setAlive(false);

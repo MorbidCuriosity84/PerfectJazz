@@ -8,13 +8,9 @@ Beserker::Beserker(Entity* p, textureSettings enemyTextureHelper, textureSetting
 
 void Beserker::update(double dt)
 {	
-	//if (_parent->getPosition().y < 50.f - Engine::getWindowSize().y /1.5f ) {
-	//	moveCMP->isLinger(true);
-	//}
-
 	if (Scene::deadEnemies > 5) {
 		goBeserk();
-		Scene::deadEnemies = 0;
+		//Scene::deadEnemies = 0;
 	}
 
 	_parent->setRotation(_parent->getRotation() + 2.f);

@@ -16,11 +16,15 @@ void MovementComponent::update(double dt)
 					linger = false;
 				}
 			}
-		}		
-		auto a = normalize(_velocity);
-		auto b = b2Vec2(a.x * 0.01f, a.y * 0.01f) ;
-		parentPhysics->getBody()->ApplyLinearImpulseToCenter(b, true);
-		//parentPhysics->setVelocity(_velocity);
+		}				
+
+		if (_parent->getPosition().x < 0 || _parent->getPosition().x > mainView.getSize().x) {
+			Vector2f v2c = _parent->getPosition() - mainView.getCenter();
+			v2c.y = 0.f;
+			auto a = normalize(v2c);
+			auto b = b2Vec2(a.x * 0.1f, a.y * 0.1f);
+			parentPhysics->getBody()->ApplyLinearImpulseToCenter(b, true);
+		}
 	}	
 }
 
@@ -40,4 +44,8 @@ MovementComponent::MovementComponent(Entity* p, sf::Vector2f velocity, Vector2f 
 	parentPhysics = _parent->GetCompatibleComponent<PhysicsComponent>()[0];
 	parentInitVelocity = parentPhysics->getVelocity();
 	linger ? lingerTime = 15.f : lingerTime = 0.f;
+	auto a = normalize(_velocity);
+	auto b = b2Vec2(a.x * 1.f, a.y * 1.f);
+	parentPhysics->getBody()->ApplyLinearImpulseToCenter(b, true);
+	//parentPhysics->setVelocity(_velocity);
 }

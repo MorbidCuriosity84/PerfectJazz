@@ -6,6 +6,7 @@
 #include "cmp_beserker.h"
 #include "cmp_kamikaze.h"
 #include "cmp_boss.h"
+#include "../movement/cmp_boss_move.h"
 
 using namespace std;
 using namespace sf;
@@ -61,9 +62,9 @@ void Enemies::createEnemies(std::string _waveFile, Scene* _scene) {
 			boss->moveCMP->isLinger(true);
 		}
 		else {
-			en->addComponent<EnemyComponent>(_enemyTextureHelper, _bulletTextureHelper, _enemySettings, _weaponSettings, _bulletSettings, index);
+			en->addComponent<EnemyComponent>(_enemyTextureHelper, _bulletTextureHelper, _enemySettings, _weaponSettings, _bulletSettings, index);			
 			en->addComponent<MovementComponent>(_enemySettings.velocity, ls::getTilePosition(ls::findTiles(_enemySettings.tile)[index]), true);
-		}
+		}		
 		en->setAlive(true);
 		LevelManager::enemyCount++;
 	}
@@ -145,7 +146,7 @@ shared_ptr<MovementComponent> Enemies::chooseMovement(ls::Tile tile, shared_ptr<
 		return en->addComponent<SineMovementComponent>(_enemySettings.velocity, 60.f, initPos, true);
 		break;
 	case ls::BOSS:
-		return en->addComponent<MovementComponent>(_enemySettings.velocity, initPos, true);
+		return en->addComponent<BossMovement>(_enemySettings.velocity, initPos, true);
 		break;
 	}
 }

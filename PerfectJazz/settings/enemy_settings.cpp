@@ -13,7 +13,7 @@ enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
 		settings.scene = scene;
 		settings.restitution = 0.4f;
 		settings.friction = 0.005f;
-		settings.velocity = { 0.f,-0.1f };
+		settings.velocity = { 0.f,-15.f };
 		settings.tile = ls::AIRMAN;
 		settings.category = ENEMY_BODY;
 		settings.type = AIRMAN;
@@ -31,7 +31,7 @@ enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
 		settings.scene = scene;
 		settings.restitution = 0.4f;
 		settings.friction = 0.005f;
-		settings.velocity = { 0.f,-0.1f };
+		settings.velocity = { 0.f,-15.f };
 		settings.tile = ls::SERGEANT;
 		settings.category = ENEMY_BODY;
 		settings.type = SERGEANT;
@@ -48,7 +48,7 @@ enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
 		settings.scene = scene;
 		settings.restitution = 0.4f;
 		settings.friction = 0.005f;
-		settings.velocity = { 0.f,-0.1f };
+		settings.velocity = { 0.f,-15.f };
 		settings.tile = ls::COLONEL;
 		settings.category = ENEMY_BODY;
 		settings.type = COLONEL;
@@ -65,7 +65,7 @@ enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
 		settings.scene = scene;
 		settings.restitution = 0.4f;
 		settings.friction = 0.005f;
-		settings.velocity = { 0.f,-0.25f };
+		settings.velocity = { 0.f,-25.f };
 		settings.tile = ls::KAMIKAZE;
 		settings.category = KAMIKAZE;
 		settings.type = BANSAI;
@@ -82,7 +82,7 @@ enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
 		settings.scene = scene;
 		settings.restitution = 0.4f;
 		settings.friction = 0.005f;
-		settings.velocity = { 0.f,-0.5f };
+		settings.velocity = { 0.f,-15.f };
 		settings.tile = ls::BESERKER;
 		settings.category = ENEMY_BODY;
 		settings.type = MADMAN;
@@ -99,7 +99,7 @@ enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
 		settings.scene = scene;
 		settings.restitution = 0.4f;
 		settings.friction = 0.005f;
-		settings.velocity = { 0.f,-0.5f };
+		settings.velocity = { 0.f,-15.f };
 		settings.tile = ls::BOSS;
 		settings.category = ENEMY_BODY;
 		settings.type = BOSS;
