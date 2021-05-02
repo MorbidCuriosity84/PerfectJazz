@@ -219,9 +219,9 @@ void PauseMenu::Update(const double& dt) {
 				savingGameTxt->setVisible(false);
 			}
 		}		
-		else if (notSavingGame) {
+		if (notSavingGame) {
 			cantSaveTxt->setVisible(true);
-			notSavingGame += dt;
+			notSavingTimer += dt;
 			if (notSavingTimer > 0.2) {
 				notSavingGame = false;
 				cantSaveTxt->setVisible(false);
