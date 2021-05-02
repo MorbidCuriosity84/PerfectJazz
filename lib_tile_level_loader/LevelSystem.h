@@ -26,7 +26,8 @@ public:
 		COLONEL = '3',
 		KAMIKAZE = '4',	
 		BESERKER = '5',
-		WAYPOINT = '+'
+		WAYPOINT = '+',
+		BOSS = 'b',
 	};
 
 	static Tile getTile(sf::Vector2ul);

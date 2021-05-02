@@ -22,28 +22,7 @@ void MissileMovementComponent::update(double dt) {
 		Vector2f bul_pl_dif = _parent->getPosition() - player->getPosition();
 		bul_pl_dif = Vector2f(fabs(bul_pl_dif.x), fabs(bul_pl_dif.y));
 
-		//This is my attempt to keep the missile pointing at the target, it's not perfect, especially if the player moves from one 
-		//quadrant to the next (ie NE -> SE or SW -> NW as the missile starts rotating in the opposite direction than it had been.
-		//I'll have a think and see if i can come up with something better, maybe adding a vector will help, or using parent position
-		//vector maths and trig is always fun, apart from at 3am.
-		//if (_parent->getPosition().y < player->getPosition().y) { // missile below 
-		//	if (_parent->getPosition().x > player->getPosition().x) {  //target to the left of weapon
-		//		_parentSprite->getSprite().setRotation(_parentSprite->getSprite().getRotation() - (180.f - atan(bul_pl_dif.x / bul_pl_dif.y)));
-		//	}
-		//	else {
-		//		_parentSprite->getSprite().setRotation(_parentSprite->getSprite().getRotation() + (180.f - atan(bul_pl_dif.x / bul_pl_dif.y)));
-		//	}
-		//}
-		//else { //missile above
-		//	if (_parent->getPosition().x > player->getPosition().x) {  //target to the left of weapon
-		//		_parentSprite->getSprite().setRotation(_parentSprite->getSprite().getRotation() - atan(bul_pl_dif.x / bul_pl_dif.y));
-		//	}
-		//	else {
-		//		_parentSprite->getSprite().setRotation(_parentSprite->getSprite().getRotation() + atan(bul_pl_dif.x / bul_pl_dif.y));
-		//	}
-		//}
-
-		//Better way using dot product and not atan calls, still getting weirdness when the missile moves awayy though
+		//Better way using dot product and not atan calls, still getting weirdness when the missile moves away though
 		Vector2f a = parentPhysics->getVelocity();
 		Vector2f b = player->getPosition() - _parent->getPosition();
 

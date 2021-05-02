@@ -92,6 +92,18 @@ textureSettings TextureHelpingSettings::LoadSettings(_enemyType type, Scene* sce
 		settings.spriteRows = 3;
 		settings.spriteCols = 5;
 		settings.desiredRow = 1;
+		settings.desiredCol = 3;
+		settings.spriteTexture = enemySpriteTexture;
+		settings.spriteRectangle = enemySpriteRectangle;
+		settings.spriteTimer = 0;
+		break;
+	}
+	case BOSS:
+	{
+		settings.spriteFilename = "res/img/enemies/Spaceships.png";
+		settings.spriteRows = 3;
+		settings.spriteCols = 5;
+		settings.desiredRow = 1;
 		settings.desiredCol = 4;
 		settings.spriteTexture = enemySpriteTexture;
 		settings.spriteRectangle = enemySpriteRectangle;

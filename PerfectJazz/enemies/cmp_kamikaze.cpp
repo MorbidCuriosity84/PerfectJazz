@@ -19,9 +19,7 @@ void Kamikaze::update(double dt)
 		physicsCMP->getBody()->SetUserData(nullptr);
 		_parent->setPosition(Vector2f(-100.f, -100.f));
 		_parent->clearComponents();
-		cout << "Enemy count before removal kamikaze side = " << LevelManager::enemyCount << endl;
 		LevelManager::enemyCount--;
-		cout << "Enemy count after removal kamikaze side = " << LevelManager::enemyCount << endl;
 		return;
 	}
 	EnemyComponent::update(dt);	

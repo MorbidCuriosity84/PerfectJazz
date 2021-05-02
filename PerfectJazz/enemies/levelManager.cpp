@@ -13,6 +13,11 @@
 
 std::queue<std::string> LevelManager::waves;
 int LevelManager::enemyCount;
+int LevelManager::airCount;
+int LevelManager::sargCount;
+int LevelManager::colCount;
+int LevelManager::kamCount;
+int LevelManager::desCount;
 float LevelManager::levelOverTimer;
 float LevelManager::kamikazeTimer;
 float LevelManager::countTimer;
@@ -30,14 +35,14 @@ void LevelManager::loadLevel(int level)
 	kamikazeTimer = 5.f;
 	countTimer = 3.f;
 	singleTimer = 15.f;
+	Scene::deadEnemies = 0;
 	if (level == -1) { // infinite level flag
 		return;
 	}
 	for (char c : levels[level]) {
 		int idx = c - 48; //converts level character to int		
 		LevelManager::waves.push(waveFilenames[idx]);
-	}
-	
+	}	
 }
 
 void LevelManager::playLevel(Scene* s)
@@ -50,17 +55,11 @@ void LevelManager::playLevel(Scene* s)
 		}
 	}	
 	if (kamikazeTimer < 0 && !Engine::isLevelComplete) {
-		cout << "Enemy count before creation of kamikaze = " << LevelManager::enemyCount << endl;
+		//cout << "Enemy count before creation of kamikaze = " << LevelManager::enemyCount << endl;
 		spawnKamikaze(s);		
-		cout << "Enemy count after creation of kamikaze = " << LevelManager::enemyCount << endl;
+		//cout << "Enemy count after creation of kamikaze = " << LevelManager::enemyCount << endl;
 		kamikazeTimer = 5.f;
-	}
-	if (Scene::deadEnemies > 5 && !Engine::isLevelComplete) {
-		cout << "Enemy count before creation of berserker = " << LevelManager::enemyCount << endl;
-		spawnBeserker(s);
-		cout << "Enemy count after creation of berserker = " << LevelManager::enemyCount << endl;
-		Scene::deadEnemies = 0;
-	}
+	}	
 	if (waves.empty()) {
 		if (enemyCount == 0) {
 			s->levelOver();
