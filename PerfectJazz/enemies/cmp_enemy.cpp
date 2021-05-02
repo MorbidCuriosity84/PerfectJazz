@@ -22,21 +22,23 @@ void EnemyComponent::Load(int index) {
 	else {
 		float xPos = RandomNumber::generateUniformRealNumber(0.0, mainView.getSize().x);
 		_parent->setPosition(Vector2f(xPos, -50.f));
-	}	
+	}
 	_parent->addTag("enemies");
 	_enemyTextureHelper.spriteTexture.get()->loadFromFile(_enemyTextureHelper.spriteFilename);
 	spriteCMP = _parent->addComponent<SpriteComponent>();
-	spriteCMP.get()->loadTexture(_enemyTextureHelper, _enemySettings.scale, _enemySettings.angle);	
+	spriteCMP.get()->loadTexture(_enemyTextureHelper, _enemySettings.scale, _enemySettings.angle);
 	damageCMP = _parent->addComponent<DamageComponent>(_enemySettings.damage);
 	if (_enemySettings.category != KAMIKAZE) {
 		_weaponSettings.fireTimer = RandomNumber::generateUniformRealNumber(0.0, _weaponSettings.fireTime);
 		weaponCMP = _parent->addComponent<WeaponComponent>(_weaponSettings, _bulletSettings, _bulletTextureHelper);
-	}	
+	}
 	physicsCMP = _parent->addComponent<EnemyPhysicsComponent>(spriteCMP->getSprite().getGlobalBounds().getSize());
 	physicsCMP.get()->setCategory(_enemySettings.category);
 
-	hpCMP = _parent->addComponent<HPComponent>(_enemySettings.scene, _enemySettings.hp, _enemySettings.hp);	
+	hpCMP = _parent->addComponent<HPComponent>(_enemySettings.scene, _enemySettings.hp, _enemySettings.hp);
 	hpCMP->loadHP();
+	//Set currentHP to the acutal HP
+	currentHP = hpCMP->getHP();
 	hpCMP.get()->setVisible(_enemySettings.hpVisible);
 	hpCMP->setSpriteColour(Color::Red);
 	hpCMP->setTextColour(Color::White);
@@ -44,7 +46,7 @@ void EnemyComponent::Load(int index) {
 	//_parent->addComponent<MovementComponent>(_enemySettings.velocity);	
 }
 
-void EnemyComponent::update(double dt) {	
+void EnemyComponent::update(double dt) {
 
 	_enemyTextureHelper.spriteTimer += dt;
 	if (_enemySettings.type == AIRMAN || _enemySettings.type == SERGEANT || _enemySettings.type == COLONEL) {
@@ -57,11 +59,12 @@ void EnemyComponent::update(double dt) {
 		if (_enemyTextureHelper.spriteTimer > 0.2) {
 			_enemyTextureHelper.spriteTimer = 0.0;
 		}
-	}	
+	}
 	spriteCMP->getSprite().setTextureRect(*_enemyTextureHelper.spriteRectangle.get());
 	spriteCMP->getSprite().setPosition(_parent->getPosition());
 	spriteCMP->getSprite().setRotation(_parent->getRotation() + _enemySettings.angle);
-		
+
+
 	if (_parent->getPosition().y > _parent->getView().getSize().y) {
 		_parent->setAlive(false);
 		_parent->setVisible(false);
@@ -69,10 +72,12 @@ void EnemyComponent::update(double dt) {
 		physicsCMP->getBody()->SetUserData(nullptr);
 		_parent->setPosition(Vector2f(-100.f, -100.f));
 		auto type = _parent->GetCompatibleComponent<EnemyComponent>()[0].get()->_enemySettings.type;
-		_parent->clearComponents();		
-		LevelManager::enemyCount--;				
+		_parent->clearComponents();
+		LevelManager::enemyCount--;
 		return;
+
 	}
+
 	if (hpCMP->getHP() <= 0) {
 		_parent->setAlive(false);
 		_parent->setVisible(false);
@@ -85,21 +90,20 @@ void EnemyComponent::update(double dt) {
 		if (type == SERGEANT) { player->GetCompatibleComponent<PlayerComponent>()[0].get()->_playerSettings.score += 20; }
 		if (type == COLONEL) { player->GetCompatibleComponent<PlayerComponent>()[0].get()->_playerSettings.score += 30; }
 		if (type == BANSAI) { player->GetCompatibleComponent<PlayerComponent>()[0].get()->_playerSettings.score += 40; }
-		if (type == MADMAN) { player->GetCompatibleComponent<PlayerComponent>()[0].get()->_playerSettings.score += 50; }		
+		if (type == MADMAN) { player->GetCompatibleComponent<PlayerComponent>()[0].get()->_playerSettings.score += 50; }
 		sounds[_enemySettings.sound].setPitch(1.f + sin(accumulation) * .025f);
 		sounds[_enemySettings.sound].setVolume(35.f);
 		sounds[_enemySettings.sound].play();
-		_parent->clearComponents();		
-		LevelManager::enemyCount--;		
+		_parent->clearComponents();
+		LevelManager::enemyCount--;
 		if (type == AIRMAN || type == COLONEL || type == SERGEANT) {
 			Scene::deadEnemies++;
-		}	
+		}
 	}
 }
 
 EnemyComponent::EnemyComponent(Entity* p, textureSettings enemyTextureHelper, textureSettings bulletTextureHelper, enemySettings enemySettings, weaponSettings weaponSettings, bulletSettings bulletSettings, int index)
-	: Component(p), _enemyTextureHelper(enemyTextureHelper), _bulletTextureHelper(bulletTextureHelper), _enemySettings(enemySettings), _weaponSettings(weaponSettings), _bulletSettings(bulletSettings), accumulation(0.f) 
-{
+	: Component(p), _enemyTextureHelper(enemyTextureHelper), _bulletTextureHelper(bulletTextureHelper), _enemySettings(enemySettings), _weaponSettings(weaponSettings), _bulletSettings(bulletSettings), accumulation(0.f) {
 	Load(index);
 	en_colHelp.damageCMP = damageCMP.get();
 	en_colHelp.hpCMP = hpCMP.get();

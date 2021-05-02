@@ -10,6 +10,7 @@ protected:
 	b2Body* _body;
 	const bool _dynamic;
 	b2Fixture* _fixture;
+	double timer;
 
 public:
 	PhysicsComponent(Entity* p, bool dyn, const sf::Vector2f& size);

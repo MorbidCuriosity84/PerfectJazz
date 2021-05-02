@@ -21,7 +21,6 @@ using namespace sf;
 using namespace std;
 Scene* Engine::_activeScene = nullptr;
 Scene* Engine::_lastScene = nullptr;
-Scene* Engine::_nextScene = nullptr;
 std::string Engine::_gameName;
 bool Engine::isGamePaused;
 bool Engine::isPausedMenu;
@@ -69,7 +68,7 @@ uint8_t ftc = 0;
 
 void Engine::Update() {
 	static sf::Clock clock;
-	float dt = clock.restart().asSeconds();
+	const float dt = clock.restart().asSeconds();
 	{
 		frametimes[++ftc] = dt;
 		static string avg = _gameName + " FPS:";
@@ -137,7 +136,7 @@ void Engine::Start(unsigned int width, unsigned int height,
 	isGamePaused = true;
 	isMenu = true;
 	isPausedMenu = true;
-
+	currentPlayerLevel = 0;
 	Renderer::initialise(window);
 	Physics::initialise();
 	ChangeScene(scn);

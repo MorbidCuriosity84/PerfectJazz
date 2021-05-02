@@ -159,6 +159,18 @@ textureSettings TextureHelpingSettings::LoadSettings(_bulletType type, Scene* sc
 		settings.spriteTimer = 0;
 		break;
 	}
+	case TYPE_PLAYER:
+	{
+		settings.spriteFilename = "res/img/weapons/Fx_01.png";
+		settings.spriteRows = 1;
+		settings.spriteCols = 3;
+		settings.desiredRow = 0;
+		settings.desiredCol = 2;
+		settings.spriteTexture = bulletSpriteTexture;
+		settings.spriteRectangle = bulletSpriteRectangle;
+		settings.spriteTimer = 0;
+		break;
+	}
 	default:
 		break;
 	}

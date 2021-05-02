@@ -13,7 +13,7 @@ void BackgroundComponent::Load(bool second) {
 	spriteCMP->getSprite().setColor(sf::Color(_backgroundSettings.opacity));
 
 	if (second) {
-		_parent->setPosition(Vector2f((round)(mainView.getSize().x / 2), (spriteCMP->getSprite().getGlobalBounds().top + mainView.getSize().y - spriteCMP->getSprite().getGlobalBounds().height)));
+		_parent->setPosition(Vector2f((round)(mainView.getSize().x / 2), (spriteCMP->getSprite().getGlobalBounds().top + mainView.getSize().y - spriteCMP->getSprite().getGlobalBounds().height) + 1.f));
 	}
 
 	p->setVelocity(_backgroundSettings.velocity);

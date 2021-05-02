@@ -63,7 +63,7 @@ void UpgradeMenu::Load() {
 	//Setting up max upgrades
 	maxHPUpgrade = 999999;
 	maxFlySpeed = 400;
-	maxBulletDamage = 2500;
+	maxBulletDamage = 10000;
 	maxFireRate = 0.1;
 
 	//Adding Sprite component for the ship and coin
@@ -472,7 +472,8 @@ void UpgradeMenu::Update(const double& dt) {
 				Engine::isPausedMenu = false;
 				PlayerComponent::clonePlayer(player);
 				Engine::_lastScene->UnLoad();
-				Engine::ChangeScene(Engine::_nextScene);
+				Engine::currentPlayerLevel++;
+				Engine::ChangeScene(&levelScene);
 				break;
 			}
 			Engine::ChangeScene(Engine::_lastScene);

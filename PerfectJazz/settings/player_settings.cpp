@@ -12,7 +12,7 @@ playerSettings PlayerSettings::LoadSettings(_playerType type, Scene* scene) {
 		currentPlayerSettings.hp = 10000;
 		currentPlayerSettings.lifes = 5;
 		currentPlayerSettings.maxLifes = 5;
-		currentPlayerSettings.maxHP = 40000;
+		currentPlayerSettings.maxHP = 10000;
 		currentPlayerSettings.scene = scene;
 		currentPlayerSettings.restitution = 0.4f;
 		currentPlayerSettings.friction = 0.005f;
@@ -23,7 +23,7 @@ playerSettings PlayerSettings::LoadSettings(_playerType type, Scene* scene) {
 		currentPlayerSettings.scale = { 1.f,1.f };
 		currentPlayerSettings.angle = 0;
 		currentPlayerSettings.score = 0;
-		currentPlayerSettings.shopPoints = 999998;
+		currentPlayerSettings.shopPoints = 0;
 		currentPlayerSettings.currentLevel = 1;
 		break;
 	}

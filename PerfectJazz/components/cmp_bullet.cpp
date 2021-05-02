@@ -13,8 +13,13 @@ using namespace sf;
 void BulletComponent::createBullet() {
 	_bulletTextHelper.spriteTexture->loadFromFile(_bulletTextHelper.spriteFilename);
 	spriteCMP = _parent->addComponent<SpriteComponent>();
+
 	spriteCMP.get()->loadTexture(_bulletTextHelper, _settings.spriteScale, _settings.angle);	
 	spriteCMP.get()->getSprite().setRotation(_settings.angle + 180.f);
+	if (_settings.category == FRIENDLY_BULLET) {
+		spriteCMP->getSprite().setColor(Color::Yellow);
+		spriteCMP->getSprite().setScale(Vector2f(1.4f, 1.4f));
+	}
 	damageCMP = _parent->addComponent<DamageComponent>(_settings.damage + (_settings.damage * 0.2 * _settings.damageUpgradeCount));
 	physicsCMP = _parent->addComponent<PhysicsComponent>(true, spriteCMP.get()->getSprite().getLocalBounds().getSize());
 	
@@ -34,28 +39,26 @@ void BulletComponent::createBullet() {
 
 void BulletComponent::update(double dt) {
 	accumulation += dt;
-	_bulletTextHelper.spriteTimer += dt / 2;
+	_bulletTextHelper.spriteTimer += dt/4;
 
-	if (_bulletTextHelper.spriteTimer < 0.1) {
+	if (_bulletTextHelper.spriteTimer < 0.01) {
 		_bulletTextHelper.spriteRectangle.get()->left = (_bulletTextHelper.spriteTexture.get()->getSize().x / _bulletTextHelper.spriteCols) * 1;
 	}
-	if (_bulletTextHelper.spriteTimer >= 0.1 && _bulletTextHelper.spriteTimer < 0.3) {
+	if (_bulletTextHelper.spriteTimer >= 0.01 && _bulletTextHelper.spriteTimer < 0.03) {
 		_bulletTextHelper.spriteRectangle.get()->left = (_bulletTextHelper.spriteTexture.get()->getSize().x / _bulletTextHelper.spriteCols) * 2;
 	}
-	if (_bulletTextHelper.spriteTimer >= 0.3 && _bulletTextHelper.spriteTimer < 0.4) {
+	if (_bulletTextHelper.spriteTimer >= 0.03 && _bulletTextHelper.spriteTimer < 0.04) {
 		_bulletTextHelper.spriteRectangle.get()->left = (_bulletTextHelper.spriteTexture.get()->getSize().x / _bulletTextHelper.spriteCols) * 1;
 	}
-	if (_bulletTextHelper.spriteTimer >= 0.4 && _bulletTextHelper.spriteTimer < 0.5) {
+	if (_bulletTextHelper.spriteTimer >= 0.04 && _bulletTextHelper.spriteTimer < 0.05) {
 		_bulletTextHelper.spriteRectangle.get()->left = (_bulletTextHelper.spriteTexture.get()->getSize().x / _bulletTextHelper.spriteCols) * 0;
 	}
-	if (_bulletTextHelper.spriteTimer >= 0.6) {
+	if (_bulletTextHelper.spriteTimer >= 0.06) {
 		_bulletTextHelper.spriteTimer = 0.0;
 	}
 
 	spriteCMP->getSprite().setTextureRect(*_bulletTextHelper.spriteRectangle.get());
-	spriteCMP->getSprite().setPosition(_parent->getPosition());		
-	
-	
+		
 	if (hpCMP->getHP() <= 0) {
 		_parent->setAlive(false);
 		_parent->setVisible(false);

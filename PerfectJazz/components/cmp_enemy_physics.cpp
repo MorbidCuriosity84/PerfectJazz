@@ -8,8 +8,6 @@ using namespace Physics;
 
 void EnemyPhysicsComponent::update(double dt) {
 
-  const auto ppos = _parent->getPosition();
-
   PhysicsComponent::update(dt);
 }
 
