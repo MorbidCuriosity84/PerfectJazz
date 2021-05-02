@@ -27,6 +27,7 @@ bool Engine::isPausedMenu;
 bool Engine::isMenu;
 bool Engine::isLevelComplete;
 bool Engine::isLoading;
+bool Engine::isLevelFinished;
 double Engine::FPS;
 int Engine::currentPlayerLevel;
 int Scene::deadEnemies;
@@ -136,6 +137,7 @@ void Engine::Start(unsigned int width, unsigned int height,
 	isGamePaused = true;
 	isMenu = true;
 	isPausedMenu = true;
+	isLevelFinished = false;
 	currentPlayerLevel = 0;
 	Renderer::initialise(window);
 	Physics::initialise();

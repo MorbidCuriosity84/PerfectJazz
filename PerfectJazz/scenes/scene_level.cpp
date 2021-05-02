@@ -68,8 +68,13 @@ void LevelScene::Load() {
 	EntityPool::init(&levelScene);
 	//Create player
 	{
-		if (!Engine::isLoading) {
+		if (!Engine::isLoading && !Engine::isLevelFinished) {
 			Player::createPlayer(dynamic_cast<Scene*>(&levelScene));
+		}
+
+		else if (Engine::isLevelFinished) {
+			Player::createPlayerFromSettings(dynamic_cast<Scene*>(&levelScene));
+			Engine::isLevelFinished = false;
 		}
 	}
 
@@ -77,7 +82,7 @@ void LevelScene::Load() {
 	//Create Enemies
 	{	
 		//LevelManager::loadLevel(++Engine::currentPlayerLevel); //-- only needed for specific levels, infinite levels just need a call to LevelManager in the update
-		LevelManager::loadLevel(++Engine::currentPlayerLevel); //-- only needed for specific levels, infinite levels just need a call to LevelManager in the update
+		LevelManager::loadLevel(2); //-- only needed for specific levels, infinite levels just need a call to LevelManager in the update
 	}
 
 	//Create text for left and right boxes

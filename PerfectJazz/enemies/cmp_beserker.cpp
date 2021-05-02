@@ -13,16 +13,6 @@ void Beserker::update(double dt)
 		//Scene::deadEnemies = 0;
 	}
 
-	if (goneBeserk) {		
-		beserkTime -= dt;
-		if (beserkTime < 0 && !seeking) {
-			moveCMP->isLinger(false);
-			seeking = true;			
-			hpCMP->setHP(hpCMP->getHP() / 10);
-			_parent->addComponent<MissileMovementComponent>(_enemySettings.velocity, true, ENEMY_MISSILE);
-			//_parent->addComponent<RadarComponent>(2.f, ENEMY_MISSILE_RADAR);
-		}		
-	}	
 	_parent->setRotation(_parent->getRotation() + 2.f);
 
 	if (_parent->getPosition().x > _parent->getView().getSize().x || _parent->getPosition().x < 0) {
