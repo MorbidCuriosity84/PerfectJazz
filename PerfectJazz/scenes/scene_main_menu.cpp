@@ -16,10 +16,13 @@ std::shared_ptr<SpriteComponent> shipSpriteRight;
 std::shared_ptr<SpriteComponent> shipSpriteLeft;
 std::shared_ptr<Entity> mainMenuView;
 
+//Loads the main menu, allowing the player to playe a new game, load a game, go to settings, 
+//or exit the game
 void MainMenu::Load() {
 	mainMenuView = makeEntity();
 	mainMenuView->setView(menuView);
 
+	//Adds to sprites, rotating them to face the text on the menus
 	for (int i = 0; i < 2; i++) {
 		auto temp = mainMenuView->addComponent<SpriteComponent>();
 		_titleShipTex = make_shared<sf::Texture>();
@@ -79,6 +82,7 @@ void MainMenu::Load() {
 	setLoaded(true);
 }
 
+//Sets the text on the pause menu with the giving strings
 void MainMenu::changeMenuText(std::vector<std::string> s) {
 	for (int i = 0; i < s.size(); i++) {
 
@@ -94,19 +98,19 @@ void MainMenu::changeMenuText(std::vector<std::string> s) {
 
 	alignSprite();
 }
-
+//Aligns the sprites depending on the selectied menu option
 void MainMenu::alignSprite() {
 	shipSpriteLeft->getSprite().setPosition((round)(menuOption[selectedIndex]->getGlobalBounds().left - 50.f), (round)(menuOption[selectedIndex]->getGlobalBounds().top + menuOption[selectedIndex]->getGlobalBounds().getSize().y / 2));
 	shipSpriteRight->getSprite().setPosition((round)(menuOption[selectedIndex]->getGlobalBounds().left + menuOption[selectedIndex]->getGlobalBounds().width + 50.f), (round)(menuOption[selectedIndex]->getGlobalBounds().top + menuOption[selectedIndex]->getGlobalBounds().getSize().y / 2));
 }
 
-
+//Depending on the scene, switches the text to display the current menu
 void MainMenu::switchSceneText(_menuType scene) {
 
 	menuOption[3]->setVisible(false);
 	menuOption[3]->setAlive(false);
 	selectedIndex = 0;
-
+	//Sets the options text depending on the type of menu
 	switch (scene) {
 	case MAIN_MENU: {
 		menuOption[3]->setVisible(true);
@@ -120,6 +124,7 @@ void MainMenu::switchSceneText(_menuType scene) {
 		s.push_back("Exit");
 		if (selectedIndex >= s.size()) { selectedIndex--; }
 		changeMenuText(s);
+		//Changes the bools to indicate the current menu
 		changeBools(true, false, false, false);
 		break;
 	}
@@ -162,7 +167,7 @@ void MainMenu::switchSceneText(_menuType scene) {
 		break;
 	}
 }
-
+//Allows the user to change the resolution, and applies a window scale for sprites and text components
 void MainMenu::changeResolution(int type) {
 	if (type == 1) { Engine::GetWindow().setSize(Vector2u(1024, 576)); windowScale = { 0.8f , 0.8f }; }
 	if (type == 2) { Engine::GetWindow().setSize(Vector2u(1280, 720)); windowScale = { 1.0f, 1.0f }; }
@@ -174,7 +179,7 @@ void MainMenu::changeResolution(int type) {
 	Engine::ChangeScene(&title);
 }
 
-
+//Changes bools values
 void MainMenu::changeBools(bool _isMainMenuScreen, bool _isLevelMenuScreen, bool _isSettingsScreen, bool _isResolutionScreen) {
 	isMainMenuScreen = _isMainMenuScreen;
 	isLevelMenuScreen = _isLevelMenuScreen;
@@ -182,6 +187,7 @@ void MainMenu::changeBools(bool _isMainMenuScreen, bool _isLevelMenuScreen, bool
 	isResolutionScreen = _isResolutionScreen;
 }
 
+//Moves up the selection on the menu
 void MainMenu::moveUp() {
 	if (selectedIndex - 1 >= 0) {
 		menuOption[selectedIndex]->_text.setColor(Color::White);
@@ -191,7 +197,7 @@ void MainMenu::moveUp() {
 
 	alignSprite();
 }
-
+//Moves down the selection on the menu
 void MainMenu::moveDown() {
 	int index = s.size();
 
@@ -202,63 +208,81 @@ void MainMenu::moveDown() {
 	}
 	alignSprite();
 }
-
+//Loads the game from the file, unloading the last scene
 void MainMenu::loadGame() {
 	Engine::isGamePaused = false;
 	Engine::isMenu = false;
 	Engine::isPausedMenu = false;
 	Engine::_lastScene->UnLoad();
 	Engine::isLoading = true;
+	musicArray[MUSIC_TITLE_SCREEN].pause();
 	LoadSaveGame::loadGame();
+	//In order to load a game, background and player has to be created before
 	Background::createBackground(dynamic_cast<Scene*>(&levelScene));
 	Player::createPlayerFromSettings(dynamic_cast<Scene*>(&levelScene));
 	Engine::ChangeScene(&levelScene);
 }
 void MainMenu::Update(const double& dt) {
-
+	//Checks if the game is not loading, and detects the different key strokes
 	if (!isGameLoading) {
 		if (sf::Keyboard::isKeyPressed(Keyboard::Up) && !detectingKeys.keyUp) { moveUp(); }
 		if (sf::Keyboard::isKeyPressed(Keyboard::Down) && !detectingKeys.keyDown) { moveDown(); }
 		if (sf::Keyboard::isKeyPressed(Keyboard::Enter) && !detectingKeys.keyEnter) {
 			switch (selectedIndex) {
 			case 0:
+				//Switches menu options
 				if (isMainMenuScreen) { switchSceneText(LEVEL_MENU); break; };
+				//Sets all the bools to false and starts a new game
 				if (isLevelMenuScreen) {
 					Engine::isGamePaused = false;
 					Engine::isPausedMenu = false;
 					Engine::isMenu = false;
 					Engine::currentPlayerLevel = 0;
+					musicArray[MUSIC_TITLE_SCREEN].pause();
 					Engine::ChangeScene(&levelScene);
 					break;
 				};
+				//Updates the menu options
 				if (isSettingsScreen) { switchSceneText(RESOLUTION_MENU); break; }
+				//Sets to the selected resolution
 				if (isResolutionScreen) { changeResolution(1); break; }
 				break;
 			case 1:
 				if (isSettingsScreen) { switchSceneText(MAIN_MENU); break; }
+				//Starts a game in infinite mode
 				if (isLevelMenuScreen) { 
 					Engine::isGamePaused = false;
 					Engine::isPausedMenu = false;
 					Engine::isMenu = false;
+					musicArray[MUSIC_TITLE_SCREEN].pause();
 					Engine::currentPlayerLevel = -1;
 					Engine::ChangeScene(&levelScene);
 					break;
 				}
+				//Loads a game from file
 				if (isMainMenuScreen) {
 					isGameLoading = true;
 					loadingTimer = 0;
+					moveUp();
+					moveUp();
 					loadGameTxt->setVisible(true);
 					break;
 				}
+				//Sets to the selected resolution
 				if (isResolutionScreen) { changeResolution(2); break; }
 				break;
 			case 2:
+				//Updates the menu options
 				if (isMainMenuScreen) { switchSceneText(SETTINGS_MENU); break; }
+				//Updates the menu options
 				if (isLevelMenuScreen) { switchSceneText(MAIN_MENU); break; }
+				//Sets to the selected resolution
 				if (isResolutionScreen) { changeResolution(3); break; }
 				break;
 			case 3:
+				//Closes the game
 				if (isMainMenuScreen) { Engine::GetWindow().close(); break; }
+				//Updates the menu options
 				if (isResolutionScreen) { switchSceneText(SETTINGS_MENU);  break; }
 				break;
 			default:
@@ -266,7 +290,8 @@ void MainMenu::Update(const double& dt) {
 			}
 		}
 	}
-
+	//While loading the game, displays a text.
+	//Once the timer is bigger than 2, loads the game
 	if (isGameLoading) {
 		loadingTimer += dt;
 		if (loadingTimer > 2) {
@@ -277,6 +302,7 @@ void MainMenu::Update(const double& dt) {
 		}
 	}
 
+	//Allows to go back on the menus by pressing escape
 	if (sf::Keyboard::isKeyPressed(Keyboard::Escape) && !detectingKeys.keyEscape) {
 		if (isSettingsScreen) { switchSceneText(MAIN_MENU); }
 		else if (isResolutionScreen) { switchSceneText(SETTINGS_MENU); }
@@ -300,6 +326,7 @@ void MainMenu::Update(const double& dt) {
 	detectingKeys.detectingKeys();
 }
 
+//Unloads the main menu
 void MainMenu::UnLoad() {
 	switchSceneText(MAIN_MENU);
 	mainMenuView->setForDelete();

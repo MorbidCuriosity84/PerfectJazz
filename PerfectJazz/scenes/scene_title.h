@@ -2,6 +2,7 @@
 #include "engine.h"
 #include "../components/cmp_text.h"
 
+//Displays the animated title and background for the intial scene
 class TitleScene : public Scene {
 public:
 	TitleScene() = default;

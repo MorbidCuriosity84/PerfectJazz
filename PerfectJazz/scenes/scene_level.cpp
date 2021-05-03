@@ -21,6 +21,7 @@ sf::Music musicArray[8];
 
 const unsigned int soundsPerBuffer = 8;
 
+//Level scene is used to load levels
 void LevelScene::Load() {
 	cout << " Scene " << Engine::currentPlayerLevel << " Load" << endl;
 
@@ -35,17 +36,7 @@ void LevelScene::Load() {
 		sounds[sndInt].setPitch(1.f);
 	}
 
-	//MARK This is temporary, once title screen is loaded then the array should be initialised
-	//then its just a case of calling the musicArray with the relevvant music enum
-	for (int i = 0; i < 8; i++) {
-		if (!musicArray[i].openFromFile(musicFiles[i])) {
-
-		}
-		else {
-			cout << "Loaded music " << musicFiles[i] << endl;
-		}
-	}
-
+	//Sets the settings for the music, adjusting the volume, the loop and playing
 	currentLvlMusicIndex = Engine::currentPlayerLevel + 2;
 	musicArray[currentLvlMusicIndex].setPosition(0, 1, 50);
 	musicArray[currentLvlMusicIndex].setVolume(25);
@@ -61,10 +52,12 @@ void LevelScene::Load() {
 
 	//Create powerups
 	{
+		//Initializes powerups pool
 		PowerupPool::init(&levelScene);
 		Powerups::createPowerups(dynamic_cast<Scene*>(&levelScene));
 	}
 
+	//Initializes entity pool
 	EntityPool::init(&levelScene);
 	//Create player
 	{
@@ -81,8 +74,7 @@ void LevelScene::Load() {
 	EnemyPool::init(&levelScene);
 	//Create Enemies
 	{	
-		//LevelManager::loadLevel(++Engine::currentPlayerLevel); //-- only needed for specific levels, infinite levels just need a call to LevelManager in the update
-		LevelManager::loadLevel(2); //-- only needed for specific levels, infinite levels just need a call to LevelManager in the update
+		LevelManager::loadLevel(Engine::currentPlayerLevel); //-- only needed for specific levels, infinite levels just need a call to LevelManager in the update
 	}
 
 	//Create text for left and right boxes
@@ -95,6 +87,7 @@ void LevelScene::Load() {
 	setLoaded(true);
 }
 
+//Unlodas the level scene, clearing all the components and panel
 void LevelScene::UnLoad() {
 	cout << "Scene Unload" << endl;
 	ls::unload();
@@ -116,11 +109,13 @@ void LevelScene::UnLoad() {
 	Scene::UnLoad();
 }
 
+//Updates the scene
 void LevelScene::Update(const double& dt) {
 	LevelManager::update(&levelScene, false, 4, dt);
 	Scene::Update(dt);
 }
 
+//Renders the components
 void LevelScene::Render() {
 	ls::render(Engine::GetWindow());
 	Scene::Render();

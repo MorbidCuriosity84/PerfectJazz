@@ -7,18 +7,17 @@
 using namespace std;
 using namespace sf;
 
+//Deployes a powerup
 void PowerupComponent::deployPowerup() {
 
+	//Adds sprite, damage, physics and hp component to the powerup
 	_powerupTextureHelper.spriteTexture.get()->loadFromFile(_powerupTextureHelper.spriteFilename);
 	powerupSpriteCMP = _parent->addComponent<SpriteComponent>();
 	powerupSpriteCMP.get()->loadTexture(_powerupTextureHelper, { _powerupSettings.spriteScale }, 0);
 	damageCMP = _parent->addComponent<DamageComponent>(_powerupSettings.damage);
-	physicsCMP = _parent->addComponent<PhysicsComponent>(true, powerupSpriteCMP->getSprite().getLocalBounds().getSize());
-
-	hpCMP = _parent->addComponent<HPComponent>(_powerupSettings.scene, 1, 1);
-	hpCMP->loadHP();
+	hpCMP = _parent->addComponent<HPComponent>(_powerupSettings.scene, 1, 1);	hpCMP->loadHP();
 	hpCMP.get()->setVisible(false);
-
+	physicsCMP = _parent->addComponent<PhysicsComponent>(true, powerupSpriteCMP->getSprite().getLocalBounds().getSize());
 	physicsCMP->getBody()->SetBullet(true);
 	physicsCMP->setSensor(true);
 	physicsCMP->setVelocity(_powerupSettings.velocity * _powerupSettings.direction);
@@ -28,7 +27,7 @@ void PowerupComponent::deployPowerup() {
 }
 
 void PowerupComponent::update(double dt) {
-	//if parent is of type coin_pwu
+	//If power up is of type coin, performs animation
 	if (_parent->getTags().find("coin_pwu") != _parent->getTags().end()) {
 		_powerupTextureHelper.spriteTimer += dt;
 		if (_powerupTextureHelper.spriteTimer < 0.1) {
@@ -53,6 +52,7 @@ void PowerupComponent::update(double dt) {
 		powerupSpriteCMP->getSprite().setTextureRect(*_powerupTextureHelper.spriteRectangle.get());
 	}
 
+	//If powerup hp is below or equal to 0, the entity and body are set not active, and its cleared of components
 	if (hpCMP->getHP() <= 0) {
 		_parent->setAlive(false);
 		_parent->setVisible(false);
@@ -64,6 +64,7 @@ void PowerupComponent::update(double dt) {
 		_parent->clearComponents();
 		return;
 	}
+	//If powerup position is outside the boundaries, the entity and body are set not active, and its cleared of components
 	if (_parent->getPosition().y > _parent->getView().getSize().y) {
 		_parent->setAlive(false);
 		_parent->setVisible(false);
@@ -74,10 +75,10 @@ void PowerupComponent::update(double dt) {
 	}
 
 }
-
+//Depending on the powerup, some of the player settigns will be upgraded
 void PowerupComponent::powerupAction() {
 	auto playerCMP = player->GetCompatibleComponent<PlayerComponent>()[0];
-	physicsCMP->teleport(Vector2f(-500.f, -500.f));
+	//physicsCMP->teleport(Vector2f(-500.f, -500.f));
 
 	hpCMP->setHP(1);
 

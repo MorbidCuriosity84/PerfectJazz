@@ -24,15 +24,15 @@ std::shared_ptr<Entity> upgradeView;
 
 void UpgradeMenu::Load() {
 
-	//Loading music
+	//Loads music
 	for (int i = 0; i < 8; i++) {
-		if (!musicArray[i].openFromFile(musicFiles[i])) {
-		}
+		if (!musicArray[i].openFromFile(musicFiles[i])) {		}
 		else {
 			cout << "Loaded music " << musicFiles[i] << endl;
 		}
 	}
 
+	//Sets the settings for the music, adjusting the volume, the loop and playing
 	musicArray[MUSIC_UPGRADE_MENU].setPosition(0, 1, 50);
 	musicArray[MUSIC_UPGRADE_MENU].setVolume(25);
 	musicArray[MUSIC_UPGRADE_MENU].setLoop(true);
@@ -81,7 +81,7 @@ void UpgradeMenu::Load() {
 	_coinRect = sf::IntRect();
 	_coinTex->loadFromFile("res/img/powerups/coins.png");
 
-	//Settign rectangle for the ship sprite, rotation and scale
+	//Setting rectangle for the ship sprite, rotation and scale
 	upgradeShipSprite->setTexure(_upgradeShipTex);
 	upgradeShipSprite->getSprite().setScale(Vector2f(3.f * windowScale.x, 3.f * windowScale.y));
 	_upgradeShipRect.left = (round)(_upgradeShipTex->getSize().x / 5 * 1);
@@ -92,7 +92,7 @@ void UpgradeMenu::Load() {
 	upgradeShipSprite->getSprite().setOrigin(_upgradeShipRect.width / 2, _upgradeShipRect.height / 2);
 	upgradeShipSprite->getSprite().setPosition(col * 2.5, row * 8);
 
-	//Adding text components
+	//Adding text components to the upgradeview
 	menuOption1 = upgradeView->addComponent<TextComponent>();
 	menuOption2 = upgradeView->addComponent<TextComponent>();
 	menuOption3 = upgradeView->addComponent<TextComponent>();
@@ -255,13 +255,13 @@ void UpgradeMenu::asignMaxValues() {
 	}
 }
 
-//Align sprites with the selected text
+//Aligns sprites with the selected text
 void UpgradeMenu::alignSprite() {
 	_upgradeShipRect.left = (round)(_upgradeShipTex->getSize().x / 5 * (selectedIndex));
 	upgradeShipSprite->getSprite().setTextureRect(_upgradeShipRect);
 }
 
-//Setting up values for the current values
+//Sets up values for the current values
 void UpgradeMenu::updatingCurrentValues() {
 	std::stringstream fireRate;
 	fireRate << std::fixed << std::setprecision(2) << upgradedPlayerCMP->weaponCMP->_wSettings.fireTime;
@@ -274,8 +274,9 @@ void UpgradeMenu::updatingCurrentValues() {
 	menuOption4Value->setText(flySpeed.str());
 }
 
-//Setting up values for the upgraded values
+//Sets up values for the upgraded values
 void UpgradeMenu::updatingNextValues() {
+	//Sets the precision to have two decimals and stores the value in a variable
 	std::stringstream fireRateNext;
 	fireRateNext << std::fixed << std::setprecision(2) << (upgradedPlayerCMP->weaponCMP->_wSettings.fireTime * fireRateMulti);
 	std::stringstream flySpeedNext;
@@ -287,8 +288,9 @@ void UpgradeMenu::updatingNextValues() {
 	if (menuOption4NextValue->_text.getString() != "MAX") { menuOption4NextValue->setText(flySpeedNext.str()); }
 }
 
-//Setting up values for the upgrades cost
+//Sets up values for the upgraded cost
 void UpgradeMenu::updatingCost() {
+	//Sets the precision to have no decimals and stores the value in a variable
 	std::stringstream fireRateCost;
 	fireRateCost << std::fixed << std::setprecision(0) << (300 / upgradedPlayerCMP->weaponCMP->_wSettings.fireTime);
 	std::stringstream flySpeedCost;
@@ -300,9 +302,10 @@ void UpgradeMenu::updatingCost() {
 	if (menuOption4NextValue->_text.getString() != "MAX") { menuOption4Cost->setText(flySpeedCost.str()); }
 }
 
+//Recenters the text
 void UpgradeMenu::centeringText() {
 
-	//Recentering text
+	//Recenters the text by setting the origin for the new text, and setting the position.
 	for (int i = 0; i < 4; i++) {
 		allTextCMP[i + 4]->setOrigin(Vector2f((round)(allTextCMP[i + 4]->getLocalBounds().width / 2), (round)(allTextCMP[i + 4]->getLocalBounds().top + allTextCMP[i + 4]->getLocalBounds().height / 2.f)));
 		allTextCMP[i + 4]->setPosition(Vector2f(col * 9, (round)(menuView.getSize().y / 3) + (menuView.getSize().y / 14 * i)));
@@ -319,6 +322,7 @@ void UpgradeMenu::centeringText() {
 	coinsTxtCMP->setOrigin(Vector2f((round)(coinsTxtCMP->getLocalBounds().left + coinsTxtCMP->getLocalBounds().width / 2), (round)(coinsTxtCMP->getLocalBounds().height / 2 - coinsTxtCMP->_text.getLocalBounds().height)));
 	coinsTxtCMP->setPosition(Vector2f((round)(menuView.getSize().x / 2), row * 2.5));
 
+	//Recenters the sprites by setting the origin for the sprites, and setting the position.
 	for (int i = 0; i < 4; i++) {
 		allCoinsSprite[2 + i]->getSprite().setPosition(Vector2f(col * 17 + allTextCMP[i + 12]->_text.getLocalBounds().width, (round)(menuView.getSize().y / 3) + (menuView.getSize().y / 14 * i - allCoinsSprite[2 + i]->getSprite().getGlobalBounds().height)));
 	}
@@ -334,8 +338,10 @@ void UpgradeMenu::purchasingUpgrade(int type) {
 		noEnoughMoneyText->setVisible(true);
 		notEnoughTimer = 0;
 	}
-	//Update the values in the player settings
+	//Updates the values in the player settings
+	//Checks if the value of the string is not MAX the current coins are enough to buy the upgrade
 	else if (upgradeCost != "MAX" && upgradedPlayerCMP->_playerSettings.shopPoints >= std::stoi(upgradeCost)) {
+		//Depending on the type of upgrade, updates the text components accordinly.
 		if (type == 0) {
 			if (upgradedPlayerCMP->weaponCMP->_bSettings.damage >= maxBulletDamage) {
 				menuOption1NextValue->setText("MAX");
@@ -368,8 +374,10 @@ void UpgradeMenu::purchasingUpgrade(int type) {
 			else { upgradedPlayerCMP->_playerSettings.flySpeed = upgradedPlayerCMP->_playerSettings.flySpeed * flySpeedMulti; }
 		}
 
+		//Updates the coins variable to its new value and updates the text
 		upgradedPlayerCMP->_playerSettings.shopPoints -= std::stoi(upgradeCost);
 		coinsTxtCMP->_text.setString("Coins: " + to_string(upgradedPlayerCMP->getShoppingCoins()));
+		//Calling methos to update text components with the new current values, next values, cost and recenter the text
 		updatingCurrentValues();
 		updatingNextValues();
 		updatingCost();
@@ -450,8 +458,6 @@ void UpgradeMenu::Update(const double& dt) {
 	coinsTxtCMP->_text.setString("Coins: " + to_string(upgradedPlayerCMP->getShoppingCoins()));
 	centeringText();
 
-	detectingKeys.detectingKeys();
-
 	if (notEnoughTimer > 2) {
 		noEnoughMoneyText->setVisible(false);
 		notEnoughTimer = 0;
@@ -462,7 +468,7 @@ void UpgradeMenu::Update(const double& dt) {
 	if (sf::Keyboard::isKeyPressed(Keyboard::Up) && !detectingKeys.keyUp) { moveUp(); }
 	if (sf::Keyboard::isKeyPressed(Keyboard::Down) && !detectingKeys.keyDown) { moveDown(); }
 	//Switches between 4 cases, depending on which element of the menu has been selected
-	if (sf::Keyboard::isKeyPressed(Keyboard::Enter) /*&& !detectingKeys.keyEnter*/) {
+	if (sf::Keyboard::isKeyPressed(Keyboard::Enter) && !detectingKeys.keyEnter) {
 		switch (selectedIndex) {
 		case 0:
 			purchasingUpgrade(0);
@@ -486,6 +492,7 @@ void UpgradeMenu::Update(const double& dt) {
 			moveUp();
 			if (Engine::isLevelComplete) {
 				Engine::isPausedMenu = false;
+				musicArray[currentLvlMusicIndex].pause();
 				PlayerComponent::clonePlayer(player);
 				Engine::_lastScene->UnLoad();
 				Engine::currentPlayerLevel++;
@@ -499,8 +506,10 @@ void UpgradeMenu::Update(const double& dt) {
 			break;
 		}
 	}
+	detectingKeys.detectingKeys();
 }
 
+//Unloads the view
 void UpgradeMenu::UnLoad() {
 	upgradedPlayerCMP.reset();
 	upgradeShipSprite.reset();

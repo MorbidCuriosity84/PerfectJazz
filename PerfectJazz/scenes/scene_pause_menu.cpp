@@ -9,8 +9,6 @@
 #include <iostream>
 #include <system_physics.h>
 
-
-
 using namespace std;
 using namespace sf;
 
@@ -18,16 +16,18 @@ std::shared_ptr<SpriteComponent> shipSpriteRight1;
 std::shared_ptr<SpriteComponent> shipSpriteLeft1;
 std::shared_ptr<Entity> pauseView;
 
+//Loads the pause menu allowing the player to go back to the main menu,
+//save the game, or exit the game
 void PauseMenu::Load() {
 	pauseView = makeEntity();
 	pauseView->setView(menuView);
 
+	//Adds to sprites, rotating them to face the text on the menus
 	for (int i = 0; i < 2; i++) {
 		auto temp = pauseView->addComponent<SpriteComponent>();
 		_titleShipTex = make_shared<sf::Texture>();
 		auto rec = sf::IntRect();
 		_titleShipTex->loadFromFile("res/img/enemies/enemy1_900.png");
-
 		temp->setTexure(_titleShipTex);
 		rec.left = (round)(_titleShipTex->getSize().x / 2 * 0);
 		rec.top = (round)(_titleShipTex->getSize().y / 2 * 0);
@@ -96,6 +96,7 @@ void PauseMenu::Load() {
 	setLoaded(true);
 }
 
+//Sets the text on the pause menu with the giving strings
 void PauseMenu::changeMenuText(std::vector<std::string> s) {
 	for (int i = 0; i < s.size(); i++) {
 
@@ -111,11 +112,12 @@ void PauseMenu::changeMenuText(std::vector<std::string> s) {
 	alignSprite();
 }
 
+//Aligns the sprites depending on the selectied menu option
 void PauseMenu::alignSprite() {
 	shipSpriteLeft1->getSprite().setPosition((round)(menuOption[selectedIndex]->getGlobalBounds().left - 50.f), (round)(menuOption[selectedIndex]->getGlobalBounds().top + menuOption[selectedIndex]->getGlobalBounds().getSize().y / 2));
 	shipSpriteRight1->getSprite().setPosition((round)(menuOption[selectedIndex]->getGlobalBounds().left + menuOption[selectedIndex]->getGlobalBounds().width + 50.f), (round)(menuOption[selectedIndex]->getGlobalBounds().top + menuOption[selectedIndex]->getGlobalBounds().getSize().y / 2));
 }
-
+//Moves up the selection on the menu
 void PauseMenu::moveUp() {
 	if (selectedIndex - 1 >= 0) {
 		menuOption[selectedIndex]->_text.setColor(Color::White);
@@ -125,7 +127,7 @@ void PauseMenu::moveUp() {
 
 	alignSprite();
 }
-
+//Moves down the selection on the menu
 void PauseMenu::moveDown() {
 	int index = s.size();
 
@@ -138,12 +140,14 @@ void PauseMenu::moveDown() {
 }
 
 void PauseMenu::Update(const double& dt) {
+	//Checks if the game is not saving, and detects the different key strokes
 	if (!savingGame && !notSavingGame) {
 		if (sf::Keyboard::isKeyPressed(Keyboard::Up) && !detectingKeys.keyUp) { moveUp(); }
 		if (sf::Keyboard::isKeyPressed(Keyboard::Down) && !detectingKeys.keyDown) { moveDown(); }
 		if (sf::Keyboard::isKeyPressed(Keyboard::Enter) && !detectingKeys.keyEnter) {
 			switch (selectedIndex) {
 			case 0:
+				//Sets all the bools to false and comes back to the game
 				Engine::isGamePaused = false;
 				Engine::isMenu = false;
 				Engine::isPausedMenu = false;
@@ -151,13 +155,13 @@ void PauseMenu::Update(const double& dt) {
 				Engine::ChangeScene(Engine::_lastScene);
 				break;
 			case 1:
-
+				//Saves the game only if the player playing normal mode (>=0)
 				if (Engine::currentPlayerLevel >= 0) {
 					savingGame = true;
 					savingTimer = 0;
 					LoadSaveGame::saveGame();
 				}
-
+				//Shows text saying it's not able to save the game
 				else {
 					notSavingGame = true;
 					notSavingTimer = 0;
@@ -168,18 +172,17 @@ void PauseMenu::Update(const double& dt) {
 				Engine::isMenu = true;
 				Engine::isGamePaused = true;
 				Engine::isLoading = false;
-
+				//Unloads the upgrade menu and goes back to the main menu
 				if (upgradeMenu.ents.list.size() != 0) {
 					upgradeMenu.UnLoad();
 				}
 				Engine::_lastScene->UnLoad();
-				moveUp();
-				moveUp();
 				musicArray[MUSIC_TITLE_SCREEN].play();
 				Engine::currentPlayerLevel = 0;
 				Engine::ChangeScene(&mainMenuScene);
 				break;
 			case 3:
+				//Exits the game
 				Engine::isPausedMenu = false;
 				Engine::isMenu = false;
 				Engine::isGamePaused = false;
@@ -198,8 +201,8 @@ void PauseMenu::Update(const double& dt) {
 
 	timer += dt;
 	if (timer > 0.12) {
+		//Check if the loaded sprite is the bottom one, if so, load the top. And viceversa
 		if (Engine::isMenu && Engine::isPausedMenu) {
-			//Check if the loaded sprite is the bottom, if so, load the top. And viceversa
 			if (_titleShipLeftRect.left == _titleShipLeftRect.getSize().y / 1) { _titleShipLeftRect.left = 0; }
 			else { _titleShipLeftRect.left = _titleShipLeftRect.getSize().y / 1; }
 			shipSpriteLeft1->getSprite().setTextureRect(_titleShipLeftRect);
@@ -210,7 +213,7 @@ void PauseMenu::Update(const double& dt) {
 		}
 
 		timer = 0;
-
+		//While saving the game, displays a text
 		if (savingGame) {
 			savingGameTxt->setVisible(true);
 			savingTimer += dt;
@@ -219,6 +222,7 @@ void PauseMenu::Update(const double& dt) {
 				savingGameTxt->setVisible(false);
 			}
 		}		
+		//If not able to save the game, displays a text
 		if (notSavingGame) {
 			cantSaveTxt->setVisible(true);
 			notSavingTimer += dt;
@@ -227,10 +231,9 @@ void PauseMenu::Update(const double& dt) {
 				cantSaveTxt->setVisible(false);
 			}
 		}
-
 	}
 }
-
+//Unloads the pause scene
 void PauseMenu::UnLoad() {
 	shipSpriteRight1.reset();
 	shipSpriteLeft1.reset();

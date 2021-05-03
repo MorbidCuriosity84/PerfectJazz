@@ -1,7 +1,7 @@
 #pragma once
 #include "engine.h"
 #include "../components/cmp_text.h"
-
+//Scene that displayes a menu with upgrades for the player
 class UpgradeMenu : public Scene {
 public:
 	UpgradeMenu() = default;

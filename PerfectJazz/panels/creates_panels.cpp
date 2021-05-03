@@ -48,9 +48,10 @@ int col;
 
 void Panels::createPanels(Scene* _scene) {
 
+	//Gets player component from the player
 	playerCMP = player->GetCompatibleComponent<PlayerComponent>()[0];
 	//Left Panel
-	{	//Setting up initial values
+	{	//Sets up initial values
 		currentScore = -1;
 		currentHP = -1;
 		currentCoins = -1;
@@ -60,10 +61,11 @@ void Panels::createPanels(Scene* _scene) {
 		currentFirerate = -1;
 		currentFlySpeed = -1;
 
+		//Creates the lefpanel scene and assigning a view
 		leftPanel = _scene->makeEntity();
 		leftPanel->setView(leftView);
 
-		//Adding components
+		//Adds components
 		playerLifeSpriteCMP = leftPanel->addComponent<SpriteComponent>();
 		hpCMP = leftPanel->addComponent<HPComponent>(_scene, playerCMP->_playerSettings.hp, playerCMP->_playerSettings.maxHP);
 		hpCMP->loadHP();
@@ -143,10 +145,10 @@ void Panels::createPanels(Scene* _scene) {
 
 	//Right Panel
 	{
-		//Creating entity and setting view
+		//Creates entity and setting view
 		rightPanel = _scene->makeEntity();
 		rightPanel->setView(rightView);
-		//Creating fps textcomponent and initializing its settings
+		//Creates fps textcomponent and initializing its settings
 		FPStxtCMP = rightPanel->addComponent<TextComponent>("FPS: " + toStrDecPt(2, Engine::FPS));		
 		FPStxtCMP->setFontSize(40u);
 		sf::FloatRect textRect = FPStxtCMP->getLocalBounds();
@@ -155,6 +157,7 @@ void Panels::createPanels(Scene* _scene) {
 	}
 }
 
+//Sets life sprites according to the current lifes
 void Panels::setLifeSprites() {
 
 	auto lifes = playerCMP->getPlayerLifes();
@@ -170,6 +173,7 @@ void Panels::setLifeSprites() {
 	currentLifes = lifes;
 }
 
+//Creates the sprites for the upgrades, assigning one to each of the different upgrades in each iteration
 void Panels::createUpgradeSprites() {
 	for (int i = 1; i < 5; i++) {
 		upgradeBulletsSpriteCMP = leftPanel->addComponent<SpriteComponent>();
@@ -187,37 +191,46 @@ void Panels::createUpgradeSprites() {
 	}
 }
 
+//Sets the upgrade sprites to it's value. Parameter type is the type of ugprade and counter the ammount.
 void Panels::setUpgradesSprites(string type, int counter) {
 
+	//Depending on the counter, the rectangle will display the right sprite from the sprite sheet
 	upgradeCounterRec.left = (round)(upgradeCounterTexture.getSize().x * 0);
 	upgradeCounterRec.top = (round)(upgradeCounterTexture.getSize().y * 0);
 	upgradeCounterRec.width = (round)((upgradeCounterTexture.getSize().x / 5) * counter);
 	upgradeCounterRec.height = (round)(upgradeCounterTexture.getSize().y);
 
+	//Sets sprite for damage upgrade
 	if (type == "damage") {
 		currentBulletDamage = counter;
 		upgradeDamageSpriteCMP->getSprite().setTextureRect(upgradeCounterRec);
 	};
+	//Sets sprite for fly speed upgrade
 	if (type == "flySpeed") {
 		currentFlySpeed = counter;
 		upgradeFlyeSpeedSpriteCMP->getSprite().setTextureRect(upgradeCounterRec);
 	};
+	//Sets sprite for fire rate upgrade
 	if (type == "firerate") {
 		currentFirerate = counter;
 		upgradeFirerateSpriteCMP->getSprite().setTextureRect(upgradeCounterRec);
 	};
+	//Sets sprite for bullets upgrade
 	if (type == "bullets") {
 		currentBulletSpread = counter;
 		upgradeBulletsSpriteCMP->getSprite().setTextureRect(upgradeCounterRec);
 	};
+	//Sets sprite for score upgrade
 	if (type == "score") {
 		currentScore = counter;
 		scoreTxtCMP->setText("Score: " + to_string(playerCMP->_playerSettings.score));
 	};
+	//Sets sprite for coin upgrade
 	if (type == "coin") {
 		currentCoins = counter;
 		coinsTxtCMP->setText("Coins: " + to_string(playerCMP->_playerSettings.shopPoints));
 	};	
+	//Sets sprite for hp upgrade and updates both current hp and current max hp
 	if (type == "hp") {
 		currentHP = playerCMP->hpCMP->getHP();
 		hpCMP->setHP(playerCMP->hpCMP->getHP());
@@ -229,42 +242,54 @@ void Panels::setUpgradesSprites(string type, int counter) {
 	};
 }
 
-
+//Updates the panel
 void Panels::update(double dt) {
 	timer += dt;
 
+	//If timer bigger than 0.1 and player not null, checks for changes on each of the upgrades
 	if (timer > 0.1 && playerCMP != nullptr) {
 
+		//Checks for changes on life
 		if (currentLifes != playerCMP->_playerSettings.lifes) { setLifeSprites(); }
-
+		//Checks for changes on life
 		if (currentBulletDamage != playerCMP->weaponCMP->_bSettings.damageUpgradeCount) {
 			setUpgradesSprites("damage", playerCMP->weaponCMP->_bSettings.damageUpgradeCount);
 		}
+		//Checks for changes on fly speed
 		if (currentFlySpeed != playerCMP->_playerSettings.flySpeedUpgradeCount) {
 			setUpgradesSprites("flySpeed", playerCMP->_playerSettings.flySpeedUpgradeCount);
 		}
+		//Checks for changes on fire rate
 		if (currentFirerate != playerCMP->weaponCMP->_wSettings.firerateUpgradeCount) {
 			setUpgradesSprites("firerate", playerCMP->weaponCMP->_wSettings.firerateUpgradeCount);
 		}
+		//Checks for changes on bullets
 		if (currentBulletSpread != playerCMP->weaponCMP->_wSettings.numBulletsUpgradeCount) {
 			setUpgradesSprites("bullets", playerCMP->weaponCMP->_wSettings.numBulletsUpgradeCount);
 		}
+		//Checks for changes on score
 		if (currentScore != playerCMP->_playerSettings.score) {
 			setUpgradesSprites("score", playerCMP->_playerSettings.score);
 		}
+		//Checks for changes on coins
 		if (currentCoins != playerCMP->_playerSettings.shopPoints) {
 			setUpgradesSprites("coin", playerCMP->_playerSettings.shopPoints);
 		}
+		//Checks for changes on health
 		if (currentHP != playerCMP->hpCMP->getHP() || currentMaxHP != playerCMP->hpCMP->getMaxHP()) {
 			setUpgradesSprites("hp", playerCMP->hpCMP->getHP());
 		}
+		//Sets timer to 0
 		timer = 0;
+		//Updates the FPS text
 		FPStxtCMP->setText("FPS: " + toStrDecPt(2, Engine::FPS));
 	}
 }
 
+//Renders all the components
 void Panels::render() {}
 
+//Panels destructor
 Panels::~Panels() { 
 	playerLifeSpriteCMP.reset();
 	upgradeDamageSpriteCMP.reset();
