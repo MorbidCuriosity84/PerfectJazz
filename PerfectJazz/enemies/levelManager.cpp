@@ -67,7 +67,7 @@ void LevelManager::playLevel(Scene* s)
 	}	
 	if (waves.empty() && !isBoss) {
 		waves.push("wave7");
-		isBoss = true;
+		isBoss = true;		
 	}
 	if (waves.empty()) {			
 		if (enemyCount == 0) {
