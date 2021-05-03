@@ -118,7 +118,7 @@ enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
 	default:
 		break;
 	}
-	scale(5, settings);
+	scale(2, settings);
 	return settings;
 }
 

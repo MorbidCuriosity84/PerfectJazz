@@ -85,8 +85,9 @@ void LevelScene::Load() {
 	}
 
 	//std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-	cout << " Scene 2 Load Done" << endl;
+	//cout << " Scene Load Done" << endl;
 	setLoaded(true);
+	Engine::isLoading = false;
 }
 
 //Unlodas the level scene, clearing all the components and panel

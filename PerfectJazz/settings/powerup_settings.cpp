@@ -20,7 +20,7 @@ powerupSettings PowerupSettings::LoadSettings(_powerUpsType type, Scene* scene) 
 		settings.velocity = Vector2f(0.f, 100.f);	// Sets the velocity
 		settings.spriteScale = Vector2f(0.8f, .8f);	// Sets the sprite scale
 		settings.sound = PICKUP_1;					// Sets the current sound
-		scale(5, settings);
+		scale(2, settings);
 		break;
 	case DAMAGE_PWU:
 		settings.damage = 0;
