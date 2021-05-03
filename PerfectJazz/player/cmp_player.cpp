@@ -95,6 +95,11 @@ void PlayerComponent::update(double dt) {
 		//If the HP is equal or below 0, set the player not alive
 		if (hpCMP->getHP() <= 0) {
 			setPlayerAlive(false);
+			// Set the powerups upgrades to 0
+			_playerSettings.flySpeedUpgradeCount = 0;
+			weaponCMP->_bSettings.damageUpgradeCount = 0;
+			weaponCMP->_wSettings.firerateUpgradeCount = 0;
+			weaponCMP->_wSettings.numBulletsUpgradeCount = 0;
 			//If the player has no lifes left, set period of grace to false
 			if (_playerSettings.lifes <= 0) { _gracePeriod = false; }
 		}

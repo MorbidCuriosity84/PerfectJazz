@@ -19,13 +19,13 @@ void Powerups::deployPowerups() {
 	std::string type;
 	//probabilities for the powerups. Each power up has a chance to be randomly picked
 	std::discrete_distribution<> powerupsWeights({
-		1,    // Damage % chance       1,  
-		3,    // Health % chance       1,  
-		1,    // Bullet Num % chance   0.3,
-		0.7,    // Firerate % chance	   0.7,
-		0.7,    // Player Mov % chance 0.7,
-		97,    // Coin % chance		   97,	
-		0 });// Extra % chance	   0.2 
+		2,    // Damage % chance       1,  
+		2,    // Health % chance       1,  
+		2.5,    // Bullet Num % chance   0.3,
+		3.5,    // Firerate % chance	   0.7,
+		2,    // Player Mov % chance 0.7,
+		86,    // Coin % chance		   97,	
+		2 });// Extra % chance	   0.2 
 	int choosenPowerup = RandomNumber::generateRandomNumber(powerupsWeights);
 
 	//probabilities for the columns. Each columns has a chance to be randomly picked
@@ -50,17 +50,17 @@ void Powerups::deployPowerups() {
 	int choosenColumn = RandomNumber::generateRandomNumber(columnWeights);
 
 	//if Damage
-	if (choosenPowerup == 0) { 
+	if (choosenPowerup == 0) {
 		_powerupTextureHelper = TextureHelpingSettings::LoadSettings(DAMAGE_PWU, _scene); type = "damage_pwu";
 		_powerupSettings = PowerupSettings::LoadSettings(DAMAGE_PWU, _scene);
 	}
 	//if Health
-	if (choosenPowerup == 1) { 
+	if (choosenPowerup == 1) {
 		_powerupTextureHelper = TextureHelpingSettings::LoadSettings(HP_PWU, _scene); type = "hp_pwu";
 		_powerupSettings = PowerupSettings::LoadSettings(HP_PWU, _scene);
 	}
 	//if Bullet Num
-	if (choosenPowerup == 2) { 
+	if (choosenPowerup == 2) {
 		_powerupTextureHelper = TextureHelpingSettings::LoadSettings(BULLET_NUM_PWU, _scene); type = "bullet_num_pwu";
 		_powerupSettings = PowerupSettings::LoadSettings(BULLET_NUM_PWU, _scene);
 	}
@@ -70,12 +70,12 @@ void Powerups::deployPowerups() {
 		_powerupSettings = PowerupSettings::LoadSettings(FIRERATE_PWU, _scene);
 	}
 	//if Player movement
-	if (choosenPowerup == 4) { 
+	if (choosenPowerup == 4) {
 		_powerupTextureHelper = TextureHelpingSettings::LoadSettings(PLAYER_MOVEMENT_PWU, _scene); type = "player_movement_pwu";
 		_powerupSettings = PowerupSettings::LoadSettings(PLAYER_MOVEMENT_PWU, _scene);
 	}
 	//if Coin or Extra
-	if (choosenPowerup == 5 || choosenPowerup == 6) { 
+	if (choosenPowerup == 5 || choosenPowerup == 6) {
 		_powerupTextureHelper = TextureHelpingSettings::LoadSettings(COIN_PWU, _scene);  type = "coin_pwu";
 		_powerupSettings = PowerupSettings::LoadSettings(COIN_PWU, _scene);
 	}
@@ -88,20 +88,21 @@ void Powerups::deployPowerups() {
 					shared_ptr<Entity> en = PowerupPool::pwp_pool[PowerupPool::pwp_poolPointer++];
 					en->setView(mainView);
 					en->setVisible(false);
-					if (j == 0) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 4) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 1) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 5) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 2) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 6) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 3) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 10) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 4) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 11) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 5) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 14) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 6) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 17) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 7) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 19) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 8) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 20) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 9) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 21) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 10) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 22) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 11) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 24) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 12) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 25) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 13) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 26) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
+
+					if (j == 0) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 4) + ((mainView.getSize().x / 32)), 0- (mainView.getSize().y / 32) * i)); }
+					if (j == 1) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 5) + ((mainView.getSize().x / 32)), 0- (mainView.getSize().y / 32) * i)); }
+					if (j == 2) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 6) + ((mainView.getSize().x / 32)), 0- (mainView.getSize().y / 32) * i)); }
+					if (j == 3) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 10) + ((mainView.getSize().x / 32)),0 - (mainView.getSize().y / 32) * i)); }
+					if (j == 4) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 11) + ((mainView.getSize().x / 32)),0 - (mainView.getSize().y / 32) * i)); }
+					if (j == 5) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 14) + ((mainView.getSize().x / 32)),0 - (mainView.getSize().y / 32) * i)); }
+					if (j == 6) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 17) + ((mainView.getSize().x / 32)),0 - (mainView.getSize().y / 32) * i)); }
+					if (j == 7) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 19) + ((mainView.getSize().x / 32)),0 - (mainView.getSize().y / 32) * i)); }
+					if (j == 8) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 20) + ((mainView.getSize().x / 32)),0 - (mainView.getSize().y / 32) * i)); }
+					if (j == 9) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 21) + ((mainView.getSize().x / 32)),0 - (mainView.getSize().y / 32) * i)); }
+					if (j == 10) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 22) + ((mainView.getSize().x / 32)), 0 - (mainView.getSize().y / 32) * i)); }
+					if (j == 11) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 24) + ((mainView.getSize().x / 32)), 0 - (mainView.getSize().y / 32) * i)); }
+					if (j == 12) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 25) + ((mainView.getSize().x / 32)), 0 - (mainView.getSize().y / 32) * i)); }
+					if (j == 13) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 26) + ((mainView.getSize().x / 32)), 0 - (mainView.getSize().y / 32) * i)); }
 
 
 					en->addComponent<PowerupComponent>(_powerupTextureHelper, _powerupSettings);
@@ -115,15 +116,17 @@ void Powerups::deployPowerups() {
 					shared_ptr<Entity> en = PowerupPool::pwp_pool[PowerupPool::pwp_poolPointer++];
 					en->setView(mainView);
 					en->setVisible(false);
-					if (j == 0) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 4) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 1) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 7) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 2) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 9) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 3) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 12) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 4) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 14) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 5) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 17) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 6) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 19) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 7) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 22) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 8) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 27) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
+					en->setVisible(false);
+
+					if (j == 0) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 4) + ((mainView.getSize().x / 32)), 0 - (mainView.getSize().y / 32) * i)); }
+					if (j == 1) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 7) + ((mainView.getSize().x / 32)), 0 - (mainView.getSize().y / 32) * i)); }
+					if (j == 2) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 9) + ((mainView.getSize().x / 32)), 0 - (mainView.getSize().y / 32) * i)); }
+					if (j == 3) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 12) + ((mainView.getSize().x / 32)), 0 - (mainView.getSize().y / 32) * i)); }
+					if (j == 4) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 14) + ((mainView.getSize().x / 32)), 0 - (mainView.getSize().y / 32) * i)); }
+					if (j == 5) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 17) + ((mainView.getSize().x / 32)), 0 - (mainView.getSize().y / 32) * i)); }
+					if (j == 6) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 19) + ((mainView.getSize().x / 32)), 0 - (mainView.getSize().y / 32) * i)); }
+					if (j == 7) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 22) + ((mainView.getSize().x / 32)), 0 - (mainView.getSize().y / 32) * i)); }
+					if (j == 8) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 27) + ((mainView.getSize().x / 32)), 0 - (mainView.getSize().y / 32) * i)); }
 
 					en->addComponent<PowerupComponent>(_powerupTextureHelper, _powerupSettings);
 					en->addTag(type);
@@ -137,18 +140,19 @@ void Powerups::deployPowerups() {
 					shared_ptr<Entity> en = PowerupPool::pwp_pool[PowerupPool::pwp_poolPointer++];
 					en->setView(mainView);
 					en->setVisible(false);
-					if (j == 0) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 4) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 1) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 5) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 2) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 6) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 3) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 9) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 4) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 12) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 5) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 14) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 6) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 16) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 7) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 17) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 8) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 19) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 9) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 22) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 10) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 25) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 11) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 26) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
+
+					if (j == 0) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 4) + ((mainView.getSize().x / 32)), 0 - (mainView.getSize().y / 32) * i)); }
+					if (j == 1) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 5) + ((mainView.getSize().x / 32)), 0 - (mainView.getSize().y / 32) * i)); }
+					if (j == 2) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 6) + ((mainView.getSize().x / 32)), 0 - (mainView.getSize().y / 32) * i)); }
+					if (j == 3) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 9) + ((mainView.getSize().x / 32)), 0 - (mainView.getSize().y / 32) * i)); }
+					if (j == 4) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 12) + ((mainView.getSize().x / 32)), 0 - (mainView.getSize().y / 32) * i)); }
+					if (j == 5) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 14) + ((mainView.getSize().x / 32)), 0 - (mainView.getSize().y / 32) * i)); }
+					if (j == 6) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 16) + ((mainView.getSize().x / 32)), 0 - (mainView.getSize().y / 32) * i)); }
+					if (j == 7) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 17) + ((mainView.getSize().x / 32)), 0 - (mainView.getSize().y / 32) * i)); }
+					if (j == 8) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 19) + ((mainView.getSize().x / 32)), 0 - (mainView.getSize().y / 32) * i)); }
+					if (j == 9) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 22) + ((mainView.getSize().x / 32)), 0 - (mainView.getSize().y / 32) * i)); }
+					if (j == 10) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 25) + ((mainView.getSize().x / 32)), 0 - (mainView.getSize().y / 32) * i)); }
+					if (j == 11) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 26) + ((mainView.getSize().x / 32)), 0 - (mainView.getSize().y / 32) * i)); }
 
 					en->addComponent<PowerupComponent>(_powerupTextureHelper, _powerupSettings);
 					en->addTag(type);
@@ -161,16 +165,17 @@ void Powerups::deployPowerups() {
 					shared_ptr<Entity> en = PowerupPool::pwp_pool[PowerupPool::pwp_poolPointer++];
 					en->setView(mainView);
 					en->setVisible(false);
-					if (j == 0) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 4) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 1) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 7) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 2) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 9) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 3) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 12) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 4) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 14) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 5) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 15) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 6) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 17) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 7) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 19) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 8) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 22) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 9) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 24) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
+
+					if (j == 0) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 4) + ((mainView.getSize().x / 32)), 0 - (mainView.getSize().y / 32) * i)); }
+					if (j == 1) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 7) + ((mainView.getSize().x / 32)), 0 - (mainView.getSize().y / 32) * i)); }
+					if (j == 2) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 9) + ((mainView.getSize().x / 32)), 0 - (mainView.getSize().y / 32) * i)); }
+					if (j == 3) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 12) + ((mainView.getSize().x / 32)), 0 - (mainView.getSize().y / 32) * i)); }
+					if (j == 4) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 14) + ((mainView.getSize().x / 32)), 0 - (mainView.getSize().y / 32) * i)); }
+					if (j == 5) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 15) + ((mainView.getSize().x / 32)), 0 - (mainView.getSize().y / 32) * i)); }
+					if (j == 6) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 17) + ((mainView.getSize().x / 32)), 0 - (mainView.getSize().y / 32) * i)); }
+					if (j == 7) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 19) + ((mainView.getSize().x / 32)), 0 - (mainView.getSize().y / 32) * i)); }
+					if (j == 8) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 22) + ((mainView.getSize().x / 32)), 0 - (mainView.getSize().y / 32) * i)); }
+					if (j == 9) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 24) + ((mainView.getSize().x / 32)), 0 - (mainView.getSize().y / 32) * i)); }
 
 					en->addComponent<PowerupComponent>(_powerupTextureHelper, _powerupSettings);
 					en->addTag(type);
@@ -184,18 +189,19 @@ void Powerups::deployPowerups() {
 					shared_ptr<Entity> en = PowerupPool::pwp_pool[PowerupPool::pwp_poolPointer++];
 					en->setView(mainView);
 					en->setVisible(false);
-					if (j == 0) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 4) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 1) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 5) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 2) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 6) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 3) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 10) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 4) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 11) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 5) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 14) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 6) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 17) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 7) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 19) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 8) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 22) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 9) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 25) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 10) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 26) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
-					if (j == 11) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 27) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
+
+					if (j == 0) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 4) + ((mainView.getSize().x / 32)), 0 - (mainView.getSize().y / 32) * i)); }
+					if (j == 1) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 5) + ((mainView.getSize().x / 32)), 0 - (mainView.getSize().y / 32) * i)); }
+					if (j == 2) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 6) + ((mainView.getSize().x / 32)), 0 - (mainView.getSize().y / 32) * i)); }
+					if (j == 3) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 10) + ((mainView.getSize().x / 32)), 0 - (mainView.getSize().y / 32) * i)); }
+					if (j == 4) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 11) + ((mainView.getSize().x / 32)), 0 - (mainView.getSize().y / 32) * i)); }
+					if (j == 5) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 14) + ((mainView.getSize().x / 32)), 0 - (mainView.getSize().y / 32) * i)); }
+					if (j == 6) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 17) + ((mainView.getSize().x / 32)), 0 - (mainView.getSize().y / 32) * i)); }
+					if (j == 7) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 19) + ((mainView.getSize().x / 32)), 0 - (mainView.getSize().y / 32) * i)); }
+					if (j == 8) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 22) + ((mainView.getSize().x / 32)), 0 - (mainView.getSize().y / 32) * i)); }
+					if (j == 9) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 25) + ((mainView.getSize().x / 32)), 0 - (mainView.getSize().y / 32) * i)); }
+					if (j == 10) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 26) + ((mainView.getSize().x / 32)), 0 - (mainView.getSize().y / 32) * i)); }
+					if (j == 11) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 27) + ((mainView.getSize().x / 32)), 0 - (mainView.getSize().y / 32) * i)); }
 
 					en->addComponent<PowerupComponent>(_powerupTextureHelper, _powerupSettings);
 					en->addTag(type);

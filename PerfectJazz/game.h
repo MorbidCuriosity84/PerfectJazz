@@ -227,6 +227,15 @@ enum _powerUpsType {
     COIN_PWU,
     ALL_POWERUPS,
 };
+enum _keyType {
+    DOWN_KEY,
+    UP_KEY,
+    ESC_KEY,
+    LEFT_KEY,
+    RIGHT_KEY,
+    SPACE_KEY,
+    ENTER_KEY,
+};
 /*
 Enums are boring so if you looked all the way 
 down here you deserve a bonus so here's a llama
