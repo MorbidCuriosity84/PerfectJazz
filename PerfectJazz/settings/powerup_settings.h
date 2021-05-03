@@ -28,4 +28,5 @@ class PowerupSettings {
 public:
 	//Creates an instance of the struct powerupSettings depending of the type of powerup
 	static powerupSettings LoadSettings(_powerUpsType type, Scene* scene);
+	static void scale(int factor, powerupSettings& settings);
 };

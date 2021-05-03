@@ -11,10 +11,10 @@ protected:
 	float trigger = 0.f;
 	bool inv1;
 	bool inv2;
-	bool inv3;
+	bool inv3;	
 public:
 	std::shared_ptr<MovementComponent> moveCMP;
-
+	static bool isBossDead;
 	void update(double dt) override;
 	void render() {};
 	void spawnKamikazes(int i);

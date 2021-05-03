@@ -11,7 +11,7 @@ Beserker::Beserker(Entity* p, textureSettings enemyTextureHelper, textureSetting
 void Beserker::update(double dt)
 {	
 	//Triggers the goBeserk function when the counter is over 5
-	if (Scene::deadEnemies > 5) {
+	if (Scene::deadEnemies > 5 && !goneBeserk) {
 		goBeserk();
 		//Scene::deadEnemies = 0;
 	}

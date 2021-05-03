@@ -15,6 +15,7 @@ public:
 	static int enemyCount;									//count of current enemies in play. needs to be decremented when enemy dies or offscreen
 	static bool isBoss;
 	static bool splashMusic;
+	static int waveCount;
 	static int airCount;									//count of current airman in play. needs to be decremented when enemy dies or offscreen
 	static float kamikazeTimer;								//kamikaze timer
 	static float countTimer;								//total count timer

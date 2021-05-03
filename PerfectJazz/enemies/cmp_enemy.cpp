@@ -67,7 +67,7 @@ void EnemyComponent::update(double dt) {
 	//Sets the new texture according to the new rectangle position and updates the position and rotation
 	spriteCMP->getSprite().setTextureRect(*_enemyTextureHelper.spriteRectangle.get());
 	spriteCMP->getSprite().setPosition(_parent->getPosition());
-	spriteCMP->getSprite().setRotation(_parent->getRotation() + _enemySettings.angle);
+	//spriteCMP->getSprite().setRotation(_parent->getRotation() + _enemySettings.angle);
 
 	//If enemy off screen on the y axis bottom, set the entity to not alive and innactive, and clear the components.
 	//Sends the entity off screen so it's ready to be use again by the enemy pool

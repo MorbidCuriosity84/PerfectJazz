@@ -9,12 +9,13 @@ textureSettings boss_bTexHelper;
 enemySettings boss_eSettings;
 weaponSettings boss_wSettings;
 bulletSettings boss_bSettings;
+bool Boss::isBossDead;
 
 //Updates the behaviour of the boss enemy
 void Boss::update(double dt) {
 	spriteCMP->getSprite().setRotation(boss_eSettings.angle);
 	trigger += dt;
-	//At 0.75, 0.5 and 0.25 of the max hp, the boss enemy gets invisible
+	//At 0.75, 0.5 and 0.25 of the max hp, the boss enemy gets invincible
 	if (hpCMP->getHP() < 0.75 * hpCMP->getMaxHP() && inv1) {
 		invincible = true;
 		inv1 = false;
@@ -29,8 +30,8 @@ void Boss::update(double dt) {
 		inv3 = false;
 	}	
 
-	//If invicible is up, set the body of the boss to not collide
-	//and sets the player visible/invisible to perform a flickering animation
+	//If invincible is up, set the body of the boss to not collide
+	//and sets the parent visible/invisible to perform a flickering animation
 	if (invincible) {
 		invTimer -= dt;
 		physicsCMP->setCategory(NO_COLLIDE);	
@@ -42,7 +43,11 @@ void Boss::update(double dt) {
 		}
 		if (trigger >= 0.4) {
 			trigger = 0;
+			_parent->setVisible(true);
 		}
+	}
+	if (!invincible) {
+		_parent->setVisible(true);
 	}
 	//IF timer is below 0, spawn kamikazes
 	if (invTimer < 0) {
@@ -67,6 +72,7 @@ void Boss::update(double dt) {
 		sounds[_enemySettings.sound].play();
 		_parent->clearComponents();
 		LevelManager::enemyCount--;
+		Boss::isBossDead = true;
 	}
 }
 //Spawns a kamikaze enemy. 
@@ -79,6 +85,8 @@ void Boss::spawnKamikazes(int i) {
 	boss_bSettings = BulletSettings::LoadSettings(TYPE3, _parent->scene);
 	boss_bTexHelper = TextureHelpingSettings::LoadSettings(TYPE3, _parent->scene);
 	auto kam = en->addComponent<Kamikaze>(boss_eTexHelper, boss_bTexHelper, boss_eSettings, boss_wSettings, boss_bSettings, 0);
+	auto r = en->addComponent<RadarComponent>(8.f, _bulletSettings.category);
+	r->setRadarFixture();
 	en->setPosition(_parent->getPosition());
 	en->setAlive(true);
 	//Sets the angle and direction of the kamikaze
@@ -86,26 +94,17 @@ void Boss::spawnKamikazes(int i) {
 	float deg = 60.f / (float)(60.f / numKamikazes);
 	Vector2f direction = Vector2f(len * cos(deg * i), kam->physicsCMP->getVelocity().y);
 	kam->physicsCMP->setVelocity(direction);
-	LevelManager::enemyCount++;
+	LevelManager::enemyCount++;	
 }
 
-void Boss::switchSprite(double trigger)
-{
-	if (trigger < 0.2) {
-		_parent->setVisible(false);
-	}
-	if (trigger >= 0.2 && trigger < 0.4) {
-		_parent->setVisible(true);
-	}
-	if (trigger >= 0.4) {
-		trigger = 0;
-	}
-}
 
 //Constructor for boss component.
 //Sets two weapons, a machine gun and a missile launcher with its own settings each of them
 Boss::Boss(Entity* p, textureSettings enemyTextureHelper, textureSettings bulletTextureHelper, enemySettings enemySettings, weaponSettings weaponSettings, bulletSettings bulletSettings, int index)
-	: EnemyComponent(p, enemyTextureHelper, bulletTextureHelper, enemySettings, weaponSettings, bulletSettings, index), invTimer(5.f), invincible(false), numKamikazes(4) {
+	: EnemyComponent(p, enemyTextureHelper, bulletTextureHelper, enemySettings, weaponSettings, bulletSettings, index), invTimer(5.f), invincible(false), numKamikazes(4) {		
+	
+	Boss::isBossDead = false;
+	cout << "Is boss dead = " << isBossDead << endl;
 	//add machine gun
 	_weaponSettings = WeaponSettings::LoadSettings(MACHINE_GUN, _parent->scene);
 	_weaponSettings.numBulletsUpgradeCount = 2;

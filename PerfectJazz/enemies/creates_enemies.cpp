@@ -50,7 +50,7 @@ void Enemies::createEnemies(std::string _waveFile, Scene* _scene) {
 		//If enemy of type kamikaze, add component kamikaze and movement component
 		else if (t == ls::KAMIKAZE) {
 			en->addComponent<Kamikaze>(_enemyTextureHelper, _bulletTextureHelper, _enemySettings, _weaponSettings, _bulletSettings, index);
-			en->addComponent<MovementComponent>(_enemySettings.velocity, ls::getTilePosition(ls::findTiles(_enemySettings.tile)[index]), true);
+			en->addComponent<MovementComponent>(_enemySettings.velocity, ls::getTilePosition(ls::findTiles(_enemySettings.tile)[index]), true);			
 		}
 		//If enemy of type boss, add component boss and movement component. Sets linger to true
 		else if (t == ls::BOSS) {
