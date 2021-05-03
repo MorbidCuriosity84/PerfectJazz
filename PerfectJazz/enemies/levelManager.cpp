@@ -93,11 +93,10 @@ void LevelManager::playLevel(Scene* s) {
 	//}
 
 	//If no more enemies in the current wave, level is over
-	if (waves.empty() && Boss::isBossDead) {
-		if (enemyCount == 0) {
-			s->levelOver();
-		}	
-	}	
+	if (Engine::currentPlayerLevel == 4) {
+		if (waves.empty() && Boss::isBossDead) { s->gameComplete(); return; }
+	}
+	if (waves.empty() && Boss::isBossDead) { s->levelOver(); }
 }
 
 //updates the level 
@@ -118,6 +117,7 @@ void LevelManager::update(Scene* s, bool infinite, int numWaveFiles, double dt)
 	}	
 	countTimer -= dt;
 	if (countTimer < 0) {
+		cout << "Enemies = " << enemyCount << endl;
 		countTimer = 1.f;
 	}
 	kamikazeTimer -= dt;
@@ -127,10 +127,19 @@ void LevelManager::update(Scene* s, bool infinite, int numWaveFiles, double dt)
 		return;
 	}
 	playLevel(s);
-	//When the level is complete, change scene to the upgrade menu
-	if (Engine::isLevelComplete) {
+	//When game is complete, load credits
+	if (Engine::isGameComplete) {
 		levelOverTimer -= dt;
 		if (levelOverTimer <= 0.0) {
+			Engine::isGameComplete = false;
+			Engine::ChangeScene(&creditScene);
+		}
+		return;
+	}
+	//When the level is complete, change scene to the upgrade menu
+	if (Engine::isLevelComplete) {
+		levelOverTimer -= dt;		
+		if (levelOverTimer <= 0.0) {			
 			Engine::currentPlayerLevel++;
 			Engine::ChangeScene(&upgradeMenu);
 		}
@@ -153,7 +162,7 @@ void LevelManager::infiniteLevel(Scene* s, int numWaveFiles) {
 	}	
 
 	//increment count every 10 waves to scale enemy difficulty
-	if (waveCount > 0 && waveCount % 10 == 0) {
+	if (waveCount > 0 && waveCount % 5 == 0) {
 		Engine::currentPlayerLevel++;
 	}
 }

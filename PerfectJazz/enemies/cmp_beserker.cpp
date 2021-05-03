@@ -24,7 +24,7 @@ void Beserker::update(double dt)
 		_parent->setVisible(false);
 		physicsCMP->getBody()->SetActive(false);
 		physicsCMP->getBody()->SetUserData(nullptr);
-		_parent->setPosition(Vector2f(-100.f, -100.f));
+		physicsCMP->teleport(Vector2f(-500.f, -500.f));
 		_parent->clearComponents();		
 		LevelManager::enemyCount--;				
 		return;

@@ -343,7 +343,7 @@ void MainMenu::loadGame() {
 	//In order to load a game, background and player has to be created before
 	Background::createBackground(dynamic_cast<Scene*>(&levelScene));
 	Player::createPlayerFromSettings(dynamic_cast<Scene*>(&levelScene));
-	Engine::ChangeScene(&levelScene);
+	Engine::ChangeScene(&levelScene);	
 }
 void MainMenu::Update(const double& dt) {
 	//Checks if the game is not loading, and detects the different key strokes

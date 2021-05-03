@@ -6,6 +6,7 @@
 #include "scenes/scene_main_menu.h"
 #include "scenes/scene_pause_menu.h"
 #include "scenes/scene_upgrade_menu.h"
+#include "scenes/scene_credits.h"
 #include "SFML/Audio.hpp"
 #include "services/detecting_keys.h"
 
@@ -17,6 +18,7 @@ extern PauseMenu pauseMenu;
 extern TitleScene title;
 extern LevelScene levelScene;
 extern UpgradeMenu upgradeMenu;
+extern CreditScene creditScene;
 extern shared_ptr<Entity> player;
 extern sf::SoundBuffer sBuffs[128];
 extern sf::Sound sounds[128];
