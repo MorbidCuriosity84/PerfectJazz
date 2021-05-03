@@ -85,6 +85,7 @@ void Entity::clearComponents()
         throw std::runtime_error(
             "Can't delete entity, someone is grabbing a component!");
     }
+    _tags.erase(_tags.begin(), _tags.end());
     _components.clear();
 }
 
