@@ -1,6 +1,7 @@
 #pragma once
 #include "cmp_physics.h"
 
+// Powerup physics component gives the entity a body, and updates the powerup position
 class PowerupPhysicsComponent : public PhysicsComponent {
 protected:
 	b2Vec2 _size;

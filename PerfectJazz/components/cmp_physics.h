@@ -5,6 +5,8 @@
 #include "../game.h"
 #include <Box2D/Dynamics/b2Body.h>
 
+// Physics component that will add the necessary settings and behaviours
+// to recreate the body entity physics
 class PhysicsComponent : public Component {
 protected:
 	b2Body* _body;
@@ -18,8 +20,6 @@ public:
 	b2Fixture* const getFixture() const;
 	b2Body* getBody();
 	const sf::Vector2f getVelocity() const;
-	void setFriction(float r);
-	void setMass(float m);
 	void update(double dt) override;
 	void render() override;
 	void impulse(const sf::Vector2f& i);

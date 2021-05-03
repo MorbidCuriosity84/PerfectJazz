@@ -5,8 +5,10 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
 
+// Sprite component that allows us to load a texture, set the texture,
+// update the positon, and render the sprite
 class SpriteComponent : public Component {
-protected:
+private:
   std::shared_ptr<sf::Sprite> _sprite;
   std::shared_ptr<sf::Texture> _texture;
 public:
@@ -22,6 +24,8 @@ public:
   void setTexure(std::shared_ptr<sf::Texture> tex);
 };
 
+// Shape component that allows us to create a shape,
+// update the positon, and render the sprite
 class ShapeComponent : public Component {
 protected:
   std::shared_ptr<sf::Shape> _shape;

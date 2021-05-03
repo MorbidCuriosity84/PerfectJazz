@@ -113,7 +113,8 @@ void LevelScene::UnLoad() {
 
 //Updates the scene
 void LevelScene::Update(const double& dt) {
-	LevelManager::update(&levelScene, false, 4, dt);
+	if (Engine::currentPlayerLevel != -1) {	LevelManager::update(&levelScene, false, 4, dt);}
+	if (Engine::currentPlayerLevel == -1) {	LevelManager::update(&levelScene, true, 4, dt);}
 	Scene::Update(dt);
 }
 

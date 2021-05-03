@@ -16,7 +16,6 @@ using namespace sf;
 //Loads the enemies, adding the necessary components to it and assigning initial values 
 // for the position, hp, and damage
 void EnemyComponent::Load(int index) {
-
 	//If the enemy category is enemy body, it gets set its position according to the wave file
 	if (_enemySettings.category == ENEMY_BODY) {
 		vector<Vector2ul> tile = ls::findTiles(_enemySettings.tile);
@@ -70,7 +69,7 @@ void EnemyComponent::update(double dt) {
 	spriteCMP->getSprite().setPosition(_parent->getPosition());
 	spriteCMP->getSprite().setRotation(_parent->getRotation() + _enemySettings.angle);
 
-	//If enemy off screen on the y axis down, set the entity to not alive and innactive, and clear the components.
+	//If enemy off screen on the y axis bottom, set the entity to not alive and innactive, and clear the components.
 	//Sends the entity off screen so it's ready to be use again by the enemy pool
 	if (_parent->getPosition().y > _parent->getView().getSize().y) {
 		_parent->setAlive(false);

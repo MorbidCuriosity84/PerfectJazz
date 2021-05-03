@@ -6,30 +6,24 @@
 using namespace sf;
 using namespace std;
 
-class SoundComponent : public Component
-{
+// Sound component that loads and plays the sounds
+class SoundComponent : public Component {
 protected:
-	SOUNDS soundIndexEnum;	
+	SOUNDS soundIndexEnum;
 	float pitch;
-	float volume;	
-public: 
+	float volume;
+public:
 	SoundComponent() = delete;
 	explicit SoundComponent(Entity* p);
-	
 	void update(double dt) override {}
-	void render() override {} 
-
+	void render() override {}
 	void playSound();
-	void stopSound();	
-
-	void setPitch(float pitch);
-	void setVolume(float vol);
 };
 
-class MusicComponent : public Component
-{
+// Music component that loads and plays the music, allow to stop and pause it
+class MusicComponent : public Component {
 protected:
-	std::shared_ptr<sf::Music> music;	
+	std::shared_ptr<sf::Music> music;
 public:
 	MusicComponent() = delete;
 	explicit MusicComponent(Entity* p);
@@ -40,5 +34,5 @@ public:
 	void playMusic() const;
 	void stopMusic() const;
 	void loadMusic(std::string filename);
-	std::shared_ptr<sf::Music> getSound() const;	
+	std::shared_ptr<sf::Music> getSound() const;
 };

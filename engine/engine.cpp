@@ -28,6 +28,7 @@ bool Engine::isMenu;
 bool Engine::isLevelComplete;
 bool Engine::isLoading;
 bool Engine::isLevelFinished;
+bool Engine::isInfiniteLevel;
 double Engine::FPS;
 int Engine::currentPlayerLevel;
 int Scene::deadEnemies;
@@ -40,7 +41,6 @@ static RenderWindow* _window;
 static Panels panels;
 
 void Loading_update(float dt, const Scene* const scn) {
-	//  cout << "Eng: Loading Screen\n";
 	if (scn->isLoaded()) {
 		cout << "Eng: Exiting Loading Screen\n";
 		loading = false;
@@ -51,7 +51,6 @@ void Loading_update(float dt, const Scene* const scn) {
 	}
 }
 void Loading_render() {
-	// cout << "Eng: Loading Screen Render\n";
 	static CircleShape octagon(80, 8);
 	octagon.setOrigin(80, 80);
 	octagon.setRotation(loadingspinner);
@@ -89,10 +88,12 @@ void Engine::Update() {
 	}
 	else if (_activeScene != nullptr) {
 		_activeScene->Update(dt);
+		// Checks if the game is paused before performing a physics update
 		if (!isGamePaused) { Physics::update(dt); }
 	}
 }
 
+// Renders the active scene
 void Engine::Render(RenderWindow& window) {
 	if (loading) {
 		Loading_render();
@@ -104,20 +105,21 @@ void Engine::Render(RenderWindow& window) {
 	Renderer::render();
 }
 
+// Updates the size of the views
 void Engine::updateViewsSize() {
-	//Create left view
+	//Updates the size of the left view
 	sf::View tempLeft(sf::FloatRect(0, 0, Engine::getWindowSize().x / 5, Engine::getWindowSize().y));
 	leftView = tempLeft;
 	leftView.setViewport(sf::FloatRect(0, 0, 0.2f, 1.f));
-	//Create right view
+	//Updates the size of the right view
 	sf::View tempRight(sf::FloatRect(0, 0, Engine::getWindowSize().x / 5, Engine::getWindowSize().y));
 	rightView = tempRight;
 	rightView.setViewport(sf::FloatRect(0.8f, 0, 0.2f, 1.f));
-	//Create main view
+	//Updates the size of the main view
 	sf::View tempMain(sf::FloatRect(0, 0, (round)(Engine::getWindowSize().x / 1.66666), Engine::getWindowSize().y));
 	mainView = tempMain;
 	mainView.setViewport(sf::FloatRect(0.2f, 0, 0.6f, 1.f));
-	//Create menuView
+	//Updates the size of the  menuView
 	sf::View tempMenu(sf::FloatRect(0, 0, Engine::getWindowSize().x, Engine::getWindowSize().y));
 	menuView = tempMenu;
 	menuView.setViewport(sf::FloatRect(0, 0, 1.f, 1.f));
@@ -128,17 +130,19 @@ void Engine::Start(unsigned int width, unsigned int height,
 	RenderWindow window(VideoMode(width, height), gameName, sf::Style::None);
 	auto desktop = sf::VideoMode::getDesktopMode();
 	window.setPosition(Vector2i(desktop.width / 2 - window.getSize().x / 2, desktop.height / 2 - window.getSize().y / 2));
-	//Limits the framerate
+	//Limits the framerate to 60
 	window.setFramerateLimit(60);
 	_gameName = gameName;
 	_window = &window;
-
+	// Sets the initial values for the booleans
 	isLoading = false;
 	isGamePaused = true;
 	isMenu = true;
 	isPausedMenu = true;
 	isLevelFinished = false;
+	isInfiniteLevel = false;
 	currentPlayerLevel = 0;
+
 	Renderer::initialise(window);
 	Physics::initialise();
 	ChangeScene(scn);
@@ -152,7 +156,6 @@ void Engine::Start(unsigned int width, unsigned int height,
 			if (event.type == Event::Closed) {
 				window.close();
 			}
-
 			//If the window is resized, the views will be set accordinly, avoiding components to be auto-resized
 			if (event.type == sf::Event::Resized) {
 				updateViewsSize();
@@ -191,6 +194,7 @@ void Engine::ChangeScene(Scene* s) {
 	_lastScene = _activeScene;
 	auto old = _activeScene;
 
+	// Before unloading, checks if the game is paused or the menu is the paused menu
 	if (isGamePaused && !isPausedMenu && _lastScene != nullptr) {
 		_lastScene->UnLoad();
 		old = nullptr;
@@ -198,6 +202,7 @@ void Engine::ChangeScene(Scene* s) {
 
 	_activeScene = s;
 
+	// Before unloading, checks if the game is paused or the menu is the paused menu
 	if (old != nullptr && !isGamePaused && !isPausedMenu) {
 		old->UnLoad();
 	}
@@ -215,16 +220,21 @@ void Engine::ChangeScene(Scene* s) {
 void Scene::Update(const double& dt) {
 
 	if (!Engine::isGamePaused) {
+
+		// This are cheeky cheats for the demo
 		if (sf::Keyboard::isKeyPressed(Keyboard::Num1)) {
 			player->GetCompatibleComponent<PlayerComponent>()[0]->_playerSettings.shopPoints += 10000;
 		}
+		// This are cheeky cheats for the demo
 		if (sf::Keyboard::isKeyPressed(Keyboard::Num3)) {
 			Engine::isMenu = true;
+			Engine::isGamePaused = true;
 			Engine::isPausedMenu = true;
 			musicArray[currentLvlMusicIndex].pause();
-			musicArray[MUSIC_UPGRADE_MENU].play ();
+			musicArray[MUSIC_UPGRADE_MENU].play();
 			Engine::ChangeScene(&upgradeMenu);
 		}
+		// Opens the pause menu
 		if (sf::Keyboard::isKeyPressed(Keyboard::Escape)) {
 			Engine::isGamePaused = true;
 			Engine::isMenu = true;
@@ -233,7 +243,8 @@ void Scene::Update(const double& dt) {
 			Engine::ChangeScene(&pauseMenu);
 		}
 		auto playerCMP = player->GetCompatibleComponent<PlayerComponent>()[0];
-
+		// Checks if the player is alive. If not, and the lifes more than 0,
+		// sets the death timer and revives the player
 		if (!player->isAlive() && playerCMP->_playerSettings.lifes > 0) {
 			deathTimer += dt;
 			if (deathTimer > 2) {
@@ -241,7 +252,7 @@ void Scene::Update(const double& dt) {
 				deathTimer = 0;
 			}
 		}
-		//Here only load GameOver once, then keep updating the scene as normal
+		//Only load GameOver once, then keep updating the scene as normal
 		if (!isDead && playerCMP->_playerSettings.lifes <= 0) {
 			GameOver();
 			isDead = true;
@@ -251,9 +262,8 @@ void Scene::Update(const double& dt) {
 		Powerups::update(dt);
 	}
 }
-
+// Displayes a "GAME OVER" text when the player is dead
 void Scene::GameOver() {
-	//CARLOS - Text will draw over the sprites, then, because it wont be updated again, it will be drawn under the sprites
 	if (!isDead) {
 		auto ent = player->scene->makeEntity();
 		ent->setView(mainView);
@@ -286,8 +296,10 @@ bool Scene::isLoaded() const {
 	}
 }
 
+// When the level is over, ccreates a text component that says "LEVEL COMPLETE"
 void Scene::levelOver() {
 	Engine::isLevelComplete = true;
+	// If the player is not dead, sets the text setttigns and displays the text 
 	if (!isDead) {
 		auto ent = player->scene->makeEntity();
 		ent->setView(mainView);
@@ -309,6 +321,7 @@ void Scene::setLoaded(bool b) {
 	}
 }
 
+// Unloads the scene
 void Scene::UnLoad() {
 	panels.~Panels();
 	Physics::GetWorld().reset();

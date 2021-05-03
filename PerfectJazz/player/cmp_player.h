@@ -12,8 +12,8 @@
 using namespace sf;
 using namespace std;
 
-//Player component that will add the necessary components to the player entity
-//and store the settings for the player
+// Player component that will add the necessary components to the player entity
+// and store the settings for the player
 class PlayerComponent : public Component {
 protected:
 	bool _gracePeriod;

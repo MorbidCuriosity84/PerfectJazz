@@ -5,6 +5,8 @@
 
 using namespace std;
 
+//Damage component that is used by the collision helper to set the damage
+//each of the entities do to each other
 class DamageComponent : public Component
 {
 protected:

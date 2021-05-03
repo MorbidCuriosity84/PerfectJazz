@@ -167,7 +167,7 @@ int PlayerComponent::getScorePoints() {
 	return _playerSettings.score;
 }
 
-//Constructor for PlayerComponent.
+//Constructor for PlayerComponent
 //Sets initial values for the collision helper and assigns a body to the player component
 PlayerComponent::PlayerComponent(Entity* p, textureSettings playerTextureHelper, textureSettings bulletTextureHelper, playerSettings playerSettings, weaponSettings weaponSettings, bulletSettings bulletSettings)
 	: Component(p), _playerTextureHelper(playerTextureHelper), _bulletTextureHelper(bulletTextureHelper), _playerSettings(playerSettings), _weaponSettings(weaponSettings), _bulletSettings(bulletSettings), _gracePeriod(false), _gracePeriodTimer(0), _visibilityTimer(0), _maxUpdate(5) {

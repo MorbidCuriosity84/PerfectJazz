@@ -6,7 +6,8 @@
 textureSettings _backgroundTextureHelper;
 backgroundSettings _backgroundSettings;
 
-//Creates the background for de scene
+//Creates the background entity for de scene, adding a background component and
+//the settings for the type of background
 void Background::createBackground(Scene* _scene) {
 
 	//Load infinite background by adding two of the same sprites, one after the other

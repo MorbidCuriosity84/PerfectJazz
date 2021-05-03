@@ -138,7 +138,7 @@ void Panels::createPanels(Scene* _scene) {
 		hpCMP->underHPBar->getSprite().setPosition(Vector2f((round)(leftView.getSize().x/2), row * 4));
 		hpCMP->overHPBar->getSprite().setPosition(Vector2f((round)(leftView.getSize().x / 2), row * 4));
 		hpCMP->textCMP->setText(to_string(playerCMP->_playerSettings.hp) + "/" + to_string(playerCMP->_playerSettings.maxHP));
-		hpCMP->textCMP->setFontSize(34u);
+		hpCMP->textCMP->setFontSize(38u);
 		hpCMP->setScale(Vector2f(4.f, 3.f));
 		hpCMP->textCMP->setOrigin(Vector2f((round)(hpCMP->textCMP->getGlobalBounds().width / 2), (round)(hpCMP->textCMP->getGlobalBounds().height / 2)));
 		hpCMP->textCMP->setPosition(Vector2f((round)(leftView.getSize().x/2), (round)(hpCMP->overHPBar->getSprite().getPosition().y - hpCMP->textCMP->getGlobalBounds().height/2 - hpCMP->textCMP->getGlobalBounds().top)));

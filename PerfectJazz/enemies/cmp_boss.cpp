@@ -30,7 +30,7 @@ void Boss::update(double dt) {
 	}
 
 	//If invicible is up, set the body of the boss to not collide
-	//and calls the swithSprites function that performns an animation
+	//and sets the player visible/invisible to perform a flickering animation
 	if (invincible) {
 		invTimer -= dt;
 		physicsCMP->setCategory(NO_COLLIDE);	
@@ -44,7 +44,7 @@ void Boss::update(double dt) {
 			trigger = 0;
 		}
 	}
-
+	//IF timer is below 0, spawn kamikazes
 	if (invTimer < 0) {
 		invTimer = 5.f;
 		for (int i = 0; i < numKamikazes; i++) {
@@ -53,7 +53,8 @@ void Boss::update(double dt) {
 		invincible = false;
 		physicsCMP->setCategory(ENEMY_BODY);
 	}
-
+	//If the boss hp is equal or below 0, sets the enemy to not alive and innactive, and clear the components.
+	//Sends the entity off screen so it's ready to be use again by the enemy pool.
 	if (hpCMP->getHP() <= 0) {
 		_parent->setAlive(false);
 		_parent->setVisible(false);
@@ -68,7 +69,7 @@ void Boss::update(double dt) {
 		LevelManager::enemyCount--;
 	}
 }
-
+//Spawns a kamikaze enemy. 
 void Boss::spawnKamikazes(int i) {
 	auto en = EnemyPool::en_pool[EnemyPool::en_poolPointer++];
 	en->setView(mainView);
@@ -80,13 +81,15 @@ void Boss::spawnKamikazes(int i) {
 	auto kam = en->addComponent<Kamikaze>(boss_eTexHelper, boss_bTexHelper, boss_eSettings, boss_wSettings, boss_bSettings, 0);
 	en->setPosition(_parent->getPosition());
 	en->setAlive(true);
+	//Sets the angle and direction of the kamikaze
 	float len = length(kam->physicsCMP->getVelocity());
 	float deg = 60.f / (float)(60.f / numKamikazes);
 	Vector2f direction = Vector2f(len * cos(deg * i), kam->physicsCMP->getVelocity().y);
 	kam->physicsCMP->setVelocity(direction);
 	LevelManager::enemyCount++;
 }
-
+//Constructor for boss component.
+//Sets two weapons, a machine gun and a missile launcher with its own settings each of them
 Boss::Boss(Entity* p, textureSettings enemyTextureHelper, textureSettings bulletTextureHelper, enemySettings enemySettings, weaponSettings weaponSettings, bulletSettings bulletSettings, int index)
 	: EnemyComponent(p, enemyTextureHelper, bulletTextureHelper, enemySettings, weaponSettings, bulletSettings, index), invTimer(5.f), invincible(false), numKamikazes(4) {
 	//add machine gun

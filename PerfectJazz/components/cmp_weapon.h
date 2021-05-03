@@ -9,7 +9,7 @@
 
 using namespace sf;
 using namespace std;
-
+// Weapon component that sets the fire rate and the number of bullets shoot
 class WeaponComponent : public Component {
 protected:
 	textureSettings _bulletTextureHelper;

@@ -10,6 +10,7 @@
 #include "../settings/background_settings.h"
 using namespace sf;
 
+//Background component that helps to set the sprites and infinite background effect
 class BackgroundComponent : public Component {
 protected:
 	textureSettings _backgroundTextureHelper;
