@@ -26,7 +26,7 @@ void UpgradeMenu::Load() {
 
 	//Loads music
 	for (int i = 0; i < 8; i++) {
-		if (!musicArray[i].openFromFile(musicFiles[i])) {		}
+		if (!musicArray[i].openFromFile(musicFiles[i])) {}
 		else {
 			cout << "Loaded music " << musicFiles[i] << endl;
 		}
@@ -37,7 +37,7 @@ void UpgradeMenu::Load() {
 	musicArray[MUSIC_UPGRADE_MENU].setVolume(25);
 	musicArray[MUSIC_UPGRADE_MENU].setLoop(true);
 	musicArray[MUSIC_UPGRADE_MENU].play();
-		
+
 
 	//Creates an entity and asgins it to the view
 	upgradeView = makeEntity();

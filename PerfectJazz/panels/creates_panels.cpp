@@ -284,7 +284,7 @@ void Panels::update(double dt) {
 		timer = 0;
 		//Updates the FPS text
 		FPStxtCMP->setText("FPS: " + toStrDecPt(2, Engine::FPS));
-	}
+	}	
 }
 
 //Renders all the components

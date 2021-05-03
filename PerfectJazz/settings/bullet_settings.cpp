@@ -33,7 +33,7 @@ bulletSettings BulletSettings::LoadSettings(_bulletType type, Scene* scene) {
 		settings.category = ENEMY_BULLET;
 		settings.direction = -1.f;
 		settings.velocity = Vector2f(0.f, 400.f);
-		settings.spriteScale = Vector2f(1.25f, 1.25f);
+		settings.spriteScale = Vector2f(1.5f, 1.5f);
 		settings.sound = EXPLOSION_2;
 		break;
 	}

@@ -17,6 +17,7 @@ float LevelManager::levelOverTimer;
 float LevelManager::kamikazeTimer;
 float LevelManager::countTimer;
 float LevelManager::singleTimer;
+bool LevelManager::isBoss;
 textureSettings _eTexHelper;
 textureSettings _bTexHelper;
 enemySettings _eSettings;
@@ -28,6 +29,7 @@ void LevelManager::loadLevel(int level) {
 	std::queue<std::string> empty;
 	std::swap(waves, empty);
 
+	isBoss = false;
 	enemyCount = 0;
 	levelOverTimer = 3.f;
 	kamikazeTimer = 5.f;
@@ -58,6 +60,11 @@ void LevelManager::playLevel(Scene* s) {
 		spawnKamikaze(s);
 		kamikazeTimer = (float)RandomNumber::generateUniformRealNumber(5, 15);
 	}
+
+	if (waves.empty() && !isBoss) {
+		waves.push("wave7");
+		isBoss = true;		
+	}
 	//If no more enemies in the current wave, level is over
 	if (waves.empty()) {
 		if (enemyCount == 0) {
@@ -66,18 +73,24 @@ void LevelManager::playLevel(Scene* s) {
 	}
 }
 
-//Ypdates the level 
-void LevelManager::update(Scene* s, bool infinite, int numWaveFiles, double dt) {
-	if (enemyCount == 1 || enemyCount == 2) { singleTimer -= dt; }
-	else { singleTimer = 5.f; }
-
-	//When single timer goes to 0, the enemy count will be zero and the current 
-	//wave will be completed
-	if (singleTimer < 0) { enemyCount = 0; singleTimer = 5.f; }
-
+//updates the level 
+void LevelManager::update(Scene* s, bool infinite, int numWaveFiles, double dt)
+{
+	if (!isBoss) {
+		if (enemyCount == 1 || enemyCount == 2) {
+			singleTimer -= dt;
+		}
+		else {
+			singleTimer = 5.f;
+		}
+		if (singleTimer < 0) {
+			enemyCount = 0;
+			singleTimer = 5.f;
+		}
+	}	
 	countTimer -= dt;
 	if (countTimer < 0) {
-		countTimer = 3.f;
+		countTimer = 1.f;
 	}
 	kamikazeTimer -= dt;
 	//Feeds waves for the infinite mode

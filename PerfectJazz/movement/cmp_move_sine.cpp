@@ -4,8 +4,8 @@
 //and updates the MovementComponent
 void SineMovementComponent::update(double dt) {
 	_accumulation += dt;
-	float rotation = cos(_accumulation * _multiplier) * _maxAngle;
-	float moveRotation = cos(_accumulation);
+	float rotation = cosf(_accumulation * _multiplier) * _maxAngle;
+	float moveRotation = cosf(_accumulation);
 	_velocity = Vector2f(moveRotation, _velocity.y);
 	_parent->setRotation(rotation);
 	MovementComponent::update(dt);

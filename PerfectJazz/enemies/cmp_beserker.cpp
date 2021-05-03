@@ -13,7 +13,7 @@ void Beserker::update(double dt)
 	//Triggers the goBeserk function when the counter is over 5
 	if (Scene::deadEnemies > 5) {
 		goBeserk();
-		Scene::deadEnemies = 0;
+		//Scene::deadEnemies = 0;
 	}
 
 	_parent->setRotation(_parent->getRotation() + 2.f);
