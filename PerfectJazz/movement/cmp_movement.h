@@ -4,7 +4,7 @@
 
 using namespace sf;
 using namespace std;
-
+//Adds movement, allowing the entity to move accross the screen
 class MovementComponent : public Component
 {
 protected:

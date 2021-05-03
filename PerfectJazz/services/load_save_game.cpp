@@ -254,6 +254,8 @@ void LoadSaveGame::loadGame() {
 		SettingsHolder::pTexHelper.spriteRectangle = bSpriteRectangle;
 		SettingsHolder::bTexHelper.spriteTexture = pSpriteTexture;
 		SettingsHolder::bTexHelper.spriteRectangle = pspriteRectangle;
+
+		Engine::currentPlayerLevel = SettingsHolder::pSettings.currentLevel;
 	}
 
 }

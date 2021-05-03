@@ -6,9 +6,10 @@
 textureSettings _backgroundTextureHelper;
 backgroundSettings _backgroundSettings;
 
+//Creates the background for de scene
 void Background::createBackground(Scene* _scene) {
 
-	//Load infinite background
+	//Load infinite background by adding two of the same sprites, one after the other
 	{
 		for (int i = 0; i < 2; i++) {
 			auto background = _scene->makeEntity();
@@ -26,13 +27,15 @@ void Background::createBackground(Scene* _scene) {
 
 			auto loadBackground = background->addComponent<BackgroundComponent>(_backgroundTextureHelper, _backgroundSettings);
 
+			//Sets the flat repeat false for the first sprite, true for the second
+			//so we can differenciate which sprite comes first, and which one comes after
 			bool repeated = false;
 			if (i == 1) { repeated = true; };
 			loadBackground->Load(repeated);
 		}
 	}
 
-	//Load over background sprites
+	//Load the sprites that go over the background
 	{
 		for (int i = 0; i < 2; i++) {
 			auto background = _scene->makeEntity();

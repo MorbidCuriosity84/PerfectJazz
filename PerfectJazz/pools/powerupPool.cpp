@@ -5,8 +5,8 @@ std::shared_ptr<Entity> PowerupPool::pwp_pool[256];
 
 using namespace sf;
 
-void PowerupPool::init(Scene* s)
-{
+//Initialises the pool, setting the entity not alive and outside the boundaries of the view
+void PowerupPool::init(Scene* s){
     for (int i = 0; i < 256; i++) {
         auto bullet = s->makeEntity();
         bullet->setAlive(false);

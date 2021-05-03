@@ -25,7 +25,7 @@ playerSettings PlayerSettings::LoadSettings(_playerType type, Scene* scene) {
 		currentPlayerSettings.angle = 0;			   // Sets the angle
 		currentPlayerSettings.score = 0;			   // Sets the initial players score
 		currentPlayerSettings.shopPoints = 0;		   // Sets the initial players coins
-		currentPlayerSettings.currentLevel = 1;		   // Sets the current level
+		currentPlayerSettings.currentLevel = 0;		   // Sets the current level
 		break;
 	}
 

@@ -2,6 +2,8 @@
 #include "../movement/cmp_radar.h"
 #include "levelManager.h"
 
+//Constructor for kamikaze component.
+//Adds two components, missile movement and radar, to the parent enemy component
 Kamikaze::Kamikaze(Entity* p, textureSettings enemyTextureHelper, textureSettings bulletTextureHelper, enemySettings enemySettings, weaponSettings weaponSettings, bulletSettings bulletSettings, int index)
 	: EnemyComponent(p, enemyTextureHelper, bulletTextureHelper, enemySettings, weaponSettings, bulletSettings, index)
 {
@@ -9,9 +11,12 @@ Kamikaze::Kamikaze(Entity* p, textureSettings enemyTextureHelper, textureSetting
 	radarCMP = p->addComponent<RadarComponent>(4.f, ENEMY_MISSILE_RADAR);
 }
 
+//Updates the kamikaze behaviour
 void Kamikaze::update(double dt)
 {
 	spriteCMP->getSprite().setRotation(_enemySettings.angle);	
+	//If the kamizake enemy is out to the left or to the right, it's parent is cleared of components, and set not alive
+	//the entity is then set off screen, ready to be used again for a new enemy
 	if (_parent->getPosition().x > _parent->getView().getSize().x || _parent->getPosition().x < 0) {
 		_parent->setAlive(false);
 		_parent->setVisible(false);

@@ -46,6 +46,7 @@ double timer;
 int row;
 int col;
 
+//Creates the panels with the components
 void Panels::createPanels(Scene* _scene) {
 
 	//Gets player component from the player

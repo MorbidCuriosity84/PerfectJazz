@@ -7,9 +7,9 @@
 #include "cmp_radar.h"
 
 using namespace Physics;
-
+//Sets the missile movement
 void MissileMovementComponent::update(double dt) {
-	
+
 	if (_seeking) {
 
 		if (player != NULL && player->isAlive()) {
@@ -26,34 +26,35 @@ void MissileMovementComponent::update(double dt) {
 		Vector2f a = parentPhysics->getVelocity();
 		Vector2f b = player->getPosition() - _parent->getPosition();
 
-		if ( (a.x * b.y) - (a.y * b.x) < 0) { //if left
+		if ((a.x * b.y) - (a.y * b.x) < 0) { //if left
 			_parentSprite->getSprite().rotate(2.f);
 		}
-		else if ( (a.x * b.y) - (a.y * b.x) > 0) {
+		else if ((a.x * b.y) - (a.y * b.x) > 0) {
 			_parentSprite->getSprite().rotate(-2.f);
 		}
 		else { //if moving away
-			if ( (a.x * b.x) + (a.y * b.y) < 0) {
+			if ((a.x * b.x) + (a.y * b.y) < 0) {
 				_parentSprite->getSprite().rotate(2.f);
 			}
 			else {
 				_parentSprite->getSprite().rotate(-2.f);
 			}
 		}
-
 		parentPhysics.get()->impulse(_velocity);
-		//parentPhysics.get()->setVelocity(_velocity);
 	}
 }
 
+//Sets the boolean seeking
 void MissileMovementComponent::setSeeking(bool b) { _seeking = b; }
-
+//Gets the values of the boolean seeking
 bool MissileMovementComponent::getSeeking() const { return _seeking; }
-
+//Passes a PhysicsComponent
 void MissileMovementComponent::setPhysics(shared_ptr<PhysicsComponent> phys) { _parentPhysics = phys; }
-
+//Gets the current PhysicsComponent
 shared_ptr<PhysicsComponent> MissileMovementComponent::getPhysics() const { return _parentPhysics; }
 
+//Constructor for the MissileMovementComponent.
+//Creates a reference to the parent's SpriteComponent
 MissileMovementComponent::MissileMovementComponent(Entity* p, sf::Vector2f vel, bool seek, _entityCategory cat) : MovementComponent(p, vel, { 0.f,0.f }, false), _seeking(seek), cat(cat) {
 	_parentSprite = _parent->GetCompatibleComponent<SpriteComponent>()[0];
 }

@@ -13,7 +13,7 @@
 //Sets up a string array with the different waves per each level
 static std::string levels[5] =
 {
-	"5",
+	"7",
 	"542413",
 	"002361",
 	"154232",

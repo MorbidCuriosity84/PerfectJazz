@@ -42,7 +42,7 @@ void LevelScene::Load() {
 	musicArray[currentLvlMusicIndex].setVolume(25);
 	musicArray[currentLvlMusicIndex].setLoop(true);
 	musicArray[currentLvlMusicIndex].play();
-	
+
 	//Create background	
 	{
 		if (!Engine::isLoading) {
@@ -73,8 +73,10 @@ void LevelScene::Load() {
 
 	EnemyPool::init(&levelScene);
 	//Create Enemies
-	{	
-		LevelManager::loadLevel(Engine::currentPlayerLevel); //-- only needed for specific levels, infinite levels just need a call to LevelManager in the update
+	{
+		if (!Engine::isInfiniteLevel) {
+			LevelManager::loadLevel(Engine::currentPlayerLevel++); //-- only needed for specific levels, infinite levels just need a call to LevelManager in the update
+		}
 	}
 
 	//Create text for left and right boxes

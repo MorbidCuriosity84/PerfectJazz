@@ -256,6 +256,7 @@ void MainMenu::Update(const double& dt) {
 					Engine::isMenu = false;
 					musicArray[MUSIC_TITLE_SCREEN].pause();
 					Engine::currentPlayerLevel = -1;
+					Engine::isInfiniteLevel = true;
 					Engine::ChangeScene(&levelScene);
 					break;
 				}
@@ -263,8 +264,6 @@ void MainMenu::Update(const double& dt) {
 				if (isMainMenuScreen) {
 					isGameLoading = true;
 					loadingTimer = 0;
-					moveUp();
-					moveUp();
 					loadGameTxt->setVisible(true);
 					break;
 				}
@@ -298,6 +297,8 @@ void MainMenu::Update(const double& dt) {
 			isGameLoading = false;
 			loadingTimer = 0;
 			loadGameTxt->setVisible(false);
+			moveUp();
+			moveUp();
 			loadGame();
 		}
 	}

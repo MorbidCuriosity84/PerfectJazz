@@ -9,6 +9,9 @@ textureSettings _playerBulletTextureHelper;
 textureSettings _playerSpriteTextureHelper;
 weaponSettings _playerWeaponSettings;
 bulletSettings _playerBulletSettings;
+
+//Creates a player entity, assigning the player settings, weapons settings, 
+//bullets settings, and texture helper settings.
 void Player::createPlayer(Scene* _scene) {
 
 	player = _scene->makeEntity();
@@ -24,18 +27,11 @@ void Player::createPlayer(Scene* _scene) {
 	_playerBulletSettings = BulletSettings::LoadSettings(TYPE_PLAYER, _scene);
 	_playerBulletTextureHelper = TextureHelpingSettings::LoadSettings(TYPE_PLAYER, _scene);
 
-	if (Engine::isLoading) {
-		LoadSaveGame::loadGame();
-		_playerSettings = SettingsHolder::pSettings;
-		_playerWeaponSettings = SettingsHolder::wSettings;
-		_playerBulletSettings = SettingsHolder::bSettings;
-		_playerBulletTextureHelper = SettingsHolder::bTexHelper;
-		_playerSpriteTextureHelper = SettingsHolder::pTexHelper;
-	}
-
+	//Add the player component
 	player->addComponent<PlayerComponent>(_playerSpriteTextureHelper, _playerBulletTextureHelper, _playerSettings, _playerWeaponSettings, _playerBulletSettings);
 }
-
+//Creates a player component from settings. Loaded games will use this method
+//to create a new player from saved settings
 void Player::createPlayerFromSettings(Scene* _scene) {
 	player.reset();
 	player = _scene->makeEntity();

@@ -75,10 +75,10 @@ void PowerupComponent::update(double dt) {
 	}
 
 }
-//Depending on the powerup, some of the player settigns will be upgraded
+//Depending on the powerup, some of the player settings will be upgraded
 void PowerupComponent::powerupAction() {
 	auto playerCMP = player->GetCompatibleComponent<PlayerComponent>()[0];
-	//physicsCMP->teleport(Vector2f(-500.f, -500.f));
+	physicsCMP->teleport(Vector2f(-500.f, -500.f));
 
 	hpCMP->setHP(1);
 
@@ -105,11 +105,12 @@ void PowerupComponent::powerupAction() {
 	}
 	if (_parent->getTags().find("coin_pwu") != _parent->getTags().end()) {
 		int current = playerCMP->_playerSettings.shopPoints;
-		playerCMP->_playerSettings.shopPoints = current + 10;
+		playerCMP->_playerSettings.shopPoints = current + 30;
 	}
 	playerCMP->_playerSettings.score += 5;
 }
-
+//Constructor for PowerupComponent.
+//Sets initial values for the collision helper and assigns a body to the powerup
 PowerupComponent::PowerupComponent(Entity* p, textureSettings powerupTextureHelper, powerupSettings powerupSettings) : Component(p), _powerupTextureHelper(powerupTextureHelper), _powerupSettings(powerupSettings) {
 	deployPowerup();
 	pow_colHelp.damageCMP = damageCMP.get();

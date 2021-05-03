@@ -6,6 +6,7 @@
 
 using namespace std;
 
+//Adds the necessary components for the kamikaze enemy to act like one
 class Kamikaze : public EnemyComponent
 {
 protected:

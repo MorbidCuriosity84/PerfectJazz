@@ -172,6 +172,9 @@ void PauseMenu::Update(const double& dt) {
 				Engine::isMenu = true;
 				Engine::isGamePaused = true;
 				Engine::isLoading = false;
+				Engine::isInfiniteLevel = false;
+				moveUp();
+				moveUp();
 				//Unloads the upgrade menu and goes back to the main menu
 				if (upgradeMenu.ents.list.size() != 0) {
 					upgradeMenu.UnLoad();
