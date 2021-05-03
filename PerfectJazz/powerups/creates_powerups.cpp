@@ -21,11 +21,11 @@ void Powerups::deployPowerups() {
 	std::discrete_distribution<> powerupsWeights({
 		2,    // Damage % chance       1,  
 		2,    // Health % chance       1,  
-		3,    // Bullet Num % chance   0.3,
+		2.5,    // Bullet Num % chance   0.3,
 		3.5,    // Firerate % chance	   0.7,
 		2,    // Player Mov % chance 0.7,
 		86,    // Coin % chance		   97,	
-		1.5 });// Extra % chance	   0.2 
+		2 });// Extra % chance	   0.2 
 	int choosenPowerup = RandomNumber::generateRandomNumber(powerupsWeights);
 
 	//probabilities for the columns. Each columns has a chance to be randomly picked
