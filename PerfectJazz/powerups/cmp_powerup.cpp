@@ -61,7 +61,7 @@ void PowerupComponent::update(double dt) {
 		_parent->setPosition(Vector2f(-100.f, -100.f));
 		powerupAction();
 		sounds[_powerupSettings.sound].play();
-		_parent->clearComponents();
+		_parent->clearComponents();		
 		return;
 	}
 	//If powerup position is outside the boundaries, the entity and body are set not active, and its cleared of components

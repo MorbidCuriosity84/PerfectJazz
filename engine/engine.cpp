@@ -29,6 +29,7 @@ bool Engine::isLevelComplete;
 bool Engine::isLoading;
 bool Engine::isLevelFinished;
 bool Engine::isInfiniteLevel;
+bool Engine::isGameComplete;
 double Engine::FPS;
 int Engine::currentPlayerLevel;
 int Scene::deadEnemies;
@@ -141,6 +142,7 @@ void Engine::Start(unsigned int width, unsigned int height,
 	isPausedMenu = true;
 	isLevelFinished = false;
 	isInfiniteLevel = false;
+	isGameComplete = false;
 	currentPlayerLevel = 0;
 
 	Renderer::initialise(window);
@@ -304,6 +306,24 @@ void Scene::levelOver() {
 		auto ent = player->scene->makeEntity();
 		ent->setView(mainView);
 		auto t = ent->addComponent<TextComponent>("LEVEL COMPLETE");
+		t->setFontSize(110u);
+		t->_text.setColor(Color::White);
+		t->_text.setOutlineColor(Color::White);
+		t->_text.setOutlineThickness(2);
+		sf::FloatRect textRect = t->getLocalBounds();
+		t->setOrigin(Vector2f((round)(textRect.left + textRect.width / 2.f), (round)(textRect.top + textRect.height / 2.f)));
+		t->setPosition(Vector2f((round)(mainView.getSize().x / 2), (round)(mainView.getSize().y / 2)));
+	}
+}
+
+// When the level is over, ccreates a text component that says "GAME COMPLETE"
+void Scene::gameComplete() {
+	Engine::isGameComplete = true;
+	// If the player is not dead, sets the text setttigns and displays the text 
+	if (!isDead) {
+		auto ent = player->scene->makeEntity();
+		ent->setView(mainView);
+		auto t = ent->addComponent<TextComponent>("GAME COMPLETE!");
 		t->setFontSize(110u);
 		t->_text.setColor(Color::White);
 		t->_text.setOutlineColor(Color::White);

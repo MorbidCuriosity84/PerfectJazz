@@ -489,7 +489,7 @@ void UpgradeMenu::Update(const double& dt) {
 			musicArray[MUSIC_UPGRADE_MENU].pause();
 			musicArray[currentLvlMusicIndex].play();
 			selectedIndex = 1;
-			moveUp();
+			moveUp();			
 			if (Engine::isLevelComplete) {
 				Engine::isPausedMenu = false;
 				musicArray[currentLvlMusicIndex].pause();

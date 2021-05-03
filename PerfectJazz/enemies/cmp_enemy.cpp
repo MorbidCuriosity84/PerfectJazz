@@ -76,7 +76,7 @@ void EnemyComponent::update(double dt) {
 		_parent->setVisible(false);
 		physicsCMP->getBody()->SetActive(false);
 		physicsCMP->getBody()->SetUserData(nullptr);
-		_parent->setPosition(Vector2f(-100.f, -100.f));
+		physicsCMP->teleport(Vector2f(-500.f, -500.f));
 		auto type = _parent->GetCompatibleComponent<EnemyComponent>()[0].get()->_enemySettings.type;
 		_parent->clearComponents();
 		LevelManager::enemyCount--;
@@ -90,16 +90,16 @@ void EnemyComponent::update(double dt) {
 		_parent->setVisible(false);
 		physicsCMP->getBody()->SetActive(false);
 		physicsCMP->getBody()->SetUserData(nullptr);
-		_parent->setPosition(Vector2f(-100.f, -100.f));
+		physicsCMP->teleport(Vector2f(-500.f, -500.f));
 
 		//Gets the enemycomponent from the parent, and adds to the player score depending on the type of enemy
 		auto type = _parent->GetCompatibleComponent<EnemyComponent>()[0].get()->_enemySettings.type;
 		int score;
-		if (type == AIRMAN) { score = 10; }
-		if (type == SERGEANT) { score = 20; }
-		if (type == COLONEL) { score = 30; }
-		if (type == BANSAI) { score = 40; }
-		if (type == MADMAN) { score = 50; }
+		if (type == AIRMAN) { score = 100; }
+		if (type == SERGEANT) { score = 200; }
+		if (type == COLONEL) { score = 300; }
+		if (type == BANSAI) { score = 400; }
+		if (type == MADMAN) { score = 500; }
 
 		player->GetCompatibleComponent<PlayerComponent>()[0].get()->_playerSettings.score += score;
 		//Plays a sound on enemy death
