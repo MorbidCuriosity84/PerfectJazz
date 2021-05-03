@@ -13,18 +13,28 @@
 #include "../PerfectJazz/panels/creates_panels.h"
 #include "../PerfectJazz/player/cmp_player.h"
 #include "../PerfectJazz/powerups/creates_powerups.h"
+#include "../PerfectJazz/pools/entityPool.h"
+#include "../PerfectJazz/services/load_save_game.h"
 
 
 using namespace sf;
 using namespace std;
 Scene* Engine::_activeScene = nullptr;
+Scene* Engine::_lastScene = nullptr;
 std::string Engine::_gameName;
-
+bool Engine::isGamePaused;
+bool Engine::isPausedMenu;
+bool Engine::isMenu;
+bool Engine::isLevelComplete;
+bool Engine::isLoading;
+bool Engine::isLevelFinished;
+double Engine::FPS;
+int Engine::currentPlayerLevel;
+int Scene::deadEnemies;
 float deathTimer;
 bool isDead;
-
 static bool loading = false;
-static float loadingspinner = 0.f;
+static float loadingspinner = 0.1f;
 static float loadingTime;
 static RenderWindow* _window;
 static Panels panels;
@@ -59,7 +69,7 @@ uint8_t ftc = 0;
 
 void Engine::Update() {
 	static sf::Clock clock;
-	float dt = clock.restart().asSeconds();
+	const float dt = clock.restart().asSeconds();
 	{
 		frametimes[++ftc] = dt;
 		static string avg = _gameName + " FPS:";
@@ -70,6 +80,7 @@ void Engine::Update() {
 			}
 			davg = 1.0 / (davg / 255.0);
 			_window->setTitle(avg + toStrDecPt(2, davg));
+			FPS = davg;
 		}
 	}
 
@@ -77,8 +88,8 @@ void Engine::Update() {
 		Loading_update(dt, _activeScene);
 	}
 	else if (_activeScene != nullptr) {
-		Physics::update(dt);
 		_activeScene->Update(dt);
+		if (!isGamePaused) { Physics::update(dt); }
 	}
 }
 
@@ -93,16 +104,47 @@ void Engine::Render(RenderWindow& window) {
 	Renderer::render();
 }
 
+void Engine::updateViewsSize() {
+	//Create left view
+	sf::View tempLeft(sf::FloatRect(0, 0, Engine::getWindowSize().x / 5, Engine::getWindowSize().y));
+	leftView = tempLeft;
+	leftView.setViewport(sf::FloatRect(0, 0, 0.2f, 1.f));
+	//Create right view
+	sf::View tempRight(sf::FloatRect(0, 0, Engine::getWindowSize().x / 5, Engine::getWindowSize().y));
+	rightView = tempRight;
+	rightView.setViewport(sf::FloatRect(0.8f, 0, 0.2f, 1.f));
+	//Create main view
+	sf::View tempMain(sf::FloatRect(0, 0, (round)(Engine::getWindowSize().x / 1.66666), Engine::getWindowSize().y));
+	mainView = tempMain;
+	mainView.setViewport(sf::FloatRect(0.2f, 0, 0.6f, 1.f));
+	//Create menuView
+	sf::View tempMenu(sf::FloatRect(0, 0, Engine::getWindowSize().x, Engine::getWindowSize().y));
+	menuView = tempMenu;
+	menuView.setViewport(sf::FloatRect(0, 0, 1.f, 1.f));
+}
+
 void Engine::Start(unsigned int width, unsigned int height,
 	const std::string& gameName, Scene* scn) {
-	RenderWindow window(VideoMode(width, height), gameName);
+	RenderWindow window(VideoMode(width, height), gameName, sf::Style::None);
+	auto desktop = sf::VideoMode::getDesktopMode();
+	window.setPosition(Vector2i(desktop.width / 2 - window.getSize().x / 2, desktop.height / 2 - window.getSize().y / 2));
 	//Limits the framerate
 	window.setFramerateLimit(60);
 	_gameName = gameName;
 	_window = &window;
+
+	isLoading = false;
+	isGamePaused = true;
+	isMenu = true;
+	isPausedMenu = true;
+	isLevelFinished = false;
+	currentPlayerLevel = 0;
 	Renderer::initialise(window);
 	Physics::initialise();
 	ChangeScene(scn);
+
+	//Updates the view, so the elements inside don't auto-resize
+	updateViewsSize();
 
 	while (window.isOpen()) {
 		Event event;
@@ -110,13 +152,17 @@ void Engine::Start(unsigned int width, unsigned int height,
 			if (event.type == Event::Closed) {
 				window.close();
 			}
-		}
-		if (Keyboard::isKeyPressed(Keyboard::Escape)) {
-			window.close();
+
+			//If the window is resized, the views will be set accordinly, avoiding components to be auto-resized
+			if (event.type == sf::Event::Resized) {
+				updateViewsSize();
+			}
 		}
 
 		window.clear();
+
 		Update();
+
 		Render(window);
 		window.display();
 	}
@@ -124,6 +170,8 @@ void Engine::Start(unsigned int width, unsigned int height,
 		_activeScene->UnLoad();
 		_activeScene = nullptr;
 	}
+
+	player.reset();
 	window.close();
 	Physics::shutdown();
 	Renderer::shutdown();
@@ -139,11 +187,19 @@ void Engine::setVsync(bool b) { _window->setVerticalSyncEnabled(b); }
 
 void Engine::ChangeScene(Scene* s) {
 	cout << "Eng: changing scene: " << s << endl;
+
+	_lastScene = _activeScene;
 	auto old = _activeScene;
+
+	if (isGamePaused && !isPausedMenu && _lastScene != nullptr) {
+		_lastScene->UnLoad();
+		old = nullptr;
+	}
+
 	_activeScene = s;
 
-	if (old != nullptr) {
-		old->UnLoad(); // todo: Unload Async
+	if (old != nullptr && !isGamePaused && !isPausedMenu) {
+		old->UnLoad();
 	}
 
 	if (!s->isLoaded()) {
@@ -157,24 +213,43 @@ void Engine::ChangeScene(Scene* s) {
 }
 
 void Scene::Update(const double& dt) {
-	auto playerCMP = player->GetCompatibleComponent<PlayerComponent>()[0];
 
-	if (!player->isAlive() && playerCMP->_playerSettings.lifes > 0) {
-		deathTimer += dt;
-		if (deathTimer > 2) {
-			playerCMP.get()->revive();
-			deathTimer = 0;
+	if (!Engine::isGamePaused) {
+		if (sf::Keyboard::isKeyPressed(Keyboard::Num1)) {
+			player->GetCompatibleComponent<PlayerComponent>()[0]->_playerSettings.shopPoints += 10000;
 		}
-	}
+		if (sf::Keyboard::isKeyPressed(Keyboard::Num3)) {
+			Engine::isMenu = true;
+			Engine::isPausedMenu = true;
+			musicArray[currentLvlMusicIndex].pause();
+			musicArray[MUSIC_UPGRADE_MENU].play ();
+			Engine::ChangeScene(&upgradeMenu);
+		}
+		if (sf::Keyboard::isKeyPressed(Keyboard::Escape)) {
+			Engine::isGamePaused = true;
+			Engine::isMenu = true;
+			Engine::isPausedMenu = true;
+			musicArray[currentLvlMusicIndex].pause();
+			Engine::ChangeScene(&pauseMenu);
+		}
+		auto playerCMP = player->GetCompatibleComponent<PlayerComponent>()[0];
 
-	//Here only load GameOver once, then keep updating the scene as normal
-	if (!isDead && playerCMP->_playerSettings.lifes <= 0) {
-		GameOver();
-		isDead = true;
+		if (!player->isAlive() && playerCMP->_playerSettings.lifes > 0) {
+			deathTimer += dt;
+			if (deathTimer > 2) {
+				playerCMP.get()->revive();
+				deathTimer = 0;
+			}
+		}
+		//Here only load GameOver once, then keep updating the scene as normal
+		if (!isDead && playerCMP->_playerSettings.lifes <= 0) {
+			GameOver();
+			isDead = true;
+		}
+		ents.update(dt);
+		Panels::update(dt);
+		Powerups::update(dt);
 	}
-	Panels::update(dt);
-	Powerups::update(dt);
-	ents.update(dt);
 }
 
 void Scene::GameOver() {
@@ -210,6 +285,23 @@ bool Scene::isLoaded() const {
 		return _loaded;
 	}
 }
+
+void Scene::levelOver() {
+	Engine::isLevelComplete = true;
+	if (!isDead) {
+		auto ent = player->scene->makeEntity();
+		ent->setView(mainView);
+		auto t = ent->addComponent<TextComponent>("LEVEL COMPLETE");
+		t->setFontSize(110u);
+		t->_text.setColor(Color::White);
+		t->_text.setOutlineColor(Color::White);
+		t->_text.setOutlineThickness(2);
+		sf::FloatRect textRect = t->getLocalBounds();
+		t->setOrigin(Vector2f((round)(textRect.left + textRect.width / 2.f), (round)(textRect.top + textRect.height / 2.f)));
+		t->setPosition(Vector2f((round)(mainView.getSize().x / 2), (round)(mainView.getSize().y / 2)));
+	}
+}
+
 void Scene::setLoaded(bool b) {
 	{
 		std::lock_guard<std::mutex> lck(_loaded_mtx);
@@ -219,6 +311,7 @@ void Scene::setLoaded(bool b) {
 
 void Scene::UnLoad() {
 	panels.~Panels();
+	Physics::GetWorld().reset();
 	ents.list.clear();
 	setLoaded(false);
 }

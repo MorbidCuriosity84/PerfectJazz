@@ -2,6 +2,7 @@
 #include "system_physics.h"
 #include <SFML/Window/Keyboard.hpp>
 #include "../player/cmp_player.h"
+#include "../services/detecting_keys.h"
 
 using namespace std;
 using namespace sf;
@@ -16,9 +17,6 @@ void PlayerPhysicsComponent::update(double dt) {
 	float _flySpeed = playerCMP->_playerSettings.flySpeed + multiplier;
 
 	{
-		//CARLOS TO-DO fix movement. When the framerate is locked, the impulse feels different
-		//check the collision when diagonally on the borders
-
 		//The _flySpeed * 2 makes the player not to stick when it goes to a side, so it can fly away easily
 		if (pos.x < 0 + playerSpriteCMP->getSprite().getTextureRect().width / 2) {
 			setVelocity(Vector2f(0.f, getVelocity().y * 0.98f));
@@ -69,11 +67,22 @@ void PlayerPhysicsComponent::update(double dt) {
 					impulse({ 0, (float)(dt * _flySpeed) });
 			}
 		}
+
+		if (Keyboard::isKeyPressed(Keyboard::Space) && !detectingKeys.keySpace) {
+			playerCMP->weaponCMP->_bSettings.direction *= -1.f;
+			if (playerCMP->spriteCMP->getSprite().getRotation() != 180.f) {
+				playerCMP->spriteCMP->getSprite().setRotation(180.f);
+			}
+			else { playerCMP->spriteCMP->getSprite().setRotation(0.f); }
+		}
 	}
 
-	if ((pos.x > gameWidth || pos.x < 0 || pos.y > gameHeight || pos.y < 0)) {
+	detectingKeys.detectingKeys();
+
+
+	if ((pos.x > mainView.getSize().x || pos.x < 0 || pos.y > mainView.getSize().y || pos.y < 0)) {
 		playerCMP->setPlayerAlive(false);
-		teleport((Vector2f((round)(mainView.getSize().x / 2), mainView.getSize().y - 100.f)));
+		teleport((Vector2f((round)(mainView.getSize().x / 2), mainView.getSize().y - mainView.getSize().y / 10)));
 	}
 
 	playerCMPTimer += dt;
@@ -97,7 +106,7 @@ PlayerPhysicsComponent::PlayerPhysicsComponent(Entity* p,
 	const Vector2f& size)
 	: PhysicsComponent(p, true, size) {
 	_size = sv2_to_bv2(size, true);
-	_maxVelocity = Vector2f(500.f, 5300.f);
+	_maxVelocity = Vector2f(300.f, 300.f);
 	_body->SetSleepingAllowed(false);
 	_body->SetFixedRotation(true);
 	//Bullet items have higher-res collision detection
@@ -111,6 +120,5 @@ std::string PlayerPhysicsComponent::GetDirection() {
 }
 
 void PlayerPhysicsComponent::setFlySpeed(int speed) {
-	auto playerCMP = player->GetCompatibleComponent<PlayerComponent>()[0];
-	playerCMP->_playerSettings.flySpeed = speed;
+	auto playerCMP = player->GetCompatibleComponent<PlayerComponent>()[0].get()->_playerSettings.flySpeed = speed;
 }

@@ -4,13 +4,15 @@
 #include "../components/cmp_hp.h"
 #include "../components/cmp_sprite.h"
 #include "../settings/texture_helper_settings.h"
+#include <engine.h>
+#include <math.h>
 
 
-double timer;
 using namespace std;
 using namespace sf;
 
 shared_ptr<Entity> leftPanel;
+shared_ptr<Entity> rightPanel;
 shared_ptr<SpriteComponent> playerLifeSpriteCMP;
 shared_ptr<SpriteComponent> upgradeDamageSpriteCMP;
 shared_ptr<SpriteComponent> upgradeFlyeSpeedSpriteCMP;
@@ -24,6 +26,7 @@ shared_ptr<TextComponent> playerSpeedTxtCMP;
 shared_ptr<TextComponent> playerBulletPowerTxtCMP;
 shared_ptr<TextComponent> playerFireRateTxtCMP;
 shared_ptr<TextComponent> playerBulletNumberTxtCMP;
+shared_ptr<TextComponent> FPStxtCMP;
 shared_ptr<HPComponent> hpCMP;
 textureSettings playerLifeTextureHelper;
 Texture playerLifeTexture;
@@ -38,6 +41,8 @@ int currentFlySpeed;
 int currentScore;
 int currentCoins;
 int currentHP;
+int currentMaxHP;
+double timer;
 int row;
 int col;
 
@@ -73,10 +78,10 @@ void Panels::createPanels(Scene* _scene) {
 		//Player name
 		row = (round)(leftView.getSize().y / 30);
 		col = (round)(leftView.getSize().x / 10);
-		playerTxtCMP->setFontSize(50u);
+		playerTxtCMP->setFontSize(54u);
 		sf::FloatRect textRect = playerTxtCMP->getLocalBounds();
-		playerTxtCMP->setOrigin(Vector2f((round)(textRect.left + textRect.width / 2.f), (round)(textRect.top + textRect.height / 2.f)));
-		playerTxtCMP->setPosition(Vector2f((round)(leftView.getSize().x / 2), (round)(row * 2.5)));
+		playerTxtCMP->setOrigin(Vector2f((round)(textRect.left + textRect.width / 2), (round)(textRect.top + textRect.height / 2)));
+		playerTxtCMP->setPosition(Vector2f((round)(leftView.getSize().x / 2), (round)(row * 2.4)));
 
 		//Player life icons
 		playerLifeTexture.loadFromFile("res/img/others/player_life.png");
@@ -84,6 +89,7 @@ void Panels::createPanels(Scene* _scene) {
 		playerLifeSpriteCMP->getSprite().setTexture(playerLifeTexture);
 		playerLifeSpriteCMP->getSprite().setColor(Color::Red);
 		playerLifeSpriteCMP->getSprite().setPosition(Vector2f(col * 2, row * 0.5));
+		playerLifeSpriteCMP->getSprite().setScale(windowScale);
 		setLifeSprites();
 
 		//Upgrades icons
@@ -99,16 +105,24 @@ void Panels::createPanels(Scene* _scene) {
 		coinsTxtCMP->setFontSize(40u);
 
 		//Player PowerUps
-		playerSpeedTxtCMP->setPosition(Vector2f(col * 5.5 + playerSpeedTxtCMP->_text.getGlobalBounds().left - playerSpeedTxtCMP->_text.getGlobalBounds().width, row * 10));
 		playerSpeedTxtCMP->setFontSize(30u);
+		auto pstRect = playerSpeedTxtCMP->getGlobalBounds();
+		playerSpeedTxtCMP->setPosition(Vector2f((round)(col * 6 + pstRect.left - pstRect.width), (round)(row * 10)));
 
 		//Bullets PowerUps
-		playerBulletPowerTxtCMP->setPosition(Vector2f(col * 5.5 + playerBulletPowerTxtCMP->_text.getGlobalBounds().left - playerBulletPowerTxtCMP->_text.getGlobalBounds().width, row * 11));
 		playerBulletPowerTxtCMP->setFontSize(30u);
-		playerFireRateTxtCMP->setPosition(Vector2f(col * 5.5 + playerFireRateTxtCMP->_text.getGlobalBounds().left - playerFireRateTxtCMP->_text.getGlobalBounds().width, row * 12));
+		auto pbpRec = playerBulletPowerTxtCMP->getGlobalBounds();
+		playerBulletPowerTxtCMP->setPosition(Vector2f((round)(col * 6 + pbpRec.left - pbpRec.width), (round)(row * 11)));
+
+		//Fire rate PowerUps
 		playerFireRateTxtCMP->setFontSize(30u);
-		playerBulletNumberTxtCMP->setPosition(Vector2f(col * 5.5 + playerBulletNumberTxtCMP->_text.getGlobalBounds().left - playerBulletNumberTxtCMP->_text.getGlobalBounds().width, row * 13));
+		auto pfRect = playerFireRateTxtCMP->getGlobalBounds();
+		playerFireRateTxtCMP->setPosition(Vector2f((round)(col * 6 + pfRect.left - pfRect.width), (round)(row * 12)));
+
+		//Bullet number PowerUp
 		playerBulletNumberTxtCMP->setFontSize(30u);
+		auto pbnRect = playerBulletNumberTxtCMP->getGlobalBounds();
+		playerBulletNumberTxtCMP->setPosition(Vector2f((round)(col * 6) + pbnRect.left - pbnRect.width, (round)(row * 13)));
 
 		//Player HP
 		hpCMP->underHPBar->isFollowingParent(false);
@@ -116,16 +130,28 @@ void Panels::createPanels(Scene* _scene) {
 		hpCMP->underHPBar->getSprite().setColor(Color::White);
 		hpCMP->overHPBar->getSprite().setColor(Color(205, 0, 0));
 		hpCMP->setDynamic(false);
-		hpCMP->setScale(Vector2f(4.f, 3.f));
-		hpCMP->underHPBar->getSprite().setPosition(Vector2f((round)(leftView.getSize().x / 2 - hpCMP->overHPBar->getSprite().getGlobalBounds().width / 2), row * 3));
-		hpCMP->overHPBar->getSprite().setPosition(Vector2f((round)(leftView.getSize().x / 2 - hpCMP->overHPBar->getSprite().getGlobalBounds().width / 2), row * 3));
+		auto hpRect = hpCMP->underHPBar->getSprite().getGlobalBounds();
+		auto hpPos = hpCMP->underHPBar->getSprite().getPosition();
+		hpCMP->underHPBar->getSprite().setPosition(Vector2f((round)(leftView.getSize().x/2), row * 4));
+		hpCMP->overHPBar->getSprite().setPosition(Vector2f((round)(leftView.getSize().x / 2), row * 4));
 		hpCMP->textCMP->setText(to_string(playerCMP->_playerSettings.hp) + "/" + to_string(playerCMP->_playerSettings.maxHP));
 		hpCMP->textCMP->setFontSize(34u);
-		hpCMP->textCMP->setPosition(Vector2f((hpCMP->underHPBar->getSprite().getPosition().x + hpCMP->underHPBar->getSprite().getGlobalBounds().width / 2 - hpCMP->textCMP->getGlobalBounds().width / 2), (round)(hpCMP->underHPBar->getSprite().getPosition().y - hpCMP->textCMP->getGlobalBounds().height / 2)));
-			}
+		hpCMP->setScale(Vector2f(4.f, 3.f));
+		hpCMP->textCMP->setOrigin(Vector2f((round)(hpCMP->textCMP->getGlobalBounds().width / 2), (round)(hpCMP->textCMP->getGlobalBounds().height / 2)));
+		hpCMP->textCMP->setPosition(Vector2f((round)(leftView.getSize().x/2), (round)(hpCMP->overHPBar->getSprite().getPosition().y - hpCMP->textCMP->getGlobalBounds().height/2 - hpCMP->textCMP->getGlobalBounds().top)));
+	}
 
 	//Right Panel
 	{
+		//Creating entity and setting view
+		rightPanel = _scene->makeEntity();
+		rightPanel->setView(rightView);
+		//Creating fps textcomponent and initializing its settings
+		FPStxtCMP = rightPanel->addComponent<TextComponent>("FPS: " + toStrDecPt(2, Engine::FPS));		
+		FPStxtCMP->setFontSize(40u);
+		sf::FloatRect textRect = FPStxtCMP->getLocalBounds();
+		FPStxtCMP->setOrigin(Vector2f((round)(textRect.left + textRect.width / 2), (round)(textRect.top + textRect.height / 2)));
+		FPStxtCMP->setPosition(Vector2f((round)(rightView.getSize().x / 2), (round)(row * 2.4)));
 	}
 }
 
@@ -150,8 +176,9 @@ void Panels::createUpgradeSprites() {
 		upgradeBulletsSpriteCMP->isFollowingParent(false);
 		upgradeBulletsSpriteCMP->getSprite().setTexture(upgradeCounterTexture);
 		upgradeBulletsSpriteCMP->getSprite().setColor(Color::Red);
+		upgradeBulletsSpriteCMP->getSprite().setScale(windowScale);
 
-		upgradeBulletsSpriteCMP->getSprite().setPosition(Vector2f((round)(col * 5), (round)(row * (10 + i)) - (round)(upgradeBulletsSpriteCMP->getSprite().getTextureRect().height / 2)));
+		upgradeBulletsSpriteCMP->getSprite().setPosition(Vector2f((round)(col * 5.5), (round)(row * (10 + i)) - (round)(upgradeBulletsSpriteCMP->getSprite().getGlobalBounds().height / 2)));
 		upgradeBulletsSpriteCMP->getSprite().setTextureRect(upgradeCounterRec);
 
 		if (i == 1) { upgradeFlyeSpeedSpriteCMP = upgradeBulletsSpriteCMP; };
@@ -192,9 +219,13 @@ void Panels::setUpgradesSprites(string type, int counter) {
 		coinsTxtCMP->setText("Coins: " + to_string(playerCMP->_playerSettings.shopPoints));
 	};	
 	if (type == "hp") {
-		hpCMP->setHP(counter);
-		hpCMP->textCMP->setText(to_string(playerCMP->hpCMP->getHP()) + "/" + to_string(playerCMP->_playerSettings.maxHP));
-		hpCMP->textCMP->setPosition(Vector2f((round)((hpCMP->underHPBar->getSprite().getPosition().x + hpCMP->underHPBar->getSprite().getGlobalBounds().width / 2 - hpCMP->textCMP->getGlobalBounds().width / 2)), (round)(hpCMP->underHPBar->getSprite().getPosition().y - hpCMP->textCMP->getGlobalBounds().height / 2)));
+		currentHP = playerCMP->hpCMP->getHP();
+		hpCMP->setHP(playerCMP->hpCMP->getHP());
+		currentMaxHP = playerCMP->hpCMP->getMaxHP();
+		hpCMP->setMaxHP(playerCMP->hpCMP->getMaxHP());
+		hpCMP->textCMP->setText(to_string(playerCMP->hpCMP->getHP()) + "/" + to_string(playerCMP->hpCMP->getMaxHP()));
+		hpCMP->textCMP->setOrigin(Vector2f((round)(hpCMP->textCMP->getGlobalBounds().width / 2), (round)(hpCMP->textCMP->getGlobalBounds().height / 2)));
+		hpCMP->textCMP->setPosition(Vector2f((round)(leftView.getSize().x / 2), (round)(hpCMP->textCMP->getPosition().y)));
 	};
 }
 
@@ -202,7 +233,7 @@ void Panels::setUpgradesSprites(string type, int counter) {
 void Panels::update(double dt) {
 	timer += dt;
 
-	if (timer > 0.1) {
+	if (timer > 0.1 && playerCMP != nullptr) {
 
 		if (currentLifes != playerCMP->_playerSettings.lifes) { setLifeSprites(); }
 
@@ -224,15 +255,30 @@ void Panels::update(double dt) {
 		if (currentCoins != playerCMP->_playerSettings.shopPoints) {
 			setUpgradesSprites("coin", playerCMP->_playerSettings.shopPoints);
 		}
-		if (currentHP != playerCMP->hpCMP->getHP()) {
+		if (currentHP != playerCMP->hpCMP->getHP() || currentMaxHP != playerCMP->hpCMP->getMaxHP()) {
 			setUpgradesSprites("hp", playerCMP->hpCMP->getHP());
 		}
 		timer = 0;
-	}
+		FPStxtCMP->setText("FPS: " + toStrDecPt(2, Engine::FPS));
+	}	
 }
 
 void Panels::render() {}
 
 Panels::~Panels() { 
+	playerLifeSpriteCMP.reset();
+	upgradeDamageSpriteCMP.reset();
+	upgradeFlyeSpeedSpriteCMP.reset();
+	upgradeFirerateSpriteCMP.reset();
+	upgradeBulletsSpriteCMP.reset();
+	playerTxtCMP.reset();
+	scoreTxtCMP.reset();
+	coinsTxtCMP.reset();
+	FPStxtCMP.reset();
+	playerSpeedTxtCMP.reset();
+	playerBulletPowerTxtCMP.reset();
+	playerFireRateTxtCMP.reset();
+	playerBulletNumberTxtCMP.reset();
+	hpCMP.reset();
 	playerCMP.reset();
 }

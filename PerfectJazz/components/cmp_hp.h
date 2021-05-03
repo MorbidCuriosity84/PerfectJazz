@@ -1,11 +1,9 @@
 #pragma once
 #include <ecm.h>
 #include "engine.h"
-#include "../myContactListener.h"
+#include "../services/myContactListener.h"
 #include <SFML/Graphics/Text.hpp>
 #include <Box2D/Dynamics/Contacts/b2Contact.h>
-#include "ecm.h"
-#include "engine.h"
 #include "../components/cmp_sprite.h"
 #include "../components/cmp_text.h"
 
@@ -21,6 +19,8 @@ public:
 	void setTextColour(sf::Color c);
 	void render();
 	void setHP(int hp_value);
+	void setMaxHP(int hp_value);
+	int getMaxHP();
 	int getHP();
 	void setScale(sf::Vector2f scale);
 	void loadHP();
@@ -41,5 +41,10 @@ protected:
 	Scene* _scene;
 	bool _visible;
 	bool _dynamic;
+	Vector2f spritePos;
+	Vector2f underhpPos;
+	Vector2f overhpPos;
+	sf::FloatRect underhpRect;
+	sf::FloatRect overhpRect;
 };
 

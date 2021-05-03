@@ -1,7 +1,6 @@
 #include "player_settings.h"
 #include "../game.h"
-#include "../engine/engine.h"
-
+#include "engine.h"
 
 playerSettings PlayerSettings::LoadSettings(_playerType type, Scene* scene) {
 	playerSettings currentPlayerSettings;
@@ -9,11 +8,11 @@ playerSettings PlayerSettings::LoadSettings(_playerType type, Scene* scene) {
 	switch (type) {
 	case PLAYER1:
 	{
-		currentPlayerSettings.damage = 10000;
-		currentPlayerSettings.hp = 100000;
+		currentPlayerSettings.damage = 100;
+		currentPlayerSettings.hp = 10000;
 		currentPlayerSettings.lifes = 5;
 		currentPlayerSettings.maxLifes = 5;
-		currentPlayerSettings.maxHP = 400000;
+		currentPlayerSettings.maxHP = 10000;
 		currentPlayerSettings.scene = scene;
 		currentPlayerSettings.restitution = 0.4f;
 		currentPlayerSettings.friction = 0.005f;
@@ -25,6 +24,7 @@ playerSettings PlayerSettings::LoadSettings(_playerType type, Scene* scene) {
 		currentPlayerSettings.angle = 0;
 		currentPlayerSettings.score = 0;
 		currentPlayerSettings.shopPoints = 0;
+		currentPlayerSettings.currentLevel = 1;
 		break;
 	}
 
@@ -37,4 +37,3 @@ playerSettings PlayerSettings::LoadSettings(_playerType type, Scene* scene) {
 	}
 	return currentPlayerSettings;
 }
-

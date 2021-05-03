@@ -3,7 +3,7 @@
 
 using namespace sf;
 
-class Level1Scene : public Scene {
+class LevelScene : public Scene {
 
 public:
 	void Load() override;

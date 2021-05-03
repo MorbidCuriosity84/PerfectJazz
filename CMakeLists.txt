@@ -57,7 +57,11 @@ add_custom_target(copy_resources ALL COMMAND ${CMAKE_COMMAND}
     "${PROJECT_SOURCE_DIR}/res"
     ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/$<CONFIGURATION>/res
 )
-	
+add_custom_target(copy_dlls ALL COMMAND ${CMAKE_COMMAND} 
+-E copy_directory
+      "${PROJECT_SOURCE_DIR}/lib/sfml/extlibs/bin/x64"
+      ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/$<CONFIGURATION>
+)
 	
 #### Perfect Jazz Files ####
 file(GLOB_RECURSE SOURCES PerfectJazz/*.cpp PerfectJazz/*.h)
@@ -70,16 +74,21 @@ file(GLOB_RECURSE PANELS PerfectJazz/panels/*.cpp PerfectJazz/panels/*.h)
 file(GLOB_RECURSE BACKGROUND PerfectJazz/background/*.cpp PerfectJazz/background/*.h)
 file(GLOB_RECURSE MOVEMENT PerfectJazz/movement/*.cpp PerfectJazz/movement/*.h)
 file(GLOB_RECURSE POWERUPS PerfectJazz/powerups/*.cpp PerfectJazz/powerups/*.h)
+file(GLOB_RECURSE POOLS PerfectJazz/pools/*.cpp PerfectJazz/pools/*.h)
+file(GLOB_RECURSE SERVICES PerfectJazz/services/*.cpp PerfectJazz/services/*.h)
 add_executable(PerfectJazz ${SOURCES} ${RESOURCE_FILES})
 source_group("components" FILES ${CMPNTS})
 source_group("resources" FILES ${RESOURCE_FILES})
 source_group("enemies" FILES ${ENEMIES})
+source_group("scenes" FILES ${SCENES})
 source_group("player" FILES ${PLAYER})
 source_group("settings" FILES ${SETTINGS})
 source_group("panels" FILES ${PANELS})
 source_group("background" FILES ${BACKGROUND})
 source_group("movement" FILES ${MOVEMENT})
 source_group("powerups" FILES ${POWERUPS})
+source_group("pools" FILES ${POOLS})
+source_group("services" FILES ${SERVICES})
 
 #target_include_directories(PerfectJazz SYSTEM PRIVATE ${SFML_INCS} ${B2D_INCS})
 target_link_libraries(PerfectJazz lib_engine)
@@ -90,7 +99,7 @@ source_group("background" FILES ${BACKGROUND})
 #target_include_directories(PerfectJazz SYSTEM PRIVATE ${SFML_INCS} ${B2D_INCS})
 target_link_libraries(PerfectJazz lib_engine)
 set(EXECUTABLES ${EXECUTABLES} PerfectJazz)
-add_dependencies(PerfectJazz copy_resources)
+add_dependencies(PerfectJazz copy_resources copy_dlls)
 
 set_target_properties(PerfectJazz 
     PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY

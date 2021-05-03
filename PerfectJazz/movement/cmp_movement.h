@@ -9,6 +9,11 @@ class MovementComponent : public Component
 {
 protected:
 	sf::Vector2f _velocity;
+	bool linger;
+	float lingerTime;
+	bool active;
+	Vector2f parentInitVelocity;
+	Vector2f initPosition;
 public:
 	void update(double dt) override;
 	void render() override;
@@ -18,6 +23,10 @@ public:
 	void setVelocity(sf::Vector2f vel);
 	sf::Vector2f getVelocity() const;
 
-	MovementComponent(Entity* p, sf::Vector2f velocity);
+	void setLingerTime(float t);
+	void isLinger(bool b);	
+	void isActive(bool b);
+
+	MovementComponent(Entity* p, sf::Vector2f velocity, Vector2f initPos, bool linger);
 };
 

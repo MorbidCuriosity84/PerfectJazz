@@ -1,15 +1,19 @@
 #include "cmp_player.h"
+#include <SFML/Graphics/CircleShape.hpp>
+#include "../settings/settings_holder.h"
+#include "../services/load_save_game.h"
 
 using namespace std;
 using namespace sf;
 
 void PlayerComponent::Load() {
 
-	player->setPosition((Vector2f((round)(mainView.getSize().x / 2), mainView.getSize().y - 100.f)));
+	player->setPosition((Vector2f((round)(mainView.getSize().x / 2), mainView.getSize().y - mainView.getSize().y / 6)));
 	damageCMP = player->addComponent<DamageComponent>(_playerSettings.damage);
 	weaponCMP = player->addComponent<WeaponComponent>(_weaponSettings, _bulletSettings, _bulletTextureHelper);
 	player->addTag("player");
 	_playerTextureHelper.spriteTexture.get()->loadFromFile(_playerTextureHelper.spriteFilename);
+
 
 	spriteCMP = player->addComponent<SpriteComponent>();
 	spriteCMP.get()->loadTexture(_playerTextureHelper, _playerSettings.scale, _playerSettings.angle);
@@ -29,8 +33,9 @@ void PlayerComponent::revive() {
 	setPlayerAlive(true);
 	_gracePeriod = true;
 	physicsCMP->setCategory(NO_COLLIDE);
-	physicsCMP->teleport((Vector2f((round)(mainView.getSize().x / 2), mainView.getSize().y - 100.f)));
-	hpCMP->setHP(_playerSettings.maxHP);
+	physicsCMP->teleport((Vector2f((round)(mainView.getSize().x / 2), mainView.getSize().y - mainView.getSize().y / 6)));
+	hpCMP->setHP(hpCMP->getMaxHP());
+	_playerSettings.maxHP = hpCMP->getMaxHP();
 }
 
 void PlayerComponent::update(double dt) {
@@ -54,8 +59,6 @@ void PlayerComponent::update(double dt) {
 	}
 
 	if (player->isAlive()) {
-		//auto pPhysics = static_cast<PlayerPhysicsComponent>(*physicsCMP);
-		//auto pSprite = player->GetCompatibleComponent<SpriteComponent>();
 
 		if (_playerTextureHelper.spriteTimer > 0.1f) {
 
@@ -138,15 +141,42 @@ void PlayerComponent::setMaxUpdate(int max) { _maxUpdate = max; }
 int PlayerComponent::getMaxUpdate() { return _maxUpdate; }
 
 void PlayerComponent::setMaxLifes(int max) { _playerSettings.maxLifes = max; }
-int PlayerComponent::getMaxLifes() { return _playerSettings.maxLifes; }
+int PlayerComponent::getShoppingCoins() {
+	return _playerSettings.shopPoints;
+}
+void PlayerComponent::setShoppingCoins(int coins) {
+	_playerSettings.shopPoints = coins;
+}
+int PlayerComponent::getScorePoints() {
+	return _playerSettings.score;
+}
 
 PlayerComponent::PlayerComponent(Entity* p, textureSettings playerTextureHelper, textureSettings bulletTextureHelper, playerSettings playerSettings, weaponSettings weaponSettings, bulletSettings bulletSettings)
 	: Component(p), _playerTextureHelper(playerTextureHelper), _bulletTextureHelper(bulletTextureHelper), _playerSettings(playerSettings), _weaponSettings(weaponSettings), _bulletSettings(bulletSettings), _gracePeriod(false), _gracePeriodTimer(0), _visibilityTimer(0), _maxUpdate(5) {
 	Load();
 	colHelp.damageCMP = damageCMP.get();
 	colHelp.hpCMP = hpCMP.get();
-	colHelp.isMissile = false;
+	colHelp.isMissileRadar = false;
 	colHelp.missileCMP = nullptr;
 
 	physicsCMP->getBody()->SetUserData(&colHelp);
+}
+
+void PlayerComponent::clonePlayer(shared_ptr<Entity> pl) {
+	auto oldCMP = pl->GetCompatibleComponent<PlayerComponent>()[0];
+	auto wep = pl->GetCompatibleComponent<WeaponComponent>()[0];
+	auto hp = pl->GetCompatibleComponent<HPComponent>()[0];
+
+	if (!Engine::isLoading) {
+		SettingsHolder::pSettings = oldCMP->_playerSettings;
+		SettingsHolder::pSettings.flySpeed = oldCMP->_playerSettings.flySpeed;
+		SettingsHolder::pSettings.flySpeedUpgradeCount = oldCMP->_playerSettings.flySpeedUpgradeCount;
+		SettingsHolder::pSettings.hp = hp->getHP();
+		SettingsHolder::pSettings.maxHP = hp->getMaxHP();
+		SettingsHolder::wSettings = wep->_wSettings;
+		SettingsHolder::bSettings = wep->_bSettings;
+		SettingsHolder::pTexHelper = oldCMP->_playerTextureHelper;
+		SettingsHolder::bTexHelper = oldCMP->_bulletTextureHelper;
+	}
+	//auto newPCMP = en->addComponent<PlayerComponent>(oldCMP->_playerTextureHelper, oldCMP->_bulletTextureHelper, oldCMP->_playerSettings, oldCMP->_weaponSettings, oldCMP->_bulletSettings);
 }

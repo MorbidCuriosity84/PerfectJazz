@@ -24,7 +24,10 @@ public:
 		AIRMAN = '1',
 		SERGEANT = '2',
 		COLONEL = '3',
-		WAYPOINT = '+'
+		KAMIKAZE = '4',	
+		BESERKER = '5',
+		WAYPOINT = '+',
+		BOSS = 'b',
 	};
 
 	static Tile getTile(sf::Vector2ul);

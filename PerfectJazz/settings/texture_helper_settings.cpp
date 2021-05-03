@@ -1,7 +1,6 @@
 #include "texture_helper_settings.h"
 #include "../game.h"
-#include "../engine/engine.h"
-
+#include "engine.h"
 textureSettings TextureHelpingSettings::LoadSettings(_playerType type, Scene* scene) {
 
 	textureSettings settings;
@@ -41,10 +40,10 @@ textureSettings TextureHelpingSettings::LoadSettings(_enemyType type, Scene* sce
 	case AIRMAN:
 	{
 		settings.spriteFilename = "res/img/enemies/enemy1_900.png";
-		settings.spriteRows = 1;
-		settings.spriteCols = 2;
-		settings.desiredRow = 0;
-		settings.desiredCol = 0;
+		settings.spriteRows = 1; // indexed at 1
+		settings.spriteCols = 2; // indexed at 1
+		settings.desiredRow = 0; // indexed at 0
+		settings.desiredCol = 0; // indexed at 0
 		settings.spriteTexture = enemySpriteTexture;
 		settings.spriteRectangle = enemySpriteRectangle;
 		settings.spriteTimer = 0;
@@ -68,6 +67,42 @@ textureSettings TextureHelpingSettings::LoadSettings(_enemyType type, Scene* sce
 		settings.spriteFilename = "res/img/enemies/enemy3_900.png";
 		settings.spriteRows = 1;
 		settings.spriteCols = 2;
+		settings.desiredRow = 0;
+		settings.desiredCol = 0;
+		settings.spriteTexture = enemySpriteTexture;
+		settings.spriteRectangle = enemySpriteRectangle;
+		settings.spriteTimer = 0;
+		break;
+	}
+	case BANSAI:
+	{
+		settings.spriteFilename = "res/img/enemies/kamikaze1.png";
+		settings.spriteRows = 1;
+		settings.spriteCols = 1;
+		settings.desiredRow = 0;   
+		settings.desiredCol = 0;
+		settings.spriteTexture = enemySpriteTexture;
+		settings.spriteRectangle = enemySpriteRectangle;
+		settings.spriteTimer = 0;
+		break;
+	}
+	case MADMAN:
+	{
+		settings.spriteFilename = "res/img/enemies/madman1.png";
+		settings.spriteRows = 1;
+		settings.spriteCols = 1;
+		settings.desiredRow = 0;
+		settings.desiredCol = 0;
+		settings.spriteTexture = enemySpriteTexture;
+		settings.spriteRectangle = enemySpriteRectangle;
+		settings.spriteTimer = 0;
+		break;
+	}
+	case BOSS:
+	{
+		settings.spriteFilename = "res/img/enemies/boss1.png";
+		settings.spriteRows = 1;
+		settings.spriteCols = 1;
 		settings.desiredRow = 0;
 		settings.desiredCol = 0;
 		settings.spriteTexture = enemySpriteTexture;
@@ -124,6 +159,18 @@ textureSettings TextureHelpingSettings::LoadSettings(_bulletType type, Scene* sc
 		settings.spriteTimer = 0;
 		break;
 	}
+	case TYPE_PLAYER:
+	{
+		settings.spriteFilename = "res/img/weapons/Fx_01.png";
+		settings.spriteRows = 1;
+		settings.spriteCols = 3;
+		settings.desiredRow = 0;
+		settings.desiredCol = 2;
+		settings.spriteTexture = bulletSpriteTexture;
+		settings.spriteRectangle = bulletSpriteRectangle;
+		settings.spriteTimer = 0;
+		break;
+	}
 	default:
 		break;
 	}
@@ -162,11 +209,11 @@ textureSettings TextureHelpingSettings::LoadSettings(_backgroundType type, Scene
 
 	case FOREST:
 	{
-		settings.spriteFilename = "res/img/backgrounds/desert_900.png";
+		settings.spriteFilename = "res/img/backgrounds/forest.png";
 		settings.spriteRows = 1;
-		settings.spriteCols = 3;
+		settings.spriteCols = 1;
 		settings.desiredRow = 0;
-		settings.desiredCol = 2;
+		settings.desiredCol = 0;
 		settings.spriteTexture = backgroundSpriteTexture;
 		settings.spriteRectangle = backgroundSpriteRectangle;
 		settings.spriteTimer = 0;
@@ -176,9 +223,9 @@ textureSettings TextureHelpingSettings::LoadSettings(_backgroundType type, Scene
 	{
 		settings.spriteFilename = "res/img/backgrounds/desert_clouds.png";
 		settings.spriteRows = 1;
-		settings.spriteCols = 3;
+		settings.spriteCols = 1;
 		settings.desiredRow = 0;
-		settings.desiredCol = 2;
+		settings.desiredCol = 0;
 		settings.spriteTexture = backgroundSpriteTexture;
 		settings.spriteRectangle = backgroundSpriteRectangle;
 		settings.spriteTimer = 0;

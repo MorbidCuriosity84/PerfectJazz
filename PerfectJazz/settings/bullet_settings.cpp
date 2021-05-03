@@ -15,14 +15,15 @@ bulletSettings BulletSettings::LoadSettings(_bulletType type, Scene* scene) {
 		settings.angle = 90.f;
 		settings.category = ENEMY_BULLET;
 		settings.direction = -1.f;
-		settings.velocity = Vector2f(0.f, 100.f);
-		settings.spriteScale = Vector2f(1.f, 1.f);
+		settings.velocity = Vector2f(0.f, 300.f);
+		settings.spriteScale = Vector2f(1.5f, 1.5f);
+		settings.sound = EXPLOSION_1;
 		break;
 	}
 
 	case TYPE2:
 	{
-		settings.damage = 100;
+		settings.damage = 250;
 		settings.damageUpgradeCount = 0;
 		settings.hp = 100;
 		settings.lifetime = 10.f;
@@ -30,8 +31,9 @@ bulletSettings BulletSettings::LoadSettings(_bulletType type, Scene* scene) {
 		settings.angle = 90.f;
 		settings.category = ENEMY_BULLET;
 		settings.direction = -1.f;
-		settings.velocity = Vector2f(0.f, 200.f);
-		settings.spriteScale = Vector2f(1.f, 1.f);
+		settings.velocity = Vector2f(0.f, 400.f);
+		settings.spriteScale = Vector2f(1.5f, 1.5f);
+		settings.sound = EXPLOSION_2;
 		break;
 	}
 	case TYPE3:
@@ -46,6 +48,22 @@ bulletSettings BulletSettings::LoadSettings(_bulletType type, Scene* scene) {
 		settings.direction = -1.f;
 		settings.velocity = Vector2f(0.f, 200.f);
 		settings.spriteScale = Vector2f(3.f, 3.f);
+		settings.sound = EXPLOSION_3;
+		break;
+	}
+	case TYPE_PLAYER:
+	{
+		settings.damage = 300;
+		settings.damageUpgradeCount = 0;
+		settings.hp = 100;
+		settings.lifetime = 10.f;
+		settings.scene = scene;
+		settings.angle = 90.f;
+		settings.category = FRIENDLY_BULLET;
+		settings.direction = 1.f;
+		settings.velocity = Vector2f(0.f, 300.f);
+		settings.spriteScale = Vector2f(1.f, 1.f);
+		settings.sound = EXPLOSION_1;
 		break;
 	}
 	default:

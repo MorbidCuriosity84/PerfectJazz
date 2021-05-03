@@ -18,8 +18,10 @@ public:
 	void GameOver();
 	virtual void Render();
 	bool isLoaded() const;
+	void levelOver();
+	static int deadEnemies;
 	std::shared_ptr<Entity> makeEntity();
-	EntityManager ents;
+	EntityManager ents;	
 
 protected:
 	void setLoaded(bool);
@@ -33,17 +35,28 @@ class Engine {
 public:
 	Engine() = delete;
 	static void Start(unsigned int width, unsigned int height,
-		const std::string& gameName, Scene* scn);
+	const std::string& gameName, Scene* scn);
 	static void ChangeScene(Scene*);
 	static sf::RenderWindow& GetWindow();
 	static sf::Vector2u getWindowSize();
 	static void setVsync(bool b);
+	static bool isGamePaused;
+	static bool isMenu;
+	static bool isPausedMenu;
+	static bool isLevelComplete;
+	static bool isLoading;
+	static bool isLevelFinished;
+	static Scene* _lastScene;
+	static Scene* _activeScene;
+	static int currentPlayerLevel;
+	static double FPS;
+
 
 private:
-	static Scene* _activeScene;
 	static std::string _gameName;
 	static void Update();
 	static void Render(sf::RenderWindow& window);
+	static void updateViewsSize();
 };
 
 namespace timing {

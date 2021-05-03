@@ -1,21 +1,48 @@
 #include "cmp_missile_movement.h"
 #include "Box2D/Box2D.h"
-#include "math.h"
+#include <cmath>
 #include <iostream>
+#include <SFML/Graphics/CircleShape.hpp>
+#include <system_physics.h>
+#include "cmp_radar.h"
 
-void MissileMovementComponent::update(double dt)
-{
+using namespace Physics;
+
+void MissileMovementComponent::update(double dt) {
+	
 	if (_seeking) {
 
 		if (player != NULL && player->isAlive()) {
-			_velocity = normalize(player.get()->getPosition() - _parent->getPosition()) / (float)length(player.get()->getPosition() - _parent->getPosition()) * 35.f;
+
+			//This needs some work to make the impulse smoother
+			_velocity = normalize(player.get()->getPosition() - _parent->getPosition()) / (float)length(player.get()->getPosition() - _parent->getPosition()) * 95.f;
 			//_velocity.x = player.get()->getPosition().x - _parent->getPosition().x;
 		}
+
+		Vector2f bul_pl_dif = _parent->getPosition() - player->getPosition();
+		bul_pl_dif = Vector2f(fabs(bul_pl_dif.x), fabs(bul_pl_dif.y));
+
+		//Better way using dot product and not atan calls, still getting weirdness when the missile moves away though	
+		Vector2f a = parentPhysics->getVelocity();
+		Vector2f b = player->getPosition() - _parent->getPosition();
+
+		if ( (a.x * b.y) - (a.y * b.x) < 0) { //if left
+			_parentSprite->getSprite().rotate(2.f);
+		}
+		else if ( (a.x * b.y) - (a.y * b.x) > 0) {
+			_parentSprite->getSprite().rotate(-2.f);
+		}
+		else { //if moving away
+			if ( (a.x * b.x) + (a.y * b.y) < 0) {
+				_parentSprite->getSprite().rotate(2.f);
+			}
+			else {
+				_parentSprite->getSprite().rotate(-2.f);
+			}
+		}
+
 		parentPhysics.get()->impulse(_velocity);
 		//parentPhysics.get()->setVelocity(_velocity);
-	}
-	else {
-
 	}
 }
 
@@ -27,21 +54,6 @@ void MissileMovementComponent::setPhysics(shared_ptr<PhysicsComponent> phys) { _
 
 shared_ptr<PhysicsComponent> MissileMovementComponent::getPhysics() const { return _parentPhysics; }
 
-MissileMovementComponent::MissileMovementComponent(Entity* p, sf::Vector2f vel, bool seek, _entityCategory cat) : MovementComponent(p, vel), _seeking(seek), cat(cat) {	
-	_parentPhysics = _parent->GetCompatibleComponent<PhysicsComponent>()[0];
-	b2FixtureDef missileRadar;
-	b2CircleShape circleShape;
-	circleShape.m_radius = 64;	
-	missileRadar.shape = &circleShape;
-	missileRadar.isSensor = true;	
-	if (cat == ENEMY_MISSILE) {
-		missileRadar.filter.categoryBits = ENEMY_MISSILE_RADAR;
-		missileRadar.filter.maskBits = PLAYER_BODY;
-	}
-	else {
-		missileRadar.filter.categoryBits = FRIENDLY_MISSILE_RADAR;
-		missileRadar.filter.maskBits = ENEMY_BODY;
-	}
-	
-	_parentPhysics.get()->getBody()->CreateFixture(&missileRadar);	
+MissileMovementComponent::MissileMovementComponent(Entity* p, sf::Vector2f vel, bool seek, _entityCategory cat) : MovementComponent(p, vel, { 0.f,0.f }, false), _seeking(seek), cat(cat) {
+	_parentSprite = _parent->GetCompatibleComponent<SpriteComponent>()[0];
 }

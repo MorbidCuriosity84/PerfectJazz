@@ -4,7 +4,7 @@
 #include "../movement/cmp_missile_movement.h"
 
 /*
-* @param shared_ptr<HPComponent hpCMP, shared_ptr<damageCMP>, shared_ptr<MissileMovementComponent>, bool isMissile
+* @param shared_ptr<HPComponent hpCMP, shared_ptr<damageCMP>, shared_ptr<MissileMovementComponent>, bool isMissileRadar
 *
 * Helper to allow collision between multiple different object types. Gets attached to physics body user data
 * and then used within begin contact to determine how to handle the contact. Missiles will trigger on contact with radar body
@@ -14,10 +14,18 @@ struct collisionHelper {
     HPComponent* hpCMP;
     DamageComponent* damageCMP;
     MissileMovementComponent* missileCMP;
-    bool isMissile;
+    bool isMissileRadar;
     bool isPowerup;
 
-    collisionHelper() : isMissile(false), isPowerup(false), hpCMP(nullptr), damageCMP(nullptr), missileCMP(nullptr)
+    void nullify() {
+        isMissileRadar = false;
+        isPowerup = false;
+        hpCMP = nullptr;
+        damageCMP = nullptr;
+        missileCMP = nullptr;
+    }
+
+    collisionHelper() : isMissileRadar(false), isPowerup(false), hpCMP(nullptr), damageCMP(nullptr), missileCMP(nullptr)
     {
         
     }

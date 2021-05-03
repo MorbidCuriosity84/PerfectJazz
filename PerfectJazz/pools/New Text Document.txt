@@ -1,0 +1,18 @@
+#pragma once
+#include "entityPool.h"
+
+using namespace std;
+
+
+class BulletPool
+{
+public:
+	static unsigned char BulletPool::bulPointer;
+	static std::shared_ptr<Entity> BulletPool::bulPool[256];
+
+	BulletPool() = default;
+	~BulletPool() = default;
+
+	static void init(Scene* s);
+};
+
