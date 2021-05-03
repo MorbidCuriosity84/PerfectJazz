@@ -75,7 +75,7 @@ void LevelScene::Load() {
 	//Create Enemies
 	{
 		if (!Engine::isInfiniteLevel) {
-			LevelManager::loadLevel(Engine::currentPlayerLevel++); //-- only needed for specific levels, infinite levels just need a call to LevelManager in the update
+			LevelManager::loadLevel(Engine::currentPlayerLevel); //-- only needed for specific levels, infinite levels just need a call to LevelManager in the update
 		}
 	}
 

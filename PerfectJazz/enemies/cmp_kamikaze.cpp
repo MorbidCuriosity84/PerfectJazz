@@ -8,7 +8,8 @@ Kamikaze::Kamikaze(Entity* p, textureSettings enemyTextureHelper, textureSetting
 	: EnemyComponent(p, enemyTextureHelper, bulletTextureHelper, enemySettings, weaponSettings, bulletSettings, index)
 {
 	missileCMP = p->addComponent<MissileMovementComponent>(enemySettings.velocity, true, KAMIKAZE);
-	radarCMP = p->addComponent<RadarComponent>(4.f, ENEMY_MISSILE_RADAR);
+	auto r = _parent->addComponent<RadarComponent>(8.f, bulletSettings.category);
+	r->setRadarFixture();
 }
 
 //Updates the kamikaze behaviour

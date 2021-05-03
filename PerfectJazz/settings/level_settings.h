@@ -13,17 +13,17 @@
 //Sets up a string array with the different waves per each level
 static std::string levels[5] =
 {
-	/*
-	"5",
+	
+	"102345",
 	"542413",
 	"002361",
 	"154232",
-	"540132",*/
+	"540132",
+	/*"7",
 	"1",
 	"1",
 	"1",
-	"1",
-	"1",
+	"1",*/
 };
 
 //Sets up the waves fileanmes in an array of strings

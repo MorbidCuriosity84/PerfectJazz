@@ -28,5 +28,6 @@ class BulletSettings {
 public:
 	//Creates an instance of the struct bulletSettings depending of the type of bullet
 	static bulletSettings LoadSettings(_bulletType type, Scene* scene);
+	static void scale(int factor, bulletSettings& settings);
 };
 

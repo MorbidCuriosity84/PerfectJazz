@@ -10,6 +10,7 @@
 #include "cmp_kamikaze.h"
 #include "cmp_beserker.h"
 #include "../pools/enemyPool.h"
+#include "cmp_boss.h"
 
 std::queue<std::string> LevelManager::waves;
 int LevelManager::enemyCount;
@@ -18,6 +19,8 @@ float LevelManager::kamikazeTimer;
 float LevelManager::countTimer;
 float LevelManager::singleTimer;
 bool LevelManager::isBoss;
+bool LevelManager::splashMusic;
+int LevelManager::waveCount;
 textureSettings _eTexHelper;
 textureSettings _bTexHelper;
 enemySettings _eSettings;
@@ -29,6 +32,7 @@ void LevelManager::loadLevel(int level) {
 	std::queue<std::string> empty;
 	std::swap(waves, empty);
 
+	splashMusic = false;
 	isBoss = false;
 	enemyCount = 0;
 	levelOverTimer = 3.f;
@@ -58,24 +62,48 @@ void LevelManager::playLevel(Scene* s) {
 	//Generates a number between 5 and 15, and uses it as a timer for spawning a kamikaze
 	if (kamikazeTimer < 0 && !Engine::isLevelComplete) {
 		spawnKamikaze(s);
-		kamikazeTimer = (float)RandomNumber::generateUniformRealNumber(5, 15);
+		kamikazeTimer = (float)RandomNumber::generateUniformRealNumber(5, 8);
 	}
-
+	//If level waves are finished, push boss wave7 onto queue
 	if (waves.empty() && !isBoss) {
 		waves.push("wave7");
 		isBoss = true;		
 	}
+	////stop current level music, play boss splash music
+	//if (isBoss) {
+	//	if (musicArray[currentLvlMusicIndex].Playing) {
+	//		musicArray[currentLvlMusicIndex].stop();
+	//		musicArray[MUSIC_BOSS_SPLASH].setPosition(0, 1, 50);
+	//		musicArray[MUSIC_BOSS_SPLASH].setVolume(25);
+	//		musicArray[MUSIC_BOSS_SPLASH].setLoop(false);
+	//		musicArray[MUSIC_BOSS_SPLASH].play();
+	//		currentLvlMusicIndex = MUSIC_BOSS_SPLASH;
+	//		splashMusic = true;
+	//	}
+	//}
+	////play boss fight music
+	//if (splashMusic && isBoss) {
+	//	if (!musicArray[MUSIC_BOSS_SPLASH].Playing) {
+	//		musicArray[MUSIC_BOSS_FIGHT].setPosition(0, 1, 50);
+	//		musicArray[MUSIC_BOSS_FIGHT].setVolume(25);
+	//		musicArray[MUSIC_BOSS_FIGHT].setLoop(true);
+	//		musicArray[MUSIC_BOSS_FIGHT].play();
+	//		currentLvlMusicIndex = MUSIC_BOSS_FIGHT;
+	//	}
+	//}
+
 	//If no more enemies in the current wave, level is over
-	if (waves.empty()) {
+	if (waves.empty() && Boss::isBossDead) {
 		if (enemyCount == 0) {
 			s->levelOver();
-		}
-	}
+		}	
+	}	
 }
 
 //updates the level 
 void LevelManager::update(Scene* s, bool infinite, int numWaveFiles, double dt)
 {
+	//checks if level has got stuck with enemy count at 1 or 2, resets count after timer runs out
 	if (!isBoss) {
 		if (enemyCount == 1 || enemyCount == 2) {
 			singleTimer -= dt;
@@ -103,6 +131,7 @@ void LevelManager::update(Scene* s, bool infinite, int numWaveFiles, double dt)
 	if (Engine::isLevelComplete) {
 		levelOverTimer -= dt;
 		if (levelOverTimer <= 0.0) {
+			Engine::currentPlayerLevel++;
 			Engine::ChangeScene(&upgradeMenu);
 		}
 	}
@@ -115,16 +144,17 @@ void LevelManager::infiniteLevel(Scene* s, int numWaveFiles) {
 	if (enemyCount == 0) {
 		int wave = RandomNumber::genRandomNumBetween(0, numWaveFiles - 1);
 		Enemies::createEnemies(waveFilenames[wave], s);
+		waveCount++;
 	}
 	//If the kamikaze timer is below 0 and the level is not complete, spawn a kamikaze
 	if (kamikazeTimer < 0 && !Engine::isLevelComplete) {
 		spawnKamikaze(s);
 		kamikazeTimer = (float)RandomNumber::generateUniformRealNumber(5, 15);
-	}
-	//If the deads counter is bigger than 5 and level is not complete, spawn a beserker
-	if (Scene::deadEnemies > 5 && !Engine::isLevelComplete) {
-		spawnBeserker(s);
-		Scene::deadEnemies = (float)RandomNumber::generateUniformRealNumber(-5, 0);
+	}	
+
+	//increment count every 10 waves to scale enemy difficulty
+	if (waveCount > 0 && waveCount % 10 == 0) {
+		Engine::currentPlayerLevel++;
 	}
 }
 

@@ -37,5 +37,6 @@ class EnemySettings {
 public:
 	//Creates an instance of the struct enemySettings depending of the type of enemy
 	static enemySettings LoadSettings(_enemyType type, Scene* scene);
+	static void scale(int factor, enemySettings& settings);
 };
 

@@ -5,8 +5,7 @@
 //Loads settings for the different enemy types
 enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
 	//Creates a reference to the struct enemySettings
-	enemySettings settings;
-
+	enemySettings settings;		
 	switch (type) {
 	//Type of enemy Airman
 	case AIRMAN:
@@ -70,7 +69,7 @@ enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
 		settings.scene = scene;
 		settings.restitution = 0.4f;
 		settings.friction = 0.005f;
-		settings.velocity = { 0.f,-25.f };
+		settings.velocity = { 0.f,-45.f };
 		settings.tile = ls::KAMIKAZE;
 		settings.category = KAMIKAZE;
 		settings.type = BANSAI;
@@ -113,11 +112,20 @@ enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
 		settings.hpVisible = true;
 		settings.scale = { 1.5f,1.5f };
 		settings.angle = 0;
-		settings.sound = EXPLOSION_3;
+		settings.sound = EXPLOSION_3;		
 		break;
 	}
 	default:
 		break;
 	}
+	scale(5, settings);
 	return settings;
+}
+
+void EnemySettings::scale(int factor, enemySettings& settings)
+{
+	if (Engine::currentPlayerLevel > 0) {
+		settings.damage *= Engine::currentPlayerLevel * factor;
+		settings.hp *= Engine::currentPlayerLevel * factor;
+	}
 }

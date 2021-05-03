@@ -238,7 +238,7 @@ void MainMenu::Update(const double& dt) {
 					Engine::isPausedMenu = false;
 					Engine::isMenu = false;
 					Engine::currentPlayerLevel = 0;
-					musicArray[MUSIC_TITLE_SCREEN].pause();
+					musicArray[MUSIC_TITLE_SCREEN].pause();					
 					Engine::ChangeScene(&levelScene);
 					break;
 				};

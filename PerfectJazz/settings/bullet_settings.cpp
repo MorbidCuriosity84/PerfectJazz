@@ -3,12 +3,13 @@
 //Loads values for the bullets settings that will help to load the sprite
 bulletSettings BulletSettings::LoadSettings(_bulletType type, Scene* scene) {
 
-	bulletSettings settings;
+	bulletSettings settings;	
+
 	//Switches between different settigns for different bullets
 	switch (type) {
 	case TYPE1:
 	{
-		settings.damage = 100;                         // Sets the current damage
+		settings.damage = 100;						   // Sets the current damage
 		settings.damageUpgradeCount = 0;			   // Sets the current upgrade count for the damage
 		settings.hp = 100;							   // Sets the current hp
 		settings.lifetime = 10.f;					   // Sets the entities lifetime
@@ -24,7 +25,7 @@ bulletSettings BulletSettings::LoadSettings(_bulletType type, Scene* scene) {
 													   
 	case TYPE2:										   
 	{												   
-		settings.damage = 250;						   
+		settings.damage = 250;
 		settings.damageUpgradeCount = 0;
 		settings.hp = 100;
 		settings.lifetime = 10.f;
@@ -65,10 +66,18 @@ bulletSettings BulletSettings::LoadSettings(_bulletType type, Scene* scene) {
 		settings.velocity = Vector2f(0.f, 300.f);
 		settings.spriteScale = Vector2f(1.f, 1.f);
 		settings.sound = EXPLOSION_1;
-		break;
+		return settings;		
 	}
 	default:
 		break;
 	}
+	scale(5, settings);
 	return settings;
+}
+
+void BulletSettings::scale(int factor, bulletSettings& settings)
+{
+	if (Engine::currentPlayerLevel - 1 > 0) {
+		settings.damage *= Engine::currentPlayerLevel * factor;		
+	}
 }

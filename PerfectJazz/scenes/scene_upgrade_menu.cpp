@@ -494,8 +494,7 @@ void UpgradeMenu::Update(const double& dt) {
 				Engine::isPausedMenu = false;
 				musicArray[currentLvlMusicIndex].pause();
 				PlayerComponent::clonePlayer(player);
-				Engine::_lastScene->UnLoad();
-				Engine::currentPlayerLevel++;
+				Engine::_lastScene->UnLoad();				
 				Engine::isLevelFinished = true;
 				Engine::ChangeScene(&levelScene);
 				break;
