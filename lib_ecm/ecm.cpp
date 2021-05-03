@@ -86,6 +86,7 @@ void Entity::clearComponents()
             "Can't delete entity, someone is grabbing a component!");
     }
     _components.clear();
+    _tags.erase(_tags.begin(), _tags.end());
 }
 
 Component::Component(Entity* const p) : _parent(p), _fordeletion(false), _isAlive(true), _isVisible(true) {}

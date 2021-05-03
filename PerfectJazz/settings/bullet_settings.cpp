@@ -71,7 +71,7 @@ bulletSettings BulletSettings::LoadSettings(_bulletType type, Scene* scene) {
 	default:
 		break;
 	}
-	scale(5, settings);
+	scale(2, settings);
 	return settings;
 }
 

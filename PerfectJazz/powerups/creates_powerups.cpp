@@ -20,12 +20,12 @@ void Powerups::deployPowerups() {
 	//probabilities for the powerups. Each power up has a chance to be randomly picked
 	std::discrete_distribution<> powerupsWeights({
 		1,    // Damage % chance       1,  
-		2,    // Health % chance       1,  
+		3,    // Health % chance       1,  
 		1,    // Bullet Num % chance   0.3,
 		0.7,    // Firerate % chance	   0.7,
 		0.7,    // Player Mov % chance 0.7,
 		97,    // Coin % chance		   97,	
-		0.2 });// Extra % chance	   0.2 
+		0 });// Extra % chance	   0.2 
 	int choosenPowerup = RandomNumber::generateRandomNumber(powerupsWeights);
 
 	//probabilities for the columns. Each columns has a chance to be randomly picked
@@ -87,7 +87,7 @@ void Powerups::deployPowerups() {
 				for (int j = 0; j < 14; j++) {
 					shared_ptr<Entity> en = PowerupPool::pwp_pool[PowerupPool::pwp_poolPointer++];
 					en->setView(mainView);
-
+					en->setVisible(false);
 					if (j == 0) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 4) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
 					if (j == 1) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 5) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
 					if (j == 2) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 6) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
@@ -106,13 +106,15 @@ void Powerups::deployPowerups() {
 
 					en->addComponent<PowerupComponent>(_powerupTextureHelper, _powerupSettings);
 					en->addTag(type);
+					en->setAlive(true);
+					en->setVisible(true);
 				}
 			}
 			if (i == 1) {
 				for (int j = 0; j < 9; j++) {
 					shared_ptr<Entity> en = PowerupPool::pwp_pool[PowerupPool::pwp_poolPointer++];
 					en->setView(mainView);
-
+					en->setVisible(false);
 					if (j == 0) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 4) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
 					if (j == 1) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 7) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
 					if (j == 2) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 9) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
@@ -125,6 +127,8 @@ void Powerups::deployPowerups() {
 
 					en->addComponent<PowerupComponent>(_powerupTextureHelper, _powerupSettings);
 					en->addTag(type);
+					en->setAlive(true);
+					en->setVisible(true);
 				}
 			}
 
@@ -132,6 +136,7 @@ void Powerups::deployPowerups() {
 				for (int j = 0; j < 12; j++) {
 					shared_ptr<Entity> en = PowerupPool::pwp_pool[PowerupPool::pwp_poolPointer++];
 					en->setView(mainView);
+					en->setVisible(false);
 					if (j == 0) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 4) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
 					if (j == 1) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 5) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
 					if (j == 2) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 6) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
@@ -147,13 +152,15 @@ void Powerups::deployPowerups() {
 
 					en->addComponent<PowerupComponent>(_powerupTextureHelper, _powerupSettings);
 					en->addTag(type);
+					en->setAlive(true);
+					en->setVisible(true);
 				}
 			}
 			if (i == 3) {
 				for (int j = 0; j < 10; j++) {
 					shared_ptr<Entity> en = PowerupPool::pwp_pool[PowerupPool::pwp_poolPointer++];
 					en->setView(mainView);
-
+					en->setVisible(false);
 					if (j == 0) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 4) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
 					if (j == 1) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 7) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
 					if (j == 2) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 9) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
@@ -167,6 +174,8 @@ void Powerups::deployPowerups() {
 
 					en->addComponent<PowerupComponent>(_powerupTextureHelper, _powerupSettings);
 					en->addTag(type);
+					en->setAlive(true);
+					en->setVisible(true);
 				}
 			}
 
@@ -174,7 +183,7 @@ void Powerups::deployPowerups() {
 				for (int j = 0; j < 12; j++) {
 					shared_ptr<Entity> en = PowerupPool::pwp_pool[PowerupPool::pwp_poolPointer++];
 					en->setView(mainView);
-
+					en->setVisible(false);
 					if (j == 0) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 4) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
 					if (j == 1) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 5) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
 					if (j == 2) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 6) + ((mainView.getSize().x / 32)), mainView.getSize().x / 32 - (mainView.getSize().x / 32) * i)); }
@@ -190,6 +199,8 @@ void Powerups::deployPowerups() {
 
 					en->addComponent<PowerupComponent>(_powerupTextureHelper, _powerupSettings);
 					en->addTag(type);
+					en->setAlive(true);
+					en->setVisible(true);
 				}
 			}
 			_powerupSettings = PowerupSettings::LoadSettings(COIN_PWU, _scene);

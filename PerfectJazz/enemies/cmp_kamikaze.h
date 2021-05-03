@@ -12,6 +12,7 @@ class Kamikaze : public EnemyComponent
 protected:
 	std::shared_ptr<MissileMovementComponent> missileCMP;
 	std::shared_ptr<RadarComponent> radarCMP;
+	bool isLoaded;
 public:	
 	Kamikaze(Entity* p, textureSettings enemyTextureHelper, textureSettings bulletTextureHelper, enemySettings enemySettings, weaponSettings weaponSettings, bulletSettings bulletSettings, int index);
 	~Kamikaze() = default;
