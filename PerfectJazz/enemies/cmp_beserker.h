@@ -7,6 +7,7 @@
 #include "../settings/weapon_settings.h"
 #include "../settings/bullet_settings.h"
 
+//Adds the necessary components for the beserker enemy to act like one
 class Beserker : public EnemyComponent
 {
 protected:

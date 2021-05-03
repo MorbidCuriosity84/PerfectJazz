@@ -7,6 +7,9 @@
 #include "../settings/collision_helper.h"
 #include "../components/cmp_sound.h"
 
+//Bullet component that adds sprites, damage, physics and hp components to the entity
+//It also helps to perform the animation for the sprites and checks whether the entity
+//hp is over 0, and alive, or no.
 class BulletComponent : public Component {
 protected:
 	textureSettings _bulletTextHelper;

@@ -7,13 +7,15 @@ using namespace std;
 using namespace sf;
 using namespace Physics;
 
+// Updates the position of the powerup physics component to its parents,
+// and updates the position using the velocity
 void PowerupPhysicsComponent::update(double dt) {
     const auto pos = _parent->getPosition();
-    setVelocity(Vector2f(0.f, 100.f));
     _parent->setPosition(Vector2f(pos.x, pos.y + (float)dt * _Velocity.y));
 }
 
-
+//Constructor for powerup physics component.
+//Sets the body to sleep, and fixed rotation to true
 PowerupPhysicsComponent::PowerupPhysicsComponent(Entity* p,
     const Vector2f& size)
     : PhysicsComponent(p, true, size) {

@@ -7,22 +7,15 @@
 static class SettingsHolder
 {
 public:
+	//Creates an instance of the struct player settings, weapons settings, bullets settings,
+	//player texture helper and bullet texture helper, to be used to save the players settings
 	static playerSettings pSettings;
 	static weaponSettings wSettings;
 	static bulletSettings bSettings;
 	static textureSettings pTexHelper;
 	static textureSettings bTexHelper;
 
+	//Default constructor
 	SettingsHolder() {}
-	/*SettingsHolder( playerSettings _pSettings,
-					weaponSettings _wSettings,
-					bulletSettings _bSettings,
-					textureSettings _pTexHelper,
-					textureSettings _bTexHelper	) :
-					pSettings(_pSettings), 
-					wSettings(_wSettings), 
-					bSettings(_bSettings), 
-					pTexHelper(_pTexHelper), 
-					bTexHelper(_bTexHelper)	{}*/
 };
 

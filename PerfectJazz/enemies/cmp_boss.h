@@ -1,5 +1,7 @@
 #pragma once
 #include "cmp_enemy.h"
+
+//Adds a specific behaviour for the players type boss
 class Boss : public EnemyComponent
 {
 protected:
@@ -13,7 +15,6 @@ public:
 	void update(double dt) override;
 	void render() {};
 	void spawnKamikazes(int i);
-	void switchSprite(double dt);
 	Boss(Entity* p, textureSettings enemyTextureHelper, textureSettings bulletTextureHelper, enemySettings enemySettings, weaponSettings weaponSettings, bulletSettings bulletSettings, int index);
 	~Boss() = default;
 };

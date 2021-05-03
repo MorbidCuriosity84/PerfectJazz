@@ -1,36 +1,41 @@
 #include "texture_helper_settings.h"
 #include "../game.h"
 #include "engine.h"
+
+//Loads settings for the player that will help to load the sprite
 textureSettings TextureHelpingSettings::LoadSettings(_playerType type, Scene* scene) {
 
+	//Creates a reference to the struct textureSettings
 	textureSettings settings;
+	//Creates a pointer to  sf::Texture and sf::IntRect
 	auto playerSpriteTexture = make_shared<sf::Texture>();
 	auto playerSpriteRectangle = make_shared<sf::IntRect>();
+
+	//Switches between different settings for different cases of weapon types
 	switch (type) {
 	case PLAYER1:
 	{
-		settings.spriteFilename = "res/img/player/player_900.png";
-		settings.spriteRows = 2;
-		settings.spriteCols = 5;
-		settings.desiredRow = 0;
-		settings.desiredCol = 2;
-		settings.spriteTexture = playerSpriteTexture;
-		settings.spriteRectangle = playerSpriteRectangle;
-		settings.spriteTimer = 0;
+		settings.spriteFilename = "res/img/player/player_900.png"; // Loads the sprite for the texture
+		settings.spriteRows = 2;								   // Sets the number of rows for the sprite sheet
+		settings.spriteCols = 5;								   // Sets the number of columns for the sprite sheet
+		settings.desiredRow = 0;								   // Sets the desired row from the sprite sheet
+		settings.desiredCol = 2;								   // Sets the desired column from the sprite sheet
+		settings.spriteTexture = playerSpriteTexture;			   // Sets the Texture pointer to the current setting
+		settings.spriteRectangle = playerSpriteRectangle;		   // Sets the IntRect pointer to the current setting
+		settings.spriteTimer = 0;								   // Sets the timer to 0
 		break;
 	}
-
+	//Swtich case for a future second player
 	case PLAYER2:
 	{
 		break;
 	}
-
 	default:
 		break;
 	}
 	return settings;
 }
-
+//Loads settings for the different types of enemies that will help to load the sprite
 textureSettings TextureHelpingSettings::LoadSettings(_enemyType type, Scene* scene) {
 
 	textureSettings settings;
@@ -40,10 +45,10 @@ textureSettings TextureHelpingSettings::LoadSettings(_enemyType type, Scene* sce
 	case AIRMAN:
 	{
 		settings.spriteFilename = "res/img/enemies/enemy1_900.png";
-		settings.spriteRows = 1; // indexed at 1
-		settings.spriteCols = 2; // indexed at 1
-		settings.desiredRow = 0; // indexed at 0
-		settings.desiredCol = 0; // indexed at 0
+		settings.spriteRows = 1;
+		settings.spriteCols = 2;
+		settings.desiredRow = 0; 
+		settings.desiredCol = 0;
 		settings.spriteTexture = enemySpriteTexture;
 		settings.spriteRectangle = enemySpriteRectangle;
 		settings.spriteTimer = 0;
@@ -115,7 +120,7 @@ textureSettings TextureHelpingSettings::LoadSettings(_enemyType type, Scene* sce
 	}
 	return settings;
 }
-
+//Loads settings for the different types of bullets that will help to load the sprite
 textureSettings TextureHelpingSettings::LoadSettings(_bulletType type, Scene* scene) {
 
 	textureSettings settings;
@@ -176,7 +181,7 @@ textureSettings TextureHelpingSettings::LoadSettings(_bulletType type, Scene* sc
 	}
 	return settings;
 }
-
+//Loads settings for the different types of backgrounds that will help to load the sprite
 textureSettings TextureHelpingSettings::LoadSettings(_backgroundType type, Scene* scene) {
 	textureSettings settings;
 	auto backgroundSpriteTexture = make_shared<sf::Texture>();
@@ -236,7 +241,7 @@ textureSettings TextureHelpingSettings::LoadSettings(_backgroundType type, Scene
 	}
 	return settings;
 }
-
+//Loads settings for the different types of powerups that will help to load the sprite
 textureSettings TextureHelpingSettings::LoadSettings(_powerUpsType type, Scene* scene) {
 
 	textureSettings settings;

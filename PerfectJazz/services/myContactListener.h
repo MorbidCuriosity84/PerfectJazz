@@ -6,7 +6,7 @@
 #include <Box2D/Dynamics/b2WorldCallbacks.h>
 
 using namespace std;
-
+//Defines all the fields for the contact listener
 struct myContact {
     b2Fixture* fixtureA;
     b2Fixture* fixtureB;
@@ -21,10 +21,7 @@ class myContactListener : public b2ContactListener {
 public:
     std::vector<std::shared_ptr<myContact>> _contacts;
 
-    /*myContactListener();
-    ~myContactListener();*/
-
+    //Let us know when there is contact between two bodies
     void BeginContact(b2Contact* contact) override;
-    void EndContact(b2Contact* contact) override;    
 };
 

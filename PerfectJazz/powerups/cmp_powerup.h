@@ -9,6 +9,7 @@
 #include "../settings/powerup_settings.h"
 #include "../components//cmp_sound.h"
 
+//Power up component that allows for a powerup to be created and updated
 class PowerupComponent : public Component{
 protected:
 	textureSettings _powerupTextureHelper;

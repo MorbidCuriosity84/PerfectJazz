@@ -2,7 +2,7 @@
 #include "engine.h"
 
 using namespace sf;
-
+//Level scene, that loads the current level and the player, background, panels and powerups
 class LevelScene : public Scene {
 
 public:

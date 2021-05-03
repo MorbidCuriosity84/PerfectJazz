@@ -7,6 +7,10 @@
 #include "../components/cmp_sprite.h"
 #include "../components/cmp_text.h"
 
+//Health component that will add the necessary sprites and text components
+//to create a health bar on top of the entity, that can be switched off.
+//It also adds health, that can be used while collision and to set triggers, 
+//like death
 class HPComponent : public Component {
 public:
 	std::shared_ptr<SpriteComponent> parentSpriteCMP;

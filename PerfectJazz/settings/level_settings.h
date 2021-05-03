@@ -10,6 +10,7 @@
 * table gives us a total of 256. This could be something to look into for future.
 */
 
+//Sets up a string array with the different waves per each level
 static std::string levels[5] =
 {
 	/*
@@ -25,6 +26,7 @@ static std::string levels[5] =
 	"1",
 };
 
+//Sets up the waves fileanmes in an array of strings
 static std::string waveFilenames[10] = {
 	"wave0",
 	"wave1",
