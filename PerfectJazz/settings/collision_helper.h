@@ -10,6 +10,7 @@
 * and then used within begin contact to determine how to handle the contact. Missiles will trigger on contact with radar body
 * and then set target as closest valid target
 */
+//Defines all the fields for the collision helper
 struct collisionHelper {
     HPComponent* hpCMP;
     DamageComponent* damageCMP;
@@ -17,6 +18,7 @@ struct collisionHelper {
     bool isMissileRadar;
     bool isPowerup;
 
+    //Sets all the bools to false and the components to null
     void nullify() {
         isMissileRadar = false;
         isPowerup = false;
@@ -25,8 +27,6 @@ struct collisionHelper {
         missileCMP = nullptr;
     }
 
-    collisionHelper() : isMissileRadar(false), isPowerup(false), hpCMP(nullptr), damageCMP(nullptr), missileCMP(nullptr)
-    {
-        
-    }
+    //Constructor with parameters
+    collisionHelper() : isMissileRadar(false), isPowerup(false), hpCMP(nullptr), damageCMP(nullptr), missileCMP(nullptr) {};
 };

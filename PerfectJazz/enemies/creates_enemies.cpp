@@ -17,23 +17,18 @@ enemySettings _enemySettings;
 weaponSettings _weaponSettings;
 bulletSettings _bulletSettings;
 
+//Creates the enemies based on a txt file with the wave
 void Enemies::createEnemies(std::string _waveFile, Scene* _scene) {
 
+	//Reads the file and, with the help of the level system, gets a position for each of the enemies on the file
 	ls::loadLevelFile("res/levels/" + _waveFile + ".txt", (round)((mainView.getSize().x / 16)));
 	auto ho = (round)(Engine::getWindowSize().y) - (round)((ls::getHeight() * mainView.getSize().y / 16));
 	ls::setOffset(Vector2f((mainView.getSize().y) / 32, ho));
 
 	int index = 0, airman_index = 0, sergeant_index = 0, colonel_index = 0, berserk_index = 0, kami_index = 0, boss_index = 0;
 
-	//MARK - I was thinking this could be condensed into a single loop
-	//If we get ls::_height and ls_width we can use that to loop through h x w
-	// 
-	//Assuming w = width and h = height then for( i = 0; i < w * h; i++)
-	//   => ls::getTile ( i % w, floor( i / w) ) 
-	//Apparently c++ handles integer division by doing floor anyway
-	//At least i think so. Let me know what you think but I'm sure Thomas said something about
-	//a double loop being bad for memory allocation/reads/writes. It seems to work anyway.
-
+	//Using the height and width of the wave file, assign one the entities from the enemy pool to a type of enemy
+	//depending on the enemy type.
 	for (int i = 0; i < ls::_height * ls::_width; i++) {
 		ls::Tile t = ls::getTile({ i % ls::_width, i / ls::_width });
 		if (t == ls::EMPTY) { continue; }
@@ -47,29 +42,34 @@ void Enemies::createEnemies(std::string _waveFile, Scene* _scene) {
 		if (t == ls::KAMIKAZE) { setType(BANSAI, _scene); index = kami_index++; }
 		if (t == ls::BESERKER) { setType(MADMAN, _scene); index = berserk_index++; }
 		if (t == ls::BOSS) { setType(BOSS, _scene); index = boss_index++; }
-
+		//If enemy of type beserker, add component beserker and movement component
 		if (t == ls::BESERKER) {
 			auto bes = en->addComponent<Beserker>(_enemyTextureHelper, _bulletTextureHelper, _enemySettings, _weaponSettings, _bulletSettings, index);
 			en->addComponent<MovementComponent>(_enemySettings.velocity, ls::getTilePosition(ls::findTiles(_enemySettings.tile)[index]), true);
 		}
+		//If enemy of type kamikaze, add component kamikaze and movement component
 		else if (t == ls::KAMIKAZE) {
 			en->addComponent<Kamikaze>(_enemyTextureHelper, _bulletTextureHelper, _enemySettings, _weaponSettings, _bulletSettings, index);
 			en->addComponent<MovementComponent>(_enemySettings.velocity, ls::getTilePosition(ls::findTiles(_enemySettings.tile)[index]), true);
 		}
+		//If enemy of type boss, add component boss and movement component. Sets linger to true
 		else if (t == ls::BOSS) {
 			auto boss = en->addComponent<Boss>(_enemyTextureHelper, _bulletTextureHelper, _enemySettings, _weaponSettings, _bulletSettings, index);
 			boss->moveCMP = chooseMovement(t, en, ls::getTilePosition(ls::findTiles(_enemySettings.tile)[index]));
 			boss->moveCMP->isLinger(true);
 		}
+		//Else, add an enemy and also movement component
 		else {
 			en->addComponent<EnemyComponent>(_enemyTextureHelper, _bulletTextureHelper, _enemySettings, _weaponSettings, _bulletSettings, index);			
 			en->addComponent<MovementComponent>(_enemySettings.velocity, ls::getTilePosition(ls::findTiles(_enemySettings.tile)[index]), true);
-		}		
+		}
+		//Sets the entites alive and increases the enemy count
 		en->setAlive(true);
 		LevelManager::enemyCount++;
 	}
 }
 
+//Sets the different settings for each of the enemy types, depending on the type of enemy
 void Enemies::setType(_enemyType type, Scene* _scene) {
 
 	switch (type) {
@@ -128,6 +128,7 @@ void Enemies::setType(_enemyType type, Scene* _scene) {
 	}
 }
 
+//Sets the movement component depending on the type of enemy
 shared_ptr<MovementComponent> Enemies::chooseMovement(ls::Tile tile, shared_ptr<Entity> en, Vector2f initPos) {
 	switch (tile) {
 	case ls::AIRMAN:

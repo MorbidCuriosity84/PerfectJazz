@@ -13,11 +13,6 @@
 
 std::queue<std::string> LevelManager::waves;
 int LevelManager::enemyCount;
-int LevelManager::airCount;
-int LevelManager::sargCount;
-int LevelManager::colCount;
-int LevelManager::kamCount;
-int LevelManager::desCount;
 float LevelManager::levelOverTimer;
 float LevelManager::kamikazeTimer;
 float LevelManager::countTimer;
@@ -30,10 +25,10 @@ enemySettings _eSettings;
 weaponSettings _wSettings;
 bulletSettings _bSettings;
 
-void LevelManager::loadLevel(int level)
-{
+//Helps the level scene to load the waves
+void LevelManager::loadLevel(int level) {
 	std::queue<std::string> empty;
-	std::swap(waves, empty); 
+	std::swap(waves, empty);
 
 	splashMusic = false;
 	isBoss = false;
@@ -49,25 +44,25 @@ void LevelManager::loadLevel(int level)
 	for (char c : levels[level]) {
 		int idx = c - 48; //converts level character to int        
 		LevelManager::waves.push(waveFilenames[idx]);
-	}	
+	}
 }
 
-void LevelManager::playLevel(Scene* s)
-{	
-	
+//Tells the scene when it's time for loading a new level,
+//based on the number of enemies left for the current wave
+void LevelManager::playLevel(Scene* s) {
 	if (enemyCount == 0) {
-		if (!waves.empty()) {			
-			Enemies::createEnemies(waves.front(), s);			
+		if (!waves.empty()) {
+			Enemies::createEnemies(waves.front(), s);
 			Scene::deadEnemies = 0;
 			waves.pop();
 		}
-	}	
+	}
+	//Generates a number between 5 and 15, and uses it as a timer for spawning a kamikaze
 	if (kamikazeTimer < 0 && !Engine::isLevelComplete) {
-		//cout << "Enemy count before creation of kamikaze = " << LevelManager::enemyCount << endl;
-		spawnKamikaze(s);		
-		//cout << "Enemy count after creation of kamikaze = " << LevelManager::enemyCount << endl;
-		kamikazeTimer = 5.f;
-	}		
+		spawnKamikaze(s);
+		kamikazeTimer = (float)RandomNumber::generateUniformRealNumber(5, 15);
+	}
+
 	if (waves.empty() && !isBoss) {
 		waves.push("wave7");
 		isBoss = true;		
@@ -93,11 +88,12 @@ void LevelManager::playLevel(Scene* s)
 		}
 	}
 
-	if (waves.empty()) {			
+	//If no more enemies in the current wave, level is over
+	if (waves.empty()) {
 		if (enemyCount == 0) {
 			s->levelOver();
 		}
-	}	
+	}
 }
 
 //updates the level 
@@ -117,42 +113,46 @@ void LevelManager::update(Scene* s, bool infinite, int numWaveFiles, double dt)
 	}	
 	countTimer -= dt;
 	if (countTimer < 0) {
-		cout << "Enemy count = " << enemyCount << endl;
-		cout << "Timer = " << singleTimer << endl;
 		countTimer = 1.f;
 	}
 	kamikazeTimer -= dt;
+	//Feeds waves for the infinite mode
 	if (infinite) {
 		infiniteLevel(s, numWaveFiles);
 		return;
 	}
 	playLevel(s);
+	//When the level is complete, change scene to the upgrade menu
 	if (Engine::isLevelComplete) {
 		levelOverTimer -= dt;
 		if (levelOverTimer <= 0.0) {
 			Engine::ChangeScene(&upgradeMenu);
 		}
-	}	
+	}
 }
 
+
+//Feeds enemies for the infinite level, spawning kamikazes and beserker randomly
 void LevelManager::infiniteLevel(Scene* s, int numWaveFiles) {
 
 	if (enemyCount == 0) {
 		int wave = RandomNumber::genRandomNumBetween(0, numWaveFiles - 1);
 		Enemies::createEnemies(waveFilenames[wave], s);
 	}
+	//If the kamikaze timer is below 0 and the level is not complete, spawn a kamikaze
 	if (kamikazeTimer < 0 && !Engine::isLevelComplete) {
-		spawnKamikaze(s);		
-		kamikazeTimer = 5.f;
+		spawnKamikaze(s);
+		kamikazeTimer = (float)RandomNumber::generateUniformRealNumber(5, 15);
 	}
+	//If the deads counter is bigger than 5 and level is not complete, spawn a beserker
 	if (Scene::deadEnemies > 5 && !Engine::isLevelComplete) {
 		spawnBeserker(s);
-		Scene::deadEnemies = 0;
+		Scene::deadEnemies = (float)RandomNumber::generateUniformRealNumber(-5, 0);
 	}
 }
 
-void LevelManager::spawnKamikaze(Scene* s)
-{	
+//Creates a new kamikaze enemy and sets it alive
+void LevelManager::spawnKamikaze(Scene* s) {
 	auto en = EnemyPool::en_pool[EnemyPool::en_poolPointer++];
 	en->setView(mainView);
 	_eSettings = EnemySettings::LoadSettings(BANSAI, s);
@@ -160,13 +160,12 @@ void LevelManager::spawnKamikaze(Scene* s)
 	_wSettings = WeaponSettings::LoadSettings(EMPTY, s);
 	_bSettings = BulletSettings::LoadSettings(TYPE3, s);
 	_bTexHelper = TextureHelpingSettings::LoadSettings(TYPE3, s);
-	en->addComponent<Kamikaze>(_eTexHelper, _bTexHelper, _eSettings, _wSettings, _bSettings, 0);	
+	en->addComponent<Kamikaze>(_eTexHelper, _bTexHelper, _eSettings, _wSettings, _bSettings, 0);
 	en->setAlive(true);
 	enemyCount++;
 }
-
-void LevelManager::spawnBeserker(Scene* s)
-{	
+//Creates a new berseker enemy and sets it alive
+void LevelManager::spawnBeserker(Scene* s) {
 	auto en = EnemyPool::en_pool[EnemyPool::en_poolPointer++];
 	en->setView(mainView);
 	_eSettings = EnemySettings::LoadSettings(MADMAN, s);
@@ -174,7 +173,7 @@ void LevelManager::spawnBeserker(Scene* s)
 	_wSettings = WeaponSettings::LoadSettings(GUN, s);
 	_bSettings = BulletSettings::LoadSettings(TYPE3, s);
 	_bTexHelper = TextureHelpingSettings::LoadSettings(TYPE3, s);
-	en->addComponent<Beserker>(_eTexHelper, _bTexHelper, _eSettings, _wSettings, _bSettings, 0);		
+	en->addComponent<Beserker>(_eTexHelper, _bTexHelper, _eSettings, _wSettings, _bSettings, 0);
 	en->setAlive(true);
 	enemyCount++;
 }

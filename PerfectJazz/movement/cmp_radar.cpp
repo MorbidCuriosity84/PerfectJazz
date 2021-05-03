@@ -5,12 +5,12 @@
 
 using namespace sf;
 
-RadarComponent::RadarComponent(Entity* p, float radius, _entityCategory cat) : Component(p), _radius(radius), _cat(cat) {	
-}
+//Constructor for RadarComponent with parameters.
+RadarComponent::RadarComponent(Entity* p, float radius, _entityCategory cat) : Component(p), _radius(radius), _cat(cat) {}
 
-/*
-* Function to create radar fixture, this will attach to the parent, so be warned it will give the parent two physics bodies
-*/
+
+//Function to create radar fixture, this will attach to the parent, so be warned it will give the parent two physics bodies
+//It helps the collision helper to assist the missile component to find the player
 void RadarComponent::setRadarFixture() {
 	auto pPhys = _parent->GetCompatibleComponent<PhysicsComponent>()[0];
 	rPhysCMP = _parent->addComponent<PhysicsComponent>(true, Vector2f( 1.f,1.f ));
@@ -20,17 +20,14 @@ void RadarComponent::setRadarFixture() {
 	b2FixtureDef missileRadar;
 	b2CircleShape circleShape;
 
-	//Used for debugging radar
-	//auto shape = _parent->addComponent<ShapeComponent>();
-	//shape->setShape<CircleShape>(240.f);
-	//shape->getShape().setOrigin({ 240.f,240.f });
-	//shape->getShape().setFillColor(sf::Color(0, 0, 0, 45));
+	//Sets up the size of the radar, that will be used to sense the proximity from the player
 	circleShape.m_radius = 8;
 	missileRadar.shape = &circleShape;
 	missileRadar.isSensor = true;
 	_colHelp.damageCMP = nullptr;
 	_colHelp.hpCMP = nullptr;
 	_colHelp.isMissileRadar = true;
+	//Sets the category of the radar as enemy or friendly missile, giving the appropiate settings
 	if (_cat == ENEMY_MISSILE) {
 		rPhysCMP->setCategory(ENEMY_MISSILE_RADAR);
 		missileRadar.filter.categoryBits = ENEMY_MISSILE_RADAR;

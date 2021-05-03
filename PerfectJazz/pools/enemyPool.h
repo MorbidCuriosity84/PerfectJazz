@@ -5,6 +5,10 @@
 
 using namespace std;
 
+//Enemy class pool.
+//256 entities are created on load to avoid loading them middle game
+//increasing the performance. Entities are used from the pool, destroyed,
+//and a new one will be created
 class EnemyPool
 {
 public:

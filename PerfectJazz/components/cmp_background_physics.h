@@ -2,6 +2,7 @@
 
 #include "cmp_physics.h"
 
+//Background physics components that adds constant velocity to the sprite
 class BackgroundPhysicsComponent : public PhysicsComponent {
 protected:
 	b2Vec2 _size;

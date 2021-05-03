@@ -8,7 +8,10 @@ bool DetectingKeys::keyEnter = false;
 bool DetectingKeys::keyEscape = false;
 bool DetectingKeys::keySpace = false;
 
+//Detects what key is being pressed, not allowing more than one stroke
 void DetectingKeys::detectingKeys() {
+	//If the key is down (<0), sets the bool to true. 
+	//Once is released (=0), it's set to false
 	if (GetAsyncKeyState(VK_UP) < 0 && !DetectingKeys::keyUp) { DetectingKeys::keyUp = true; }
 	if (GetAsyncKeyState(VK_UP) == 0 && DetectingKeys::keyUp) { DetectingKeys::keyUp = false; }
 	if (GetAsyncKeyState(VK_DOWN) < 0 && !DetectingKeys::keyDown) { DetectingKeys::keyDown = true; }

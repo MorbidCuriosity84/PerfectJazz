@@ -2,6 +2,8 @@
 #include "engine.h"
 #include "../components/cmp_text.h"
 
+//Scene with a pause menu, that allows the player to save the game, go to the main menu
+//or exit the game
 class PauseMenu : public Scene {
 public:
 	PauseMenu() = default;

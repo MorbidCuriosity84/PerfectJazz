@@ -7,8 +7,11 @@
 
 class LoadSaveGame {
 public:
+	//Finds the Games Saved folder and returns true or false
 	static bool setUpPath();
+	//Saves the current players settings
 	static void saveGame();
+	//Loads the last players settings
 	static void loadGame();
 
 protected:

@@ -11,6 +11,7 @@
 
 using namespace std;
 
+//Setting global variables
 extern MainMenu mainMenuScene;
 extern PauseMenu pauseMenu;
 extern TitleScene title;
@@ -170,7 +171,7 @@ enum MUSIC {
     MUSIC_BOSS_FIGHT,
     MUSIC_BOSS_SPLASH,    
 };
-
+//Defines the type of enemy
 enum _enemyType {
     NONE,
     AIRMAN,
@@ -180,19 +181,19 @@ enum _enemyType {
     MADMAN,
     BOSS,
 };
-
+//Defines the type of player
 enum _playerType {
     PLAYER1,
     PLAYER2,
 };
-
+//Defines the type of bullet
 enum _bulletType {
     TYPE1,
     TYPE2,
     TYPE3,
     TYPE_PLAYER,
 };
-
+//Defines the type of weapon
 enum _weaponType {
     EMPTY,
     GUN,
@@ -200,26 +201,21 @@ enum _weaponType {
     ROCKET_LAUNCHER,
     PLAYER_GUN,
 };
-
+//Defines the type of background
 enum _backgroundType {
     MOUNTAIN,
     MOUNTAIN_OVER,
     FOREST,
     FOREST_OVER,
 };
-
-enum _miscType {
-    PLAYER_LIFE,
-    PLAYER_UPDATE_COUNTER,
-};
-
+//Defines the type of setting
 enum _settingType {
     PLAYER,
     ENEMY,
     WEAPON,
     BULLET,
 };
-
+//Defines the type of powerup
 enum _powerUpsType {
     HP_PWU,
     DAMAGE_PWU,

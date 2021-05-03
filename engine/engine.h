@@ -46,6 +46,8 @@ public:
 	static bool isLevelComplete;
 	static bool isLoading;
 	static bool isLevelFinished;
+	static bool isInfiniteLevel;
+
 	static Scene* _lastScene;
 	static Scene* _activeScene;
 	static int currentPlayerLevel;

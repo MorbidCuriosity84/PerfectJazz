@@ -3,7 +3,7 @@
 #include <cmath>
 
 using namespace sf;
-
+//Creates a sine wave movement
 class SineMovementComponent : public MovementComponent
 {
 protected:

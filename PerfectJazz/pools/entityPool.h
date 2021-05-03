@@ -5,6 +5,10 @@
 
 using namespace std;
 
+//Entity class pool.
+//256 entities are created on load to avoid loading them middle game
+//increasing the performance. Entities are used from the pool, destroyed,
+//and a new one will be created
 class EntityPool {
 public:
     static unsigned char poolPointer;
@@ -13,15 +17,3 @@ public:
     ~EntityPool() = default;
     static void init(Scene* s);
 };
-
-
-//template <class T>
-//class EntityPool
-//{
-//public:
-//    static unsigned char poolPointer;
-//    static std::shared_ptr<Entity> pool[256];
-//    EntityPool<T>() = default;
-//    ~EntityPool<T>() = default;
-//    static void init(Scene* s);
-//};

@@ -14,6 +14,7 @@ double _timer;
 textureSettings _powerupTextureHelper;
 powerupSettings _powerupSettings;
 
+//Deploys the powerups
 void Powerups::deployPowerups() {
 	std::string type;
 	//probabilities for the powerups. Each power up has a chance to be randomly picked
@@ -47,7 +48,6 @@ void Powerups::deployPowerups() {
 		2 });// 16th column % chance
 
 	int choosenColumn = RandomNumber::generateRandomNumber(columnWeights);
-	//cout << choosenColumn << ": colm" << endl;
 
 	//if Damage
 	if (choosenPowerup == 0) { 
@@ -79,7 +79,8 @@ void Powerups::deployPowerups() {
 		_powerupTextureHelper = TextureHelpingSettings::LoadSettings(COIN_PWU, _scene);  type = "coin_pwu";
 		_powerupSettings = PowerupSettings::LoadSettings(COIN_PWU, _scene);
 	}
-	
+	//If extra, deployes a bonus with coins spelling the word "BONUS"
+	//This function draws one line at a time, in order to display the word "BONUS"
 	if (choosenPowerup == 6) {
 		for (int i = 0; i < 5; i++) {
 			if (i == 0) {
@@ -194,7 +195,7 @@ void Powerups::deployPowerups() {
 			_powerupSettings = PowerupSettings::LoadSettings(COIN_PWU, _scene);
 		}
 	}
-
+	//Sets the entity to the mainview, adds a tag and sets the visibility and alive
 	else {
 		shared_ptr<Entity> en = PowerupPool::pwp_pool[PowerupPool::pwp_poolPointer++];
 		en->setView(mainView);
@@ -210,11 +211,13 @@ void Powerups::deployPowerups() {
 	}
 }
 
+//Sets the scene and timer values
 void Powerups::createPowerups(Scene* scene) {
 	_scene = scene;
 	_timer = 0;
 }
 
+//Deployes powerups regularly, depending on the timer value
 void Powerups::update(double dt) {
 	_timer += dt;
 

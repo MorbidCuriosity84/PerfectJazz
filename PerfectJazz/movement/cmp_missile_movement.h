@@ -7,6 +7,8 @@
 using namespace sf;
 using namespace std;
 
+//Movement for the missiles. It uses the seeking method to find
+//and target and entity
 class MissileMovementComponent : public MovementComponent {
 protected:
 	bool _seeking;

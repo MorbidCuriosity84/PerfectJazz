@@ -8,6 +8,9 @@ enum _menuType {
 	RESOLUTION_MENU,
 	LEVEL_MENU,
 };
+
+//Scene with the main menu, that allows the player to load a game, star a new game,
+//and change the resolution 
 class MainMenu : public Scene {
 public:
 	MainMenu() = default;
