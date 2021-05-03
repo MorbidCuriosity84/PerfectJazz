@@ -23,10 +23,10 @@ void BossMovement::update(double dt)
 		if (_parent->getPosition().x > mainView.getSize().x - mainView.getSize().x / 10) {
 			parentPhysics->getBody()->ApplyLinearImpulseToCenter(b2Vec2(-1.f, 0.f), true);
 		}
-		if (_parent->getPosition().y < mainView.getSize().x / 10) {
+		if (_parent->getPosition().y > mainView.getSize().x / 10) {
 			parentPhysics->getBody()->ApplyLinearImpulseToCenter(b2Vec2(0.f, 1.f), true);
 		}
-		if (_parent->getPosition().y > mainView.getSize().y - mainView.getSize().x / 10) {
+		if (_parent->getPosition().y < mainView.getSize().y - mainView.getSize().x / 10) {
 			parentPhysics->getBody()->ApplyLinearImpulseToCenter(b2Vec2(0.f, -1.f), true);
 		}
 	}

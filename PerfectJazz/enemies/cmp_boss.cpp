@@ -14,25 +14,30 @@ void Boss::update(double dt)
 {
 	spriteCMP->getSprite().setRotation(boss_eSettings.angle);
 	trigger += dt;
-	if (hpCMP->getHP() < 0.75 * hpCMP->getMaxHP()) {
+	if (hpCMP->getHP() < 0.75 * hpCMP->getMaxHP() && inv1) {
 		invincible = true;
+		inv1 = false;
 	}
-	if (hpCMP->getHP() < 0.5 * hpCMP->getMaxHP()) {
+	if (hpCMP->getHP() < 0.5 * hpCMP->getMaxHP() && inv2) {
 		invincible = true;
+		inv2 = false;
 	}
-	if (hpCMP->getHP() < 0.25 * hpCMP->getMaxHP()) {
+	if (hpCMP->getHP() < 0.25 * hpCMP->getMaxHP() && inv3) {
 		invincible = true;
+		inv3 = false;
 	}	
 
 	if (invincible) {
 		invTimer -= dt;								
 		switchSprite(trigger);
+		physicsCMP->setCategory(NO_COLLIDE);
 	}
 	if (invTimer < 0) {
 		invTimer = 5.f;		
 		for (int i = 0; i < numKamikazes; i++) {
 			spawnKamikazes(i);
 		}				
+		physicsCMP->setCategory(ENEMY_BODY);
 		invincible = false;		
 	}
 	if (hpCMP->getHP() <= 0) {
@@ -71,11 +76,14 @@ void Boss::spawnKamikazes(int i)
 
 void Boss::switchSprite(double trigger)
 {
-	if (trigger < 0.1) {
-		spriteCMP->getSprite().setColor(sf::Color(0, 0, 0, 255));
+	if (trigger < 0.2) {
+		_parent->setVisible(false);
 	}
-	if (trigger >= 0.1 < 0.2) {
-		spriteCMP->getSprite().setColor(sf::Color(0, 0, 0, 0));
+	if (trigger >= 0.2 && trigger < 0.4) {
+		_parent->setVisible(true);
+	}
+	if (trigger >= 0.4) {
+		trigger = 0;
 	}
 }
 

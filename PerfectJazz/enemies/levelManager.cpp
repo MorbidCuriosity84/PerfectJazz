@@ -23,6 +23,7 @@ float LevelManager::kamikazeTimer;
 float LevelManager::countTimer;
 float LevelManager::singleTimer;
 bool LevelManager::isBoss;
+bool LevelManager::splashMusic;
 textureSettings _eTexHelper;
 textureSettings _bTexHelper;
 enemySettings _eSettings;
@@ -34,6 +35,7 @@ void LevelManager::loadLevel(int level)
 	std::queue<std::string> empty;
 	std::swap(waves, empty); 
 
+	splashMusic = false;
 	isBoss = false;
 	enemyCount = 0;
 	levelOverTimer = 3.f;
@@ -52,6 +54,7 @@ void LevelManager::loadLevel(int level)
 
 void LevelManager::playLevel(Scene* s)
 {	
+	
 	if (enemyCount == 0) {
 		if (!waves.empty()) {			
 			Enemies::createEnemies(waves.front(), s);			
@@ -64,11 +67,32 @@ void LevelManager::playLevel(Scene* s)
 		spawnKamikaze(s);		
 		//cout << "Enemy count after creation of kamikaze = " << LevelManager::enemyCount << endl;
 		kamikazeTimer = 5.f;
-	}	
+	}		
 	if (waves.empty() && !isBoss) {
 		waves.push("wave7");
 		isBoss = true;		
 	}
+
+	int currentLvlMusicIndex = Engine::currentPlayerLevel + 2;
+	if (isBoss) {
+		if (musicArray[currentLvlMusicIndex].Playing) {
+			//musicArray[currentLvlMusicIndex].stop();
+			musicArray[MUSIC_BOSS_SPLASH].setPosition(0, 1, 50);
+			musicArray[MUSIC_BOSS_SPLASH].setVolume(25);
+			musicArray[MUSIC_BOSS_SPLASH].setLoop(false);
+			musicArray[MUSIC_BOSS_SPLASH].play();
+			splashMusic = true;
+		}
+	}
+	if (splashMusic && isBoss) {
+		if (!musicArray[MUSIC_BOSS_SPLASH].Playing) {
+			musicArray[MUSIC_BOSS_FIGHT].setPosition(0, 1, 50);
+			musicArray[MUSIC_BOSS_FIGHT].setVolume(25);
+			musicArray[MUSIC_BOSS_FIGHT].setLoop(true);
+			musicArray[MUSIC_BOSS_FIGHT].play();
+		}
+	}
+
 	if (waves.empty()) {			
 		if (enemyCount == 0) {
 			s->levelOver();
