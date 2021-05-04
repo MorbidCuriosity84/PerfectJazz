@@ -24,8 +24,8 @@ void Powerups::deployPowerups() {
 		2.5,    // Bullet Num % chance   0.3,
 		3.5,    // Firerate % chance	   0.7,
 		2,    // Player Mov % chance 0.7,
-		86,    // Coin % chance		   97,	
-		1 });// Extra % chance	   0.2 
+		88,    // Coin % chance		   97,	
+		0 });// Extra % chance	   0.2 
 	int choosenPowerup = RandomNumber::generateRandomNumber(powerupsWeights);
 
 	//probabilities for the columns. Each columns has a chance to be randomly picked
@@ -115,7 +115,6 @@ void Powerups::deployPowerups() {
 				for (int j = 0; j < 9; j++) {
 					shared_ptr<Entity> en = PowerupPool::pwp_pool[PowerupPool::pwp_poolPointer++];
 					en->setView(mainView);
-					en->setVisible(false);
 					en->setVisible(false);
 
 					if (j == 0) { en->setPosition(Vector2f((round)(mainView.getSize().x / 32 * 4) + ((mainView.getSize().x / 32)), 0 - (mainView.getSize().y / 32) * i)); }
