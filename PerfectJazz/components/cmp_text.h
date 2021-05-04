@@ -3,6 +3,7 @@
 #include <SFML/Graphics/Text.hpp>
 #include "ecm.h"
 
+// Text component that provides methods to change the font size, colour, position, and origin
 class TextComponent : public Component {
 public:
 	TextComponent() = delete;

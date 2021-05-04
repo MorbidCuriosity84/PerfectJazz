@@ -2,6 +2,7 @@
 #include "scenes/scene_level.h"
 #include "game.h"
 #include <LevelSystem.h>
+#include "scenes/scene_credits.h"
 
 using namespace std;
 
@@ -10,6 +11,7 @@ PauseMenu pauseMenu;
 UpgradeMenu upgradeMenu;
 LevelScene levelScene;
 TitleScene title;
+CreditScene creditScene;
 shared_ptr<Entity> player;
 int currentLvlMusicIndex;
 sf::View leftView;
@@ -20,7 +22,7 @@ Vector2f windowScale = { 1.0f, 1.0f };
 unsigned int gameHeight = (round)(720);
 unsigned int gameWidth = (round)(1280);
 
-// The grid size will be 15x16 tiles
+//Starts the engine of the game, with the with, height, title and scene for the windows creation.
 int main() {
 	Engine::Start(gameWidth, gameHeight, "Perfect Jazz", &title);
 }

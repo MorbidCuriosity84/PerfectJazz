@@ -1,29 +1,31 @@
 #include "enemy_settings.h"
 #include "../game.h"
 #include <engine.h>
+
+//Loads settings for the different enemy types
 enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
-
-	enemySettings settings;
-
+	//Creates a reference to the struct enemySettings
+	enemySettings settings;		
 	switch (type) {
+	//Type of enemy Airman
 	case AIRMAN:
 	{
-		settings.damage = 300;
-		settings.hp = 1000;
-		settings.scene = scene;
-		settings.restitution = 0.4f;
-		settings.friction = 0.005f;
-		settings.velocity = { 0.f,-15.f };
-		settings.tile = ls::AIRMAN;
-		settings.category = ENEMY_BODY;
-		settings.type = AIRMAN;
-		settings.hpVisible = true;
-		settings.scale = { 1.f,1.f };
-		settings.angle = 0;
-		settings.sound = ENEMY_DIE_1;
+		settings.damage = 300;              // Sets the current damage
+		settings.hp = 1000;					// Sets the current hp
+		settings.scene = scene;				// Sets the scene
+		settings.restitution = 0.4f;		// Sets the players restitution
+		settings.friction = 0.005f;			// Sets the players friction
+		settings.velocity = { 0.f,-0.1f };	// Sets the player movement speed
+		settings.tile = ls::AIRMAN;			// Sets the type of enemy for the creation of the enemy
+		settings.category = ENEMY_BODY;		// Sets the category for collisions
+		settings.type = AIRMAN;				// Sets the type of enemy
+		settings.hpVisible = true;			// Sets whether the hp displaying the sprite is visible or not
+		settings.scale = { 1.f,1.f };		// Sets the scale of the sprite
+		settings.angle = 0;					// Sets the angle
+		settings.sound = ENEMY_DIE_1;		// Sets the enemies sound
 		break;
 	}
-
+	//Type of enemy Sergeant
 	case SERGEANT:
 	{
 		settings.damage = 500;
@@ -41,6 +43,7 @@ enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
 		settings.sound = ENEMY_DIE_2;
 		break;
 	}
+	//Type of enemy Colonel
 	case COLONEL:
 	{
 		settings.damage = 700;
@@ -58,6 +61,7 @@ enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
 		settings.sound = ENEMY_DIE_3;
 		break;
 	}
+	//Type of enemy Bansai
 	case BANSAI:
 	{
 		settings.damage = 500;
@@ -65,7 +69,7 @@ enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
 		settings.scene = scene;
 		settings.restitution = 0.4f;
 		settings.friction = 0.005f;
-		settings.velocity = { 0.f,-25.f };
+		settings.velocity = { 0.f,-45.f };
 		settings.tile = ls::KAMIKAZE;
 		settings.category = KAMIKAZE;
 		settings.type = BANSAI;
@@ -75,6 +79,7 @@ enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
 		settings.sound = EXPLOSION_5;
 		break;
 	}
+	//Type of enemy Madman
 	case MADMAN:
 	{
 		settings.damage = 300;
@@ -92,6 +97,7 @@ enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
 		settings.sound = EXPLOSION_3;
 		break;
 	}
+	//Type of enemy Boss
 	case BOSS:
 	{
 		settings.damage = 5000;
@@ -106,11 +112,20 @@ enemySettings EnemySettings::LoadSettings(_enemyType type, Scene* scene) {
 		settings.hpVisible = true;
 		settings.scale = { 1.5f,1.5f };
 		settings.angle = 0;
-		settings.sound = EXPLOSION_3;
+		settings.sound = EXPLOSION_3;		
 		break;
 	}
 	default:
 		break;
 	}
+	scale(2, settings);
 	return settings;
+}
+
+void EnemySettings::scale(int factor, enemySettings& settings)
+{
+	if (Engine::currentPlayerLevel > 0) {
+		settings.damage *= Engine::currentPlayerLevel * factor;
+		settings.hp *= Engine::currentPlayerLevel * factor;
+	}
 }

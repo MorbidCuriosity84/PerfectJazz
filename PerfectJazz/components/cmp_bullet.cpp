@@ -9,17 +9,19 @@
 using namespace std;
 using namespace sf;
 
-
+//Adds sprite, damage, physics and hp component to the bullet entity.
 void BulletComponent::createBullet() {
 	_bulletTextHelper.spriteTexture->loadFromFile(_bulletTextHelper.spriteFilename);
 	spriteCMP = _parent->addComponent<SpriteComponent>();
 
 	spriteCMP.get()->loadTexture(_bulletTextHelper, _settings.spriteScale, _settings.angle);	
+	//If the bullet category is friendly bullet, sets the colour to yellow and a upsize the sprite
 	spriteCMP.get()->getSprite().setRotation(_settings.angle + 180.f);
 	if (_settings.category == FRIENDLY_BULLET) {
 		spriteCMP->getSprite().setColor(Color::Yellow);
 		spriteCMP->getSprite().setScale(Vector2f(1.4f, 1.4f));
 	}
+	//Sets the damage component to take into consideration the current upgrade count
 	damageCMP = _parent->addComponent<DamageComponent>(_settings.damage + (_settings.damage * 0.2 * _settings.damageUpgradeCount));
 	physicsCMP = _parent->addComponent<PhysicsComponent>(true, spriteCMP.get()->getSprite().getLocalBounds().getSize());
 	
@@ -36,11 +38,13 @@ void BulletComponent::createBullet() {
 	bulletImpactSound = _settings.sound;	
 }
 
-
+//Updates the bullet sprite and checks the HP and entities position to 
+//determine if the entity should be alive or not
 void BulletComponent::update(double dt) {
 	accumulation += dt;
 	_bulletTextHelper.spriteTimer += dt/4;
 
+	//Performs the animation for the sprites by resetting the sprite rectangle
 	if (_bulletTextHelper.spriteTimer < 0.01) {
 		_bulletTextHelper.spriteRectangle.get()->left = (_bulletTextHelper.spriteTexture.get()->getSize().x / _bulletTextHelper.spriteCols) * 1;
 	}
@@ -59,6 +63,8 @@ void BulletComponent::update(double dt) {
 
 	spriteCMP->getSprite().setTextureRect(*_bulletTextHelper.spriteRectangle.get());
 		
+	//If the bullets hp is equal or below 0, sets the bullet to not alive and innactive, and clear the components.
+	//Sends the entity off screen so it's ready to be use again by the bullets pool.
 	if (hpCMP->getHP() <= 0) {
 		_parent->setAlive(false);
 		_parent->setVisible(false);
@@ -72,6 +78,8 @@ void BulletComponent::update(double dt) {
 		_parent->clearComponents();		
 		return;
 	}	
+	//If bullets are off screen on the y axis bottom, set the entity to not alive and innactive, and clear the components.
+	//Sends the entity off screen so it's ready to be use again by the bullets pool
 	if (_parent->getPosition().y > _parent->getView().getSize().y ||
 		_parent->getPosition().y < 0 ||
 		_parent->getPosition().x > _parent->getView().getSize().x ||
@@ -84,7 +92,8 @@ void BulletComponent::update(double dt) {
 		_parent->clearComponents();
 	}		
 }
-
+//Constructor for bullet component.
+//Sets initial values for the collision helper and assigns a body to the player component
 BulletComponent::BulletComponent(Entity* p, bulletSettings settings, textureSettings bulletTexHelper)
 	: Component(p), _settings(settings), _bulletTextHelper(bulletTexHelper), accumulation(0.f) {
 	createBullet();
@@ -92,6 +101,8 @@ BulletComponent::BulletComponent(Entity* p, bulletSettings settings, textureSett
 	bul_colHelp.hpCMP = hpCMP.get();
 	bul_colHelp.isMissileRadar = false;
 	bul_colHelp.missileCMP = nullptr;
+	//If the bullet is a enemy missile or friendly missile, adds a missile movement component
+	//and a radard component, and sets the radar fixtures
 	if (_settings.category == ENEMY_MISSILE || _settings.category == FRIENDLY_MISSILE) 	{		
 		bul_colHelp.missileCMP = p->addComponent<MissileMovementComponent>(Vector2f(0.f, -150.f), false, _settings.category).get();		
 		auto r =_parent->addComponent<RadarComponent>(8.f, _settings.category);

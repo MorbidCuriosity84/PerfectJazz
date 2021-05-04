@@ -1,6 +1,8 @@
 #pragma once
 #include "cmp_physics.h"
 
+//Enemy physics component that sets the basic physics for the enemy
+//not as complex as the player physics
 class EnemyPhysicsComponent : public PhysicsComponent {
 protected:
   b2Vec2 _size;

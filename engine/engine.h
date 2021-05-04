@@ -19,6 +19,7 @@ public:
 	virtual void Render();
 	bool isLoaded() const;
 	void levelOver();
+	void gameComplete();
 	static int deadEnemies;
 	std::shared_ptr<Entity> makeEntity();
 	EntityManager ents;	
@@ -46,6 +47,9 @@ public:
 	static bool isLevelComplete;
 	static bool isLoading;
 	static bool isLevelFinished;
+	static bool isInfiniteLevel;
+	static bool isGameComplete;
+
 	static Scene* _lastScene;
 	static Scene* _activeScene;
 	static int currentPlayerLevel;

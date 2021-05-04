@@ -6,16 +6,19 @@
 #include "scenes/scene_main_menu.h"
 #include "scenes/scene_pause_menu.h"
 #include "scenes/scene_upgrade_menu.h"
+#include "scenes/scene_credits.h"
 #include "SFML/Audio.hpp"
 #include "services/detecting_keys.h"
 
 using namespace std;
 
+//Setting global variables
 extern MainMenu mainMenuScene;
 extern PauseMenu pauseMenu;
 extern TitleScene title;
 extern LevelScene levelScene;
 extern UpgradeMenu upgradeMenu;
+extern CreditScene creditScene;
 extern shared_ptr<Entity> player;
 extern sf::SoundBuffer sBuffs[128];
 extern sf::Sound sounds[128];
@@ -167,11 +170,10 @@ enum MUSIC {
     MUSIC_LEVEL_2,
     MUSIC_LEVEL_3,
     MUSIC_LEVEL_4,
-    MUSIC_LEVEL_5,
     MUSIC_BOSS_FIGHT,
     MUSIC_BOSS_SPLASH,    
 };
-
+//Defines the type of enemy
 enum _enemyType {
     NONE,
     AIRMAN,
@@ -181,19 +183,19 @@ enum _enemyType {
     MADMAN,
     BOSS,
 };
-
+//Defines the type of player
 enum _playerType {
     PLAYER1,
     PLAYER2,
 };
-
+//Defines the type of bullet
 enum _bulletType {
     TYPE1,
     TYPE2,
     TYPE3,
     TYPE_PLAYER,
 };
-
+//Defines the type of weapon
 enum _weaponType {
     EMPTY,
     GUN,
@@ -201,26 +203,21 @@ enum _weaponType {
     ROCKET_LAUNCHER,
     PLAYER_GUN,
 };
-
+//Defines the type of background
 enum _backgroundType {
     MOUNTAIN,
     MOUNTAIN_OVER,
     FOREST,
     FOREST_OVER,
 };
-
-enum _miscType {
-    PLAYER_LIFE,
-    PLAYER_UPDATE_COUNTER,
-};
-
+//Defines the type of setting
 enum _settingType {
     PLAYER,
     ENEMY,
     WEAPON,
     BULLET,
 };
-
+//Defines the type of powerup
 enum _powerUpsType {
     HP_PWU,
     DAMAGE_PWU,
@@ -229,6 +226,15 @@ enum _powerUpsType {
     BULLET_NUM_PWU,
     COIN_PWU,
     ALL_POWERUPS,
+};
+enum _keyType {
+    DOWN_KEY,
+    UP_KEY,
+    ESC_KEY,
+    LEFT_KEY,
+    RIGHT_KEY,
+    SPACE_KEY,
+    ENTER_KEY,
 };
 /*
 Enums are boring so if you looked all the way 

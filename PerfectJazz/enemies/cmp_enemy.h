@@ -15,6 +15,8 @@
 
 using namespace sf;
 
+//Provides all the components necesaries for the enemy creation,
+//asigning the initial values for sprites, hp, damage and movement
 class EnemyComponent : public Component {
 protected:
 	textureSettings _enemyTextureHelper;

@@ -10,6 +10,7 @@
 #include <string>
 #include <KnownFolders.h>
 #include <atlstr.h>
+#include <cstring>
 
 using json = nlohmann::json;
 using namespace std;
@@ -26,7 +27,8 @@ CStringA LoadSaveGame::wSettingsPath;
 CStringA LoadSaveGame::bSettingsPath;
 CStringA LoadSaveGame::pTexHelperPath;
 CStringA LoadSaveGame::bTexHelperPath;
-//Setting up conversion from settings to json
+
+//Setting up conversion from settings to json for the textures settings
 void to_json(json& j, const textureSettings& node) {
 	j = {
 		{"FileName", node.spriteFilename},
@@ -37,6 +39,7 @@ void to_json(json& j, const textureSettings& node) {
 		{"spriteTimer", node.spriteTimer}
 	};
 }
+//Setting up conversion from settings to json for the players settings
 void to_json(json& j, const playerSettings& node) {
 	j = {
 		{"damage", node.damage},
@@ -58,6 +61,7 @@ void to_json(json& j, const playerSettings& node) {
 		{"currentLevel", node.currentLevel }
 	};
 }
+//Setting up conversion from settings to json for the bullet settings
 void to_json(json& j, const bulletSettings& node) {
 	j = {
 		{"lifetime", node.lifetime},
@@ -74,6 +78,7 @@ void to_json(json& j, const bulletSettings& node) {
 		{"sound", node.sound}
 	};
 }
+//Setting up conversion from settings to json for the weapons settings
 void to_json(json& j, const weaponSettings& node) {
 	j = {
 		{"fireTime", node.fireTime},
@@ -86,7 +91,7 @@ void to_json(json& j, const weaponSettings& node) {
 	};
 }
 
-//Setting up conversion from JSON to settings
+//Setting up conversion from JSON to settings for the texture settings
 void from_json(const json& j, textureSettings& node) {
 	j.at("FileName").get_to(node.spriteFilename);
 	j.at("spriteRows").get_to(node.spriteRows);
@@ -95,6 +100,7 @@ void from_json(const json& j, textureSettings& node) {
 	j.at("desiredCol").get_to(node.desiredCol);
 	j.at("spriteTimer").get_to(node.spriteTimer);
 }
+//Setting up conversion from JSON to settings for the player settings
 void from_json(const json& j, playerSettings& node) {
 	j.at("damage").get_to(node.damage);
 	j.at("hp").get_to(node.hp);
@@ -114,6 +120,7 @@ void from_json(const json& j, playerSettings& node) {
 	j.at("scaleY").get_to(node.scale.y);
 	j.at("currentLevel").get_to(node.currentLevel);
 }
+//Setting up conversion from JSON to settings for the bullets settings
 void from_json(const json& j, bulletSettings& node) {
 	j.at("lifetime").get_to(node.lifetime);
 	j.at("damage").get_to(node.damage);
@@ -128,6 +135,7 @@ void from_json(const json& j, bulletSettings& node) {
 	j.at("spriteScaleY").get_to(node.spriteScale.y);
 	j.at("sound").get_to(node.sound);
 }
+//Setting up conversion from JSON to settings for the weapons settings
 void from_json(const json& j, weaponSettings& node) {
 	j.at("fireTime").get_to(node.fireTime);
 	j.at("fireTimer").get_to(node.fireTimer);
@@ -138,22 +146,18 @@ void from_json(const json& j, weaponSettings& node) {
 	j.at("sound").get_to(node.sound);
 }
 
+//Checks if there is a savedgames folder
 bool LoadSaveGame::setUpPath() {
-	//Check if there is a savedgames folder
 	PWSTR path = NULL;
 	HRESULT hres;
 	std::wstring strFileName;
 	std::string narrow;
 
+	//Checks if the folder SavedGames exits
 	hres = SHGetKnownFolderPath(FOLDERID_SavedGames, KF_FLAG_CREATE, NULL, &path);
-	if (path == NULL) {
-		cout << "No saved games folder" << endl;
-		return false;
-	}
+	if (path == NULL) {	return false; }
 	else {
-		//Converts wchar to const char. 
-		//Setting up the file paths and file names for each of the settings files
-
+		//Sets the file paths and file names for each of the settings files
 		CStringA perfectJazzFolder = "/Perfect_Jazz/";
 		CStringA pSettingsFile = "pSettings.json";
 		CStringA wSettingssFile = "wSettings.json";
@@ -168,7 +172,7 @@ bool LoadSaveGame::setUpPath() {
 		pTexHelperPath = CStringW(perfectJazzFolder + pTexHelperFile);
 		bTexHelperPath = CStringW(perfectJazzFolder + bTexHelperFile);
 
-
+		//If directory doesnt extis, it will create it
 		if (CreateDirectory(perfectJazzFolder, NULL) || ERROR_ALREADY_EXISTS == GetLastError()) {
 		}
 		//Freeing bytes
@@ -177,7 +181,9 @@ bool LoadSaveGame::setUpPath() {
 	}
 }
 
+//Saves players settings
 void LoadSaveGame::saveGame() {
+	//If the patsh exists, saves the settings to theirs correspondent files
 	if (setUpPath()) {
 		auto oldCMP = player->GetCompatibleComponent<PlayerComponent>()[0];
 		auto oldHP = player->GetCompatibleComponent<HPComponent>()[0];
@@ -187,6 +193,7 @@ void LoadSaveGame::saveGame() {
 		oldCMP->_playerSettings.maxHP = oldHP->getMaxHP();
 		oldCMP->_playerSettings.currentLevel = Engine::currentPlayerLevel;
 
+		//Gets the current settings from each of the structs
 		bSettings = oldCMP->weaponCMP->_bSettings;
 		json bSetJson = bSettings;
 		wSettings = oldCMP->weaponCMP->_wSettings;
@@ -198,24 +205,23 @@ void LoadSaveGame::saveGame() {
 		bTexHelper = oldCMP->_bulletTextureHelper;
 		json bHelperJson = bTexHelper;
 
+		//Writes the settings into the different files
 		std::ofstream bSet(bSettingsPath);
 		bSet << bSetJson << std::endl;
-
 		std::ofstream wSet(wSettingsPath);
 		wSet << wSetJson << std::endl;
-
 		std::ofstream pSet(pSettingsPath);
 		pSet << pSetJson << std::endl;
-
 		std::ofstream pHelper(pTexHelperPath);
 		pHelper << pHelperJson << std::endl;
-
 		std::ofstream bHelper(bTexHelperPath);
 		bHelper << bHelperJson << std::endl;
 	}
 }
 
+//Loads a game with the players settings
 void LoadSaveGame::loadGame() {
+	//If the patsh exists, loads the settings from theirs correspondent files
 	if (setUpPath()) {
 		std::ifstream bSet(bSettingsPath);
 		bulletSettings bSetJson = json::parse(bSet);
@@ -228,25 +234,28 @@ void LoadSaveGame::loadGame() {
 		std::ifstream bHelper(bTexHelperPath);
 		textureSettings bHelperJson = json::parse(bHelper);
 
-		SettingsHolder::bSettings = bSetJson;
-		SettingsHolder::wSettings = wSetJson;
-		SettingsHolder::pSettings = pSetJson;
-		SettingsHolder::pTexHelper = pHelperJson;
-		SettingsHolder::bTexHelper = bHelperJson;
+	
 
+		//Creates a pointer to  sf::Texture and sf::IntRect to assign
+		//to the loaded settings, since we didn't save the pointers
 		auto bSpriteTexture = make_shared<sf::Texture>();
 		auto bSpriteRectangle = make_shared<sf::IntRect>();
 		auto pSpriteTexture = make_shared<sf::Texture>();
 		auto pspriteRectangle = make_shared<sf::IntRect>();
 
-		SettingsHolder::pSettings.scene == &levelScene;
-
-
-		
+		//Stores all the settings into the setting holder
+		SettingsHolder::pSettings.scene == &levelScene;			
+		SettingsHolder::bSettings = bSetJson;
+		SettingsHolder::wSettings = wSetJson;
+		SettingsHolder::pSettings = pSetJson;
+		SettingsHolder::pTexHelper = pHelperJson;
+		SettingsHolder::bTexHelper = bHelperJson;
 		SettingsHolder::pTexHelper.spriteTexture = bSpriteTexture;
 		SettingsHolder::pTexHelper.spriteRectangle = bSpriteRectangle;
 		SettingsHolder::bTexHelper.spriteTexture = pSpriteTexture;
 		SettingsHolder::bTexHelper.spriteRectangle = pspriteRectangle;
+
+		Engine::currentPlayerLevel = SettingsHolder::pSettings.currentLevel;
 	}
 
 }

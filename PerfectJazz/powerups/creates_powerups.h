@@ -4,6 +4,7 @@
 #include "ecm.h"
 #include "../settings/collision_helper.h"
 
+//Creates powerups that the player can pick up in order to update its stats
 class Powerups {
 public:
 	static void deployPowerups();

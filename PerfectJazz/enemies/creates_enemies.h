@@ -8,6 +8,7 @@
 
 using namespace std;
 
+//Creates enemies, assigning them a type and a movement
 class Enemies {
 public:
 	static void createEnemies(std::string _waveFile, Scene*);

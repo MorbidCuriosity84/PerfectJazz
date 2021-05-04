@@ -85,7 +85,9 @@ void Entity::clearComponents()
         throw std::runtime_error(
             "Can't delete entity, someone is grabbing a component!");
     }
+    _tags.erase(_tags.begin(), _tags.end());
     _components.clear();
+    _tags.erase(_tags.begin(), _tags.end());
 }
 
 Component::Component(Entity* const p) : _parent(p), _fordeletion(false), _isAlive(true), _isVisible(true) {}

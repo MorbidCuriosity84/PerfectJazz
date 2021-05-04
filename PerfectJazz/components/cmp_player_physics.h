@@ -1,6 +1,8 @@
 #pragma once
 #include "cmp_physics.h"
 
+// Player physics component that will add the necessary settings and behaviours
+// for the player entity
 class PlayerPhysicsComponent : public PhysicsComponent {
 protected:
 	b2Vec2 _size;

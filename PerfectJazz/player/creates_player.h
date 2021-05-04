@@ -8,7 +8,7 @@
 #include "../settings/weapon_settings.h"
 #include "../game.h"
 
-
+//Creates player, adding all the necessary settings
 class Player {
 public:
 	static void createPlayer(Scene* _scene);
