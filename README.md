@@ -1,5 +1,5 @@
 # PerfectJazz
-![alt text](https://github.com/MorbidCuriosity84/PerfectJazz/blob/main/PerfectJazzTitle.png?raw=true)
+![alt text](https://github.com/MorbidCuriosity84/PerfectJazz/blob/main/PerfectJazz.png?raw=true)
 
 This is Perfect Jazz. Our attempt at recreating some of the top scrolling shooters from the arcade era of the 80s/90s. 
 
