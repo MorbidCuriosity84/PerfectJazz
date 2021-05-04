@@ -24,7 +24,11 @@ void Powerups::deployPowerups() {
 		2.5,    // Bullet Num % chance   0.3,
 		3.5,    // Firerate % chance	   0.7,
 		2,    // Player Mov % chance 0.7,
+<<<<<<< HEAD
 		86,    // Coin % chance		   97,	
+=======
+		87,    // Coin % chance		   97,	
+>>>>>>> a4ae444ea9c89ca89be620e37d463f1508581e0c
 		0 });// Extra % chance	   0.2 
 	int choosenPowerup = RandomNumber::generateRandomNumber(powerupsWeights);
 
