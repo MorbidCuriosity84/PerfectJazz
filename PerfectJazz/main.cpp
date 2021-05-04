@@ -24,5 +24,5 @@ unsigned int gameWidth = (round)(1280);
 
 //Starts the engine of the game, with the with, height, title and scene for the windows creation.
 int main() {
-	Engine::Start(gameWidth, gameHeight, "Perfect Jazz", &creditScene);
+	Engine::Start(gameWidth, gameHeight, "Perfect Jazz", &title);
 }

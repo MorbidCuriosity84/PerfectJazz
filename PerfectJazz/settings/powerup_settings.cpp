@@ -12,15 +12,14 @@ powerupSettings PowerupSettings::LoadSettings(_powerUpsType type, Scene* scene) 
 		settings.damage = 0;						// Sets the damage caused by the powerup
 		settings.damageUpgradeCount = 0;			// Sets the current upgrade for damage
 		settings.hp = 1;							// Sets the hp
-		settings.lifetime = 100.f;					// Sets the polifetime
+		settings.lifetime = 100.f;					// Sets the lifetime
 		settings.scene = scene;						// Sets the scene
-		settings.angle = 0.f;						// Sets the  angle
+		settings.angle = 0.f;						// Sets the angle
 		settings.category = POWERUP;				// Sets the category
 		settings.direction = -1.f;					// Sets the directionp
 		settings.velocity = Vector2f(0.f, 100.f);	// Sets the velocity
 		settings.spriteScale = Vector2f(0.8f, .8f);	// Sets the sprite scale
 		settings.sound = PICKUP_1;					// Sets the current sound
-		scale(2, settings);
 		break;
 	case DAMAGE_PWU:
 		settings.damage = 0;

@@ -27,6 +27,7 @@ shared_ptr<TextComponent> playerBulletPowerTxtCMP;
 shared_ptr<TextComponent> playerFireRateTxtCMP;
 shared_ptr<TextComponent> playerBulletNumberTxtCMP;
 shared_ptr<TextComponent> FPStxtCMP;
+shared_ptr<TextComponent> currentModeCMP;
 shared_ptr<HPComponent> hpCMP;
 textureSettings playerLifeTextureHelper;
 Texture playerLifeTexture;
@@ -71,12 +72,12 @@ void Panels::createPanels(Scene* _scene) {
 		hpCMP = leftPanel->addComponent<HPComponent>(_scene, playerCMP->_playerSettings.hp, playerCMP->_playerSettings.maxHP);
 		hpCMP->loadHP();
 		playerTxtCMP = leftPanel->addComponent<TextComponent>("PLAYER 1");
-		scoreTxtCMP = leftPanel->addComponent<TextComponent>("Score: " + to_string(playerCMP->_playerSettings.score));
-		coinsTxtCMP = leftPanel->addComponent<TextComponent>("Coins: " + to_string(playerCMP->_playerSettings.shopPoints));
-		playerSpeedTxtCMP = leftPanel->addComponent<TextComponent>("Ship Speed: ");
-		playerBulletPowerTxtCMP = leftPanel->addComponent<TextComponent>("Damage: ");
-		playerFireRateTxtCMP = leftPanel->addComponent<TextComponent>("Fire rate: ");
-		playerBulletNumberTxtCMP = leftPanel->addComponent<TextComponent>("Spread: ");
+		scoreTxtCMP = leftPanel->addComponent<TextComponent>("SCORE: " + to_string(playerCMP->_playerSettings.score));
+		coinsTxtCMP = leftPanel->addComponent<TextComponent>("COINS: " + to_string(playerCMP->_playerSettings.shopPoints));
+		playerSpeedTxtCMP = leftPanel->addComponent<TextComponent>("SHIP SPEED: ");
+		playerBulletPowerTxtCMP = leftPanel->addComponent<TextComponent>("DAMAGE: ");
+		playerFireRateTxtCMP = leftPanel->addComponent<TextComponent>("FIRE RATE: ");
+		playerBulletNumberTxtCMP = leftPanel->addComponent<TextComponent>("SPREAD: ");
 
 		//Player name
 		row = (round)(leftView.getSize().y / 30);
@@ -108,22 +109,22 @@ void Panels::createPanels(Scene* _scene) {
 		coinsTxtCMP->setFontSize(40u);
 
 		//Player PowerUps
-		playerSpeedTxtCMP->setFontSize(30u);
+		playerSpeedTxtCMP->setFontSize(32u);
 		auto pstRect = playerSpeedTxtCMP->getGlobalBounds();
 		playerSpeedTxtCMP->setPosition(Vector2f((round)(col * 6 + pstRect.left - pstRect.width), (round)(row * 10)));
 
 		//Bullets PowerUps
-		playerBulletPowerTxtCMP->setFontSize(30u);
+		playerBulletPowerTxtCMP->setFontSize(32u);
 		auto pbpRec = playerBulletPowerTxtCMP->getGlobalBounds();
 		playerBulletPowerTxtCMP->setPosition(Vector2f((round)(col * 6 + pbpRec.left - pbpRec.width), (round)(row * 11)));
 
 		//Fire rate PowerUps
-		playerFireRateTxtCMP->setFontSize(30u);
+		playerFireRateTxtCMP->setFontSize(32u);
 		auto pfRect = playerFireRateTxtCMP->getGlobalBounds();
 		playerFireRateTxtCMP->setPosition(Vector2f((round)(col * 6 + pfRect.left - pfRect.width), (round)(row * 12)));
 
 		//Bullet number PowerUp
-		playerBulletNumberTxtCMP->setFontSize(30u);
+		playerBulletNumberTxtCMP->setFontSize(32u);
 		auto pbnRect = playerBulletNumberTxtCMP->getGlobalBounds();
 		playerBulletNumberTxtCMP->setPosition(Vector2f((round)(col * 6) + pbnRect.left - pbnRect.width, (round)(row * 13)));
 
@@ -154,8 +155,15 @@ void Panels::createPanels(Scene* _scene) {
 		FPStxtCMP->setFontSize(40u);
 		sf::FloatRect textRect = FPStxtCMP->getLocalBounds();
 		FPStxtCMP->setOrigin(Vector2f((round)(textRect.left + textRect.width / 2), (round)(textRect.top + textRect.height / 2)));
-		FPStxtCMP->setPosition(Vector2f((round)(rightView.getSize().x / 2), (round)(row * 2.4)));
+		FPStxtCMP->setPosition(Vector2f((round)(rightView.getSize().x / 2), (round)(row * 3)));
+		//Creates current mode textcomponent and initializing its settings
+		currentModeCMP = rightPanel->addComponent<TextComponent>("CURRENT LEVEL: " + to_string(Engine::currentPlayerLevel + 1));
+		currentModeCMP->setFontSize(38u);
+		sf::FloatRect currentModeRect = currentModeCMP->getLocalBounds();
+		currentModeCMP->setOrigin(Vector2f((round)(currentModeRect.left + currentModeRect.width / 2), (round)(currentModeRect.top + currentModeRect.height / 2)));
+		currentModeCMP->setPosition(Vector2f((round)(rightView.getSize().x / 2), (round)(row * 1)));
 	}
+
 }
 
 //Sets life sprites according to the current lifes
@@ -224,12 +232,12 @@ void Panels::setUpgradesSprites(string type, int counter) {
 	//Sets sprite for score upgrade
 	if (type == "score") {
 		currentScore = counter;
-		scoreTxtCMP->setText("Score: " + to_string(playerCMP->_playerSettings.score));
+		scoreTxtCMP->setText("SCORE: " + to_string(playerCMP->_playerSettings.score));
 	};
 	//Sets sprite for coin upgrade
 	if (type == "coin") {
 		currentCoins = counter;
-		coinsTxtCMP->setText("Coins: " + to_string(playerCMP->_playerSettings.shopPoints));
+		coinsTxtCMP->setText("COINS: " + to_string(playerCMP->_playerSettings.shopPoints));
 	};	
 	//Sets sprite for hp upgrade and updates both current hp and current max hp
 	if (type == "hp") {
@@ -284,10 +292,23 @@ void Panels::update(double dt) {
 		timer = 0;
 		//Updates the FPS text
 		FPStxtCMP->setText("FPS: " + toStrDecPt(2, Engine::FPS));
+
+
+		if (Engine::currentPlayerLevel >= 0) {
+			currentModeCMP->setText("CURRENT LEVEL: " + to_string(Engine::currentPlayerLevel + 1));
+			sf::FloatRect currentModeRect = currentModeCMP->getLocalBounds();
+			currentModeCMP->setOrigin(Vector2f((round)(currentModeRect.left + currentModeRect.width / 2), (round)(currentModeRect.top + currentModeRect.height / 2)));
+		}
+		if (Engine::currentPlayerLevel < 0) {
+			currentModeCMP->setText("INFINITE MODE");
+			sf::FloatRect currentModeRect = currentModeCMP->getLocalBounds();
+			currentModeCMP->setOrigin(Vector2f((round)(currentModeRect.left + currentModeRect.width / 2), (round)(currentModeRect.top + currentModeRect.height / 2)));
+		}
 	}	
 }
 
 //Renders all the components
+
 void Panels::render() {}
 
 //Panels destructor
@@ -303,6 +324,7 @@ Panels::~Panels() {
 	FPStxtCMP.reset();
 	playerSpeedTxtCMP.reset();
 	playerBulletPowerTxtCMP.reset();
+	currentModeCMP.reset();
 	playerFireRateTxtCMP.reset();
 	playerBulletNumberTxtCMP.reset();
 	hpCMP.reset();

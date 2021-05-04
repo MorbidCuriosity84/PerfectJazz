@@ -103,6 +103,12 @@ void Boss::spawnKamikazes(int i) {
 Boss::Boss(Entity* p, textureSettings enemyTextureHelper, textureSettings bulletTextureHelper, enemySettings enemySettings, weaponSettings weaponSettings, bulletSettings bulletSettings, int index)
 	: EnemyComponent(p, enemyTextureHelper, bulletTextureHelper, enemySettings, weaponSettings, bulletSettings, index), invTimer(5.f), invincible(false), numKamikazes(4) {		
 	
+	musicArray[currentLvlMusicIndex].stop();
+	currentLvlMusicIndex = 7;
+	musicArray[currentLvlMusicIndex].setPosition(0, 1, 50);
+	musicArray[currentLvlMusicIndex].setVolume(25);
+	musicArray[currentLvlMusicIndex].setLoop(true);
+	musicArray[currentLvlMusicIndex].play();
 	Boss::isBossDead = false;
 	cout << "Is boss dead = " << isBossDead << endl;
 	//add machine gun

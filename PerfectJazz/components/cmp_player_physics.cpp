@@ -104,6 +104,13 @@ void PlayerPhysicsComponent::update(double dt) {
 
 		playerCMPTimer = 0.f;
 	}
+	//Put player facing forward if the level is finished
+	if (Engine::isLevelComplete) {
+		if (playerCMP->spriteCMP->getSprite().getRotation() == 180.f) {
+			playerCMP->spriteCMP->getSprite().setRotation(0.f);
+			playerCMP->weaponCMP->_bSettings.direction *= -1.f;
+		}
+	}
 	// Updates the physics component
 	PhysicsComponent::update(dt);
 }
