@@ -27,9 +27,6 @@
 *.dylib
 *.dll
 
-# Zip Files
-*.zip
-
 # Fortran module files
 *.mod
 *.smod
