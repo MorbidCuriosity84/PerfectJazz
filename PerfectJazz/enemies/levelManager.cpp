@@ -141,6 +141,9 @@ void LevelManager::update(Scene* s, bool infinite, int numWaveFiles, double dt)
 		levelOverTimer -= dt;		
 		if (levelOverTimer <= 0.0) {			
 			Engine::currentPlayerLevel++;
+			musicArray[currentLvlMusicIndex].stop();
+			musicArray[MUSIC_UPGRADE_MENU].play();
+			currentLvlMusicIndex = 1;
 			Engine::ChangeScene(&upgradeMenu);
 		}
 	}
