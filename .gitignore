@@ -27,9 +27,6 @@
 *.dylib
 *.dll
 
-# Zip Files
-*.zip
-
 # Fortran module files
 *.mod
 *.smod
@@ -44,10 +41,6 @@
 *.exe
 *.out
 *.app
-
-# Sounds
-*.wav
-*.ogg
 
 # End of https://www.toptal.com/developers/gitignore/api/c++
 
