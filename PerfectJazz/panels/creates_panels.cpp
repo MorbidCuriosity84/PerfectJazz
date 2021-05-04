@@ -292,18 +292,19 @@ void Panels::update(double dt) {
 		timer = 0;
 		//Updates the FPS text
 		FPStxtCMP->setText("FPS: " + toStrDecPt(2, Engine::FPS));
-	}	
 
-	if (Engine::currentPlayerLevel >= 0) {
-		currentModeCMP->setText("CURRENT LEVEL: " + to_string(Engine::currentPlayerLevel + 1));
-		sf::FloatRect currentModeRect = currentModeCMP->getLocalBounds();
-		currentModeCMP->setOrigin(Vector2f((round)(currentModeRect.left + currentModeRect.width / 2), (round)(currentModeRect.top + currentModeRect.height / 2)));
-	}
-	if (Engine::currentPlayerLevel < 0) {
-		currentModeCMP->setText("INFINITE MODE");
-		sf::FloatRect currentModeRect = currentModeCMP->getLocalBounds();
-		currentModeCMP->setOrigin(Vector2f((round)(currentModeRect.left + currentModeRect.width / 2), (round)(currentModeRect.top + currentModeRect.height / 2)));
-	}
+
+		if (Engine::currentPlayerLevel >= 0) {
+			currentModeCMP->setText("CURRENT LEVEL: " + to_string(Engine::currentPlayerLevel + 1));
+			sf::FloatRect currentModeRect = currentModeCMP->getLocalBounds();
+			currentModeCMP->setOrigin(Vector2f((round)(currentModeRect.left + currentModeRect.width / 2), (round)(currentModeRect.top + currentModeRect.height / 2)));
+		}
+		if (Engine::currentPlayerLevel < 0) {
+			currentModeCMP->setText("INFINITE MODE");
+			sf::FloatRect currentModeRect = currentModeCMP->getLocalBounds();
+			currentModeCMP->setOrigin(Vector2f((round)(currentModeRect.left + currentModeRect.width / 2), (round)(currentModeRect.top + currentModeRect.height / 2)));
+		}
+	}	
 }
 
 //Renders all the components

@@ -69,28 +69,6 @@ void LevelManager::playLevel(Scene* s) {
 		waves.push("wave7");
 		isBoss = true;		
 	}
-	////stop current level music, play boss splash music
-	//if (isBoss) {
-	//	if (musicArray[currentLvlMusicIndex].Playing) {
-	//		musicArray[currentLvlMusicIndex].stop();
-	//		musicArray[MUSIC_BOSS_SPLASH].setPosition(0, 1, 50);
-	//		musicArray[MUSIC_BOSS_SPLASH].setVolume(25);
-	//		musicArray[MUSIC_BOSS_SPLASH].setLoop(false);
-	//		musicArray[MUSIC_BOSS_SPLASH].play();
-	//		currentLvlMusicIndex = MUSIC_BOSS_SPLASH;
-	//		splashMusic = true;
-	//	}
-	//}
-	////play boss fight music
-	//if (splashMusic && isBoss) {
-	//	if (!musicArray[MUSIC_BOSS_SPLASH].Playing) {
-	//		musicArray[MUSIC_BOSS_FIGHT].setPosition(0, 1, 50);
-	//		musicArray[MUSIC_BOSS_FIGHT].setVolume(25);
-	//		musicArray[MUSIC_BOSS_FIGHT].setLoop(true);
-	//		musicArray[MUSIC_BOSS_FIGHT].play();
-	//		currentLvlMusicIndex = MUSIC_BOSS_FIGHT;
-	//	}
-	//}
 
 	//If no more enemies in the current wave, level is over
 	if (Engine::currentPlayerLevel == 4) {
@@ -140,11 +118,10 @@ void LevelManager::update(Scene* s, bool infinite, int numWaveFiles, double dt)
 	if (Engine::isLevelComplete) {
 		levelOverTimer -= dt;		
 		if (levelOverTimer <= 0.0) {			
-			Engine::currentPlayerLevel++;
+			Engine::currentPlayerLevel++;			
+			Engine::ChangeScene(&upgradeMenu);
 			musicArray[currentLvlMusicIndex].stop();
 			musicArray[MUSIC_UPGRADE_MENU].play();
-			currentLvlMusicIndex = 1;
-			Engine::ChangeScene(&upgradeMenu);
 		}
 	}
 }
