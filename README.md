@@ -1,4 +1,6 @@
 # PerfectJazz
+[![Build status](https://ci.appveyor.com/api/projects/status/b9buviqy3gmxtxm2/branch/main?svg=true)](https://ci.appveyor.com/project/CarlosMiraGarcia/perfectjazz/branch/main)
+
 ![Perfect Jazz](https://github.com/MorbidCuriosity84/PerfectJazz/blob/main/PerfectJazz.png?raw=true)
 
 [Link to itch](https://morbidcuriosity.itch.io/perfect-jazz)  
